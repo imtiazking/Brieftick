@@ -984,3 +984,16 @@ pm run qa (ci) **29/29 PASS** including RI-SONNET-55-COMPAT, RI-SHARED-SPEND, RI
 | Interpretation | regulatory-interpretation-conc-7-20-1r.mjs + docs/uat/evidence/fca-eval-002-prep/ |
 | Tests | QA 31/31; RI-FCA-EVAL-002-PREP; paid AI disabled |
 | Authorisation | NOT granted for second live pilot |
+
+## 2026-11-26 20:15 - Stage 5 Control to Assurance lineage, promote-gate repair, hosted browser UAT script
+
+| Item | Outcome |
+|---|---|
+| Defect (found by hosted lifecycle run, S5-PLAN) | The auto-drafted Stage 5 plan existed in the DB with its ASSURANCE_CONTROL_LINKED event, but the Design Lab list payload exposed no `controlIds`. Root cause: the Stage 5 auto-draft records its control as `metadata.sourceApprovedControlId` plus a row in `assurance_review_control_links`; the mapper read only `parentControlId`, and no list route read the link table. |
+| Fix | `mapAssuranceRowToLabView` derives lineage from `parentControlId` or `sourceApprovedControlId`; new `listAssuranceControlLinks` (tenant-scoped, RLS applies) and `withAssuranceControlLinks` (merge + dedupe) used by `GET /api/ri-lab/assurance-reviews` and `GET /api/ri-lab/tenant-governance` (both lists). `GET /assurance-reviews` now honours `scope` through `scopeRegister` and returns `authorisedUatAssuranceReviews` + provenance counts. Tenant isolation is unchanged: RLS decides visibility, the scope flag only partitions. |
+| Tests | RI-LAB-SCOPE-REGISTERS extended to 90 checks (mapper lineage, merge, real-Postgres link-table query, cross-tenant denial for links and plans, route wiring). Mutation-verified: removing the `sourceApprovedControlId` fallback fails the regression. `npm run qa` ci 39/39; tsc clean. |
+| Test-harness change | `pg-supabase-adapter` gained `.in()` (test double only). |
+| Promote-gate defect | First deploy attempt stopped at the promote gate: RI-GOV-RISK-SOD "timed out". Root cause: the suite discarded the embedded-Postgres handle (`stopEmbedded()` with no argument), so the postmaster child kept the process alive after PASS. Fixed in the test (pass the handle); suite now exits in 16s. No product code involved; the deploy script did not deploy. |
+| Hosted script | `S1-REVIEWER-APPROVE` was a stale expectation (independent REVIEWER may approve classified obligations by policy). Replaced by `S1-REVIEWER-NO-CONTENT-EDIT` (REVIEWER cannot smuggle priority/citation into an approval). Hard-coded deployment id removed. |
+| New | `scripts/uat/hosted-design-lab-browser-abc.mjs`: real-browser A/B/C UAT; PASS only from DOM observations. |
+| Commits | aaa1b0a, 1d93a65 |

@@ -173,6 +173,13 @@ export type LabAssuranceReviewView = {
   reviewerId: string | null;
   updatedAt: string | null;
   parentControlId: string | null;
+  /** Controls this review is bound to (metadata lineage merged with the assurance_review_control_links table). */
+  controlIds?: string[];
+  /**
+   * Lifecycle workflow state (DRAFT → … → READY_FOR_CLOSURE → CLOSED), which is distinct from the test `result`.
+   * Null when the review predates the workflow; the UI must then fall back to DRAFT rather than invent a state.
+   */
+  assuranceStatus: string | null;
   dataProvenance: RecordProvenanceKind;
   labClassification: ChangeLabClass;
   labClassificationLabel: string;
@@ -393,6 +400,7 @@ export function mapAssuranceRowToLabView(row: Record<string, unknown>): LabAssur
     updatedAt: (row.updated_at as string) ?? null,
     parentControlId,
     ...(parentControlId ? { controlIds: [parentControlId] } : {}),
+    assuranceStatus: typeof meta?.assuranceStatus === 'string' ? meta.assuranceStatus : null,
     dataProvenance: recordKindForRiskControlLabClass(labClass),
     labClassification: labClass,
     labClassificationLabel: labChangeClassificationLabel(labClass),

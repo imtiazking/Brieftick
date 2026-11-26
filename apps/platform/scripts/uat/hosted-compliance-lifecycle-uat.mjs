@@ -126,7 +126,7 @@ await runAs('B', async ({ page }) => {
   record(
     'S1-REVIEWER-NO-CONTENT-EDIT',
     'hosted-api',
-    denied(res) && still === 'IN_REVIEW' && !String(citation ?? '').includes('SMUGGLED') ? 'PASS' : 'FAIL',
+    denied(res) && String(still ?? '').toUpperCase().replace(/\s+/g, '_') === 'IN_REVIEW' && !String(citation ?? '').includes('SMUGGLED') ? 'PASS' : 'FAIL',
     { http: res.status, statusAfter: still, error: res.body?.error || res.body?.message },
   );
 });
@@ -261,7 +261,11 @@ if (ids.assuranceId) {
       record('S5-CLOSE-WHILE-FAIL', 'hosted-api', denied(blocked) ? 'PASS' : 'FAIL', { http: blocked.status });
     }
     const detail = await api(page, 'GET', `/api/ri-lab/assurance-reviews/${ids.assuranceId}`);
-    ids.remediationActionId = detail.body?.assurance?.metadata?.remediationActionId || detail.body?.assurance?.remediationActionId || null;
+    // GET /assurance-reviews/:id returns the lab view as `assuranceReview` and the raw row (with metadata) as `detail`.
+    ids.remediationActionId =
+      detail.body?.detail?.metadata?.remediationActionId ||
+      detail.body?.assuranceReview?.metadata?.remediationActionId ||
+      null;
     if (ids.remediationActionId) {
       const done = await api(page, 'PATCH', `/api/ri-lab/assurance-reviews/${ids.assuranceId}`, {
         action: 'complete_remediation',
@@ -288,6 +292,24 @@ if (ids.assuranceId) {
         retest: true,
       });
       record('S5-WRONG-EVIDENCE', 'hosted-api', denied(bad) ? 'PASS' : 'NOT_RUN', { http: bad.status });
+    }
+    // Lifecycle closure is refused while the failed test's finding is open (assurance_closure_blocked:open_findings_without_exception).
+    // After remediation and a passing retest the finding is closed through the findings workflow; no exception is invented.
+    const afterRetest = await api(page, 'GET', `/api/ri-lab/assurance-reviews/${ids.assuranceId}`);
+    const findingId = (afterRetest.body?.findings || [])[0]?.id || null;
+    ids.findingId = findingId;
+  });
+  // The approver (C) is refused while the failed test's finding is open; A (maker) then closes it; C can then close.
+  await runAs('C', async ({ page }) => {
+    const stillOpen = await api(page, 'PATCH', `/api/ri-lab/assurance-reviews/${ids.assuranceId}`, { action: 'close_lifecycle', result: 'PASS' });
+    record('S5-CLOSE-BLOCKED-BY-OPEN-FINDING', 'hosted-api', denied(stillOpen) && /open_findings/i.test(JSON.stringify(stillOpen.body || {})) ? 'PASS' : 'FAIL', { http: stillOpen.status, error: stillOpen.body?.error || stillOpen.body?.message });
+  });
+  await runAs('A', async ({ page }) => {
+    if (ids.findingId) {
+      const closed = await api(page, 'PATCH', `/api/ri-lab/findings/${ids.findingId}`, { status: 'CLOSED' });
+      record('S5-FINDING-CLOSE', 'hosted-api', closed.status < 400 ? 'PASS' : 'FAIL', { http: closed.status, error: closed.body?.error || closed.body?.message });
+    } else {
+      record('S5-FINDING-CLOSE', 'hosted-api', 'FAIL', { reason: 'no finding linked to the assurance review' });
     }
   });
   await runAs('C', async ({ page }) => {

@@ -1,0 +1,525 @@
+{
+  "run": "UAT-LIFECYCLE-20261126-mwy1p10f",
+  "deployment": "dpl_GVwLPEAadswJe8pSxreWZJBpjapY",
+  "ids": {
+    "run": "UAT-LIFECYCLE-20261126-mwy1p10f",
+    "origin": "https://staging-app.forgeniq.com",
+    "changeId": "cb1e415a-2605-4c46-a0d8-3ab17de4dab7",
+    "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+    "obligationId": "ae715f54-439c-4419-8828-002de242f9a4",
+    "obligationStatus": "OPEN",
+    "impactId": "2c2a8b3b-aeb0-4d47-bc36-c3b35f7288ef",
+    "riskId": "428fd306-07be-4833-af57-250b586f0c96",
+    "controlId": "47aab175-5e1b-4e7c-bad6-b502f27ea147",
+    "assuranceId": "2ff59648-22c2-49c1-b782-b2885d06081c",
+    "evidenceId": "0e79569a-62ab-43ab-af0c-05555a3b48ed",
+    "wrongEvidenceId": "0abbcb6d-ce35-4bb1-a79c-98c641e05a7a",
+    "remediationActionId": "bc11bac9-0de0-4b2c-8176-a8bef55c24b3",
+    "findingId": "1d563cac-7bc9-4079-b662-3bffedd527aa",
+    "obligationEvents": [
+      "COMPLIANCE_LIFECYCLE_CLOSED",
+      "RISK_LINKED",
+      "IMPACT_INITIATED_FROM_OBLIGATION",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_CREATED"
+    ]
+  },
+  "session": {
+    "A": {
+      "userId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "role": "COMPLIANCE_MANAGER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+    },
+    "C": {
+      "userId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "role": "COMPLIANCE_MANAGER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+    },
+    "B": {
+      "userId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "role": "REVIEWER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+    }
+  },
+  "results": [
+    {
+      "id": "AUTH-A",
+      "layer": "hosted-auth",
+      "status": "PASS",
+      "detail": {
+        "userId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+        "role": "COMPLIANCE_MANAGER",
+        "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+      }
+    },
+    {
+      "id": "AUTH-C",
+      "layer": "hosted-auth",
+      "status": "PASS",
+      "detail": {
+        "userId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+        "role": "COMPLIANCE_MANAGER",
+        "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+      }
+    },
+    {
+      "id": "AUTH-B",
+      "layer": "hosted-auth",
+      "status": "PASS",
+      "detail": {
+        "userId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+        "role": "REVIEWER",
+        "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+      }
+    },
+    {
+      "id": "S1-CHANGE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "changeId": "cb1e415a-2605-4c46-a0d8-3ab17de4dab7"
+      }
+    },
+    {
+      "id": "S1-CREATE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "obligationId": "ae715f54-439c-4419-8828-002de242f9a4",
+        "status": "Draft"
+      }
+    },
+    {
+      "id": "S1-SELF-APPROVE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 409,
+        "error": "ai_obligation_invalid_transition"
+      }
+    },
+    {
+      "id": "S1-SUBMIT",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S1-REVIEWER-NO-CONTENT-EDIT",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 403,
+        "statusAfter": "In review",
+        "error": "forbidden"
+      }
+    },
+    {
+      "id": "S1-APPROVE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200,
+        "status": "OPEN"
+      }
+    },
+    {
+      "id": "S2-AUTO-DRAFT",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "impactId": "2c2a8b3b-aeb0-4d47-bc36-c3b35f7288ef",
+        "impact": {
+          "id": "2c2a8b3b-aeb0-4d47-bc36-c3b35f7288ef",
+          "status": "DRAFT",
+          "materiality": "UNASSESSED",
+          "metadata": {
+            "stage2Ai": {
+              "model": "fixture-ri",
+              "citations": [
+                {
+                  "text": "Fixture claim 1 grounded in UAT-LIFECYCLE-20261126-mwy1p10f synthetic citation",
+                  "citation": null,
+                  "sourceQuotation": null,
+                  "sourceSectionIds": [
+                    "OBL-1"
+                  ],
+                  "provisionReference": null
+                },
+                {
+                  "text": "Fixture claim 2 grounded in section",
+                  "citation": null,
+                  "sourceQuotation": null,
+                  "sourceSectionIds": [
+                    "OBL-1"
+                  ],
+                  "provisionReference": null
+                }
+              ],
+              "latencyMs": 12,
+              "telemetry": null,
+              "aiProvider": "AIPROV-FIXTURE-001",
+              "aiUseCaseId": "UC-RI-004",
+              "fixtureMode": true,
+              "inputTokens": null,
+              "aiConfidence": 82,
+              "estimatedUsd": null,
+              "outputTokens": null,
+              "aiAssumptions": [
+                "Assessment draft is generated from obligation text and publication grounding only.",
+                "No live organisational inventory was consulted.",
+                "Materiality and complexity are not derived from model confidence or dimension count."
+              ],
+              "executionMode": "fixture",
+              "aiEvidenceClaims": [
+                "1. Fixture claim 1 grounded in UAT-LIFECYCLE-20261126-mwy1p10f synthetic citation [sections: OBL-1]",
+                "2. Fixture claim 2 grounded in section [sections: OBL-1]"
+              ],
+              "assessmentOrigin": "AI_DRAFT",
+              "processingStatus": "DRAFT_AI_SUGGESTION",
+              "rawProviderOutput": null,
+              "materialityAssessment": {
+                "scores": {
+                  "complexityScore": 0,
+                  "regulatoryExposureScore": 0
+                },
+                "factors": [],
+                "thresholds": {
+                  "complexityHigh": 5,
+                  "complexityMedium": 2,
+                  "minOrgEvidenceFields": 2,
+                  "regulatoryExposureHigh": 10,
+                  "regulatoryExposureMedium": 5,
+                  "minOrgMaterialityRationaleChars": 40
+                },
+                "policyVersion": "impact-materiality-policy-v1",
+                "assessmentOrigin": "AI_DRAFT",
+                "complexityStatus": "UNASSESSED",
+                "scoringRationale": [
+                  "Regulatory exposure score 0 → recommended tier LOW (provisional, not a materiality decision).",
+                  "Implementation scope score 0 → provisional complexity LOW.",
+                  "No regulatory evidence pack — no scope scoring.",
+                  "Materiality is UNASSESSED: organisational evidence (affected customers, systems, effort, breach history) was not supplied.",
+                  "AI draft only — human approval required before treating any rating as an organisational assessment."
+                ],
+                "materialityStatus": "UNASSESSED_NO_ORGANISATIONAL_EVIDENCE",
+                "rejectedHeuristics": [
+                  "model_confidence_percent",
+                  "ungrounded_dimension_count"
+                ],
+                "humanApprovalRequired": true,
+                "complexityRecommendation": null,
+                "organisationalEvidenceFields": [],
+                "organisationalEvidenceSupplied": false,
+                "regulatoryExposureRecommendation": "LOW (provisional)"
+              },
+              "humanConfirmationRequired": [
+                "Organisation-specific facts were not asserted by AI.",
+                "Implementation deadlines depend on regulatory effective dates and internal planning.",
+                "Materiality is UNASSESSED until organisational evidence (customer scope, systems, effort) is recorded and reviewed.",
+                "Regulatory exposure (provisional AI hint only): LOW (provisional).",
+                "The obligation quotation has no recorded human verification against the PDF page.",
+                "Commencement date is not verified against the instrument; no date is asserted.",
+                "Regulatory exposure score 0 → recommended tier LOW (provisional, not a materiality decision).",
+                "Implementation scope score 0 → provisional complexity LOW.",
+                "No regulatory evidence pack — no scope scoring.",
+                "Materiality is UNASSESSED: organisational evidence (affected customers, systems, effort, breach history) was not supplied."
+              ],
+              "aiConfidenceNotUsedForMateriality": true
+            },
+            "stage2Workflow": "obligation_approved_to_impact_draft",
+            "labCreationMode": "uat_authorised",
+            "recordProvenance": "uat_authorised",
+            "regulatoryEvidence": {
+              "pack": {
+                "source": {
+                  "legalBasis": "UAT-LIFECYCLE-20261126-mwy1p10f synthetic legal basis for automated UAT only",
+                  "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+                  "publicationType": "policy_statement_with_instrument",
+                  "extractionRevisionId": null
+                },
+                "version": "regulatory-evidence-pack-v1",
+                "breakdown": null,
+                "effective": {
+                  "date": null,
+                  "source": "unverified",
+                  "evidence": null
+                },
+                "provision": {
+                  "core": null,
+                  "reference": null,
+                  "legalStatus": "binding",
+                  "bindingNature": null,
+                  "provisionFunction": null,
+                  "regulatoryClassificationCode": "R"
+                },
+                "quotation": {
+                  "page": null,
+                  "text": null,
+                  "verified": false,
+                  "coversLimbs": null,
+                  "verificationId": null,
+                  "citationLocation": "UAT-LIFECYCLE-20261126-mwy1p10f synthetic citation"
+                },
+                "assumptions": [
+                  "Organisational systems, controls, control-effectiveness evidence and incident data are not supplied; none are assumed.",
+                  "Recommendations are draft proposals for human review and are not regulatory advice."
+                ],
+                "obligationId": "ae715f54-439c-4419-8828-002de242f9a4",
+                "uncertainties": [
+                  "The obligation quotation has no recorded human verification against the PDF page.",
+                  "Commencement date is not verified against the instrument; no date is asserted."
+                ],
+                "provisionBreakdown": null
+              },
+              "trace": [],
+              "citationValidation": null
+            },
+            "labProvenanceLocked": true,
+            "labProvenanceRecordedAt": "2026-11-26T21:09:38.428Z",
+            "parentRegulatoryChangeId": "cb1e415a-2605-4c46-a0d8-3ab17de4dab7",
+            "sourceRegulatoryObligationId": "ae715f54-439c-4419-8828-002de242f9a4",
+            "labProvenanceRecordedByUserId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+          }
+        }
+      }
+    },
+    {
+      "id": "S2-SELF-APPROVE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 409
+      }
+    },
+    {
+      "id": "S2-SUBMIT",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S2-APPROVE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S3-AUTO-DRAFT",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "riskId": "428fd306-07be-4833-af57-250b586f0c96"
+      }
+    },
+    {
+      "id": "S3-SELF-APPROVE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 409
+      }
+    },
+    {
+      "id": "S3-SUBMIT",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S4-TRIGGER",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S4-AUTO-DRAFT",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "controlId": "47aab175-5e1b-4e7c-bad6-b502f27ea147"
+      }
+    },
+    {
+      "id": "S4-SELF-APPROVE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 409
+      }
+    },
+    {
+      "id": "S4-SUBMIT",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S4-APPROVE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S5-PLAN",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "assuranceId": "2ff59648-22c2-49c1-b782-b2885d06081c",
+        "http": 200
+      }
+    },
+    {
+      "id": "S5-PLAN-SUBMIT",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S5-PREMATURE-CLOSE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 403
+      }
+    },
+    {
+      "id": "S5-PLAN-APPROVE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S5-EVIDENCE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 201
+      }
+    },
+    {
+      "id": "S5-FAIL-TEST",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S5-CLOSE-WHILE-FAIL",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 403
+      }
+    },
+    {
+      "id": "S5-REMEDIATE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S5-RETEST",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S5-WRONG-EVIDENCE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 409
+      }
+    },
+    {
+      "id": "S5-CLOSE-BLOCKED-BY-OPEN-FINDING",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 409,
+        "error": "assurance_closure_blocked:open_findings_without_exception"
+      }
+    },
+    {
+      "id": "S5-FINDING-CLOSE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S5-CLOSE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S5-IDEMPOTENT-CLOSE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "AUDIT-OBLIGATION-CLOSED",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "types": [
+          "COMPLIANCE_LIFECYCLE_CLOSED",
+          "RISK_LINKED",
+          "IMPACT_INITIATED_FROM_OBLIGATION",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_CREATED"
+        ]
+      }
+    },
+    {
+      "id": "UI-OBLIGATION",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "shot": "obligation-lifecycle.png"
+      }
+    },
+    {
+      "id": "SEC-CROSS-TENANT",
+      "layer": "hosted-api",
+      "status": "BLOCKED",
+      "detail": {
+        "reason": "Users A, B and C share one organisation; hosted cross-tenant denial is not claimed. Offline RLS remains in RI-ASSURANCE-GOVERNANCE-SECURITY."
+      }
+    }
+  ],
+  "failed": 0
+}

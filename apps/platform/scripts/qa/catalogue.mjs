@@ -531,6 +531,22 @@ export const QA_CATALOGUE = [
     ],
   },
   {
+    id: 'RI-DESIGN-LAB-AUDIT-HISTORY-RACE',
+    area: 'Regulatory Intelligence',
+    feature: 'Design Lab audit history of Findings, Evidence and Assurance reviews survives its parallel detail request (found by hosted browser UAT)',
+    type: 'acceptance',
+    criticality: 'high',
+    gate: 'ci',
+    route: '#/assurance',
+    apis: ['/api/ri-lab/workflow-events', '/api/ri-lab/assurance-reviews', '/api/ri-lab/findings', '/api/ri-lab/evidence'],
+    entities: ['workflow_events', 'assurance_reviews', 'findings', 'evidence_items'],
+    command: 'node scripts/acceptance-ri-design-lab-audit-history-race.mjs',
+    paths: [
+      'design-lab/regulatory-intelligence/js/platform/connected-catalogue.js',
+      'design-lab/regulatory-intelligence/js/platform/connected-entity-audit.js',
+    ],
+  },
+  {
     id: 'RI-RUN-SCOPED-LEDGER',
     area: 'Regulatory Intelligence',
     feature: 'Run-reference-scoped AI execution ledger: isolation from history, limits, immutability, retries, recovery',

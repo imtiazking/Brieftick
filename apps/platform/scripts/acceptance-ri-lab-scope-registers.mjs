@@ -143,6 +143,10 @@ for (const [name, def] of Object.entries(registers)) {
   check('link-table ids are merged into a view that has no metadata lineage', JSON.stringify(withAssuranceControlLinks(bare, ['c1', 'c2']).controlIds) === JSON.stringify(['c1', 'c2']));
   check('merge de-duplicates and keeps metadata lineage first', JSON.stringify(withAssuranceControlLinks(auto, [CTRL, 'c2']).controlIds) === JSON.stringify([CTRL, 'c2']));
   check('merge with no links and no lineage leaves the view untouched', withAssuranceControlLinks(bare, undefined) === bare);
+  // The Design Lab shows the workflow state from the view; before this it always fell back to DRAFT for every review.
+  const closed = mapAssuranceRowToLabView({ ...base, result: 'PASS', metadata: { ...UAT, sourceApprovedControlId: CTRL, assuranceStatus: 'CLOSED' } });
+  check('REGRESSION: the view carries the workflow state (CLOSED is not shown as DRAFT)', closed.assuranceStatus === 'CLOSED' && closed.result === 'PASS', closed);
+  check('a review with no recorded workflow state reports null (UI falls back to DRAFT; nothing invented)', bare.assuranceStatus === null);
 }
 
 // ------------------------------------------------------------------------------------------------ route wiring

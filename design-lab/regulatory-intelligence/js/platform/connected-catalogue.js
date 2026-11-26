@@ -907,8 +907,7 @@ export async function fetchConnectedEvidenceDetail(state, evidenceId) {
     err.status = res.status;
     throw err;
   }
-  const auditKey = `evidence_item:${evidenceId}`;
-  if (cat.entityWorkflowEventsByKey) delete cat.entityWorkflowEventsByKey[auditKey];
+  // Audit history is loaded in parallel and refreshed explicitly after writes; clearing it here raced the events request.
 
   if (body.evidence) {
     const linkedControls = (body.linkedControls ?? body.evidence.linkedControls ?? []).filter((c) => c?.id);
@@ -963,10 +962,7 @@ export async function fetchConnectedFindingDetail(state, findingId) {
     err.status = res.status;
     throw err;
   }
-  const auditKey = `finding:${findingId}`;
-  if (cat.entityWorkflowEventsByKey) delete cat.entityWorkflowEventsByKey[auditKey];
-  if (cat.entityWorkflowEventsLoadStateByKey) delete cat.entityWorkflowEventsLoadStateByKey[auditKey];
-  if (cat.entityWorkflowEventsLoadErrorByKey) delete cat.entityWorkflowEventsLoadErrorByKey[auditKey];
+  // Audit history is loaded in parallel and refreshed explicitly after writes; clearing it here raced the events request.
 
   if (body.finding) {
     const rawMeta = body.detail?.metadata ?? body.finding.metadata ?? null;
@@ -1067,10 +1063,9 @@ export async function fetchConnectedAssuranceDetail(state, assuranceId) {
     err.status = res.status;
     throw err;
   }
-  const auditKey = `assurance_review:${assuranceId}`;
-  if (cat.entityWorkflowEventsByKey) delete cat.entityWorkflowEventsByKey[auditKey];
-  if (cat.entityWorkflowEventsLoadStateByKey) delete cat.entityWorkflowEventsLoadStateByKey[auditKey];
-  if (cat.entityWorkflowEventsLoadErrorByKey) delete cat.entityWorkflowEventsLoadErrorByKey[auditKey];
+  // The audit history is fetched in parallel with this detail request and is refreshed explicitly after every write
+  // (refreshConnectedEntityWorkflowEvents). It must NOT be cleared here: the events request usually finishes first, so
+  // clearing wiped a correctly loaded history and left "No workflow events" with nothing to refetch it.
 
   if (body.assuranceReview) {
     const rawMeta = body.detail?.metadata ?? body.assuranceReview.metadata ?? null;

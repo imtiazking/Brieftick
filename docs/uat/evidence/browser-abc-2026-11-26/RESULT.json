@@ -1,0 +1,289 @@
+{
+  "run": "UAT-BROWSER-20261126-mwy1relu",
+  "deployment": "dpl_GVwLPEAadswJe8pSxreWZJBpjapY",
+  "origin": "https://staging-app.forgeniq.com",
+  "ids": {
+    "run": "UAT-BROWSER-20261126-mwy1relu",
+    "lifecycleObligation": "ae715f54-439c-4419-8828-002de242f9a4",
+    "obligationId": "bd89345c-aa40-42f6-8a7d-92c963c7464b"
+  },
+  "results": [
+    {
+      "id": "A-IDENTITY",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "role": "COMPLIANCE_MANAGER",
+        "organisation": "FORGENIQ AI Development"
+      }
+    },
+    {
+      "id": "A-PUBLICATIONS-THEME",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "rows": 274,
+        "bg": "rgb(12, 15, 18)",
+        "head": "rgb(52, 211, 153)",
+        "font": "\"JetBrains Mono\", ui-monospace, \"SF Mono\", Menlo, Consolas, monospace"
+      }
+    },
+    {
+      "id": "A-PUBLICATIONS-MODAL",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "centred": true,
+        "blur": "blur(10px) saturate(1.1)",
+        "trueModal": true,
+        "focusInside": true,
+        "title": "The Network Rail (Tackley Level Crossing) Order 2026",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        }
+      }
+    },
+    {
+      "id": "A-PUBLICATIONS-MODAL-CLOSE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "escapeReturnsFocus": true
+      }
+    },
+    {
+      "id": "A-OBLIGATIONS-THEME",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "rows": 23,
+        "bg": "rgb(12, 15, 18)",
+        "head": "rgb(52, 211, 153)",
+        "font": "\"JetBrains Mono\", ui-monospace, \"SF Mono\", Menlo, Consolas, monospace"
+      }
+    },
+    {
+      "id": "A-OBLIGATIONS-MODAL",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "centred": true,
+        "blur": "blur(10px) saturate(1.1)",
+        "trueModal": true,
+        "focusInside": true,
+        "title": "UAT-LIFECYCLE-20261126-mwy1p10f synthetic UAT obligation — firms must retain lab",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        }
+      }
+    },
+    {
+      "id": "A-OBLIGATIONS-MODAL-CLOSE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "escapeReturnsFocus": true
+      }
+    },
+    {
+      "id": "A-UI-CREATE-OBLIGATION",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Obligation created",
+        "obligationId": "bd89345c-aa40-42f6-8a7d-92c963c7464b"
+      }
+    },
+    {
+      "id": "A-UI-SUBMIT-FOR-REVIEW",
+      "layer": "hosted-browser",
+      "status": "FAIL",
+      "detail": {
+        "toast": "Obligation created"
+      }
+    },
+    {
+      "id": "A-UI-SELF-APPROVAL-REFUSED",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Obligation saved",
+        "statusField": "IN_REVIEW"
+      }
+    },
+    {
+      "id": "B-IDENTITY",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "role": "REVIEWER"
+      }
+    },
+    {
+      "id": "B-UI-APPROVE-OBLIGATION",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Obligation approved into register"
+      }
+    },
+    {
+      "id": "B-UI-ATOMIC-STAGE2-HANDOFF",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "stage2": "AI impact assessment (Stage 2)\n\nDraft generated from this approved obligation. Human review and approval are required; AI cannot approve its own assessment.\n\nOPEN IMPACT ASSESSMENT · DRAFT"
+      }
+    },
+    {
+      "id": "B-UI-NAVIGATE-TO-IMPACT",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "url": "/assessment/b92c246d-becb-4373-a260-d19b049e1530"
+      }
+    },
+    {
+      "id": "C-IDENTITY",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "role": "COMPLIANCE_MANAGER"
+      }
+    },
+    {
+      "id": "C-LIFECYCLE-PANEL",
+      "layer": "hosted-browser",
+      "status": "FAIL",
+      "detail": {
+        "stages": [
+          "Obligation · OPEN",
+          "Impact · APPROVED",
+          "Risk · APPROVED",
+          "Control · ACTIVE",
+          "Assurance · PASS / CLOSED"
+        ],
+        "linkableStages": 0
+      }
+    },
+    {
+      "id": "C-NAV-OBLIGATION",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "label": "Obligation · OPEN",
+        "hash": "#/obligation/ae715f54-439c-4419-8828-002de242f9a4",
+        "hasStatus": true,
+        "hasOwner": true,
+        "hasHistory": true,
+        "chars": 3091
+      }
+    },
+    {
+      "id": "C-NAV-IMPACT",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "label": "Impact · APPROVED",
+        "hash": "#/assessment/2c2a8b3b-aeb0-4d47-bc36-c3b35f7288ef",
+        "hasStatus": true,
+        "hasOwner": true,
+        "hasHistory": true,
+        "chars": 2221
+      }
+    },
+    {
+      "id": "C-NAV-RISK",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "label": "Risk · APPROVED",
+        "hash": "#/risk/428fd306-07be-4833-af57-250b586f0c96",
+        "hasStatus": true,
+        "hasOwner": true,
+        "hasHistory": true,
+        "chars": 2517
+      }
+    },
+    {
+      "id": "C-NAV-CONTROL",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "label": "Control · ACTIVE",
+        "hash": "#/control/47aab175-5e1b-4e7c-bad6-b502f27ea147",
+        "hasStatus": true,
+        "hasOwner": true,
+        "hasHistory": true,
+        "chars": 2300
+      }
+    },
+    {
+      "id": "C-NAV-ASSURANCE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "label": "Assurance · PASS / CLOSED",
+        "hash": "#/assurance/2ff59648-22c2-49c1-b782-b2885d06081c",
+        "hasStatus": false,
+        "hasOwner": true,
+        "hasHistory": true,
+        "chars": 1894
+      }
+    },
+    {
+      "id": "C-CONTROL-SHOWS-ASSURANCE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "mentionsAssurance": true
+      }
+    },
+    {
+      "id": "C-ASSURANCE-SHOWS-CONTROL",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "mentionsControl": true
+      }
+    },
+    {
+      "id": "C-OBLIGATION-APPROVAL-HISTORY",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "chars": 3091
+      }
+    },
+    {
+      "id": "C-REGISTER-RISKS",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "chars": 2505
+      }
+    },
+    {
+      "id": "C-REGISTER-CONTROLS",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "chars": 2376
+      }
+    },
+    {
+      "id": "C-REGISTER-ASSURANCE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "chars": 3966
+      }
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "failedApiResponses": [],
+  "failed": 2
+}

@@ -52,6 +52,20 @@ async function toastText(page) {
   return (await toast.innerText()).trim();
 }
 
+/** Waits for a toast that differs from `previous`, so a stale toast from an earlier action is never read as the result. */
+async function nextToast(page, previous) {
+  await page.waitForFunction(
+    (prior) => {
+      const t = (document.querySelector('#ri-toast')?.innerText || '').trim();
+      return t && t !== prior;
+    },
+    previous,
+    { timeout: 30_000 },
+  );
+  return (await page.locator('#ri-toast').innerText()).trim();
+}
+const currentToast = async (page) => ((await page.locator('#ri-toast').innerText().catch(() => '')) || '').trim();
+
 async function ensureLabReady(page) {
   await page.waitForFunction(() => document.documentElement.dataset.riMounted === '1', null, { timeout: 45_000 });
   const picker = page.locator('[data-ri-select-org]');
@@ -165,17 +179,24 @@ await runAs('A', async ({ page, identity }) => {
   record('A-UI-CREATE-OBLIGATION', ids.obligationId && /created/i.test(created) ? 'PASS' : 'FAIL', { toast: created, obligationId: ids.obligationId });
   await shot(page, 'A-obligation-draft.png');
 
+  let prior = await currentToast(page);
   await page.locator('[data-connected-obligation-field="status"]').fill('IN_REVIEW');
   await page.locator('[data-connected-obligation-save]').click();
-  const submitted = await toastText(page);
+  const submitted = await nextToast(page, prior);
   record('A-UI-SUBMIT-FOR-REVIEW', /saved/i.test(submitted) ? 'PASS' : 'FAIL', { toast: submitted });
 
+  // Self-approval: the maker tries to approve their own submission in the UI. The result must be read from a NEW toast
+  // and then confirmed against the persisted record after a reload (the form field can be locally edited).
+  await page.waitForTimeout(1500);
+  prior = await currentToast(page);
   await page.locator('[data-connected-obligation-field="status"]').fill('OPEN');
   await page.locator('[data-connected-obligation-save]').click();
-  const self = await toastText(page);
-  const value = await page.locator('[data-connected-obligation-field="status"]').inputValue();
-  record('A-UI-SELF-APPROVAL-REFUSED', /fail|segregation|invalid|denied|error|cannot|not permitted/i.test(self) || value !== 'OPEN' ? 'PASS' : 'FAIL', { toast: self, statusField: value });
+  const self = await nextToast(page, prior);
+  await page.waitForTimeout(1000);
   await shot(page, 'A-self-approval-refused.png');
+  await open(page, `#/obligation/${ids.obligationId}`);
+  const persisted = await page.locator('[data-connected-obligation-field="status"]').inputValue();
+  record('A-UI-SELF-APPROVAL-REFUSED', persisted !== 'OPEN' && persisted === 'IN_REVIEW' && !/saved/i.test(self) ? 'PASS' : 'FAIL', { toast: self, persistedStatusAfterReload: persisted });
 });
 
 // ------------------------------------------------------------------ User B: independent reviewer approves through the UI
@@ -224,6 +245,9 @@ await runAs('C', async ({ page, identity }) => {
     await shot(page, 'C-no-lifecycle-panel.png');
     return;
   }
+  // The panel renders before the lifecycle payload arrives; wait for the stage links to hydrate before counting.
+  await panel.locator('a.ri-lifecycle__link').first().waitFor({ timeout: 30_000 }).catch(() => null);
+  await page.waitForTimeout(1500);
   const items = await panel.locator('li').allInnerTexts();
   const linkable = await panel.locator('a.ri-lifecycle__link').count();
   record('C-LIFECYCLE-PANEL', linkable === 5 ? 'PASS' : 'FAIL', { stages: items, linkableStages: linkable });
@@ -263,6 +287,38 @@ await runAs('C', async ({ page, identity }) => {
   if (assurance) {
     const ok = /control/i.test(assurance.text);
     record('C-ASSURANCE-SHOWS-CONTROL', ok ? 'PASS' : 'FAIL', { mentionsControl: ok });
+  }
+  // Assurance page of the CLOSED review: its workflow state, audit history and control lineage must all be visible.
+  if (assurance) {
+    const assuranceHash = assurance.hash;
+    await open(page, assuranceHash);
+    const wf = (await page.locator('[data-connected-assurance-execution] strong').first().innerText().catch(() => '')).trim();
+    record('C-ASSURANCE-WORKFLOW-STATE', wf === 'CLOSED' ? 'PASS' : 'FAIL', { shown: wf, expected: 'CLOSED' });
+    const auditOk = await page
+      .waitForFunction(
+        () => {
+          const panel = [...document.querySelectorAll('section.ri-panel')].find((s) => /Audit history/.test(s.textContent || ''));
+          return panel && panel.querySelectorAll('tbody tr').length >= 5;
+        },
+        null,
+        { timeout: 15_000 },
+      )
+      .then(() => true)
+      .catch(() => false);
+    const auditRows = await page.evaluate(() => {
+      const panel = [...document.querySelectorAll('section.ri-panel')].find((s) => /Audit history/.test(s.textContent || ''));
+      return panel ? panel.querySelectorAll('tbody tr').length : -1;
+    });
+    record('C-ASSURANCE-AUDIT-HISTORY', auditOk ? 'PASS' : 'FAIL', { rows: auditRows, expectedAtLeast: 5 });
+    const controlLinks = await page.locator('a[href^="#/control/"]').count();
+    record('C-ASSURANCE-LINKS-TO-CONTROL', controlLinks >= 1 ? 'PASS' : 'FAIL', { controlLinks });
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await shot(page, 'C-assurance-closed-state.png');
+  }
+  if (control) {
+    await open(page, control.hash);
+    const assuranceLinks = await page.locator('a[href^="#/assurance/"]').count();
+    record('C-CONTROL-LINKS-TO-ASSURANCE', assuranceLinks >= 1 ? 'PASS' : 'FAIL', { assuranceLinks });
   }
   // Approval history on the obligation record.
   await open(page, `#/obligation/${LIFECYCLE_OBLIGATION}`);
