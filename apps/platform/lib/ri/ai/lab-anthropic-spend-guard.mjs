@@ -7,6 +7,7 @@ import {
   estimateRequestCostUsd,
   MODEL_PRICING_ESTIMATE,
 } from '../reasoner/anthropic-eval-budget.mjs';
+import { reserveSharedLabSpend, settleSharedLabSpend, sharedSpendScopeKey } from './lab-shared-spend.mjs';
 function resolveLabAnthropicModel() {
   const explicit =
     process.env.RI_ANTHROPIC_MODEL?.trim() ||
@@ -295,10 +296,11 @@ export class LabAnthropicSpendTracker {
 
 export function labBudgetEnforcementLimitations() {
   return [
-    'HARD_INVOICE_CAP_NOT_GUARANTEED: enforcement is pre-flight reserve + post-hoc token accounting — not Anthropic billing API.',
-    'Pricing uses static MODEL_PRICING_ESTIMATE — actual Anthropic invoice may differ.',
-    'Per-process overlap lock and cumulative USD ledger do not synchronise across Vercel serverless instances. UC-RI-005 also has a database RUNNING lock per organisation. Lifecycle stages rely on idempotent parent keys plus this process ledger.',
-    'Duplicate UC-RI-005 idempotency keys reuse the existing run; a new paid attempt requires a new operator-authorised RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX.',
+    'HARD_INVOICE_CAP_NOT_GUARANTEED: the shared ledger reserves the maximum estimated cost and later reconciles reported tokens. It is not an Anthropic invoice or workspace cap.',
+    'Pricing uses static MODEL_PRICING_ESTIMATE — actual Anthropic invoice may differ by model snapshot, cache tokens, or taxes.',
+    'A crashed instance can leave a RESERVED row. That hold stays against the ceiling until settle_lab_ai_spend runs. There is no automatic retry.',
+    'Failed provider calls still consume one request. Reported tokens are settled; a call that reports no tokens settles at zero and releases the unused reserve.',
+    'RI_LAB_SPEND_GUARD_MODE=memory is for offline tests only. Live execution without a shared database fails closed.',
     'A request that passes pre-flight may still consume thinking tokens inside max_tokens before text appears; partial responses may still incur billed input tokens.',
     'No org-wide Anthropic workspace spend cap — only per-request guard when env is set.',
     'Retries inside callAnthropicMessages are not implemented; retryReserveFactor reserves headroom only.',
@@ -348,7 +350,139 @@ export function assertUcRi005LiveTrialIdempotency(idempotencyKey, { executionEna
   return { ok: true, requiredSuffix: match, allowedSuffixes: allowed };
 }
 
-export function guardLabAnthropicSpendBeforeCall({
+function memoryGuardEnabled() {
+  return process.env.RI_LAB_SPEND_GUARD_MODE === 'memory';
+}
+
+async function resolveSharedSpendQuery() {
+  if (typeof globalThis.__forgeniqLabSpendQuery === 'function') {
+    return globalThis.__forgeniqLabSpendQuery;
+  }
+  const pgUrl =
+    process.env.RI_LAB_SPEND_DATABASE_URL?.trim() ||
+    process.env.SUPABASE_DB_URL?.trim() ||
+    process.env.POSTGRES_URL?.trim() ||
+    process.env.DATABASE_URL?.trim();
+  if (pgUrl) {
+    return async (sql, params) => {
+      const { default: pg } = await import('pg');
+      const client = new pg.Client({ connectionString: pgUrl });
+      await client.connect();
+      try {
+        const { rows } = await client.query(sql, params);
+        return rows[0];
+      } finally {
+        await client.end().catch(() => {});
+      }
+    };
+  }
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || process.env.SUPABASE_URL?.trim();
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+  if (!url || !key) return null;
+  const { createClient } = await import('@supabase/supabase-js');
+  const sb = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+  return async (sql, params) => {
+    const isReserve = sql.includes('reserve_lab_ai_spend');
+    const { data, error } = await sb.rpc(isReserve ? 'reserve_lab_ai_spend' : 'settle_lab_ai_spend', isReserve
+      ? {
+          p_scope_key: params[0],
+          p_budget_usd: params[1],
+          p_max_requests: params[2],
+          p_reserve_usd: params[3],
+          p_use_case_id: params[4],
+          p_idempotency_key: params[5],
+          p_organisation_id: params[6],
+        }
+      : {
+          p_reservation_id: params[0],
+          p_actual_usd: params[1],
+          p_input_tokens: params[2],
+          p_output_tokens: params[3],
+          p_provider_ok: params[4],
+        });
+    if (error) {
+      const err = new Error(error.message || 'shared_spend_rpc_failed');
+      err.code = 'LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED';
+      throw err;
+    }
+    return { result: data };
+  };
+}
+
+async function guardWithSharedLedger({
+  useCaseId,
+  config,
+  reserveUsd,
+  idempotencyKey,
+  organisationId,
+  maxOutputTokens,
+}) {
+  let query;
+  try {
+    query = await resolveSharedSpendQuery();
+  } catch (err) {
+    return {
+      ok: false,
+      code: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED,
+      message: 'Shared spend ledger could not be opened.',
+      failClosed: true,
+      detail: err?.message || 'connect_failed',
+    };
+  }
+  if (!query) {
+    return {
+      ok: false,
+      code: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED,
+      message: 'Shared spend ledger is not configured. Live execution is refused.',
+      failClosed: true,
+    };
+  }
+  const maxRequests = Number(process.env.RI_LAB_ANTHROPIC_MAX_REQUESTS || 8);
+  try {
+    const reserved = await reserveSharedLabSpend(query, {
+      scopeKey: sharedSpendScopeKey(),
+      budgetUsd: config.budgetUsd,
+      maxRequests,
+      reserveUsd,
+      useCaseId,
+      idempotencyKey: idempotencyKey || `${useCaseId}:missing-key`,
+      organisationId,
+    });
+    if (!reserved?.ok) {
+      return { ok: false, ...reserved, failClosed: true, query };
+    }
+    return {
+      ok: true,
+      config,
+      durable: true,
+      query,
+      reservationId: reserved.reservationId,
+      slotKey: reserved.reservationId,
+      maxOutputTokens,
+      reserveUsd: Number(reserved.reserveUsd),
+      spendAudit: {
+        budgetUsd: config.budgetUsd,
+        model: config.model,
+        shared: true,
+        scopeKey: sharedSpendScopeKey(),
+        settledUsd: reserved.settledUsd ?? null,
+        reservedUsd: reserved.reservedUsd ?? null,
+        requestCount: reserved.requestCount ?? null,
+        limitations: labBudgetEnforcementLimitations(),
+      },
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      code: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED,
+      message: 'Shared spend reservation could not be verified.',
+      failClosed: true,
+      detail: err?.message || 'reserve_failed',
+    };
+  }
+}
+
+export async function guardLabAnthropicSpendBeforeCall({
   useCaseId,
   system,
   user,
@@ -365,11 +499,28 @@ export function guardLabAnthropicSpendBeforeCall({
     return { ok: false, code: config.code, message: config.message, failClosed: true };
   }
 
-  const slotKey = buildLabTrialSlotKey({ organisationId, idempotencyKey, useCaseId });
   const trackerConfig =
     Number.isFinite(maxOutputTokensOverride) && maxOutputTokensOverride > 0
       ? { ...config, maxOutputTokens: Math.min(config.maxOutputTokens, Math.floor(maxOutputTokensOverride)) }
       : config;
+  const estimate = new LabAnthropicSpendTracker(trackerConfig);
+  const reserve = estimate.reserveForAttempt(system, user);
+  if (!reserve.ok) {
+    return { ok: false, ...reserve, failClosed: true, spendAudit: estimate.toAuditRecord() };
+  }
+
+  if (!memoryGuardEnabled()) {
+    return guardWithSharedLedger({
+      useCaseId,
+      config,
+      reserveUsd: reserve.reserveUsd,
+      idempotencyKey,
+      organisationId,
+      maxOutputTokens: reserve.maxOutputTokens,
+    });
+  }
+
+  const slotKey = buildLabTrialSlotKey({ organisationId, idempotencyKey, useCaseId });
   const scopeKey = buildLabSpendScopeKey(config);
   const maxRequests = Number(process.env.RI_LAB_ANTHROPIC_MAX_REQUESTS || 8);
   const usedRequests = pilotRequestCountByScope.get(scopeKey) || 0;
@@ -383,12 +534,12 @@ export function guardLabAnthropicSpendBeforeCall({
   }
   const tracker = new LabAnthropicSpendTracker(trackerConfig);
   tracker.calculatedUsd = pilotCalculatedUsdByScope.get(scopeKey) || 0;
-  const reserve = tracker.reserveForAttempt(system, user);
-  if (!reserve.ok) {
-    return { ok: false, ...reserve, failClosed: true, spendAudit: tracker.toAuditRecord() };
+  const memoryReserve = tracker.reserveForAttempt(system, user);
+  if (!memoryReserve.ok) {
+    return { ok: false, ...memoryReserve, failClosed: true, spendAudit: tracker.toAuditRecord() };
   }
 
-  const slot = acquireLabTrialSlot(slotKey, reserve.reserveUsd);
+  const slot = acquireLabTrialSlot(slotKey, memoryReserve.reserveUsd);
   if (!slot.ok) {
     return { ok: false, code: slot.code, message: slot.message, failClosed: true };
   }
@@ -398,14 +549,43 @@ export function guardLabAnthropicSpendBeforeCall({
     config,
     tracker,
     slotKey,
-    maxOutputTokens: reserve.maxOutputTokens,
-    reserveUsd: reserve.reserveUsd,
+    maxOutputTokens: memoryReserve.maxOutputTokens,
+    reserveUsd: memoryReserve.reserveUsd,
     spendAudit: tracker.toAuditRecord(),
     scopeKey,
   };
 }
 
-export function finalizeLabSpendAfterCall(tracker, slotKey, apiResult, reserveUsd) {
+export async function finalizeLabSpendAfterCall(tracker, slotKey, apiResult, reserveUsd) {
+  if (tracker?.durable && tracker.query && tracker.reservationId) {
+    const inputTokens = apiResult?.inputTokens ?? 0;
+    const outputTokens = apiResult?.outputTokens ?? 0;
+    const actualUsd = estimateRequestCostUsd(tracker.config.model, inputTokens, outputTokens);
+    try {
+      const settled = await settleSharedLabSpend(tracker.query, {
+        reservationId: tracker.reservationId,
+        actualUsd,
+        inputTokens,
+        outputTokens,
+        providerOk: apiResult?.ok === true,
+      });
+      return {
+        ok: settled?.ok !== false,
+        code: settled?.code,
+        message: settled?.message,
+        spendAudit: { ...(tracker.spendAudit || {}), reconciliation: settled, calculatedUsd: settled?.settledUsd ?? actualUsd },
+        providerOk: apiResult?.ok === true,
+      };
+    } catch (err) {
+      return {
+        ok: false,
+        code: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED,
+        message: 'Shared spend reservation could not be reconciled.',
+        failClosed: true,
+        detail: err?.message || 'settle_failed',
+      };
+    }
+  }
   try {
     const inputTokens = apiResult?.inputTokens ?? 0;
     const outputTokens = apiResult?.outputTokens ?? 0;

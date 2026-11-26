@@ -6,25 +6,25 @@ One end-to-end path: **approved human-verified obligation** (from FCA-EVAL-001) 
 
 ## Preconditions
 
-1. Staging org UAT tenant; Users A (maker), B/C (checkers).  
-2. `RI_AI_EXECUTION_ENABLED=true` **only** for pilot window.  
-3. `RI_AI_PROVIDER_MODE=ANTHROPIC` (or `LIVE` with Anthropic key).  
-4. `RI_LAB_ANTHROPIC_MAX_USD` set to approved ceiling (see budget doc).  
-5. Downstream live wiring **shipped** or pilot limited to UC-RI-005 + manual human stages 2–5 (see readiness doc).  
-6. No production deploy; no Clerk permission changes.
+1. Staging org UAT tenant; Users A (maker), B/C (checkers).
+2. `RI_AI_EXECUTION_ENABLED=true` only for the pilot window, then return it to false.
+3. `RI_AI_PROVIDER_MODE=ANTHROPIC`. Stages 2–5 stay `FIXTURE` until that window, then set `FORGENIQ_STAGE2_AI` … `FORGENIQ_STAGE5_AI=ANTHROPIC` and return them to `FIXTURE`.
+4. Shared ledger migration `20261126013000_lab_ai_shared_spend_guard.sql` applied. Without it, live calls fail closed.
+5. `RI_LAB_ANTHROPIC_MAX_USD=0.75` and `RI_LAB_ANTHROPIC_MAX_REQUESTS=8`.
+6. No customer production deploy. No Clerk changes.
 
 ## Execution steps (ordered)
 
-1. **Ingest / select** CONC publication version already in staging.  
-2. **Applicability** — human APPROVED APPLICABLE.  
-3. **UC-RI-005 run** — idempotency key `pilot-fca-eval-001-{date}`; capture run id.  
-4. **Finding review** — independent reviewer; materialise only accepted claims.  
-5. **Obligation OPEN** — checker approval (not AI acceptor).  
-6. **Stage 2 live** — trigger `ensureImpactAssessmentFromApprovedObligation` with `FORGENIQ_STAGE2_AI=ANTHROPIC` (after code enable).  
-7. **Human** submit + checker approve impact.  
-8. **Stages 3–5 live** — same pattern for risk, control, assurance drafts.  
-9. **Assurance** — evidence + finding closure rules unchanged.  
-10. **Archive** prompt, model id, token usage, latency, USD estimate per call in `docs/uat/evidence/live-ai-pilot-{date}/`.
+1. Select the staged CONC publication for FCA-EVAL-001.
+2. Human applicability approval.
+3. UC-RI-005 with idempotency key `pilot-fca-eval-001`. Capture model id, tokens, latency, and the shared reservation row.
+4. Independent finding review. Materialise only accepted claims.
+5. Checker opens the obligation. The maker does not approve their own AI output.
+6. Set stage 2 to Anthropic and approve the obligation so the impact draft is created. Confirm `executionMode=live` and schema validation.
+7. Checker approves the impact. Repeat for risk, control, and assurance drafts.
+8. Leave assurance unclosed. AI must not record a test result.
+9. Set stage flags back to `FIXTURE` and disable execution.
+10. Archive citations, validation, hallucination review, token counts, reserved versus settled USD, and workflow events under `docs/uat/evidence/live-ai-pilot-fca-eval-001/`.
 
 ## Telemetry (required per AI call)
 

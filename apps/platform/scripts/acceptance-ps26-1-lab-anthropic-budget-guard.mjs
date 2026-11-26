@@ -32,11 +32,14 @@ function fail(msg) {
 function withEnv(patch, fn) {
   const prev = { ...process.env };
   Object.assign(process.env, patch);
-  try {
-    return fn();
-  } finally {
-    process.env = prev;
+  const result = fn();
+  if (result && typeof result.then === 'function') {
+    return result.finally(() => {
+      process.env = prev;
+    });
   }
+  process.env = prev;
+  return result;
 }
 
 resetLabTrialSlotsForTests();
@@ -53,6 +56,7 @@ if (missing.failClosed && missing.code === 'LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED'
 // Budget configured
 const configured = withEnv(
   {
+    RI_LAB_SPEND_GUARD_MODE: 'memory',
     RI_AI_EXECUTION_ENABLED: 'true',
     RI_LAB_ANTHROPIC_MAX_USD: '1.00',
     RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS: '2048',
@@ -75,8 +79,9 @@ releaseLabTrialSlot('UC-RI-005:org:one');
 
 // Guard reserves and records audit without API
 resetLabTrialSlotsForTests();
-const guarded = withEnv(
+const guarded = await withEnv(
   {
+    RI_LAB_SPEND_GUARD_MODE: 'memory',
     RI_AI_EXECUTION_ENABLED: 'true',
     RI_LAB_ANTHROPIC_MAX_USD: '1.00',
     RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS: '1024',
@@ -97,8 +102,9 @@ releaseLabTrialSlot(guarded.slotKey);
 
 // Huge prompt fails closed
 resetLabTrialSlotsForTests();
-const huge = withEnv(
+const huge = await withEnv(
   {
+    RI_LAB_SPEND_GUARD_MODE: 'memory',
     RI_AI_EXECUTION_ENABLED: 'true',
     RI_LAB_ANTHROPIC_MAX_USD: '0.01',
     RI_LAB_ANTHROPIC_MAX_INPUT_TOKENS: '100',

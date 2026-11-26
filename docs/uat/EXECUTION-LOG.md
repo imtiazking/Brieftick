@@ -2,6 +2,12 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-26 — Shared Anthropic spend ledger
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 01:20 | Persist pilot reservations in Postgres and fail closed without that ledger | Process memory cannot enforce one ceiling across Vercel instances | `reserve_lab_ai_spend` / `settle_lab_ai_spend`. Two-client test PASS. Stages 2–5 set to FIXTURE on staging. Ceiling set to $0.75 and 8 requests. Migration not applied remotely: no Supabase access token. No paid calls. |
+
 ## 2026-11-26 — Lifecycle stages 2–5 live provider wiring
 
 | Time (UTC) | Decision | Reason | Outcome |

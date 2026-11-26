@@ -346,6 +346,23 @@ export const QA_CATALOGUE = [
     ],
   },
   {
+    id: 'RI-SHARED-SPEND',
+    area: 'Regulatory Intelligence',
+    feature: 'Shared Anthropic spend ledger across database clients',
+    type: 'acceptance',
+    criticality: 'critical',
+    gate: 'ci',
+    route: null,
+    apis: [],
+    entities: ['lab_ai_spend_accounts', 'lab_ai_spend_reservations'],
+    command: 'node scripts/acceptance-ri-shared-spend-guard.mjs',
+    paths: [
+      'apps/platform/lib/ri/ai/lab-anthropic-spend-guard.mjs',
+      'apps/platform/supabase/migrations/20261126013000_lab_ai_shared_spend_guard.sql',
+    ],
+    requires: 'local-db',
+  },
+  {
     id: 'AUTH-STAGING-BROWSER',
     area: 'Regulatory Intelligence',
     feature: 'Authenticated Design Lab routes for Users A, B and C',

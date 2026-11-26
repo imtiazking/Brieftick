@@ -128,7 +128,7 @@ export function createAnthropicProvider(deps = {}) {
       });
 
       const budgetCtx = request.budgetContext || {};
-      const spendGuard = guardLabAnthropicSpendBeforeCall({
+      const spendGuard = await guardLabAnthropicSpendBeforeCall({
         useCaseId: request.useCaseId,
         system,
         user,
@@ -159,9 +159,9 @@ export function createAnthropicProvider(deps = {}) {
       const providerMeta = anthropicCallMeta(apiResult);
 
       let spendAudit = spendGuard.spendAudit || null;
-      if (spendGuard.tracker && spendGuard.slotKey) {
-        const finalized = finalizeLabSpendAfterCall(
-          spendGuard.tracker,
+      if (spendGuard.tracker || spendGuard.durable) {
+        const finalized = await finalizeLabSpendAfterCall(
+          spendGuard.durable ? spendGuard : spendGuard.tracker,
           spendGuard.slotKey,
           apiResult,
           reservedAmount,

@@ -162,13 +162,15 @@ if (
 } else pass('prompt_grounding');
 
 resetLabTrialSlotsForTests();
+process.env.RI_LAB_SPEND_GUARD_MODE = 'memory';
+process.env.RI_AI_EXECUTION_ENABLED = 'true';
 process.env.RI_LAB_ANTHROPIC_MAX_USD = '0.000001';
 process.env.RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS = '4096';
 const tiny = resolveLabAnthropicBudgetConfig('UC-RI-004', { executionEnabled: true });
 if (!tiny.enforced || tiny.budgetUsd !== 0.000001) failTest('budget_scope', JSON.stringify(tiny));
 else pass('budget_covers_stage2');
 
-const blocked = guardLabAnthropicSpendBeforeCall({
+const blocked = await guardLabAnthropicSpendBeforeCall({
   useCaseId: 'UC-RI-004',
   system: 'system',
   user: 'user prompt '.repeat(40),
@@ -182,7 +184,7 @@ resetLabTrialSlotsForTests();
 process.env.RI_LAB_ANTHROPIC_MAX_USD = '5';
 process.env.RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS = '256';
 process.env.RI_LAB_ANTHROPIC_MAX_REQUESTS = '1';
-const first = guardLabAnthropicSpendBeforeCall({
+const first = await guardLabAnthropicSpendBeforeCall({
   useCaseId: 'UC-RI-006',
   system: 's',
   user: 'short',
@@ -191,8 +193,8 @@ const first = guardLabAnthropicSpendBeforeCall({
 });
 if (!first.ok) failTest('budget_reserve', JSON.stringify(first));
 else {
-  finalizeLabSpendAfterCall(first.tracker, first.slotKey, { ok: true, inputTokens: 20, outputTokens: 10, text: '{}' }, first.reserveUsd);
-  const second = guardLabAnthropicSpendBeforeCall({
+  await finalizeLabSpendAfterCall(first.tracker, first.slotKey, { ok: true, inputTokens: 20, outputTokens: 10, text: '{}' }, first.reserveUsd);
+  const second = await guardLabAnthropicSpendBeforeCall({
     useCaseId: 'UC-RI-007',
     system: 's',
     user: 'short',

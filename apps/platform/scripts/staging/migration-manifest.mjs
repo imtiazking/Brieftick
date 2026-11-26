@@ -44,6 +44,10 @@ export const STAGING_MIGRATION_STEPS = [
     name: '20261125200000_impact_assessment_risk_links_rls',
     path: join(migrationsDir, '20261125200000_impact_assessment_risk_links_rls.sql'),
   },
+  {
+    name: '20261126013000_lab_ai_shared_spend_guard',
+    path: join(migrationsDir, '20261126013000_lab_ai_shared_spend_guard.sql'),
+  },
 ];
 
 /** Legacy MCP names that may exist without full DDL — do not treat as complete. */
