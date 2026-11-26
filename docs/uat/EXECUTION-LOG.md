@@ -7,6 +7,7 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Time (UTC) | Decision | Reason | Outcome |
 |---|---|---|---|
 | 01:35 | Apply `lab_ai_shared_spend_guard` to forgeniq-ri-staging, then revoke `anon` and `authenticated` execute | Supabase default privileges granted security-definer execute to client roles. GitHub Actions `45734885128` exited 2 because the CI catalogue marked the self-contained embedded test `local-db`, which the offline gate treats as blocked. | Staging tables empty, RLS forced, execute limited to `postgres` and `service_role`. Probe reservation was rolled back by delete. Acceptance `acceptance-ri-shared-spend-guard` PASS. No paid calls. |
+| 01:37 | Promote the shared-ledger build after candidate smoke | Official staging was still the pre-ledger deployment | Official `dpl_7bf9Dt5r1UKM6wPWXG1CnNQGomGs` (`7f8f090`). Candidate and post-promote authenticated smoke PASS (Users A and B, 50 review buttons). Customer production not touched. |
 
 ## 2026-11-26 — Shared Anthropic spend ledger
 
