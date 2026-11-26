@@ -9,7 +9,7 @@ Staging reference deployment: `dpl_6isCeKaCNMuAYR9PvCGfdSSXirPR` (release commit
 | **Stage 1** UC-RI-005 | Fixture unless `RI_AI_EXECUTION_ENABLED=true` and a live mode is set | `ai-analysis.ts` + `provider-registry.ts` |
 | **Stages 2–5** UC-RI-004 / 006 / 007 / 008 | **Fixture by default** (`FORGENIQ_STAGE{n}_AI` or `RI_AI_PROVIDER_MODE`) | `runLifecycleStageAnalysis` in `lifecycle-stage-ai.ts` calls `getAiProvider()`. A live request that fails does **not** insert a draft and does **not** fall back to fixtures. |
 
-Paid execution stays off until `RI_AI_EXECUTION_ENABLED=true` and `RI_LAB_ANTHROPIC_MAX_USD` is set. The spend guard now covers UC-RI-004, UC-RI-006, UC-RI-007 and UC-RI-008 as well as UC-RI-005, with a process-local cumulative USD ledger and `RI_LAB_ANTHROPIC_MAX_REQUESTS` (default 8).
+Paid execution stays off until `RI_AI_EXECUTION_ENABLED=true` and the shared ledger can reserve against `RI_LAB_ANTHROPIC_MAX_USD`. The guard covers UC-RI-004, UC-RI-006, UC-RI-007 and UC-RI-008 as well as UC-RI-005. Reservations are atomic in staging Postgres across serverless instances. `RI_LAB_ANTHROPIC_MAX_REQUESTS` defaults to 8. Estimated cost uses the static price table and is not an Anthropic invoice.
 
 Models: Anthropic `claude-sonnet-4-5` (`resolveAnthropicModel`), OpenAI `gpt-4o-mini` (structured OpenAI analysis still returns not-implemented; live lifecycle preference is Anthropic).
 

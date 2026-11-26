@@ -45,13 +45,12 @@ Official staging: `dpl_BNifu9UxyuQW7SDPQHaq1EUwZMvu` (`3d8de4e`). Candidate-firs
 
 ## 6. Cost safeguards
 
-`RI_LAB_ANTHROPIC_MAX_USD` is a **process-local** hard stop for UC-RI-005 and UC-RI-004/006/007/008: missing or invalid budget fails closed, pre-flight reserve blocks over-budget calls, and settled token cost accumulates for later calls in the same runtime. It is **not** an Anthropic invoice cap and does **not** synchronise across separate serverless instances. `RI_LAB_ANTHROPIC_MAX_REQUESTS` defaults to 8. `RI_AI_EXECUTION_ENABLED` must be `true` or the provider returns `AI_EXTERNAL_PROCESSING_DISABLED` before any HTTP call.
+`RI_LAB_ANTHROPIC_MAX_USD` is enforced by `reserve_lab_ai_spend` / `settle_lab_ai_spend` on staging Postgres (`lab_ai_spend_accounts`, `lab_ai_spend_reservations`). Each call reserves its maximum estimated cost before HTTP, counts toward `RI_LAB_ANTHROPIC_MAX_REQUESTS` (default 8) even when the provider fails, and settles actual token estimates afterwards. A missing ledger fails closed. There is no fixture fallback and no automatic provider retry. The reserve uses the static Sonnet 4.5 price table ($3 / MTok in, $15 / MTok out), so it can differ from Anthropic's invoice. A crashed instance leaves a `RESERVED` hold until that reservation is settled; there is no automatic expiry. `RI_AI_EXECUTION_ENABLED` must be `true` or the provider returns `AI_EXTERNAL_PROCESSING_DISABLED` before any HTTP call. The functions are security definer and executable only by `service_role` (and the table owner). `anon` and `authenticated` are revoked.
 
 ## 7. Remaining defects
 
 - OpenAI structured execution is still unimplemented; Anthropic is the live path.
-- Cross-instance spend is not a shared ledger.
-- Pilot FCA-EVAL-001 has not been executed.
+- Pilot FCA-EVAL-001 has not been executed. Paid calls stay off until explicit approval.
 
 ## 8. Estimated pilot cost
 

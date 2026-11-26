@@ -29,9 +29,13 @@ Add **50% contingency** for truncation retries and PDF batch overlap: **recommen
 | `RI_LAB_ANTHROPIC_MAX_USD` | **0.75** (pilot); raise only with written approval |
 | `RI_ANTHROPIC_MAX_TOKENS` | **4096** per request (existing default) |
 | `RI_ANTHROPIC_TIMEOUT_MS` | **120000** (pilot suggestion) |
-| Max HTTP attempts | **1** retry on truncation only |
+| Max HTTP attempts | **1**. Truncation fails closed. No automatic retry. |
 | Concurrent in-flight UC-RI-005 | **1** per org (spend guard) |
 | `RI_AI_EXECUTION_ENABLED` | `true` only during pilot window |
+
+## Estimate versus Anthropic invoice
+
+The ledger prices tokens with the static Sonnet 4.5 table ($3 / MTok input, $15 / MTok output). Anthropic's invoice can differ by cache reads, batch discounts, or a model price change. Each request reserves the prompt-size estimate plus the full output cap, then settles the provider's reported token counts and releases the unused reserve. A failed call still consumes one request and settles whatever usage the provider reported (often zero). A process that dies after reserve and before settle leaves a `RESERVED` hold until that row is settled; nothing expires it automatically. The ledger does not span a different `RI_LAB_SPEND_SCOPE`.
 
 ## Approval question
 

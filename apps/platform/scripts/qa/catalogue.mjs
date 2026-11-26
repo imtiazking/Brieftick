@@ -360,7 +360,6 @@ export const QA_CATALOGUE = [
       'apps/platform/lib/ri/ai/lab-anthropic-spend-guard.mjs',
       'apps/platform/supabase/migrations/20261126013000_lab_ai_shared_spend_guard.sql',
     ],
-    requires: 'local-db',
   },
   {
     id: 'AUTH-STAGING-BROWSER',

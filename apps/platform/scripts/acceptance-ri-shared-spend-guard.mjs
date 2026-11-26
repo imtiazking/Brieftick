@@ -15,6 +15,14 @@ const sql = readFileSync(
   join(dirname(fileURLToPath(import.meta.url)), '..', 'supabase', 'migrations', '20261126013000_lab_ai_shared_spend_guard.sql'),
   'utf8',
 );
+if (
+  !sql.includes('from anon') ||
+  !sql.includes('from authenticated') ||
+  !sql.includes('force row level security')
+) {
+  console.error('FAIL: client_execute_revoked — ledger functions must be withheld from anon and authenticated');
+  process.exit(1);
+}
 
 let fail = 0;
 const pass = (id) => console.log(`PASS: ${id}`);

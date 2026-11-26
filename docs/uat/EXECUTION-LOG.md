@@ -2,6 +2,12 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-26 — Shared spend ledger on staging, CI unblock
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 01:35 | Apply `lab_ai_shared_spend_guard` to forgeniq-ri-staging, then revoke `anon` and `authenticated` execute | Supabase default privileges granted security-definer execute to client roles. GitHub Actions `45734885128` exited 2 because the CI catalogue marked the self-contained embedded test `local-db`, which the offline gate treats as blocked. | Staging tables empty, RLS forced, execute limited to `postgres` and `service_role`. Probe reservation was rolled back by delete. Acceptance `acceptance-ri-shared-spend-guard` PASS. No paid calls. |
+
 ## 2026-11-26 — Shared Anthropic spend ledger
 
 | Time (UTC) | Decision | Reason | Outcome |
