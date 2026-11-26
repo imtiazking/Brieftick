@@ -2,8 +2,7 @@ import 'server-only';
 
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { mapAssurancePlanToDraftFields } from '@/lib/ri/ai/assurance-plan-mapper.mjs';
-import { mapSchemaForAnalysisType, validateStructuredOutput } from '@/lib/ri/ai/output-schemas';
-import { createFixtureProvider, FIXTURE_PROVIDER_ID } from '@/lib/ri/ai/fixture-provider';
+import { lifecycleAiAudit, runLifecycleStageAnalysis } from '@/lib/ri/ai/lifecycle-stage-ai';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
 import { buildLockedChildMetadataFromParentRecord } from '@/lib/ri/lab-api/child-record-provenance';
 import { linkAssuranceControl } from '@/lib/ri/links';
@@ -13,11 +12,6 @@ import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 export type Stage5DownstreamResult =
   | { ok: true; skipped: true; reason: string }
   | { ok: true; skipped: false; assuranceReviewId: string; reused: boolean };
-
-function stage5FixtureEnabled(): boolean {
-  const raw = (process.env.FORGENIQ_STAGE5_AI || process.env.RI_AI_PROVIDER_MODE || 'FIXTURE').toUpperCase();
-  return raw === 'FIXTURE' || raw === '1' || raw === 'TRUE';
-}
 
 export async function findPrimaryAssurancePlanForControl(
   supabase: SupabaseClient,
@@ -62,37 +56,27 @@ export async function ensureAssurancePlanFromApprovedControl(
     return { ok: true, skipped: false, assuranceReviewId: existing.id, reused: true };
   }
 
-  let aiStructured: Record<string, unknown> | null = null;
-  if (stage5FixtureEnabled()) {
-    const provider = createFixtureProvider();
-    const providerResult = await provider.execute({
-      useCaseId: 'UC-RI-008',
-      analysisType: 'Control Assurance Plan',
-      fixtureScenario: 'stage5-control-assurance',
-      budgetContext: {
-        organisationId: params.organisationId,
-        idempotencyKey: `stage5:${params.controlId}`,
+  const analysis = await runLifecycleStageAnalysis({
+    stage: 5,
+    organisationId: params.organisationId,
+    idempotencyKey: `stage5:${params.controlId}`,
+    sourceSections: [
+      {
+        sourceSectionId: 'CTRL-1',
+        citation: 'control',
+        text: `${control.name}\n${control.description || ''}`.slice(0, 8000),
       },
-      context: {
-        sourceSections: [
-          {
-            sourceSectionId: 'CTRL-1',
-            citation: 'control',
-            text: `${control.name}\n${control.description || ''}`.slice(0, 8000),
-          },
-        ],
-      },
-    });
-    if (providerResult.ok && providerResult.structured) {
-      const valid = validateStructuredOutput(
-        mapSchemaForAnalysisType('Control Assurance Plan'),
-        providerResult.structured,
-      );
-      if (valid.ok) aiStructured = providerResult.structured;
-    }
+    ],
+    advisoryContext: {
+      instruction:
+        'Recommend test procedures and evidence only. Do not record a test result, accept an exception, or close the lifecycle.',
+    },
+  });
+  if (!analysis.ok) {
+    return { ok: true, skipped: true, reason: analysis.code };
   }
 
-  const mapped = mapAssurancePlanToDraftFields({ structured: aiStructured });
+  const mapped = mapAssurancePlanToDraftFields({ structured: analysis.structured });
   const ctrlMeta = (control.metadata || {}) as Record<string, unknown>;
   const metadata = buildLockedChildMetadataFromParentRecord({
     parentMetadata: ctrlMeta,
@@ -104,7 +88,7 @@ export async function ensureAssurancePlanFromApprovedControl(
       sourceRegulatoryObligationId: ctrlMeta.sourceRegulatoryObligationId ?? null,
       stage5PrimaryPlan: true,
       stage5Workflow: 'control_approved_to_assurance_plan',
-      stage5Ai: mapped.stage5Metadata,
+      stage5Ai: { ...mapped.stage5Metadata, ...lifecycleAiAudit(analysis) },
       assuranceStatus: 'DRAFT',
       assuranceWorkflow: true,
     },
@@ -172,7 +156,7 @@ export async function ensureAssurancePlanFromApprovedControl(
     eventType: 'ASSURANCE_PLAN_INITIATED_FROM_CONTROL',
     actorUserId: params.actorUserId,
     toStatus: 'ACTIVE',
-    metadata: { assuranceReviewId: review.id, aiProvider: FIXTURE_PROVIDER_ID },
+    metadata: { assuranceReviewId: review.id, aiProvider: analysis.providerId, executionMode: analysis.executionMode },
   });
 
   return { ok: true, skipped: false, assuranceReviewId: review.id, reused: false };

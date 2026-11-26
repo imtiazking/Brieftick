@@ -4,15 +4,14 @@ Staging reference deployment: `dpl_6isCeKaCNMuAYR9PvCGfdSSXirPR` (release commit
 
 ## Summary
 
-| Stage / use case | Capability | Runtime today on staging | Live path in codebase |
-| --- | --- | --- | --- |
-| **Stage 1** | UC-RI-005 obligation extraction & classification | **Fixture / synthetic runs** for lifecycle UAT; paid Anthropic path exists when `RI_AI_EXECUTION_ENABLED=true` | **Yes** — `ai-analysis.ts` + `provider-registry.ts` |
-| **Stage 2** | UC-RI-004 Impact Assessment | **FIXTURE** (`FORGENIQ_STAGE2_AI`, scenario `stage2-obligation-impact`) | **Partial** — only `createFixtureProvider()` wired in `obligation-impact-downstream.ts`; non-fixture mode skips AI (`SKIPPED_NO_FIXTURE`) |
-| **Stage 3** | UC-RI-006 Risk Mapping | **FIXTURE** (`stage3-impact-risk`) | **Partial** — same pattern in `impact-risk-downstream.ts` |
-| **Stage 4** | UC-RI-007 Control Mapping | **FIXTURE** (`stage4-risk-control`) | **Partial** — `risk-control-downstream.ts` |
-| **Stage 5** | UC-RI-008 Control Assurance | **FIXTURE** (`stage5-control-assurance`) | **Partial** — `control-assurance-downstream.ts` |
+| Stage / use case | Runtime today on staging | Live path |
+| --- | --- | --- |
+| **Stage 1** UC-RI-005 | Fixture unless `RI_AI_EXECUTION_ENABLED=true` and a live mode is set | `ai-analysis.ts` + `provider-registry.ts` |
+| **Stages 2–5** UC-RI-004 / 006 / 007 / 008 | **Fixture by default** (`FORGENIQ_STAGE{n}_AI` or `RI_AI_PROVIDER_MODE`) | `runLifecycleStageAnalysis` in `lifecycle-stage-ai.ts` calls `getAiProvider()`. A live request that fails does **not** insert a draft and does **not** fall back to fixtures. |
 
-**Conclusion:** Hosted five-stage UAT validates **governance, persistence, and navigation** under **deterministic fixture AI**. Genuine live AI is **production-ready for UC-RI-005 (publication analysis)** subject to env, budget guard, and human review. **Stages 2–5 do not yet invoke live providers** when fixture flags are disabled; enabling live stages requires new downstream provider calls (same registry as Stage 1) plus pilot telemetry.
+Paid execution stays off until `RI_AI_EXECUTION_ENABLED=true` and `RI_LAB_ANTHROPIC_MAX_USD` is set. The spend guard now covers UC-RI-004, UC-RI-006, UC-RI-007 and UC-RI-008 as well as UC-RI-005, with a process-local cumulative USD ledger and `RI_LAB_ANTHROPIC_MAX_REQUESTS` (default 8).
+
+Models: Anthropic `claude-sonnet-4-5` (`resolveAnthropicModel`), OpenAI `gpt-4o-mini` (structured OpenAI analysis still returns not-implemented; live lifecycle preference is Anthropic).
 
 ## Stage 1 — UC-RI-005 (and related UC-RI-001–003)
 
@@ -26,25 +25,13 @@ Staging reference deployment: `dpl_6isCeKaCNMuAYR9PvCGfdSSXirPR` (release commit
 
 ## Stages 2–5 — Downstream lifecycle AI
 
-Each downstream service uses:
+`resolveLifecycleExecutionMode` reads `FORGENIQ_STAGE2_AI` … `FORGENIQ_STAGE5_AI`, then `RI_AI_PROVIDER_MODE`, default `FIXTURE`.
 
-```text
-stageNFixtureEnabled() := (FORGENIQ_STAGE{n}_AI || RI_AI_PROVIDER_MODE || 'FIXTURE') ∈ {FIXTURE, 1, TRUE}
-```
+- Fixture: existing scenarios `stage2-obligation-impact`, `stage3-impact-risk`, `stage4-risk-control`, `stage5-control-assurance`.
+- Live: `getAiProvider()` with the same request shape. Invalid or failed provider results return `skipped` with the error code and **do not** create the child record.
+- Audit fields on the child metadata: `executionMode`, `model`, token estimates, latency, and estimated USD when the spend guard returns an audit.
 
-When true: `createFixtureProvider().execute({ useCaseId: UC-RI-00x, fixtureScenario: 'stageN-...' })`.
-
-When false: **no provider call**; drafts are created from empty structured input and mapper defaults (human confirmation labels).
-
-**Env vars:**
-
-| Variable | Stage |
-| --- | --- |
-| `FORGENIQ_STAGE2_AI` | Impact |
-| `FORGENIQ_STAGE3_AI` | Risk |
-| `FORGENIQ_STAGE4_AI` | Control |
-| `FORGENIQ_STAGE5_AI` | Assurance |
-| `RI_AI_PROVIDER_MODE` | Global fallback for all stage checks |
+**Env vars:** `FORGENIQ_STAGE2_AI`, `FORGENIQ_STAGE3_AI`, `FORGENIQ_STAGE4_AI`, `FORGENIQ_STAGE5_AI`, `RI_AI_PROVIDER_MODE`, `RI_AI_EXECUTION_ENABLED`, `RI_LAB_ANTHROPIC_MAX_USD`, `RI_LAB_ANTHROPIC_MAX_REQUESTS`.
 
 ## UI provider status
 

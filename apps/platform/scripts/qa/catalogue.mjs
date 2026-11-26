@@ -330,6 +330,22 @@ export const QA_CATALOGUE = [
     requires: 'local-db',
   },
   {
+    id: 'RI-LIFECYCLE-LIVE-AI',
+    area: 'Regulatory Intelligence',
+    feature: 'Lifecycle stages 2–5 live provider wiring (mocked)',
+    type: 'acceptance',
+    criticality: 'critical',
+    gate: 'ci',
+    route: null,
+    apis: [],
+    entities: ['impact_assessments', 'risks', 'controls', 'assurance_reviews'],
+    command: 'node scripts/acceptance-ri-lifecycle-live-ai.mjs',
+    paths: [
+      'apps/platform/lib/ri/ai/lifecycle-stage-ai.ts',
+      'apps/platform/lib/ri/services/obligation-impact-downstream.ts',
+    ],
+  },
+  {
     id: 'AUTH-STAGING-BROWSER',
     area: 'Regulatory Intelligence',
     feature: 'Authenticated Design Lab routes for Users A, B and C',

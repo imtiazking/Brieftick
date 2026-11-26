@@ -13,8 +13,24 @@ Optional claims[] with text, confidence, sourceSectionIds[] grounded in sources.
       return `Required: confidence (0-100), candidates[] with title, changeType, materiality.
 Include claims[] with sourceSectionIds for each candidate where possible.`;
     case 'ImpactSuggestionResult':
-      return `Required: confidence (0-100), dimensions[] (string areas).
-Include claims[] grounded to source sections.`;
+      return `Required: confidence (0-100), dimensions[] (string areas such as Operations, Technology, Compliance).
+Include claims[] with text, confidence, sourceSectionIds grounded only in regulatory source sections (not catalogue rows).
+State assumptions when organisational facts are absent. Do not invent firm systems, headcount, or financials.
+Draft only — never an approved impact decision.`;
+    case 'RiskMappingResult':
+      return `Required: confidence (0-100), riskProposals[] with title, description, category, inherent_risk, residual_risk.
+Optional existingRiskMappings[] may reference only catalogue risk ids supplied in advisory context. Never invent database ids.
+Include claims[] grounded to regulatory source sections. Ratings are suggestions requiring human validation.
+Draft only — do not mark a risk approved.`;
+    case 'ControlMappingResult':
+      return `Required: confidence (0-100), controlProposals[] with name, description, control_type, effectiveness.
+effectiveness must be NOT_TESTED unless the supplied evidence explicitly records a completed test.
+Optional existingControlMappings[] may reference only catalogue control ids supplied in advisory context. Do not duplicate an existing control as a new proposal when a match is supplied.
+Include claims[] grounded to regulatory source sections. Draft only.`;
+    case 'ControlAssurancePlanResult':
+      return `Required: confidence (0-100), testPlan object with reviewType, objective, procedure, evidenceRequirements, frequency.
+Do not declare a control effective, record a pass/fail test result, accept an exception, or close a lifecycle.
+Include claims[] grounded to regulatory source sections. Draft testing recommendations only.`;
     case 'ObligationExtractionResult':
       return `Required: confidence (0-100), candidates[] where each item includes:
 statement, sourceSectionIds[] (must use exact sourceSectionId values from Source sections),
@@ -37,6 +53,9 @@ function mapSchemaForAnalysisType(analysisType) {
   if (analysisType === 'Regulatory Change Extraction') return 'ChangeExtractionResult';
   if (analysisType === 'Impact Suggestion') return 'ImpactSuggestionResult';
   if (analysisType === 'Obligation Extraction') return 'ObligationExtractionResult';
+  if (analysisType === 'Risk Mapping') return 'RiskMappingResult';
+  if (analysisType === 'Control Mapping') return 'ControlMappingResult';
+  if (analysisType === 'Control Assurance Plan') return 'ControlAssurancePlanResult';
   return 'ApplicabilityResult';
 }
 

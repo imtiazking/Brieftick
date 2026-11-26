@@ -1,0 +1,38 @@
+{
+  "results": [
+    {
+      "id": "FRESH-RISK-IN-REVIEW",
+      "status": "PASS",
+      "detail": {
+        "http": 200,
+        "status": "In Review",
+        "error": null
+      }
+    },
+    {
+      "id": "FRESH-RISK-SELF-APPROVE-TOAST",
+      "status": "PASS",
+      "detail": {
+        "toast": "Segregation of duties check — this item requires approval by a different authorised reviewer.",
+        "status": "In Review"
+      }
+    },
+    {
+      "id": "FRESH-RISK-CHECKER-APPROVE",
+      "status": "PASS",
+      "detail": {
+        "toast": "Risk approved",
+        "status": "Approved"
+      }
+    },
+    {
+      "id": "ASSURANCE-FINDING-LINK",
+      "status": "PASS",
+      "detail": {
+        "href": "#/finding/3b98fa4f-06dd-437d-95db-49f04b024532",
+        "assuranceId": "122e9511-323c-49e7-a023-1d54486a97c9"
+      }
+    }
+  ],
+  "riskId": "f3b65872-9c13-450f-b292-d6b60dfb1e50"
+}

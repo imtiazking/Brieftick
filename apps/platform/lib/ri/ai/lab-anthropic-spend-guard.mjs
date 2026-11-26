@@ -25,6 +25,18 @@ export const LAB_BUDGET_ERROR_CODES = {
 };
 
 const UC_RI_005 = 'UC-RI-005';
+/** Aggregate lab budget covers obligation extraction and lifecycle stages 2–5. */
+const BUDGETED_USE_CASES = new Set([
+  'UC-RI-005',
+  'UC-RI-004',
+  'UC-RI-006',
+  'UC-RI-007',
+  'UC-RI-008',
+]);
+
+/** Process-local cumulative spend so later lifecycle calls honour the same ceiling. */
+const pilotCalculatedUsdByScope = new Map();
+const pilotRequestCountByScope = new Map();
 
 /** @type {Map<string, { slotKey: string, reservedUsd: number, startedAt: string }>} */
 const globalInFlightByScope = new Map();
@@ -39,11 +51,12 @@ function parsePositiveFloat(raw, label) {
 }
 
 /**
- * When RI_AI_EXECUTION_ENABLED=true and use case is UC-RI-005, budget env is mandatory.
+ * When RI_AI_EXECUTION_ENABLED=true and the use case is budgeted
+ * (UC-RI-005 and lifecycle UC-RI-004/006/007/008), RI_LAB_ANTHROPIC_MAX_USD is mandatory.
  */
 export function resolveLabAnthropicBudgetConfig(useCaseId, { executionEnabled } = {}) {
-  if (useCaseId !== UC_RI_005) {
-    return { enforced: false, reason: 'not_uc_ri_005' };
+  if (!BUDGETED_USE_CASES.has(useCaseId)) {
+    return { enforced: false, reason: 'use_case_not_budgeted' };
   }
   if (executionEnabled !== true) {
     return { enforced: false, reason: 'execution_disabled' };
@@ -60,7 +73,7 @@ export function resolveLabAnthropicBudgetConfig(useCaseId, { executionEnabled } 
         failClosed: true,
         code: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED,
         message:
-          'UC-RI-005 live execution requires RI_LAB_ANTHROPIC_MAX_USD (positive USD number, e.g. 1.00).',
+          'Live Anthropic execution requires RI_LAB_ANTHROPIC_MAX_USD (positive USD number, e.g. 0.75).',
       };
     }
     return {
@@ -76,7 +89,7 @@ export function resolveLabAnthropicBudgetConfig(useCaseId, { executionEnabled } 
       failClosed: true,
       code: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED,
       message:
-        'UC-RI-005 live execution requires RI_LAB_ANTHROPIC_MAX_USD (positive USD number, e.g. 1.00).',
+        'Live Anthropic execution requires RI_LAB_ANTHROPIC_MAX_USD (positive USD number, e.g. 0.75).',
     };
   }
 
@@ -124,11 +137,11 @@ export function buildLabSpendScopeKey(config) {
 }
 
 /**
- * One in-flight UC-RI-005 trial per process; second concurrent request fails closed.
+ * One in-flight budgeted Anthropic lab call per process; a second concurrent request fails closed.
  * Multi-instance deployments need DB-level RUNNING lock (ai-analysis.ts).
  */
 export function acquireLabTrialSlot(slotKey, reservedUsd) {
-  const scope = 'uc-ri-005-live';
+  const scope = 'lab-anthropic-live';
   if (globalInFlightByScope.has(scope)) {
     const existing = globalInFlightByScope.get(scope);
     if (existing.slotKey === slotKey) {
@@ -137,7 +150,7 @@ export function acquireLabTrialSlot(slotKey, reservedUsd) {
     return {
       ok: false,
       code: LAB_BUDGET_ERROR_CODES.LAB_TRIAL_OVERLAP,
-      message: 'Another UC-RI-005 live trial is in flight in this runtime.',
+      message: 'Another live Anthropic lab call is in flight in this runtime.',
       existingSlotKey: existing.slotKey,
     };
   }
@@ -147,7 +160,7 @@ export function acquireLabTrialSlot(slotKey, reservedUsd) {
 }
 
 export function releaseLabTrialSlot(slotKey) {
-  const scope = 'uc-ri-005-live';
+  const scope = 'lab-anthropic-live';
   const existing = globalInFlightByScope.get(scope);
   if (existing?.slotKey === slotKey) {
     globalInFlightByScope.delete(scope);
@@ -156,6 +169,12 @@ export function releaseLabTrialSlot(slotKey) {
 
 export function resetLabTrialSlotsForTests() {
   globalInFlightByScope.clear();
+  pilotCalculatedUsdByScope.clear();
+  pilotRequestCountByScope.clear();
+}
+
+export function readPilotCalculatedUsd(scopeKey) {
+  return pilotCalculatedUsdByScope.get(scopeKey) || 0;
 }
 
 export class LabAnthropicSpendTracker {
@@ -278,8 +297,8 @@ export function labBudgetEnforcementLimitations() {
   return [
     'HARD_INVOICE_CAP_NOT_GUARANTEED: enforcement is pre-flight reserve + post-hoc token accounting — not Anthropic billing API.',
     'Pricing uses static MODEL_PRICING_ESTIMATE — actual Anthropic invoice may differ.',
-    'Per-process overlap lock does not synchronise across Vercel serverless instances; the database allows one RUNNING UC-RI-005 run per organisation.',
-    'Duplicate idempotency keys always reuse the existing run; a new paid attempt requires a new operator-authorised RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX.',
+    'Per-process overlap lock and cumulative USD ledger do not synchronise across Vercel serverless instances. UC-RI-005 also has a database RUNNING lock per organisation. Lifecycle stages rely on idempotent parent keys plus this process ledger.',
+    'Duplicate UC-RI-005 idempotency keys reuse the existing run; a new paid attempt requires a new operator-authorised RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX.',
     'A request that passes pre-flight may still consume thinking tokens inside max_tokens before text appears; partial responses may still incur billed input tokens.',
     'No org-wide Anthropic workspace spend cap — only per-request guard when env is set.',
     'Retries inside callAnthropicMessages are not implemented; retryReserveFactor reserves headroom only.',
@@ -351,7 +370,19 @@ export function guardLabAnthropicSpendBeforeCall({
     Number.isFinite(maxOutputTokensOverride) && maxOutputTokensOverride > 0
       ? { ...config, maxOutputTokens: Math.min(config.maxOutputTokens, Math.floor(maxOutputTokensOverride)) }
       : config;
+  const scopeKey = buildLabSpendScopeKey(config);
+  const maxRequests = Number(process.env.RI_LAB_ANTHROPIC_MAX_REQUESTS || 8);
+  const usedRequests = pilotRequestCountByScope.get(scopeKey) || 0;
+  if (Number.isFinite(maxRequests) && maxRequests > 0 && usedRequests >= maxRequests) {
+    return {
+      ok: false,
+      code: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_EXCEEDED,
+      message: `RI_LAB_ANTHROPIC_MAX_REQUESTS (${maxRequests}) already consumed in this runtime.`,
+      failClosed: true,
+    };
+  }
   const tracker = new LabAnthropicSpendTracker(trackerConfig);
+  tracker.calculatedUsd = pilotCalculatedUsdByScope.get(scopeKey) || 0;
   const reserve = tracker.reserveForAttempt(system, user);
   if (!reserve.ok) {
     return { ok: false, ...reserve, failClosed: true, spendAudit: tracker.toAuditRecord() };
@@ -370,6 +401,7 @@ export function guardLabAnthropicSpendBeforeCall({
     maxOutputTokens: reserve.maxOutputTokens,
     reserveUsd: reserve.reserveUsd,
     spendAudit: tracker.toAuditRecord(),
+    scopeKey,
   };
 }
 
@@ -399,6 +431,9 @@ export function finalizeLabSpendAfterCall(tracker, slotKey, apiResult, reserveUs
       });
     }
     const audit = tracker.toAuditRecord();
+    const scopeKey = buildLabSpendScopeKey(tracker.config);
+    pilotCalculatedUsdByScope.set(scopeKey, tracker.calculatedUsd);
+    pilotRequestCountByScope.set(scopeKey, (pilotRequestCountByScope.get(scopeKey) || 0) + 1);
     releaseLabTrialSlot(slotKey);
     return { ...settle, spendAudit: audit, providerOk: apiResult?.ok === true };
   } catch (err) {

@@ -2,8 +2,7 @@ import 'server-only';
 
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { mapRiskMappingToDraftFields } from '@/lib/ri/ai/risk-mapping-mapper.mjs';
-import { mapSchemaForAnalysisType, validateStructuredOutput } from '@/lib/ri/ai/output-schemas';
-import { createFixtureProvider, FIXTURE_PROVIDER_ID } from '@/lib/ri/ai/fixture-provider';
+import { lifecycleAiAudit, runLifecycleStageAnalysis } from '@/lib/ri/ai/lifecycle-stage-ai';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
 import { buildLockedChildMetadataFromParentRecord } from '@/lib/ri/lab-api/child-record-provenance';
 import { linkImpactAssessmentRisk, linkObligationRisk } from '@/lib/ri/links';
@@ -13,11 +12,6 @@ import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 export type Stage3DownstreamResult =
   | { ok: true; skipped: true; reason: string }
   | { ok: true; skipped: false; riskId: string; reused: boolean; linkedExisting: string[] };
-
-function stage3FixtureEnabled(): boolean {
-  const raw = (process.env.FORGENIQ_STAGE3_AI || process.env.RI_AI_PROVIDER_MODE || 'FIXTURE').toUpperCase();
-  return raw === 'FIXTURE' || raw === '1' || raw === 'TRUE';
-}
 
 export async function findPrimaryDraftRiskForImpact(
   supabase: SupabaseClient,
@@ -68,44 +62,43 @@ export async function ensureRiskMappingFromApprovedImpact(
   const obligationId = meta.sourceRegulatoryObligationId ? String(meta.sourceRegulatoryObligationId) : null;
   const ownerUserId = impact.owner_user_id || params.actorUserId;
 
-  let aiStructured: Record<string, unknown> | null = null;
-  if (stage3FixtureEnabled()) {
-    const provider = createFixtureProvider();
-    const providerResult = await provider.execute({
-      useCaseId: 'UC-RI-006',
-      analysisType: 'Risk Mapping',
-      fixtureScenario: 'stage3-impact-risk',
-      budgetContext: {
-        organisationId: params.organisationId,
-        idempotencyKey: `stage3:${params.impactAssessmentId}`,
+  const { data: catalogueRisks, error: catalogueErr } = await supabase
+    .from('risks')
+    .select('id, title, category, status')
+    .eq('organisation_id', params.organisationId)
+    .limit(20);
+  if (catalogueErr) throw new Error(catalogueErr.message);
+
+  const analysis = await runLifecycleStageAnalysis({
+    stage: 3,
+    organisationId: params.organisationId,
+    idempotencyKey: `stage3:${params.impactAssessmentId}`,
+    sourceSections: [
+      {
+        sourceSectionId: 'IMP-1',
+        citation: 'impact_assessment',
+        text: [impact.compliance_impact, impact.business_impact, impact.operational_impact]
+          .filter(Boolean)
+          .join('\n')
+          .slice(0, 8000),
       },
-      context: {
-        sourceSections: [
-          {
-            sourceSectionId: 'IMP-1',
-            citation: 'impact_assessment',
-            text: [
-              impact.compliance_impact,
-              impact.business_impact,
-              impact.operational_impact,
-            ]
-              .filter(Boolean)
-              .join('\n')
-              .slice(0, 8000),
-          },
-        ],
-      },
-    });
-    if (providerResult.ok && providerResult.structured) {
-      const valid = validateStructuredOutput(
-        mapSchemaForAnalysisType('Risk Mapping'),
-        providerResult.structured,
-      );
-      if (valid.ok) aiStructured = providerResult.structured;
-    }
+    ],
+    advisoryContext: {
+      instruction:
+        'existingRisks are tenant records. Match them by id only when relevant. Do not invent ids. New risks stay proposals.',
+      existingRisks: (catalogueRisks || []).map((row) => ({
+        id: row.id,
+        title: row.title,
+        category: row.category,
+        status: row.status,
+      })),
+    },
+  });
+  if (!analysis.ok) {
+    return { ok: true, skipped: true, reason: analysis.code };
   }
 
-  const mapped = mapRiskMappingToDraftFields({ structured: aiStructured });
+  const mapped = mapRiskMappingToDraftFields({ structured: analysis.structured });
   const impactMeta = (impact.metadata || {}) as Record<string, unknown>;
   const metadata = buildLockedChildMetadataFromParentRecord({
     parentMetadata: impactMeta,
@@ -115,7 +108,7 @@ export async function ensureRiskMappingFromApprovedImpact(
       sourceRegulatoryObligationId: obligationId,
       stage3PrimaryDraft: true,
       stage3Workflow: 'impact_approved_to_risk_draft',
-      stage3Ai: mapped.stage3Metadata,
+      stage3Ai: { ...mapped.stage3Metadata, ...lifecycleAiAudit(analysis) },
     },
   });
 
@@ -195,7 +188,7 @@ export async function ensureRiskMappingFromApprovedImpact(
     eventType: 'RISK_MAPPING_INITIATED_FROM_IMPACT',
     actorUserId: params.actorUserId,
     toStatus: 'APPROVED',
-    metadata: { riskId: risk.id, aiProvider: FIXTURE_PROVIDER_ID },
+    metadata: { riskId: risk.id, aiProvider: analysis.providerId, executionMode: analysis.executionMode },
   });
 
   return { ok: true, skipped: false, riskId: risk.id, reused: false, linkedExisting };

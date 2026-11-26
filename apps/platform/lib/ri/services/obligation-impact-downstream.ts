@@ -3,8 +3,8 @@ import 'server-only';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import type { PlatformRole } from '@/lib/roles';
 import { mapImpactSuggestionToDraftFields } from '@/lib/ri/ai/impact-suggestion-mapper.mjs';
-import { mapSchemaForAnalysisType, validateStructuredOutput } from '@/lib/ri/ai/output-schemas';
-import { createFixtureProvider, FIXTURE_PROVIDER_ID } from '@/lib/ri/ai/fixture-provider';
+import { lifecycleAiAudit, runLifecycleStageAnalysis } from '@/lib/ri/ai/lifecycle-stage-ai';
+import { FIXTURE_PROVIDER_ID } from '@/lib/ri/ai/fixture-provider';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
 import {
   buildLockedChildMetadataFromParentChange,
@@ -16,11 +16,6 @@ import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 export type Stage2DownstreamResult =
   | { ok: true; skipped: true; reason: string }
   | { ok: true; skipped: false; impactAssessmentId: string; reused: boolean; aiProvider: string };
-
-function stage2FixtureEnabled(): boolean {
-  const raw = (process.env.FORGENIQ_STAGE2_AI || process.env.RI_AI_PROVIDER_MODE || 'FIXTURE').toUpperCase();
-  return raw === 'FIXTURE' || raw === '1' || raw === 'TRUE';
-}
 
 function privilegeDenied(error: { code?: string; message?: string } | null): boolean {
   if (!error) return false;
@@ -107,47 +102,38 @@ export async function ensureImpactAssessmentFromApprovedObligation(
     actorUserId: params.actorUserId,
   });
 
-  let aiStructured: Record<string, unknown> | null = null;
-  let aiProvider = FIXTURE_PROVIDER_ID;
-  let stage2AiMeta: Record<string, unknown> = { processingStatus: 'SKIPPED_NO_FIXTURE' };
-
-  if (stage2FixtureEnabled()) {
-    const provider = createFixtureProvider();
-    const providerResult = await provider.execute({
-      useCaseId: 'UC-RI-004',
-      analysisType: 'Impact Suggestion',
-      fixtureScenario: 'stage2-obligation-impact',
-      budgetContext: {
-        organisationId: params.organisationId,
-        idempotencyKey: `stage2:${params.obligationId}`,
+  const analysis = await runLifecycleStageAnalysis({
+    stage: 2,
+    organisationId: params.organisationId,
+    idempotencyKey: `stage2:${params.obligationId}`,
+    sourceSections: [
+      {
+        sourceSectionId: 'OBL-1',
+        citation: obligation.citation || 'obligation',
+        text: String(obligation.obligation_statement || '').slice(0, 8000),
       },
-      context: {
-        sourceSections: [
-          {
-            sourceSectionId: 'OBL-1',
-            citation: obligation.citation || 'obligation',
-            text: String(obligation.obligation_statement || '').slice(0, 8000),
-          },
-        ],
-      },
-    });
-    if (providerResult.ok && providerResult.structured) {
-      const schemaName = mapSchemaForAnalysisType('Impact Suggestion');
-      const valid = validateStructuredOutput(schemaName, providerResult.structured);
-      if (valid.ok) {
-        aiStructured = providerResult.structured;
-        aiProvider = provider.id;
-      }
-    }
+    ],
+    advisoryContext: {
+      instruction:
+        'Organisational systems and financials are not supplied. State assumptions. Do not invent firm facts.',
+      changeTitle: change.title || null,
+    },
+  });
+  if (!analysis.ok) {
+    return { ok: true, skipped: true, reason: analysis.code };
   }
 
   const mapped = mapImpactSuggestionToDraftFields({
-    structured: aiStructured,
+    structured: analysis.structured,
     obligationStatement: obligation.obligation_statement,
     obligationCitation: obligation.citation,
     changeTitle: change.title,
   });
-  stage2AiMeta = { ...mapped.stage2Metadata, aiProvider, fixtureMode: stage2FixtureEnabled() };
+  const stage2AiMeta = {
+    ...mapped.stage2Metadata,
+    ...lifecycleAiAudit(analysis),
+    aiProvider: analysis.providerId || FIXTURE_PROVIDER_ID,
+  };
 
   const metadata = {
     ...rowMetadata,
@@ -194,7 +180,7 @@ export async function ensureImpactAssessmentFromApprovedObligation(
           skipped: false,
           impactAssessmentId: again.id,
           reused: true,
-          aiProvider,
+          aiProvider: analysis.providerId,
         };
       }
     }
@@ -231,7 +217,7 @@ export async function ensureImpactAssessmentFromApprovedObligation(
     metadata: {
       impactAssessmentId: impact.id,
       regulatoryChangeId: obligation.regulatory_change_id,
-      aiProvider,
+      aiProvider: analysis.providerId,
       aiUseCaseId: 'UC-RI-004',
     },
   });
@@ -270,6 +256,6 @@ export async function ensureImpactAssessmentFromApprovedObligation(
     skipped: false,
     impactAssessmentId: impact.id,
     reused: false,
-    aiProvider,
+    aiProvider: analysis.providerId,
   };
 }

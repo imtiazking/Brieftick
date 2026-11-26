@@ -62,6 +62,9 @@ export function mapSchemaForAnalysisType(analysisType) {
   if (analysisType === 'Regulatory Change Extraction') return 'ChangeExtractionResult';
   if (analysisType === 'Impact Suggestion') return 'ImpactSuggestionResult';
   if (analysisType === 'Obligation Extraction') return 'ObligationExtractionResult';
+  if (analysisType === 'Risk Mapping') return 'RiskMappingResult';
+  if (analysisType === 'Control Mapping') return 'ControlMappingResult';
+  if (analysisType === 'Control Assurance Plan') return 'ControlAssurancePlanResult';
   return 'ApplicabilityResult';
 }
 

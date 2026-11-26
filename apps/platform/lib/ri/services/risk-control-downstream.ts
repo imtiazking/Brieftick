@@ -2,8 +2,7 @@ import 'server-only';
 
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { mapControlMappingToDraftFields } from '@/lib/ri/ai/control-mapping-mapper.mjs';
-import { mapSchemaForAnalysisType, validateStructuredOutput } from '@/lib/ri/ai/output-schemas';
-import { createFixtureProvider, FIXTURE_PROVIDER_ID } from '@/lib/ri/ai/fixture-provider';
+import { lifecycleAiAudit, runLifecycleStageAnalysis } from '@/lib/ri/ai/lifecycle-stage-ai';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
 import { buildLockedChildMetadataFromParentRecord } from '@/lib/ri/lab-api/child-record-provenance';
 import { linkRiskControl } from '@/lib/ri/links';
@@ -13,11 +12,6 @@ import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 export type Stage4DownstreamResult =
   | { ok: true; skipped: true; reason: string }
   | { ok: true; skipped: false; controlId: string; reused: boolean };
-
-function stage4FixtureEnabled(): boolean {
-  const raw = (process.env.FORGENIQ_STAGE4_AI || process.env.RI_AI_PROVIDER_MODE || 'FIXTURE').toUpperCase();
-  return raw === 'FIXTURE' || raw === '1' || raw === 'TRUE';
-}
 
 export async function findPrimaryDraftControlForRisk(
   supabase: SupabaseClient,
@@ -62,37 +56,40 @@ export async function ensureControlMappingFromApprovedRisk(
     return { ok: true, skipped: false, controlId: existing.id, reused: true };
   }
 
-  let aiStructured: Record<string, unknown> | null = null;
-  if (stage4FixtureEnabled()) {
-    const provider = createFixtureProvider();
-    const providerResult = await provider.execute({
-      useCaseId: 'UC-RI-007',
-      analysisType: 'Control Mapping',
-      fixtureScenario: 'stage4-risk-control',
-      budgetContext: {
-        organisationId: params.organisationId,
-        idempotencyKey: `stage4:${params.riskId}`,
+  const { data: catalogueControls, error: catalogueErr } = await supabase
+    .from('controls')
+    .select('id, name, control_type, status')
+    .eq('organisation_id', params.organisationId)
+    .limit(20);
+  if (catalogueErr) throw new Error(catalogueErr.message);
+
+  const analysis = await runLifecycleStageAnalysis({
+    stage: 4,
+    organisationId: params.organisationId,
+    idempotencyKey: `stage4:${params.riskId}`,
+    sourceSections: [
+      {
+        sourceSectionId: 'RISK-1',
+        citation: 'risk',
+        text: `${risk.title}\n${risk.description || ''}`.slice(0, 8000),
       },
-      context: {
-        sourceSections: [
-          {
-            sourceSectionId: 'RISK-1',
-            citation: 'risk',
-            text: `${risk.title}\n${risk.description || ''}`.slice(0, 8000),
-          },
-        ],
-      },
-    });
-    if (providerResult.ok && providerResult.structured) {
-      const valid = validateStructuredOutput(
-        mapSchemaForAnalysisType('Control Mapping'),
-        providerResult.structured,
-      );
-      if (valid.ok) aiStructured = providerResult.structured;
-    }
+    ],
+    advisoryContext: {
+      instruction:
+        'existingControls are tenant records. Prefer a match over a new control. Do not claim effectiveness without a recorded test. effectiveness must stay NOT_TESTED when evidence is absent.',
+      existingControls: (catalogueControls || []).map((row) => ({
+        id: row.id,
+        name: row.name,
+        controlType: row.control_type,
+        status: row.status,
+      })),
+    },
+  });
+  if (!analysis.ok) {
+    return { ok: true, skipped: true, reason: analysis.code };
   }
 
-  const mapped = mapControlMappingToDraftFields({ structured: aiStructured });
+  const mapped = mapControlMappingToDraftFields({ structured: analysis.structured });
   const riskMeta = (risk.metadata || {}) as Record<string, unknown>;
   const metadata = buildLockedChildMetadataFromParentRecord({
     parentMetadata: riskMeta,
@@ -103,7 +100,7 @@ export async function ensureControlMappingFromApprovedRisk(
       sourceRegulatoryObligationId: riskMeta.sourceRegulatoryObligationId ?? null,
       stage4PrimaryDraft: true,
       stage4Workflow: 'risk_validated_to_control_draft',
-      stage4Ai: mapped.stage4Metadata,
+      stage4Ai: { ...mapped.stage4Metadata, ...lifecycleAiAudit(analysis) },
     },
   });
 
@@ -169,7 +166,7 @@ export async function ensureControlMappingFromApprovedRisk(
     eventType: 'CONTROL_MAPPING_INITIATED_FROM_RISK',
     actorUserId: params.actorUserId,
     toStatus: 'APPROVED',
-    metadata: { controlId: control.id, aiProvider: FIXTURE_PROVIDER_ID },
+    metadata: { controlId: control.id, aiProvider: analysis.providerId, executionMode: analysis.executionMode },
   });
 
   return { ok: true, skipped: false, controlId: control.id, reused: false };
