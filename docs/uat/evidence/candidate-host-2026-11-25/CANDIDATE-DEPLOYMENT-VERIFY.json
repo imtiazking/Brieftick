@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-11-25T22:19:46.022Z",
-  "releasePhase": "post-promote",
+  "generatedAt": "2026-11-26T03:49:14.523Z",
+  "releasePhase": "pre-promote",
   "official": {
-    "id": "dpl_83MfoihicphZm4hmbs5nMe7YTzia",
-    "url": "https://forgeniq-platform-staging-cazkd8vqp-imis-projects-8e15dca0.vercel.app",
+    "id": "dpl_CABPEw5cx3y96MnMMMtR2o4gSRhF",
+    "url": "https://forgeniq-platform-staging-oof4qqrf6-imis-projects-8e15dca0.vercel.app",
     "exitCode": 0
   },
   "candidate": {
-    "id": "dpl_83MfoihicphZm4hmbs5nMe7YTzia",
-    "url": "https://forgeniq-platform-staging-cazkd8vqp-imis-projects-8e15dca0.vercel.app",
+    "id": "dpl_AGLgjMw6uZCtqtm193MeKGuGdpuh",
+    "url": "https://forgeniq-platform-staging-g2mivcd5y-imis-projects-8e15dca0.vercel.app",
     "exitCode": 0
   },
-  "sameDeployment": true,
-  "expectedPreviewId": "dpl_83MfoihicphZm4hmbs5nMe7YTzia",
-  "candidateMatchesExpected": true,
+  "sameDeployment": false,
+  "expectedPreviewId": "dpl_CABPEw5cx3y96MnMMMtR2o4gSRhF",
+  "candidateMatchesExpected": false,
   "officialMatchesExpected": true,
-  "candidateDistinctFromOfficialDuringValidation": false,
-  "isolationRequired": false
+  "candidateDistinctFromOfficialDuringValidation": true,
+  "isolationRequired": true
 }

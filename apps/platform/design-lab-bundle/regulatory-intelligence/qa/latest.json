@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-11-26T02:03:11.147Z",
+  "generatedAt": "2026-11-26T03:43:48.452Z",
   "mode": "promote",
   "qaContext": "candidate-release",
   "offlineTests": "PASS",
   "candidateRelease": "PASS",
-  "gitHead": "c5110849aea327547272a8044513b3b7d9c958f1",
+  "gitHead": "6056a8978183f603e12d1fdf8e8910d91e834fe5",
   "latestKnownDeployment": {
-    "id": "dpl_7bf9Dt5r1UKM6wPWXG1CnNQGomGs",
+    "id": "dpl_CABPEw5cx3y96MnMMMtR2o4gSRhF",
     "url": "https://staging-app.forgeniq.com",
     "alias": "https://staging-app.forgeniq.com",
-    "previewDeploymentId": "dpl_7bf9Dt5r1UKM6wPWXG1CnNQGomGs",
-    "previewUrl": "https://forgeniq-platform-staging-33o412aem-imis-projects-8e15dca0.vercel.app",
+    "previewDeploymentId": "dpl_CABPEw5cx3y96MnMMMtR2o4gSRhF",
+    "previewUrl": "https://forgeniq-platform-staging-oof4qqrf6-imis-projects-8e15dca0.vercel.app",
     "candidateAlias": "https://candidate-staging.forgeniq.com",
     "candidateHost": "https://candidate-staging.forgeniq.com",
-    "protectedOfficialDeploymentId": "dpl_BNifu9UxyuQW7SDPQHaq1EUwZMvu",
+    "protectedOfficialDeploymentId": "dpl_7bf9Dt5r1UKM6wPWXG1CnNQGomGs",
     "prePromotionAuth": {
       "mode": "candidate-first",
       "host": "https://candidate-staging.forgeniq.com",
@@ -25,7 +25,7 @@
       "exitCode": 0,
       "status": "PASS"
     },
-    "capturedAt": "2026-11-26T01:36:57.732Z"
+    "capturedAt": "2026-11-26T02:13:15.890Z"
   },
   "technicalTests": "PASS",
   "authenticatedStaging": "PASS",
@@ -33,22 +33,8 @@
   "promotion": "PASS",
   "businessUatApproved": false,
   "productionReleaseAuthorised": false,
-  "changedFiles": [
-    "apps/platform/design-lab-bundle/regulatory-intelligence/js/platform/connected-risk-control-panels.js",
-    "apps/platform/design-lab-bundle/regulatory-intelligence/js/views.js",
-    "apps/platform/design-lab-bundle/regulatory-intelligence/qa/latest.json",
-    "design-lab/regulatory-intelligence/qa/latest.json",
-    "docs/eval/PS26-1-UC-RI-005-EXECUTION-CONTROLS.json",
-    "docs/eval/RESOURCE-OPTIMISATIONS-ACCEPTANCE-2026-11-23.json",
-    "docs/uat/evidence/authenticated-qa-2026-11-25/RESULT.json",
-    "docs/uat/evidence/candidate-host-2026-11-25/CANDIDATE-DEPLOYMENT-VERIFY.json",
-    "docs/uat/evidence/session-recovery-2026-11-25/SESSION-RECOVERY.json",
-    "docs/uat/evidence/stability-gate-2026-11-24/ai-findings.png",
-    "docs/uat/evidence/stability-gate-2026-11-24/dashboard.png",
-    "docs/uat/evidence/stability-gate-2026-11-24/my-tasks.png",
-    "docs/uat/qa/latest.json"
-  ],
-  "catalogueSize": 43,
+  "changedFiles": [],
+  "catalogueSize": 44,
   "coverageGaps": [
     {
       "id": "GAP-PAID-AI",
@@ -86,7 +72,7 @@
       "note": "Market Intelligence tests live in the Brieftick workspace and are not executed by this orchestrator."
     }
   ],
-  "passed": 35,
+  "passed": 36,
   "failed": 0,
   "blocked": 0,
   "results": [
@@ -144,7 +130,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 252,
+      "ms": 112,
       "output": "acceptance-ri-design-lab-release-gate: PASS { missingNamed: true, duplicateDeclaration: true }\n\n"
     },
     {
@@ -189,7 +175,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 203,
+      "ms": 85,
       "output": "PASS six workflow queue constants\nPASS derive unreviewed → AI_FINDINGS\nPASS derive rejected\nPASS derive verified obligation\nPASS derive not applicable disposition\nPASS derive exception needs review\nPASS count workflow ALL\nPASS API accepts workflow queue\nPASS service derives workflowQueue\nPASS dashboard seven cards\nPASS five decision buttons\nPASS isWorkflowQueue ALL\nacceptance-ri-six-queue-workflow: PASS\n\n"
     },
     {
@@ -210,7 +196,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 239,
+      "ms": 81,
       "output": "PASS route accepts page and pageSize\nPASS service paginates after queue filter\nPASS pagination metadata exposed\nPASS stable sort keys on rows\nPASS UI has prev/next and page size\nPASS server-side filter reload\nPASS page 1 length\nPASS page 2 length\nPASS no duplicate across pages\nPASS allowed page sizes\nPASS stable sort is deterministic\nPASS search filter\nPASS verification filter\nacceptance-ri-triage-pagination: PASS\n\n"
     },
     {
@@ -234,7 +220,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 187,
+      "ms": 80,
       "output": "PASS  pagination page size 25\nPASS  OPEN filter\nPASS  UNASSIGNED filter\nPASS  metrics mine open\nPASS  taskMatchesViewFilter AWAITING_REVIEW\nPASS  service exports buildMyTasks\nPASS  no independent task table\nPASS  API route uses buildMyTasks\nPASS  Design Lab My Tasks screen\nPASS  Design Lab does not load full triage inventory in browser\nPASS  Nav renamed My Tasks\n\nacceptance-ri-my-tasks: PASS (11 checks)\n\n"
     },
     {
@@ -257,7 +243,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 180,
+      "ms": 84,
       "output": "PASS reassessment migration defines table\nPASS reassessment RPC exists\nPASS submitFindingReassessment exported\nPASS triage exposes presentation counts\nPASS UI blocks reassess when obligation approved\nPASS presentation counts awaiting first review\nacceptance-ri-finding-reassessment: PASS\n\n"
     },
     {
@@ -281,7 +267,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 194,
+      "ms": 71,
       "output": "PASS: UC-RI-005 without parent change is refused before execution\nPASS: parent change not visible in organisation is refused\nPASS: parent change from another publication is refused\nPASS: parent change of same publication is accepted\nPASS: no applicability assessment → refused\nPASS: applicability DRAFT → refused\nPASS: applicability IN_REVIEW → refused\nPASS: approved NOT_APPLICABLE → refused\nPASS: approved APPLICABLE → allowed\nPASS: approved POSSIBLY_APPLICABLE → allowed\nPASS: verified citation + statement + change → materialisable\nPASS: PARTIAL citation → materialisable\nPASS: no citation row (pre-14-Nov Anthropic runs) → no_citation_record\nPASS: INVALID citation → citation_not_verified\nPASS: UNVERIFIED citation → citation_not_verified\nPASS: missing statement → candidate_missing_statement\nPASS: no parent change (18-Nov AI Dev run) → no_parent_change\nPASS: parent change in other org → parent_change_not_in_organisation\nPASS: AI DRAFT → OPEN directly is blocked\nPASS: AI DRAFT → COMPLETE is blocked\nPASS: AI DRAFT → IN_REVIEW by acceptor allowed\nPASS: AI IN_REVIEW → OPEN without review role blocked\nPASS: AI IN_REVIEW → OPEN by AI run requester blocked (maker-checker)\nPASS: AI IN_REVIEW → OPEN by AI output acceptor blocked (maker-checker)\nPASS: AI IN_REVIEW → OPEN by submitter blocked (maker-checker)\nPASS: AI IN_REVIEW → OPEN by independent reviewer allowed\nPASS: AI IN_REVIEW → DRAFT (return) allowed\nPASS: AI OPEN → IN_PROGRESS uses existing register lifecycle\n\npublication-to-obligat"
     },
     {
@@ -302,7 +288,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 204,
+      "ms": 75,
       "output": "PASS: allows submit from DRAFT\nPASS: allows submit from IN_PROGRESS\nPASS: blocks submit from IN_REVIEW\nPASS: blocks submit from APPROVED\nPASS: allows approve from IN_REVIEW\nPASS: blocks approve from APPROVED\nPASS: blocks approve from DRAFT\nPASS: blocks reject from APPROVED\nPASS: workflow event recorded after successful status update\nPASS: optimistic status guard on workflow update\nPASS: UI hides approve/reject unless IN_REVIEW\nPASS: SoD unchanged on approve\n\nImpact governance transitions: PASS\n\n\n"
     },
     {
@@ -323,7 +309,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 279,
+      "ms": 91,
       "output": "PASS: server_create — assurance provenance + create audit event\nPASS: server_patch — outcome patch audit\nPASS: partition — partitionAssuranceReviewsForLabScope\nPASS: parse — parseLabAssuranceCreateBody\nPASS: post_detail — create response includes relationships\nPASS: governance — authorisedUatAssuranceReviews\nPASS: workflow_entity — assurance audit fetch\nPASS: detail_api — detail + patch routes\nPASS: patch_auth_parity — assertLabAssuranceWritesEnabled + parseUuid on PATCH\nPASS: post_writes_gate — assurance POST write gate\nPASS: client_patch — session preflight + patch error mapping\nPASS: dashboard — assurance operational isolation\nPASS: link_prov — cross-provenance link rejection\nPASS: link_audit_semantics — ASSURANCE_CONTROL_LINKED on link\nPASS: create_audit_semantics — ASSURANCE_REVIEW_CREATED only on insert path\nPASS: workflow_types — link + result event types registered\nPASS: legacy_label — append-only audit display annotation\nPASS: ui_mode — UAT create mode UI\nPASS: finding_nav — finding links on assurance review\nPASS: catalogue — assurance detail hydration\nPASS: app_wiring — app handlers wired\nPASS: register_ui — operational vs UAT registers\nPASS: migration — assurance_reviews.metadata column\n\nacceptance-phase-8-step-85w-assurance-uat: PASS\n\n\n"
     },
     {
@@ -342,7 +328,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 266,
+      "ms": 76,
       "output": "PASS: management report defaults to operational population\nPASS: export route: requireRiContext('ri:read')\nPASS: export route: 'Content-Type': 'application/pdf'\nPASS: export route: 'Content-Disposition'\nPASS: export route: parseReportingPeriod\nPASS: export route: buildBoardReportPdfLines\nPASS: export route: renderSimpleTextPdf\nPASS: export route: X-Forgeniq-Reporting-Period\nPASS: export route: X-Forgeniq-Data-Population\nPASS: export route: organisationName\nPASS: PDF magic header\nPASS: organisation name, tenant id and period in PDF body\nPASS: operational scope in PDF\nPASS: no question-mark mojibake in title\nPASS: activity-in-period figures in PDF\nPASS: no cross-tenant id injected in fixture\nPASS: no invented compliance score disclaimer\n\n"
     },
     {
@@ -363,7 +349,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 176,
+      "ms": 74,
       "output": "PASS: schema workflow_events.occurred_at\nPASS: schema workflow_events has no created_at\nPASS: governance service uses occurred_at\nPASS: governance service has no created_at\nPASS: governance page uses occurred_at\nPASS: governance page has no created_at\n\nGovernance workflow_events acceptance: PASS\n\n"
     },
     {
@@ -384,8 +370,8 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 170,
-      "output": "PASS: identity migration present\nPASS: table organisations defined\nPASS: RLS enabled on organisations\nPASS: table organisation_memberships defined\nPASS: RLS enabled on organisation_memberships\nPASS: no USING (true) policies\nPASS: platform_role enum\nPASS: role OWNER in schema\nPASS: role ADMIN in schema\nPASS: role COMPLIANCE_MANAGER in schema\nPASS: role ANALYST in schema\nPASS: role REVIEWER in schema\nPASS: role VIEWER in schema\nPASS: unique organisation membership constraint\nPASS: UUID defaults present\nPASS: no Supabase Auth schema\nPASS: roles contract clean\nPASS: browser client has no service role\nPASS: admin client server-only\nPASS: ORG-A cannot access ORG-B\nPASS: invalid organisation id rejected\nPASS: browser-supplied role ignored\nPASS: ADMIN cannot become OWNER\nPASS: ADMIN cannot assign OWNER role\nPASS: VIEWER cannot perform privileged ADMIN actions\nPASS: unknown client role rejected\nPASS: unknown user has no tenant access\nPASS: Clerk-only session helpers\nPASS: user Supabase path avoids service role\nPASS: /ri avoids Design Lab / Ask RI imports\nPASS: 49 migration file(s)\nPASS: regulatory-source baseline present\n\nPhase 2 tenant isolation acceptance: PASS\n\n"
+      "ms": 80,
+      "output": "PASS: identity migration present\nPASS: table organisations defined\nPASS: RLS enabled on organisations\nPASS: table organisation_memberships defined\nPASS: RLS enabled on organisation_memberships\nPASS: no USING (true) policies\nPASS: platform_role enum\nPASS: role OWNER in schema\nPASS: role ADMIN in schema\nPASS: role COMPLIANCE_MANAGER in schema\nPASS: role ANALYST in schema\nPASS: role REVIEWER in schema\nPASS: role VIEWER in schema\nPASS: unique organisation membership constraint\nPASS: UUID defaults present\nPASS: no Supabase Auth schema\nPASS: roles contract clean\nPASS: browser client has no service role\nPASS: admin client server-only\nPASS: ORG-A cannot access ORG-B\nPASS: invalid organisation id rejected\nPASS: browser-supplied role ignored\nPASS: ADMIN cannot become OWNER\nPASS: ADMIN cannot assign OWNER role\nPASS: VIEWER cannot perform privileged ADMIN actions\nPASS: unknown client role rejected\nPASS: unknown user has no tenant access\nPASS: Clerk-only session helpers\nPASS: user Supabase path avoids service role\nPASS: /ri avoids Design Lab / Ask RI imports\nPASS: 50 migration file(s)\nPASS: regulatory-source baseline present\n\nPhase 2 tenant isolation acceptance: PASS\n\n"
     },
     {
       "id": "RI-COMPLIANCE-LIFECYCLE-E2E",
@@ -418,8 +404,8 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 32881,
-      "output": "PASS: Design Lab five-stage lifecycle panel\nPASS: Stage 2 impact draft created\nPASS: Stage 2 human approval\nPASS: Stage 3 risk mapping draft\nPASS: Stage 3 idempotent\nPASS: Stage 3 human validation\nPASS: Stage 3 approval triggers Stage 4 contract\nPASS: Stage 4 control draft auto-created\nPASS: Stage 4 human approval\nPASS: Stage 4 approval triggers Stage 5 contract\nPASS: Stage 5 assurance plan draft\nPASS: Stage 5 assurance plan approved (testing ready)\nPASS: premature lifecycle closure blocked before testing\nPASS: Stage 5 control test recorded with evidence\nPASS: Stage 5 independent human assurance closure\nPASS: lifecycle closed on obligation\nPASS: AI cannot re-approve completed impact\nPASS: cross-tenant risk denied\n\nCompliance lifecycle E2E: PASS\n\n\n(node:10108) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/lib/ri/services/obligation-impact-downstream.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n[impact] notification_fan_out_unrecoverable {\n  impactId: '76590e76-7a28-4aea-8f01-0d271e32ec02',\n  reason: 'fixture_test'\n}\n"
+      "ms": 19497,
+      "output": "PASS: Design Lab five-stage lifecycle panel\nPASS: Stage 2 impact draft created\nPASS: Stage 2 human approval\nPASS: Stage 3 risk mapping draft\nPASS: Stage 3 idempotent\nPASS: Stage 3 human validation\nPASS: Stage 3 approval triggers Stage 4 contract\nPASS: Stage 4 control draft auto-created\nPASS: Stage 4 human approval\nPASS: Stage 4 approval triggers Stage 5 contract\nPASS: Stage 5 assurance plan draft\nPASS: Stage 5 assurance plan approved (testing ready)\nPASS: premature lifecycle closure blocked before testing\nPASS: Stage 5 control test recorded with evidence\nPASS: Stage 5 independent human assurance closure\nPASS: lifecycle closed on obligation\nPASS: AI cannot re-approve completed impact\nPASS: cross-tenant risk denied\n\nCompliance lifecycle E2E: PASS\n\n\n(node:38164) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/lib/ri/services/obligation-impact-downstream.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n[impact] notification_fan_out_unrecoverable {\n  impactId: 'dd1bff71-c9f7-4a20-acff-1ac5bcec4850',\n  reason: 'fixture_test'\n}\n"
     },
     {
       "id": "RI-ASSURANCE-GOVERNANCE-SECURITY",
@@ -446,8 +432,8 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 32655,
-      "output": "PASS: Design Lab assurance execution panel\nPASS: self-approval on assurance plan rejected\nPASS: independent assurance plan approval\nPASS: unrelated same-tenant evidence rejected for assurance test\nPASS: valid evidence bound to control under test\nPASS: unauthorised role cannot close lifecycle\nPASS: authorised independent closure\nPASS: idempotent close returns closed assurance\nPASS: single compliance lifecycle close event\nPASS: lifecycle reopen\nPASS: obligation lifecycle reopen audited\nPASS: premature closure after reopen rejected\nPASS: retest recorded after reopen\nPASS: second independent closure after reopen\nPASS: reopen then re-close emits second obligation close event\nPASS: cross-tenant evidence access denied (RLS)\nPASS: concurrent/stale closure rejected\n\nAssurance governance security: PASS\n\n\n(node:54164) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/lib/ri/services/obligation-impact-downstream.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n[tenant-notifications] fan_out_failed {\n  notificationType: 'ASSIGNMENT',\n  organisationId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',\n  entityId:"
+      "ms": 22820,
+      "output": "PASS: Design Lab assurance execution panel\nPASS: self-approval on assurance plan rejected\nPASS: independent assurance plan approval\nPASS: unrelated same-tenant evidence rejected for assurance test\nPASS: valid evidence bound to control under test\nPASS: unauthorised role cannot close lifecycle\nPASS: authorised independent closure\nPASS: idempotent close returns closed assurance\nPASS: single compliance lifecycle close event\nPASS: lifecycle reopen\nPASS: obligation lifecycle reopen audited\nPASS: premature closure after reopen rejected\nPASS: retest recorded after reopen\nPASS: second independent closure after reopen\nPASS: reopen then re-close emits second obligation close event\nPASS: cross-tenant evidence access denied (RLS)\nPASS: concurrent/stale closure rejected\n\nAssurance governance security: PASS\n\n\n(node:54188) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/lib/ri/services/obligation-impact-downstream.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n[tenant-notifications] fan_out_failed {\n  notificationType: 'ASSIGNMENT',\n  organisationId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',\n  entityId:"
     },
     {
       "id": "RI-ASSURANCE-LIFECYCLE-GAPS",
@@ -475,8 +461,8 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 41052,
-      "output": "PASS: record_test requires evidence\nPASS: failed control test recorded\nPASS: finding linked to assurance\nPASS: remediation completed\nPASS: retest PASS recorded\nPASS: closure blocked while open findings present\nPASS: formal finding exception accepted\nPASS: lifecycle closed after remediation and retest\nPASS: single lifecycle closed event\n\nAssurance lifecycle gaps: PASS\n\n\n(node:54052) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/lib/ri/services/obligation-impact-downstream.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n[tenant-notifications] fan_out_failed {\n  notificationType: 'ASSIGNMENT',\n  organisationId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',\n  entityId: '458956f8-0600-407b-8933-fb9873da8c5d',\n  reason: 'notification_service_unavailable'\n}\n[tenant-notifications] retry_queue_unavailable {\n  reason: 'admin_client_unavailable',\n  organisationId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',\n  entityId: '458956f8-0600-407b-8933-fb9873da8c5d'\n}\n[tenant-notifications] fan_out_failed {\n  notificationType: 'APPROVAL_REQUEST',\n  organisationId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',\n  entityId"
+      "ms": 22517,
+      "output": "PASS: record_test requires evidence\nPASS: failed control test recorded\nPASS: finding linked to assurance\nPASS: remediation completed\nPASS: retest PASS recorded\nPASS: closure blocked while open findings present\nPASS: formal finding exception accepted\nPASS: lifecycle closed after remediation and retest\nPASS: single lifecycle closed event\n\nAssurance lifecycle gaps: PASS\n\n\n(node:43116) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/lib/ri/services/obligation-impact-downstream.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n[tenant-notifications] fan_out_failed {\n  notificationType: 'ASSIGNMENT',\n  organisationId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',\n  entityId: 'ed3b521b-98b8-4fdc-bc9d-8243741502e1',\n  reason: 'notification_service_unavailable'\n}\n[tenant-notifications] retry_queue_unavailable {\n  reason: 'admin_client_unavailable',\n  organisationId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',\n  entityId: 'ed3b521b-98b8-4fdc-bc9d-8243741502e1'\n}\n[tenant-notifications] fan_out_failed {\n  notificationType: 'APPROVAL_REQUEST',\n  organisationId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',\n  entityId"
     },
     {
       "id": "RI-STAGE2-OBLIGATION-IMPACT",
@@ -502,8 +488,8 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 31683,
-      "output": "PASS: obligation OPEN hook invokes Stage 2 downstream\nPASS: Stage 3 handoff event on impact approve\nPASS: Design Lab Stage 2 obligation link panel\nPASS: mapper labels uncertainty in draft narratives\nPASS: unapproved obligation does not trigger Stage 2\nPASS: OPEN obligation creates linked DRAFT impact assessment\nPASS: duplicate approval processing is idempotent\nPASS: single DRAFT impact linked to obligation\nPASS: audit event IMPACT_INITIATED_FROM_OBLIGATION\nPASS: cross-tenant impact row denied by RLS\nPASS: submit moves impact to IN_REVIEW with obligation owner\nPASS: Stage 3 handoff contract event emitted once on human approve\nPASS: AI cannot re-approve approved assessment (invalid transition)\n\nStage 2 obligation→impact: PASS\n\n\n(node:52456) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/lib/ri/services/obligation-impact-downstream.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n[impact] notification_fan_out_unrecoverable {\n  impactId: '73563c26-f807-4da5-8482-2a28acfef2bb',\n  reason: 'fixture_test'\n}\n"
+      "ms": 13047,
+      "output": "PASS: obligation OPEN hook invokes Stage 2 downstream\nPASS: Stage 3 handoff event on impact approve\nPASS: Design Lab Stage 2 obligation link panel\nPASS: mapper labels uncertainty in draft narratives\nPASS: unapproved obligation does not trigger Stage 2\nPASS: OPEN obligation creates linked DRAFT impact assessment\nPASS: duplicate approval processing is idempotent\nPASS: single DRAFT impact linked to obligation\nPASS: audit event IMPACT_INITIATED_FROM_OBLIGATION\nPASS: cross-tenant impact row denied by RLS\nPASS: submit moves impact to IN_REVIEW with obligation owner\nPASS: Stage 3 handoff contract event emitted once on human approve\nPASS: AI cannot re-approve approved assessment (invalid transition)\n\nStage 2 obligation→impact: PASS\n\n\n(node:54184) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/lib/ri/services/obligation-impact-downstream.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n[impact] notification_fan_out_unrecoverable {\n  impactId: 'b0322cd3-a915-425a-aa5c-2b4be76cea06',\n  reason: 'fixture_test'\n}\n"
     },
     {
       "id": "RI-SOD",
@@ -526,7 +512,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 893,
+      "ms": 378,
       "output": "ite = false\nPASS: REVIEWER impact:approve = false\nPASS: REVIEWER risk:write = false\nPASS: REVIEWER control:write = false\nPASS: REVIEWER ai:governance = false\nPASS: VIEWER cannot review obligations\nPASS: ANALYST keeps obligation:write\nPASS: COMPLIANCE_MANAGER keeps obligation:review\nPASS: REVIEWER capability obligationReview\nPASS: REVIEWER capability obligations (write)\nPASS: REVIEWER capability aiRequest\nPASS: REVIEWER capability changeManagement\nPASS: REVIEWER capability risks\nPASS: ANALYST capability obligations (write) unchanged\nPASS: VIEWER refused by review gate\nPASS: switch off → REVIEWER obligationReview false\nPASS: switch off → review gate refuses REVIEWER\nPASS: approve submitted AI obligation is a review decision\nPASS: return submitted AI obligation is a review decision\nPASS: manual obligation is not\nPASS: DRAFT → IN_REVIEW (submission) is not\nPASS: OPEN → CLOSED is not\nPASS: IN_REVIEW → CLOSED is not\nPASS: status plus another field is not\nPASS: non-status field is not\nPASS: independent REVIEWER approves → OPEN in existing register\nPASS: approval audited with approver, from and to status\nPASS: independent REVIEWER returns → DRAFT\nPASS: REVIEWER cannot edit statement\nPASS: REVIEWER cannot edit statement: row unchanged, no audit event\nPASS: REVIEWER cannot combine status with another field\nPASS: REVIEWER cannot combine status with another field: row unchanged, no audit event\nPASS: REVIEWER cannot approve manual obligations\nPASS: REVIEWER cannot approve manual obligatio"
     },
     {
@@ -545,8 +531,8 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 6561,
-      "output": "PASS Dashboard 2 material changes require attention\nPASS Publications Regulatory Library\nPASS AI Findings AI Findings\nPASS Verified Obligations Verified Obligations\nPASS Non-Obligations Non-Obligations\nPASS Rejected Findings Rejected Findings\nPASS Exceptions Exceptions\nPASS Not Applicable Not Applicable\nPASS All Findings All Findings\nPASS My Tasks My Tasks\nPASS Attention Centre Exceptions, escalations and deadlines\nPASS Quality assurance Quality assurance\nPASS Invalid route Page not found\nPASS Recovery screen\ndesign-lab-browser-smoke: PASS 14 routes @ http://127.0.0.1:56269\n\n"
+      "ms": 5523,
+      "output": "PASS Dashboard 2 material changes require attention\nPASS Publications Regulatory Library\nPASS AI Findings AI Findings\nPASS Verified Obligations Verified Obligations\nPASS Non-Obligations Non-Obligations\nPASS Rejected Findings Rejected Findings\nPASS Exceptions Exceptions\nPASS Not Applicable Not Applicable\nPASS All Findings All Findings\nPASS My Tasks My Tasks\nPASS Attention Centre Exceptions, escalations and deadlines\nPASS Quality assurance Quality assurance\nPASS Invalid route Page not found\nPASS Recovery screen\ndesign-lab-browser-smoke: PASS 14 routes @ http://127.0.0.1:63861\n\n"
     },
     {
       "id": "RI-RISK-CONTROL-UI",
@@ -571,7 +557,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 94,
+      "ms": 85,
       "output": "PASS: risk_link_panel — Link control panel on risk detail\nPASS: risk_view — Connected risk detail wires link panel\nPASS: delegation — risk_control uses control UUID target\nPASS: refresh — Linked controls refresh after risk_control\nPASS: api — Backend risk_control link type registered\n\nacceptance-phase-8-step-85w-risk-control-link-ui: PASS\n\n\n"
     },
     {
@@ -595,8 +581,8 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 407,
-      "output": "PASS: sod_message — maker-checker denial message surfaced\nPASS: assurance_finding_links — finding href on assurance detail\nPASS: detail_revalidate — catalogue hydrates findings and revalidates governance entities\nPASS: risk_action_binding — risk governance actions bound after renderShell\n\n(node:7540) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/design-lab/regulatory-intelligence/js/platform/connected-work-writes.js is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+      "ms": 260,
+      "output": "PASS: sod_message — maker-checker denial message surfaced\nPASS: assurance_finding_links — finding href on assurance detail\nPASS: detail_revalidate — catalogue hydrates findings and revalidates governance entities\nPASS: risk_action_binding — risk governance actions bound after renderShell\n\n(node:54004) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/design-lab/regulatory-intelligence/js/platform/connected-work-writes.js is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
     },
     {
       "id": "RI-GOV-RISK-SOD",
@@ -617,8 +603,8 @@
       "requires": "local-db",
       "mandatory": true,
       "status": "PASS",
-      "ms": 21766,
-      "output": "\n(node:12892) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/lib/ri/services/obligation-impact-downstream.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+      "ms": 18499,
+      "output": "\n(node:39260) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/lib/ri/services/obligation-impact-downstream.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
     },
     {
       "id": "RI-LIFECYCLE-LIVE-AI",
@@ -642,8 +628,8 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 437,
-      "output": "PASS: default_fixture\nPASS: fixture_execute\nPASS: execution_disabled\nPASS: reject_invalid\nPASS: timeout_fail_closed\nPASS: mock_live_stage5\nPASS: citation_required\nPASS: prompt_grounding\nPASS: budget_covers_stage2\nPASS: budget_exhausted\nPASS: request_cap\nPASS: aggregate_ledger\n\nacceptance-ri-lifecycle-live-ai: PASS\n\n\n(node:49980) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/lib/ri/ai/lifecycle-stage-ai.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+      "ms": 273,
+      "output": "PASS: default_fixture\nPASS: fixture_execute\nPASS: execution_disabled\nPASS: reject_invalid\nPASS: timeout_fail_closed\nPASS: mock_live_stage5\nPASS: citation_required\nPASS: telemetry_captured\nPASS: failed_call_keeps_spend_and_telemetry\nPASS: registry_selects_sonnet_5_5\nPASS: prompt_grounding\nPASS: budget_covers_stage2\nPASS: budget_exhausted\nPASS: request_cap\nPASS: aggregate_ledger\n\nacceptance-ri-lifecycle-live-ai: PASS\n\n\n(node:9160) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/lib/ri/ai/lifecycle-stage-ai.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
     },
     {
       "id": "RI-SHARED-SPEND",
@@ -656,17 +642,43 @@
       "apis": [],
       "entities": [
         "lab_ai_spend_accounts",
-        "lab_ai_spend_reservations"
+        "lab_ai_spend_reservations",
+        "lab_ai_spend_recoveries",
+        "lab_ai_spend_operators"
       ],
       "command": "node scripts/acceptance-ri-shared-spend-guard.mjs",
       "paths": [
         "apps/platform/lib/ri/ai/lab-anthropic-spend-guard.mjs",
-        "apps/platform/supabase/migrations/20261126013000_lab_ai_shared_spend_guard.sql"
+        "apps/platform/lib/ri/ai/lab-shared-spend.mjs",
+        "apps/platform/supabase/migrations/20261126013000_lab_ai_shared_spend_guard.sql",
+        "apps/platform/supabase/migrations/20261126120000_lab_ai_spend_usage_categories_and_recovery_v2.sql"
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 13502,
-      "output": "PASS: fail_closed_without_ledger\nPASS: cross_instance_budget\nPASS: reconcile_failed_call\nPASS: remaining_after_reconcile\nPASS: idempotent_reuse\nPASS: shared_request_cap\nPASS: recovery_inflight\nPASS: recovery_audited\n\nacceptance-ri-shared-spend-guard: PASS\n\n\n"
+      "ms": 9478,
+      "output": "PASS: client_execute_revoked_static\nPASS: fail_closed_without_ledger\nPASS: cross_instance_budget\nPASS: reconcile_failed_call\nPASS: remaining_after_reconcile\nPASS: idempotent_reuse\nPASS: duplicate_workflow_blocked\nPASS: shared_request_cap\nPASS: concurrent_reservations_budget\nPASS: max_request_count_enforced_under_race\nPASS: usage_cost_categories\nPASS: ledger_usage_categories\nPASS: historical_not_repriced\nPASS: unknown_outcome_charges_reserve\nPASS: guard_reserves_worst_case\nPASS: guard_settles_actual_usage\nPASS: guard_timeout_assumes_max\nPASS: unpriced_model_fails_closed\nPASS: recovery_requires_operator\nPASS: recovery_inflight\nPASS: recovery_provider_window\nPASS: recovery_needs_reason_and_evidence\nPASS: recovery_audited\nPASS: recovery_verified_usage\nPASS: recovery_default_is_safe\nPASS: recovery_revoked_operator\nPASS: forced_rls\nPASS: execute_withheld_and_single_signatures\n\nacceptance-ri-shared-spend-guard: PASS\n\n\n"
+    },
+    {
+      "id": "RI-SONNET-55-COMPAT",
+      "area": "Regulatory Intelligence",
+      "feature": "Claude Sonnet 5.5 Messages API compatibility, usage categories and pricing (mocked)",
+      "type": "acceptance",
+      "criticality": "critical",
+      "gate": "ci",
+      "route": null,
+      "apis": [],
+      "entities": [],
+      "command": "node scripts/acceptance-anthropic-sonnet-55-compat.mjs",
+      "paths": [
+        "apps/platform/lib/ri/ai/anthropic-messages-core.mjs",
+        "apps/platform/lib/ri/ai/anthropic-provider-core.mjs",
+        "apps/platform/lib/ri/ai/anthropic-model-config.mjs",
+        "apps/platform/lib/ri/reasoner/anthropic-eval-budget.mjs"
+      ],
+      "mandatory": true,
+      "status": "PASS",
+      "ms": 123,
+      "output": "PASS: default_model_is_sonnet_5_5\nPASS: legacy_model_override_supported\nPASS: non_anthropic_model_ignored\nPASS: request_url_and_version\nPASS: request_no_sampling_params\nPASS: request_adaptive_thinking_and_effort\nPASS: request_single_user_message_no_prefill\nPASS: request_max_tokens_bounded\nPASS: request_no_deprecated_fields\nPASS: response_usage_normalised\nPASS: env_effort_high\nPASS: thinking_disabled_sent_as_between_tools\nPASS: thinking_budget_rejected\nPASS: between_tools_needs_low_medium_high\nPASS: unknown_effort_rejected\nPASS: sampling_temperature_rejected\nPASS: sampling_top_p_rejected\nPASS: sampling_top_k_rejected\nPASS: invalid_config_makes_no_network_call\nPASS: legacy_model_gets_no_effort_or_thinking\nPASS: usage_cache_categories_parsed\nPASS: provider_request_id_from_header\nPASS: sonnet_5_5_cost_by_category\nPASS: untiered_cache_write_priced_at_1h\nPASS: published_rates\nPASS: sonnet_4_5_pricing_unchanged\nPASS: unpriced_model_has_no_cost\nPASS: worst_case_reserve\nPASS: refusal_fails_closed_with_usage\nPASS: context_window_exceeded_fails_closed\nPASS: thinking_exhausted_is_truncation\nPASS: http_429_mapped_usage_known\nPASS: http_529_mapped\nPASS: http_404_model_not_available\nPASS: timeout_is_unknown_usage\nPASS: transport_error_is_unknown_usage\nPASS: provider_returns_structured_json_and_usage\nPASS: provider_settles_estimated_cost\nPASS: provider_request_has_bounded_max_tokens\nPASS: provider_invalid_json_rejected\nPASS: provider_refusal_creates_no_output\nPASS: provider_unknown_outcome_s"
     },
     {
       "id": "AUTH-STAGING-BROWSER",
@@ -699,7 +711,7 @@
       "requires": "clerk-session",
       "mandatory": true,
       "status": "PASS",
-      "ms": 58693,
+      "ms": 51895,
       "output": "authenticated-smoke preflight OK — A, B, C\nPASS C Dashboard 275 publications in staging catalogue api 200 count -\nPASS C AI Findings AI Findings api 200 count 96\nPASS C Verified Obligations Verified Obligations api 200 count 12\nPASS C Non-Obligations Non-Obligations api 200 count 23\nPASS C Rejected Findings Rejected Findings api 200 count 57\nPASS C Exceptions Exceptions api 200 count 16\nPASS C Not Applicable Not Applicable api 200 count 4\nPASS C All Findings All Findings api 200 count 208\nPASS C My Tasks My Tasks api 200 count 0\nPASS C Attention Centre Exceptions, escalations and deadlines api 200 count -\nPASS C Obligations Obligations api 200 count 0\nPASS C Impact assessments Impact Assessments api 200 count 0\nPASS C Risks Risks api 200 count 6\nPASS C Controls Controls api 200 count 6\nPASS C Assurance Assurance api 200 count 2\nPASS C Quality assurance Quality assurance api 200 count -\nPASS C Checker pending approvals obligationReview true api 200 count 0\nPASS B Reviewer human-review actions role REVIEWER aiReview true buttons 50 api 200\nPASS A User A actions match granted capabilities role COMPLIANCE_MANAGER aiReview true obligationReview true buttons 50 distinctUsers true. Self-approval denial stays in the offline maker-checker test.\nauthenticated-smoke: PASS 19 checks @ https://staging-app.forgeniq.com\n\n◇ injected env (1) from ..\\..\\..\\forgeniq-uat-sessions\\uat-agent.env\n◇ injected env (2) from .env.local\n"
     },
     {
@@ -722,7 +734,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 472,
+      "ms": 154,
       "output": "PASS: migration file 20261025100000_phase8_security_hardening.sql\nPASS: platform_operators table defined\nPASS: is_platform_operator() defined\nPASS: no org-role-based ingestion ops privilege\nPASS: operational_alerts_update_platform_operator policy\nPASS: notification_events_insert_tenant_ai policy\nPASS: SECURITY DEFINER functions use explicit search_path\nPASS: drops organisations_insert_authenticated\nPASS: global catalogue policies untouched in migration text\n\nSKIP: embedded DB tests (run with --local-db)\n\n\nPhase 8 security RLS acceptance: PASS\nNOTE: After migration on lhgzdicffkhaaykzthep, run bootstrap-platform-operator.mjs for RI admin Clerk id.\n\n"
     },
     {
@@ -746,7 +758,7 @@
       "requires": "local-db",
       "mandatory": true,
       "status": "PASS",
-      "ms": 15297,
+      "ms": 10423,
       "output": "PASS: migration file 20261025100000_phase8_security_hardening.sql\nPASS: platform_operators table defined\nPASS: is_platform_operator() defined\nPASS: no org-role-based ingestion ops privilege\nPASS: operational_alerts_update_platform_operator policy\nPASS: notification_events_insert_tenant_ai policy\nPASS: SECURITY DEFINER functions use explicit search_path\nPASS: drops organisations_insert_authenticated\nPASS: global catalogue policies untouched in migration text\n\n--- Embedded Postgres RLS verification ---\n\nPASS: non-member: organisations count 0\nPASS: non-member: cannot update operational_alerts\nPASS: non-member: cannot insert ingestion_operational_events\nPASS: customer COMPLIANCE_MANAGER: cannot update operational_alerts\nPASS: customer COMPLIANCE_MANAGER: cannot read ingestion_runs\nPASS: tenant OWNER: organisation visible (tenant RLS)\nPASS: platform operator: can update operational_alerts\nPASS: platform operator: can insert ingestion_operational_events\nPASS: OWNER without platform operator: cannot update operational_alerts\nPASS: VIEWER: cannot emit tenant AI notifications (REVIEWER or above required)\nPASS: VIEWER: cannot insert arbitrary global notification\nPASS: VIEWER: cannot read regulatory_source_operations (not platform operator)\nPASS: VIEWER: global regulators catalogue readable\n\nPhase 8 security RLS acceptance: PASS\nNOTE: After migration on lhgzdicffkhaaykzthep, run bootstrap-platform-operator.mjs for RI admin Clerk id.\n\n"
     },
     {
@@ -770,7 +782,7 @@
       "requires": "local-db",
       "mandatory": true,
       "status": "PASS",
-      "ms": 45555,
+      "ms": 33816,
       "output": "les\nPASS: workflow_events has no UPDATE/DELETE policy (append-only via API)\nPASS: new functions pin search_path to empty\nPASS: TRUNCATE (which bypasses RLS) revoked from anon/authenticated on every public table\nPASS: role matrix: 285 insert/update/delete checks across 19 tables × 5 roles match lib/ri/permissions.ts\nPASS: role matrix probes left no trace (all rolled back)\nPASS: audit: VIEWER may log own Ask RI query event\nPASS: audit: VIEWER may log own evidence download event\nPASS: audit: VIEWER cannot log a compliance event (CHANGE_CREATED)\nPASS: audit: VIEWER cannot log an event as another user\nPASS: audit: event without an actor refused\nPASS: audit: REVIEWER may log own obligation review decision\nPASS: audit: REVIEWER cannot log RISK_LINKED\nPASS: audit: ANALYST may log own compliance event\nPASS: audit: ANALYST cannot attribute an event to the Compliance Manager\nPASS: audit: AI Development analyst cannot write Partner UAT events\nPASS: audit: VIEWER cannot modify or delete existing events\nPASS: audit: REVIEWER cannot modify or delete existing events\nPASS: audit: ANALYST cannot modify or delete existing events\nPASS: audit: COMPLIANCE_MANAGER cannot modify or delete existing events\nPASS: audit: ADMIN cannot modify or delete existing events\nPASS: audit: other-tenant OWNER cannot modify or delete existing events\nPASS: Ask RI log: members log their own queries only\nPASS: AI notification events: REVIEWER may emit, VIEWER may not\nPASS: storage: VIEWER cannot upload evidence files\nP"
     },
     {
@@ -809,7 +821,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 90,
+      "ms": 82,
       "output": "{\"ok\":true,\"check\":\"candidate_deployment_isolation_regression\"}\n\n"
     },
     {
@@ -830,7 +842,7 @@
       "requires": "clerk-session",
       "mandatory": true,
       "status": "PASS",
-      "ms": 35264,
+      "ms": 23260,
       "output": "\\AppData\\\\Local\\\\forgeniq-uat-sessions\\\\candidate-staging_forgeniq_com\\\\persona-B\"\n    },\n    {\n      \"hostname\": \"candidate-staging.forgeniq.com\",\n      \"persona\": \"C\",\n      \"layout\": \"host-scoped\",\n      \"profilePath\": \"C:\\\\Users\\\\imtia\\\\AppData\\\\Local\\\\forgeniq-uat-sessions\\\\candidate-staging_forgeniq_com\\\\persona-C\"\n    }\n  ],\n  \"clerkHostProbe\": [\n    {\n      \"origin\": \"https://staging-app.forgeniq.com\",\n      \"ok\": true,\n      \"code\": \"CLERK_READY\",\n      \"httpStatus\": 200\n    },\n    {\n      \"origin\": \"https://candidate-staging.forgeniq.com\",\n      \"ok\": true,\n      \"code\": \"CLERK_READY\",\n      \"httpStatus\": 200\n    }\n  ],\n  \"validations\": [\n    {\n      \"origin\": \"https://staging-app.forgeniq.com\",\n      \"hasProfile\": true,\n      \"persona\": \"A\",\n      \"state\": \"VALID\",\n      \"host\": \"staging-app.forgeniq.com\",\n      \"userId\": \"user_3LA76vR4CueutWtEpcAxvqYKkEv\",\n      \"role\": \"COMPLIANCE_MANAGER\",\n      \"organisationId\": \"b8f5e3a1-00ad-4000-8000-000000000001\",\n      \"profilePath\": \"C:\\\\Users\\\\imtia\\\\AppData\\\\Local\\\\forgeniq-uat-sessions\\\\persona-A\",\n      \"registryKey\": \"staging-app.forgeniq.com/A\"\n    },\n    {\n      \"origin\": \"https://staging-app.forgeniq.com\",\n      \"hasProfile\": true,\n      \"persona\": \"B\",\n      \"state\": \"VALID\",\n      \"host\": \"staging-app.forgeniq.com\",\n      \"userId\": \"user_3Fa9TcFi8izkxHdDP58Qb3UY4mr\",\n      \"role\": \"REVIEWER\",\n      \"organisationId\": \"b8f5e3a1-00ad-4000-8000-000000000001\",\n      \"profilePath\": \"C:\\\\Users\\\\imtia\\\\AppData\\\\Local\\\\f"
     },
     {
@@ -851,8 +863,8 @@
       "note": "Mandatory before promotion when FORGENIQ_REQUIRE_CANDIDATE_ISOLATION=1 in phase85h; orchestrator records state without forcing distinct ids locally.",
       "mandatory": true,
       "status": "PASS",
-      "ms": 7416,
-      "output": "{\n  \"generatedAt\": \"2026-11-26T02:03:10.527Z\",\n  \"releasePhase\": \"observe\",\n  \"official\": {\n    \"id\": \"dpl_7bf9Dt5r1UKM6wPWXG1CnNQGomGs\",\n    \"url\": \"https://forgeniq-platform-staging-33o412aem-imis-projects-8e15dca0.vercel.app\",\n    \"exitCode\": 0\n  },\n  \"candidate\": {\n    \"id\": \"dpl_7bf9Dt5r1UKM6wPWXG1CnNQGomGs\",\n    \"url\": \"https://forgeniq-platform-staging-33o412aem-imis-projects-8e15dca0.vercel.app\",\n    \"exitCode\": 0\n  },\n  \"sameDeployment\": true,\n  \"expectedPreviewId\": \"dpl_7bf9Dt5r1UKM6wPWXG1CnNQGomGs\",\n  \"candidateMatchesExpected\": true,\n  \"officialMatchesExpected\": true,\n  \"candidateDistinctFromOfficialDuringValidation\": false,\n  \"isolationRequired\": false\n}\n\n(node:22112) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.\n(Use `node --trace-deprecation ...` to show where the warning was created)\n"
+      "ms": 5470,
+      "output": "{\n  \"generatedAt\": \"2026-11-26T03:43:47.809Z\",\n  \"releasePhase\": \"observe\",\n  \"official\": {\n    \"id\": \"dpl_CABPEw5cx3y96MnMMMtR2o4gSRhF\",\n    \"url\": \"https://forgeniq-platform-staging-oof4qqrf6-imis-projects-8e15dca0.vercel.app\",\n    \"exitCode\": 0\n  },\n  \"candidate\": {\n    \"id\": \"dpl_CABPEw5cx3y96MnMMMtR2o4gSRhF\",\n    \"url\": \"https://forgeniq-platform-staging-oof4qqrf6-imis-projects-8e15dca0.vercel.app\",\n    \"exitCode\": 0\n  },\n  \"sameDeployment\": true,\n  \"expectedPreviewId\": \"dpl_CABPEw5cx3y96MnMMMtR2o4gSRhF\",\n  \"candidateMatchesExpected\": true,\n  \"officialMatchesExpected\": true,\n  \"candidateDistinctFromOfficialDuringValidation\": false,\n  \"isolationRequired\": false\n}\n\n(node:35888) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.\n(Use `node --trace-deprecation ...` to show where the warning was created)\n"
     },
     {
       "id": "CLERK-AUTH-CONTRACT",
@@ -871,7 +883,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 99,
+      "ms": 81,
       "output": "{\"ok\":true,\"mode\":\"contract-only\",\"hosts\":[\"staging-app.forgeniq.com\",\"candidate-staging.forgeniq.com\"]}\n\n"
     },
     {
@@ -891,7 +903,7 @@
       "requires": "network",
       "mandatory": true,
       "status": "PASS",
-      "ms": 378,
+      "ms": 447,
       "output": "{\"origin\":\"https://staging-app.forgeniq.com\",\"ok\":true,\"code\":\"CLERK_READY\",\"httpStatus\":200}\n{\"origin\":\"https://candidate-staging.forgeniq.com\",\"ok\":true,\"code\":\"CLERK_READY\",\"httpStatus\":200}\n\n"
     }
   ]

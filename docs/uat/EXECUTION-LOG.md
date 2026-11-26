@@ -916,3 +916,14 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Evidence collector | FCA-EVAL-001 collector checked against the staging schema (read-only); workflow_events ordering fixed to occurred_at. Technical success and regulatory accuracy kept separate; accuracy NOT_ASSESSED. |
 | QA | 
 pm run qa (ci) **29/29 PASS** including RI-SONNET-55-COMPAT, RI-SHARED-SPEND, RI-LIFECYCLE-LIVE-AI; 	sc --noEmit clean. No provider call made. |
+
+## 2026-11-26 — Sonnet 5.5 tranche: staging migration and candidate-first deploy
+
+| Topic | Outcome |
+|---|---|
+| Git | Commit `6056a89` pushed to `feature/ri-classification-triage`; GitHub Actions run #29 **success** (https://github.com/imtiazking/Brieftick/actions/runs/45749360816). |
+| Migration | `20261126120000` applied to staging Supabase `lhgzdicffkhaaykzthep` after a read-only check (ledger accounts/reservations/recoveries all 0). Verified: one signature each for reserve (11 args), settle (11), release (11); EXECUTE only for `service_role`; RLS enabled **and forced** on accounts, reservations, recoveries, operators; operators table empty; recoveries uniqueness index present. |
+| Deploy | One consolidated deploy, candidate-first. Candidate and official `dpl_AGLgjMw6uZCtqtm193MeKGuGdpuh` (`6056a89`), previous official `dpl_CABPEw5cx3y96MnMMMtR2o4gSRhF` retained as rollback. `qa --mode=promote` **36/36 PASS** (candidate, authenticated, security, promotion). Authenticated browser smoke **19/19** on `candidate-staging.forgeniq.com` before promotion and **19/19** on `staging-app.forgeniq.com` after. Post-deploy QA PASS. |
+| Post-promotion | Catalogue unchanged: 275 publications, 208 findings, 12 verified obligations, 6 risks, 6 controls, 2 assurance reviews (API counts). Database after deploy: ai_analysis_runs 29 (latest 2026-11-23), ledger 0/0/0, obligations 38, risks 30, controls 29, assurance 6 — identical to pre-deploy. No AI run and no ledger activity: execution disabled and stages in fixture mode. |
+| Not touched | `platform`, `brieftick`, `www.forgeniq.com`; no Clerk or permission changes; no deployment deleted; no provider call. |
+| Open | Hosted effective model value is a Secret and cannot be read back; first authorised run records requested/response model in telemetry. |
