@@ -8,6 +8,8 @@ import { buildLockedChildMetadataFromParentRecord } from '@/lib/ri/lab-api/child
 import { linkAssuranceControl } from '@/lib/ri/links';
 import { attemptMandatoryLifecycleLink } from '@/lib/ri/services/lifecycle-link-recovery';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
+import { evidencePackAdvisory, evidencePackSourceSections, regulatoryEvidenceMetadata } from '@/lib/ri/ai/lifecycle-evidence.mjs';
+import { resolveRegulatoryEvidencePack } from '@/lib/ri/services/lifecycle-evidence-loader';
 
 export type Stage5DownstreamResult =
   | { ok: true; skipped: true; reason: string }
@@ -56,6 +58,11 @@ export async function ensureAssurancePlanFromApprovedControl(
     return { ok: true, skipped: false, assuranceReviewId: existing.id, reused: true };
   }
 
+  const evidencePack = await resolveRegulatoryEvidencePack(
+    supabase,
+    params.organisationId,
+    (control.metadata || {}) as Record<string, unknown>,
+  );
   const analysis = await runLifecycleStageAnalysis({
     stage: 5,
     organisationId: params.organisationId,
@@ -66,8 +73,11 @@ export async function ensureAssurancePlanFromApprovedControl(
         citation: 'control',
         text: `${control.name}\n${control.description || ''}`.slice(0, 8000),
       },
+      ...(evidencePack ? evidencePackSourceSections(evidencePack) : []),
     ],
+    evidencePack,
     advisoryContext: {
+      regulatoryEvidence: evidencePackAdvisory(evidencePack),
       instruction:
         'Recommend test procedures and evidence only. Do not record a test result, accept an exception, or close the lifecycle.',
     },
@@ -76,7 +86,7 @@ export async function ensureAssurancePlanFromApprovedControl(
     return { ok: true, skipped: true, reason: analysis.code };
   }
 
-  const mapped = mapAssurancePlanToDraftFields({ structured: analysis.structured });
+  const mapped = mapAssurancePlanToDraftFields({ structured: analysis.structured, claims: analysis.evidence?.accepted });
   const ctrlMeta = (control.metadata || {}) as Record<string, unknown>;
   const metadata = buildLockedChildMetadataFromParentRecord({
     parentMetadata: ctrlMeta,
@@ -89,6 +99,7 @@ export async function ensureAssurancePlanFromApprovedControl(
       stage5PrimaryPlan: true,
       stage5Workflow: 'control_approved_to_assurance_plan',
       stage5Ai: { ...mapped.stage5Metadata, ...lifecycleAiAudit(analysis) },
+      regulatoryEvidence: regulatoryEvidenceMetadata(evidencePack, analysis.evidence),
       assuranceStatus: 'DRAFT',
       assuranceWorkflow: true,
     },

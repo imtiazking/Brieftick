@@ -1,0 +1,30 @@
+{
+  "note": "SHA-256 of the pilot evidence as saved. Later hardening work must not change these files.",
+  "createdAt": "2026-11-26T12:24:33.426Z",
+  "files": {
+    "PILOT-REPORT.md": "5f7b803db42748fec89334c243bd3a11d045a5e819539943ba4f4d64ab9a637e",
+    "PREFLIGHT.md": "713bfbd3c176c4dc7a763dee98e1677dbf2ad08c89302b5e721243a20f7ce79c",
+    "RESTORE.md": "ab1ea30f0f5b7795e9cbd954cab641583d2edcb31cef8e8ceda15309ef5ad6b8",
+    "assurance-approve-response.json": "4611218f095bb1be95423784c38a7f2649d310562e56bc29f50fdf34fd36ab35",
+    "assurance-submit-response.json": "a9ded1a199a7ab492e3f5641c8861f623e8720c6fac8224407f024d7ff258e18",
+    "ledger-reconciliation.json": "d32529c4fc22b3af1abfd753217fdddebaac6211190ab96ae23f187531609b83",
+    "posture-2026-11-26T10-54-42-710Z.json": "13d52510fe8113e812816d875de7608e6087c955456837932350fffd7613f9ae",
+    "posture-2026-11-26T10-55-02-098Z.json": "bf62ab244725024e7f366a5ff49134de7eae4e2e379299e096b8abf1638141bb",
+    "posture-2026-11-26T11-17-39-340Z.json": "21b9e3adfc71aac5ea8831a2d344ad23b5f92c9663698942d0362a84394c662f",
+    "posture-2026-11-26T11-47-31-278Z.json": "9076217c47dfe461d61dc996c34e0e12d3ea42736ea888d65680c94de44a609c",
+    "saved-outputs\\stage2-5-records-as-persisted.json": "66520d8afb620fc938ca272fa96de70460941996c4d010b5dcb2251fe0b2bdf4",
+    "stage1-findings-view.json": "be55cf84ff256aa91eaa38341a577045bda1b2377f7a7357a71a61870314bca0",
+    "stage1-quotation-verification.json": "2049d77cc23f39079751c8b26b8ce44b3f24dd77386cea4b7d3c31327505c290",
+    "stage1-review-response.json": "0cdb30936a0ad0d6923a7ad1c2f43aaa9cea3d753cf67517d3dc6b2e7fe4114f",
+    "stage1-run-raw.json": "e581a93a0f74ec80d4c6d26d8e0339516e48196f0b8c6c692dcedf0c1f734ad9",
+    "stage2-approve-response.json": "9ae65be0dcde52b60d5f4fb55cc69cdc266c70f3a55bd56a6dab53079a826c9f",
+    "stage2-submit-response.json": "5ec010ed962a045b8bd60f042817b8dcc53f733323b0705410781dca7f736533",
+    "stage3-approve-response.json": "2b484177155c5e977d0bd1e91c774ef9dd8462d3a74bfbad5905cc62f2d98b19",
+    "stage3-submit-response.json": "7877414d28687434832527c10d180871f71beca455acd94f5e5efd707f45216f",
+    "stage4-approve-response.json": "afac966f85dc917e9c331dcaa1f7f027a1060cd8914b401a83a8d420f74453e3",
+    "stage4-submit-response.json": "f385ead7434c007bc0eecd02b520235d76a6572b35a63cf7325f0c5ab71cc3f0",
+    "stage5-approve-response.json": "95d61f1a1f52f940de8616b97e2c06de45f654c36589baace19d15a094608c70",
+    "stage5-submit-response.json": "325614d2e8604df9e5f35c2c510de5ee1ca5d298c7fa0764cf15e733c0c8b754",
+    "state.json": "f2d96fdc4f48a9aec63232e0b290b8aefd97ed4d6d169dd5057bee06f3a81ffb"
+  }
+}

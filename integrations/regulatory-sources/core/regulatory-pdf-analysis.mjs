@@ -2,6 +2,8 @@
  * Deterministic regulatory analysis from structured PDF extraction (no generative inference).
  */
 
+import { analyzeInstrumentLegalStatus } from './instrument-legal-status.mjs';
+
 const PUBLICATION_CLASSES = [
   'consultation_paper',
   'policy_statement',
@@ -33,13 +35,16 @@ export function analyzeRegulatoryPdfDocument(input) {
   const fullText = (structured.pages || []).map((p) => p.text).join('\n');
   const url = String(input.canonicalUrl || meta.canonicalUrl || '').toLowerCase();
 
-  const publicationClassification = classifyPublication(meta, url, fullText);
+  const instrument = analyzeInstrumentLegalStatus(structured.pages || []);
+  const publicationClassification = classifyPublication(meta, url, fullText, instrument);
   const regulatoryStatus = deriveRegulatoryStatus(publicationClassification, fullText, meta);
   const developments = extractDevelopments(fullText, regulatoryStatus);
   const applicability = inferApplicability(fullText, publicationClassification);
 
   return {
-    analyzerVersion: 'regulatory-pdf-analysis-v1',
+    analyzerVersion: 'regulatory-pdf-analysis-v2',
+    documentLegalStatus: deriveDocumentLegalStatus(publicationClassification, instrument),
+    instrumentLegalStatus: instrument,
     publicationClassification,
     regulatoryStatus,
     developments,
@@ -74,20 +79,49 @@ function isFinalPolicyStatementText(text, meta, url) {
   return (psRef && policyStatement && finalRules) || (policyStatement && madeInstrument && psRef) || (policyUrl && psRef);
 }
 
-function classifyPublication(meta, url, text) {
+/**
+ * A genuine consultation paper identifies itself on its title page ("Consultation Paper CPxx/yy") and carries draft rules.
+ * A bare mention of "consultation paper" later in a Policy Statement (feedback sections, CP references) is not evidence.
+ */
+function looksLikeConsultationTitlePage(text) {
+  const head = String(text || '').slice(0, 2000);
+  if (/policy statement/i.test(head.slice(0, 600)) || /PS\s*\d{1,2}\s*\/\s*\d{1,3}/.test(head.slice(0, 600))) return false;
+  return /consultation paper/i.test(head) && /CP\s*\d{1,2}\s*\/\s*\d{1,3}/.test(head);
+}
+
+function deriveDocumentLegalStatus(classification, instrument) {
+  if (instrument?.status === 'made') return 'final_made_instrument';
+  if (instrument?.status === 'draft') return 'proposed_draft_instrument';
+  if (classification.primaryClass === 'consultation_paper') return 'consultation_proposals';
+  if (classification.primaryClass === 'policy_statement') return 'final_policy_statement_no_instrument_detected';
+  return 'unknown';
+}
+
+function classifyPublication(meta, url, text, instrument = null) {
   const label = String(meta.publicationTypeLabel || '').toLowerCase();
   const pubType = String(meta.publicationType || meta.publication_type || '').toLowerCase();
   const finalised = resolveFinalisedGuidance(meta, url, text);
+  const lenientPsRef = /PS\s*\d{1,2}\s*\/\s*\d{1,3}/.test(String(text || '').slice(0, 8000));
+  const madeInstrumentPresent = instrument?.status === 'made';
   let primaryClass = 'other_regulatory_publication';
   if (finalised) {
     primaryClass = 'guidance';
   } else if (
     isFinalPolicyStatementText(text, meta, url) ||
-    pubType === 'policy_statement' ||
+    pubType.startsWith('policy_statement') ||
+    (madeInstrumentPresent &&
+      (lenientPsRef || /policy statement/i.test(String(text).slice(0, 15000)) || label.includes('policy statement'))) ||
     (/\bpolicy statement\b/i.test(text.slice(0, 15000)) && /\bPS\s*\d{1,2}\s*\/\s*\d{1,2}\b/i.test(text.slice(0, 8000)))
   ) {
     primaryClass = 'policy_statement';
-  } else if (label.includes('consultation') || url.includes('consultation-papers') || /consultation paper/i.test(text)) {
+  } else if (madeInstrumentPresent) {
+    primaryClass = 'regulatory_rules';
+  } else if (
+    label.includes('consultation') ||
+    url.includes('consultation-papers') ||
+    instrument?.status === 'draft' ||
+    looksLikeConsultationTitlePage(text)
+  ) {
     primaryClass = 'consultation_paper';
   } else if (/policy statement/i.test(text) || label.includes('policy statement')) {
     primaryClass = 'policy_statement';

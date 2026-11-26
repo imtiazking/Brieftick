@@ -8,6 +8,9 @@ import { buildLockedChildMetadataFromParentRecord } from '@/lib/ri/lab-api/child
 import { linkRiskControl } from '@/lib/ri/links';
 import { attemptMandatoryLifecycleLink } from '@/lib/ri/services/lifecycle-link-recovery';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
+import { evidencePackAdvisory, evidencePackSourceSections, regulatoryEvidenceMetadata } from '@/lib/ri/ai/lifecycle-evidence.mjs';
+import { deriveControlRequirements } from '@/lib/ri/ai/control-coverage.mjs';
+import { resolveRegulatoryEvidencePack } from '@/lib/ri/services/lifecycle-evidence-loader';
 
 export type Stage4DownstreamResult =
   | { ok: true; skipped: true; reason: string }
@@ -63,6 +66,11 @@ export async function ensureControlMappingFromApprovedRisk(
     .limit(20);
   if (catalogueErr) throw new Error(catalogueErr.message);
 
+  const evidencePack = await resolveRegulatoryEvidencePack(
+    supabase,
+    params.organisationId,
+    (risk.metadata || {}) as Record<string, unknown>,
+  );
   const analysis = await runLifecycleStageAnalysis({
     stage: 4,
     organisationId: params.organisationId,
@@ -73,8 +81,12 @@ export async function ensureControlMappingFromApprovedRisk(
         citation: 'risk',
         text: `${risk.title}\n${risk.description || ''}`.slice(0, 8000),
       },
+      ...(evidencePack ? evidencePackSourceSections(evidencePack) : []),
     ],
+    evidencePack,
     advisoryContext: {
+      regulatoryEvidence: evidencePackAdvisory(evidencePack),
+      controlRequirements: deriveControlRequirements(evidencePack),
       instruction:
         'existingControls are tenant records. Prefer a match over a new control. Do not claim effectiveness without a recorded test. effectiveness must stay NOT_TESTED when evidence is absent.',
       existingControls: (catalogueControls || []).map((row) => ({
@@ -89,7 +101,11 @@ export async function ensureControlMappingFromApprovedRisk(
     return { ok: true, skipped: true, reason: analysis.code };
   }
 
-  const mapped = mapControlMappingToDraftFields({ structured: analysis.structured });
+  const mapped = mapControlMappingToDraftFields({
+    structured: analysis.structured,
+    claims: analysis.evidence?.accepted,
+    pack: evidencePack,
+  });
   const riskMeta = (risk.metadata || {}) as Record<string, unknown>;
   const metadata = buildLockedChildMetadataFromParentRecord({
     parentMetadata: riskMeta,
@@ -101,6 +117,7 @@ export async function ensureControlMappingFromApprovedRisk(
       stage4PrimaryDraft: true,
       stage4Workflow: 'risk_validated_to_control_draft',
       stage4Ai: { ...mapped.stage4Metadata, ...lifecycleAiAudit(analysis) },
+      regulatoryEvidence: regulatoryEvidenceMetadata(evidencePack, analysis.evidence),
     },
   });
 

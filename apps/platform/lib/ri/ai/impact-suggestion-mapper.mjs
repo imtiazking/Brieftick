@@ -11,6 +11,7 @@ const HUMAN_CONFIRM = 'Requires human confirmation — not verified organisation
  *   obligationStatement?: string | null;
  *   obligationCitation?: string | null;
  *   changeTitle?: string | null;
+ *   evidencePack?: any;
  * }} input
  */
 export function mapImpactSuggestionToDraftFields(input) {
@@ -33,9 +34,16 @@ export function mapImpactSuggestionToDraftFields(input) {
       return `${i + 1}. ${text || 'Suggested impact area'}${refs ? ` [sections: ${refs}]` : ''}`;
     });
 
+  const pack = input.evidencePack && typeof input.evidencePack === 'object' ? input.evidencePack : null;
+  const sourceLine = pack?.provision?.reference
+    ? ` Regulatory source: ${pack.provision.reference}${pack.source?.legalBasis ? ` (${String(pack.source.legalBasis).slice(0, 300)})` : ''}` +
+      `${pack.quotation?.page ? `, PDF p.${pack.quotation.page}` : ''}` +
+      `${pack.quotation?.text ? `; ${pack.quotation.verified ? 'verified' : 'unverified'} quotation: "${String(pack.quotation.text).slice(0, 500)}"` : ''}.` +
+      ` Effective date: ${pack.effective?.date ? `${pack.effective.date} (${pack.effective.source})` : 'not verified — none asserted'}.`
+    : '';
   const regulatory =
     `Regulatory impact (draft, AI-assisted): obligation approval on "${statement.slice(0, 240)}"` +
-    `${cite ? ` (${cite})` : ''}. ${HUMAN_CONFIRM}`;
+    `${cite ? ` (${cite})` : ''}.${sourceLine} ${HUMAN_CONFIRM}`;
   const business =
     dimensions.includes('Operations') || dimensions.includes('Business')
       ? `Operations / business impact areas flagged: ${dimensions.join(', ')}. ${HUMAN_CONFIRM}`
@@ -55,6 +63,7 @@ export function mapImpactSuggestionToDraftFields(input) {
     'Implementation deadlines depend on regulatory effective dates and internal planning.',
     evidenceLines.length ? null : 'No structured evidence claims returned — expand assessment manually.',
     confidence < 70 ? 'Low model confidence — mandatory human review before submit.' : null,
+    ...((pack?.uncertainties ?? []).slice(0, 6)),
   ].filter(Boolean);
 
   return {

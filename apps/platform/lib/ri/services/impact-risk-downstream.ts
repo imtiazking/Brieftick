@@ -8,6 +8,8 @@ import { buildLockedChildMetadataFromParentRecord } from '@/lib/ri/lab-api/child
 import { linkImpactAssessmentRisk, linkObligationRisk } from '@/lib/ri/links';
 import { attemptMandatoryLifecycleLink } from '@/lib/ri/services/lifecycle-link-recovery';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
+import { evidencePackAdvisory, evidencePackSourceSections, regulatoryEvidenceMetadata } from '@/lib/ri/ai/lifecycle-evidence.mjs';
+import { resolveRegulatoryEvidencePack } from '@/lib/ri/services/lifecycle-evidence-loader';
 
 export type Stage3DownstreamResult =
   | { ok: true; skipped: true; reason: string }
@@ -69,6 +71,7 @@ export async function ensureRiskMappingFromApprovedImpact(
     .limit(20);
   if (catalogueErr) throw new Error(catalogueErr.message);
 
+  const evidencePack = await resolveRegulatoryEvidencePack(supabase, params.organisationId, meta);
   const analysis = await runLifecycleStageAnalysis({
     stage: 3,
     organisationId: params.organisationId,
@@ -82,8 +85,13 @@ export async function ensureRiskMappingFromApprovedImpact(
           .join('\n')
           .slice(0, 8000),
       },
+      ...(evidencePack ? evidencePackSourceSections(evidencePack) : []),
     ],
+    evidencePack,
     advisoryContext: {
+      regulatoryEvidence: evidencePackAdvisory(evidencePack),
+      organisationEvidence:
+        'No control-effectiveness evidence is supplied. Do not assert a residual rating; give a documented rationale for any inherent rating.',
       instruction:
         'existingRisks are tenant records. Match them by id only when relevant. Do not invent ids. New risks stay proposals.',
       existingRisks: (catalogueRisks || []).map((row) => ({
@@ -98,7 +106,11 @@ export async function ensureRiskMappingFromApprovedImpact(
     return { ok: true, skipped: true, reason: analysis.code };
   }
 
-  const mapped = mapRiskMappingToDraftFields({ structured: analysis.structured });
+  const mapped = mapRiskMappingToDraftFields({
+    structured: analysis.structured,
+    claims: analysis.evidence?.accepted,
+    organisationEvidence: { controlEffectivenessEvidence: null },
+  });
   const impactMeta = (impact.metadata || {}) as Record<string, unknown>;
   const metadata = buildLockedChildMetadataFromParentRecord({
     parentMetadata: impactMeta,
@@ -109,6 +121,7 @@ export async function ensureRiskMappingFromApprovedImpact(
       stage3PrimaryDraft: true,
       stage3Workflow: 'impact_approved_to_risk_draft',
       stage3Ai: { ...mapped.stage3Metadata, ...lifecycleAiAudit(analysis) },
+      regulatoryEvidence: regulatoryEvidenceMetadata(evidencePack, analysis.evidence),
     },
   });
 

@@ -4,6 +4,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { analyzeRegulatoryPdfDocument } from '../../../../../integrations/regulatory-sources/core/regulatory-pdf-analysis.mjs';
 import { loadPublicationPdfEvidenceForAskRi } from '../ask-ri/load-publication-pdf-evidence.mjs';
+import { buildProvisionLegalContext } from './provision-legal-status.mjs';
 import {
   analyseInstrumentProvisionText,
   detectLegalInstrumentStartPage,
@@ -29,6 +30,8 @@ export const PDF_GROUNDED_USE_CASES = new Set(['UC-RI-005', 'UC-RI-002']);
 const OBLIGATION_EXTRACTION_QUERY =
   'regulatory obligations requirements firms must shall should guidance consumer duty binding rules provisions consultation';
 
+/** Multi-limb rules (e.g. CONC 7.20.1R, about 1,250 characters) must reach the model whole, not cut at 480. */
+export const PROVISION_EXCERPT_MAX_CHARS = 1800;
 export const MAX_SECTIONS = 18;
 export const MAX_CHARS_PER_SECTION = 3200;
 const MIN_BLOCK_SCORE = 1;
@@ -362,7 +365,7 @@ export async function buildPdfGroundedAnalysisContext(params) {
         const row = inventory.byCore?.get(core);
         const excerpt = row ? extractProvisionScopedExcerpt(pageText, row.pages, core) : null;
         return excerpt
-          ? { provisionCore: core, pages: row.pages, authoritativeExcerpt: excerpt.slice(0, 480) }
+          ? { provisionCore: core, pages: row.pages, authoritativeExcerpt: excerpt.slice(0, PROVISION_EXCERPT_MAX_CHARS) }
           : { provisionCore: core, missing: true };
       });
       provisionOutcomesSummary.provisionScopedExtraction = {
@@ -441,6 +444,25 @@ export async function buildPdfGroundedAnalysisContext(params) {
     }
   }
 
+  // Provision-level legal status (commencement from the instrument, limb breakdowns for scoped provisions).
+  let provisionLegal = null;
+  if (Number.isInteger(instrumentStartPage)) {
+    const targetCores = (provisionOutcomesSummary?.provisionScopedExtraction?.targetCores || []).slice(0, 8);
+    const full = buildProvisionLegalContext({
+      pages: (entry.structured?.pages || []).map((p) => ({ pageNumber: p.pageNumber, text: p.text })),
+      instrument: analysis.instrumentLegalStatus,
+      provisionPageIndex: described.provisionPageIndex ?? {},
+      breakdownCores: targetCores,
+    });
+    const slimCommencement = {};
+    for (const [core, c] of Object.entries(full.commencement)) {
+      slimCommencement[core] = targetCores.includes(core)
+        ? c
+        : { status: c.status, commencementDate: c.commencementDate ?? null, basis: c.basis ?? null, clause: c.clause ?? null, reason: c.reason ?? null };
+    }
+    provisionLegal = { ...full, commencement: slimCommencement };
+  }
+
   return {
     ok: true,
     sourceSections,
@@ -458,6 +480,9 @@ export async function buildPdfGroundedAnalysisContext(params) {
         regulatoryStatus: analysis.regulatoryStatus,
         consultationPreserved: analysis.consultationPreserved,
         isFinalisedGuidance: analysis.isFinalisedGuidance,
+        documentLegalStatus: analysis.documentLegalStatus ?? null,
+        analyzerVersion: analysis.analyzerVersion ?? null,
+        provisionLegal,
       },
       selection: described.selection,
       sectionCatalog: described.sourceSections.map((s) => ({

@@ -18,7 +18,13 @@ export function extractProvisionScopedExcerpt(pageTextByNumber, pages, core) {
   const startRe = bodyMarker
     ? new RegExp(`${bodyMarker[1].replace(/\./g, '\\.')}\\s*${bodyMarker[2]}\\b`, 'i')
     : new RegExp(core.replace(/\./g, '\\.'), 'i');
-  const start = merged.search(startRe);
+  // Prefer the occurrence where the provision is set out ("7.20.1 R (1) ..."), not a cross-reference to it
+  // ("... CONC 7.20.1R or CONC 7.20.2G"), which truncated the pilot's authoritative excerpt to "7.20.1R or".
+  const setOutRe = bodyMarker
+    ? new RegExp(`(?<![\\d.])${bodyMarker[1].replace(/\./g, '\\.')}\\s*${bodyMarker[2]}\\s+\\(\\s*\\d`, 'i')
+    : null;
+  const setOutStart = setOutRe ? merged.search(setOutRe) : -1;
+  const start = setOutStart >= 0 ? setOutStart : merged.search(startRe);
   if (start < 0) return null;
   const tail = merged.slice(start);
   NEXT_PROVISION_RE.lastIndex = 0;

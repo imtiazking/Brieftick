@@ -9,6 +9,9 @@ import {
   resolveModelForProviderMode,
 } from '@/lib/ri/ai/provider-registry';
 import { isRiAiExecutionEnabled } from '@/lib/ri/ai/ri-ai-execution';
+import { validateStageClaims } from '@/lib/ri/ai/lifecycle-evidence.mjs';
+
+export type LifecycleEvidenceValidation = ReturnType<typeof validateStageClaims>;
 
 export type LifecycleStageSpec = {
   stage: 2 | 3 | 4 | 5;
@@ -129,6 +132,10 @@ export type LifecycleAiOutcome =
       outputTokens: number | null;
       spendAudit: Record<string, unknown> | null;
       telemetry: LifecycleTelemetry | null;
+      /** Claim validation against the regulatory evidence pack (live outputs when a pack is supplied). */
+      evidence?: LifecycleEvidenceValidation | null;
+      /** Provider output exactly as returned, kept for audit (live only; `structured` may have rejected claims removed). */
+      rawStructured?: Record<string, unknown> | null;
     }
   | {
       ok: false;
@@ -162,7 +169,8 @@ export function liveGroundedCitations(structured: Record<string, unknown> | null
     const provisionReference = asText(row.provisionReference);
     if (!sourceSectionIds.length && !citation && !sourceQuotation && !provisionReference) continue;
     citations.push({
-      text: asText(row.text),
+      // Live stages 3-5 return the claim sentence under `claim`; it was previously dropped (pilot citations had text: null).
+      text: asText(row.text) ?? asText(row.claim) ?? asText(row.summary),
       sourceSectionIds,
       citation,
       sourceQuotation,
@@ -191,6 +199,8 @@ export async function runLifecycleStageAnalysis(params: {
   organisationId: string;
   idempotencyKey: string;
   advisoryContext?: Record<string, unknown> | null;
+  /** Verified regulatory evidence carried from the originating obligation. Live claims are validated against it. */
+  evidencePack?: Record<string, unknown> | null;
   /** Test double. Production uses the registry. */
   providerOverride?: { id: string; execute: (request: Record<string, unknown>) => Promise<Record<string, unknown>> };
 }): Promise<LifecycleAiOutcome> {
@@ -316,7 +326,35 @@ export async function runLifecycleStageAnalysis(params: {
       model,
     };
   }
-  const citations = liveGroundedCitations(result.structured as Record<string, unknown>);
+  let liveStructured = result.structured as Record<string, unknown>;
+  let evidence: LifecycleEvidenceValidation | null = null;
+  if (params.evidencePack) {
+    evidence = validateStageClaims(liveStructured, {
+      pack: params.evidencePack as never,
+      allowedSectionIds: params.sourceSections.map((s) => s.sourceSectionId),
+      sections: params.sourceSections,
+    });
+    if (evidence.rejected.length && !evidence.accepted.length) {
+      return {
+        ok: false,
+        failClosed: true,
+        executionMode: 'live',
+        code: 'AI_OUTPUT_CITATION_UNVERIFIED',
+        message: 'Every claim cited a section, quotation or provision that is not in the verified evidence.',
+        providerId: provider.id,
+        model,
+        spendAudit: rec(result.spendAudit),
+        telemetry: lifecycleTelemetry(result),
+      };
+    }
+    // Fabricated claims are dropped; accepted claims carry their evidence level.
+    liveStructured = {
+      ...liveStructured,
+      claims: evidence.accepted,
+      _citationValidation: { ...evidence.summary, rejected: evidence.rejected },
+    };
+  }
+  const citations = liveGroundedCitations(liveStructured);
   if (!citations.length) {
     return {
       ok: false,
@@ -338,8 +376,10 @@ export async function runLifecycleStageAnalysis(params: {
     executionMode: 'live',
     providerId: provider.id,
     model,
-    structured: result.structured as Record<string, unknown>,
+    structured: liveStructured,
     citations,
+    evidence,
+    rawStructured: result.structured as Record<string, unknown>,
     latencyMs: typeof result.latencyMs === 'number' ? result.latencyMs : null,
     inputTokens: typeof result.inputTokenEstimate === 'number' ? result.inputTokenEstimate : null,
     outputTokens: typeof result.outputTokenEstimate === 'number' ? result.outputTokenEstimate : null,
@@ -355,6 +395,7 @@ export function lifecycleAiAudit(outcome: Extract<LifecycleAiOutcome, { ok: true
     model: outcome.model,
     fixtureMode: outcome.executionMode === 'fixture',
     citations: outcome.citations,
+    rawProviderOutput: outcome.executionMode === 'live' ? outcome.rawStructured ?? null : null,
     latencyMs: outcome.latencyMs,
     inputTokens: outcome.inputTokens,
     outputTokens: outcome.outputTokens,

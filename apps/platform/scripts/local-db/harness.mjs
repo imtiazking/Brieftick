@@ -232,6 +232,31 @@ export function pgVersionLabel() {
   return 'PostgreSQL 18.x (embedded-postgres Windows bundle)';
 }
 
+/** `embedded.start()` can resolve before the postmaster accepts connections (seen as ECONNREFUSED on CI). */
+async function waitForPostgresAccepting(connectionString, { timeoutMs = 20_000 } = {}) {
+  const deadline = Date.now() + timeoutMs;
+  let lastError;
+  while (Date.now() < deadline) {
+    const probe = new pg.Client({ connectionString });
+    probe.on('error', () => {});
+    try {
+      await probe.connect();
+      await probe.query('select 1');
+      await probe.end();
+      return;
+    } catch (e) {
+      lastError = e;
+      try {
+        await probe.end();
+      } catch {
+        /* ignore */
+      }
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  throw lastError ?? new Error('embedded_postgres_not_accepting_connections');
+}
+
 export async function resetAndStartEmbedded({ port: preferredPort } = {}) {
   let lastError;
   for (let attempt = 0; attempt < 8; attempt += 1) {
@@ -274,6 +299,7 @@ export async function resetAndStartEmbedded({ port: preferredPort } = {}) {
     try {
       await embedded.initialise();
       await embedded.start();
+      await waitForPostgresAccepting(`postgresql://postgres:${encodeURIComponent(password)}@127.0.0.1:${port}/postgres`);
       writeEmbeddedRegistry({
         runId,
         sessionId,
@@ -295,7 +321,7 @@ export async function resetAndStartEmbedded({ port: preferredPort } = {}) {
         /* ignore */
       }
       const msg = e instanceof Error ? e.message : String(e);
-      if (!/shared memory block is still in use|EBUSY|address already in use/i.test(msg)) {
+      if (!/shared memory block is still in use|EBUSY|address already in use|ECONNREFUSED/i.test(msg)) {
         throw e;
       }
       await new Promise((r) => setTimeout(r, 350 * (attempt + 1)));

@@ -9,6 +9,8 @@ import {
   PROVISION_FUNCTIONS,
   PROVISION_TEXT_STATUS,
 } from '../classification/provision-eligibility.mjs';
+import { PROVISION_LEGAL_STATUS, verifiedEffectiveDate } from './provision-legal-status.mjs';
+import { quotationLimbCoverage } from './provision-breakdown.mjs';
 
 const NON_BINDING_NATURES = new Set(['guidance', 'explanatory_commentary', 'consultation_proposal', 'unknown']);
 
@@ -18,8 +20,13 @@ const NON_BINDING_NATURES = new Set(['guidance', 'explanatory_commentary', 'cons
 export function resolvePublicationRegulatoryContext(regulatoryAnalysis) {
   const consultationPreserved = regulatoryAnalysis?.consultationPreserved === true;
   const isFinalisedGuidance = regulatoryAnalysis?.isFinalisedGuidance === true;
-  const status = String(regulatoryAnalysis?.regulatoryStatus || '').toLowerCase();
-  const classification = String(regulatoryAnalysis?.publicationClassification || '').toLowerCase();
+  // In pdf_primary_v1 grounding these are objects ({ phase } and { primaryClass }), not strings.
+  const rs = regulatoryAnalysis?.regulatoryStatus;
+  const pc = regulatoryAnalysis?.publicationClassification;
+  const status = String(rs && typeof rs === 'object' ? rs.phase || '' : rs || '').toLowerCase();
+  const classification = String(pc && typeof pc === 'object' ? pc.primaryClass || '' : pc || '')
+    .toLowerCase()
+    .replace(/_/g, ' ');
   const legalInstrumentText =
     !consultationPreserved &&
     !isFinalisedGuidance &&
@@ -28,6 +35,8 @@ export function resolvePublicationRegulatoryContext(regulatoryAnalysis) {
   return {
     consultationPreserved,
     isFinalisedGuidance,
+    documentLegalStatus: regulatoryAnalysis?.documentLegalStatus ?? null,
+    provisionLegal: regulatoryAnalysis?.provisionLegal ?? null,
     legalInstrumentText,
     mustNotPresentAsIndependentBinding,
     documentType: consultationPreserved
@@ -145,6 +154,36 @@ export function applyObligationCandidateRegulatoryGuard(candidate, sourceSection
     });
     guard.conversionEligibilityRoute = eligibility.route;
     guard.conversionEligibilityReasons = eligibility.reasons;
+
+    // Provision-level legal status: traced to the instrument, never to the model's own label or date.
+    const legal = pubCtx.provisionLegal;
+    guard.provisionLegalStatus = pubCtx.consultationPreserved
+      ? PROVISION_LEGAL_STATUS.PROPOSED_CONSULTATION
+      : pubCtx.isFinalisedGuidance
+        ? PROVISION_LEGAL_STATUS.FINAL_GUIDANCE
+        : legal?.legalStatus?.[ref.core] ?? PROVISION_LEGAL_STATUS.UNVERIFIED;
+    if (legal) {
+      const eff = verifiedEffectiveDate(legal, ref.core);
+      guard.effectiveDate = eff;
+      if (candidate.effectiveDate && candidate.effectiveDate !== eff.date) {
+        candidate._modelEffectiveDate = candidate.effectiveDate;
+        candidate._effectiveDateGuarded = eff.date ? 'replaced_with_instrument_commencement' : 'unsupported_model_date_removed';
+      }
+      candidate.effectiveDate = eff.date;
+      candidate._effectiveDateSource = eff.source;
+      const breakdown = legal.breakdowns?.[ref.core];
+      if (breakdown?.parsed) {
+        const coverage = quotationLimbCoverage(breakdown, quotation);
+        guard.quotationLimbCoverage = coverage;
+        if (coverage.onlyConditionOrDefinition) {
+          // An applicability or definition limb is not a standalone obligation (CONC 7.20.1R(1) pilot defect).
+          guard.regulatoryClassificationRoute = 'EXCEPTION';
+          candidate._regulatoryClassificationRoute = 'EXCEPTION';
+          candidate._limbCoverageGuard = 'quotation_covers_applicability_or_definition_limb_only';
+          guard.requiresOperativeLimbQuotation = breakdown.standaloneObligationPaths;
+        }
+      }
+    }
 
     if (pubCtx.mustNotPresentAsIndependentBinding && candidate.bindingNature === 'binding_requirement') {
       candidate.bindingNature = pubCtx.isFinalisedGuidance ? 'finalised_guidance_expectation' : 'consultation_proposal';

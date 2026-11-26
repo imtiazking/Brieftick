@@ -4,6 +4,12 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import type { PlatformRole } from '@/lib/roles';
 import { mapImpactSuggestionToDraftFields } from '@/lib/ri/ai/impact-suggestion-mapper.mjs';
 import { lifecycleAiAudit, runLifecycleStageAnalysis } from '@/lib/ri/ai/lifecycle-stage-ai';
+import {
+  buildRegulatoryEvidencePack,
+  evidencePackAdvisory,
+  evidencePackSourceSections,
+  regulatoryEvidenceMetadata,
+} from '@/lib/ri/ai/lifecycle-evidence.mjs';
 import { FIXTURE_PROVIDER_ID } from '@/lib/ri/ai/fixture-provider';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
 import {
@@ -64,7 +70,7 @@ export async function ensureImpactAssessmentFromApprovedObligation(
   const { data: obligation, error: oblErr } = await supabase
     .from('regulatory_obligations')
     .select(
-      'id, status, obligation_statement, citation, owner_user_id, regulatory_change_id, publication_id',
+      'id, status, obligation_statement, citation, owner_user_id, regulatory_change_id, publication_id, effective_date, metadata',
     )
     .eq('id', params.obligationId)
     .eq('organisation_id', params.organisationId)
@@ -102,6 +108,7 @@ export async function ensureImpactAssessmentFromApprovedObligation(
     actorUserId: params.actorUserId,
   });
 
+  const evidencePack = buildRegulatoryEvidencePack(obligation);
   const analysis = await runLifecycleStageAnalysis({
     stage: 2,
     organisationId: params.organisationId,
@@ -112,8 +119,11 @@ export async function ensureImpactAssessmentFromApprovedObligation(
         citation: obligation.citation || 'obligation',
         text: String(obligation.obligation_statement || '').slice(0, 8000),
       },
+      ...evidencePackSourceSections(evidencePack),
     ],
+    evidencePack,
     advisoryContext: {
+      regulatoryEvidence: evidencePackAdvisory(evidencePack),
       instruction:
         'Organisational systems and financials are not supplied. State assumptions. Do not invent firm facts.',
       changeTitle: change.title || null,
@@ -127,6 +137,7 @@ export async function ensureImpactAssessmentFromApprovedObligation(
     structured: analysis.structured,
     obligationStatement: obligation.obligation_statement,
     obligationCitation: obligation.citation,
+    evidencePack,
     changeTitle: change.title,
   });
   const stage2AiMeta = {
@@ -140,6 +151,7 @@ export async function ensureImpactAssessmentFromApprovedObligation(
     sourceRegulatoryObligationId: params.obligationId,
     stage2Workflow: 'obligation_approved_to_impact_draft',
     stage2Ai: stage2AiMeta,
+    regulatoryEvidence: regulatoryEvidenceMetadata(evidencePack, analysis.evidence),
     recordProvenance,
     labProvenanceLocked: true,
     parentRegulatoryChangeId: obligation.regulatory_change_id,

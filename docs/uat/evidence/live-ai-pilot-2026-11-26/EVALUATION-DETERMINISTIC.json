@@ -1,0 +1,270 @@
+{
+  "generatedAt": "2026-11-26T12:24:34.550Z",
+  "originalsManifest": {
+    "ok": true,
+    "fileCount": 24,
+    "mismatches": []
+  },
+  "evaluatorVersion": "pilot-saved-output-evaluator-v1",
+  "paidAiCalls": 0,
+  "provisionBreakdown": {
+    "reference": "CONC 7.20.1R",
+    "standaloneObligationPaths": [
+      "CONC 7.20.1R(2)(a)",
+      "CONC 7.20.1R(2)(b)",
+      "CONC 7.20.1R(3)"
+    ],
+    "limbCount": 12
+  },
+  "commencement": {
+    "provisionReference": "CONC 7.20.1R",
+    "page": 94,
+    "instrumentStatus": "made",
+    "instrument": {
+      "title": "Deferred Payment Credit Instrument 2026",
+      "number": "FCA 2026/2"
+    },
+    "annex": "F",
+    "annexTitle": "Consumer Credit sourcebook (CONC)",
+    "status": "resolved",
+    "commencementDate": "2026-07-15",
+    "dateText": "15 July 2026",
+    "basis": "commencement_clause_all_other_parts",
+    "clause": "H",
+    "evidence": [
+      {
+        "kind": "commencement_clause",
+        "page": 63,
+        "quotation": "H. All other parts of this instrument come into force on 15 July 2026"
+      }
+    ]
+  },
+  "documentLegalStatus": "final_made_instrument",
+  "counts": {
+    "correct_findings": 4,
+    "incorrect_findings": 4,
+    "missing_requirements": 4,
+    "unsupported_statements": 2,
+    "insufficient_citations": 7,
+    "unjustified_risk_ratings": 3,
+    "control_gaps": 5,
+    "assurance_deficiencies": 4
+  },
+  "correct_findings": [
+    {
+      "stage": 1,
+      "id": "provision_reference_and_code",
+      "detail": "CONC 7.20.1R identified with classification code R, matching the instrument."
+    },
+    {
+      "stage": 1,
+      "id": "definition_limb_noted",
+      "detail": "Applicability text correctly records the (4) exclusion of non-compliance charges from \"payment\"."
+    },
+    {
+      "stage": 2,
+      "id": "impact_restates_notification_and_timing",
+      "detail": "Impact claim correctly restates the (2)(a) notification duty and the \"as soon as possible\" timing."
+    },
+    {
+      "stage": 5,
+      "id": "assurance_appropriately_provisional",
+      "detail": "The plan makes no effectiveness conclusion and states it is provisional."
+    }
+  ],
+  "incorrect_findings": [
+    {
+      "stage": 1,
+      "id": "provision_labelled_consultation_proposal",
+      "detail": "The candidate was labelled consultation_proposal and the run context was \"consultation\", but the publication contains the made instrument (FCA 2026/2).",
+      "evidence": {
+        "pilotDocumentType": "consultation",
+        "platformDocumentLegalStatus": "final_made_instrument",
+        "instrument": "Deferred Payment Credit Instrument 2026"
+      }
+    },
+    {
+      "stage": 1,
+      "id": "effective_date_missing",
+      "detail": "effectiveDate was null; the instrument states commencement 2026-07-15 (H. All other parts of this instrument come into force on 15 July 2026).",
+      "evidence": [
+        {
+          "kind": "commencement_clause",
+          "page": 63,
+          "quotation": "H. All other parts of this instrument come into force on 15 July 2026"
+        }
+      ]
+    },
+    {
+      "stage": 1,
+      "id": "quotation_covers_applicability_limb_only",
+      "detail": "The model's verbatim quotation covers only CONC 7.20.1R(1) (an applicability condition); the operative duty text was supplied later by the reviewer."
+    },
+    {
+      "stage": 1,
+      "id": "authoritative_excerpt_started_at_cross_reference",
+      "detail": "The authoritative excerpt supplied to the model began at a cross-reference (\"CONC 7.20.1R or ...\") on p.94 instead of where the rule is set out, so the model reported the excerpt as truncated."
+    }
+  ],
+  "missing_requirements": [
+    {
+      "stage": 1,
+      "id": "limb_not_in_candidate:CONC 7.20.1R(2)(b)",
+      "detail": "CONC 7.20.1R(2)(b) is a standalone mandatory limb not reproduced verbatim in the extracted candidate.",
+      "limbKind": "mandatory_information"
+    },
+    {
+      "stage": 1,
+      "id": "limb_not_in_candidate:CONC 7.20.1R(3)",
+      "detail": "CONC 7.20.1R(3) is a standalone mandatory limb not reproduced verbatim in the extracted candidate.",
+      "limbKind": "information_together_requirement"
+    },
+    {
+      "stage": "1-5",
+      "id": "limb_never_carried_downstream:CONC 7.20.1R(2)(b)",
+      "detail": "CONC 7.20.1R(2)(b) (mandatory_information) is absent from the materialised obligation, and therefore from the impact, risk, control and assurance records.",
+      "carriedInDownstreamText": false
+    },
+    {
+      "stage": "1-5",
+      "id": "limb_never_carried_downstream:CONC 7.20.1R(3)",
+      "detail": "CONC 7.20.1R(3) (information_together_requirement) is absent from the materialised obligation, and therefore from the impact, risk, control and assurance records.",
+      "carriedInDownstreamText": false
+    }
+  ],
+  "unsupported_statements": [
+    {
+      "stage": 4,
+      "id": "control_mechanism_not_in_evidence",
+      "detail": "The control specifies an \"automated daily reconciliation\" mechanism that appears in neither the obligation nor the risk record. It is a proposal, not an organisational fact, but the record reads like an existing control."
+    },
+    {
+      "stage": 5,
+      "id": "assurance_treats_proposed_control_as_existing",
+      "detail": "The assurance claims state \"the control is an automated daily reconciliation ...\" as if it were in operation; no organisational control evidence was supplied."
+    }
+  ],
+  "insufficient_citations": [
+    {
+      "stage": 2,
+      "id": "stage2_citations",
+      "detail": "4 claim(s): 0 with a quotation, 0 with a provision reference, 4 citing only an internal section identifier.",
+      "claimCount": 4,
+      "withQuotation": 0,
+      "withProvisionReference": 0,
+      "internalIdentifierOnly": 4
+    },
+    {
+      "stage": 3,
+      "id": "stage3_citations",
+      "detail": "3 claim(s): 0 with a quotation, 0 with a provision reference, 3 citing only an internal section identifier.",
+      "claimCount": 3,
+      "withQuotation": 0,
+      "withProvisionReference": 0,
+      "internalIdentifierOnly": 3
+    },
+    {
+      "stage": 3,
+      "id": "stage3_claim_text_not_persisted",
+      "detail": "3 citation row(s) have text null because the provider returned the sentence under \"claim\" and the mapper only read \"text\" (the sentence survives only in aiClaims).",
+      "aiClaimsRetained": 3
+    },
+    {
+      "stage": 4,
+      "id": "stage4_citations",
+      "detail": "3 claim(s): 0 with a quotation, 0 with a provision reference, 3 citing only an internal section identifier.",
+      "claimCount": 3,
+      "withQuotation": 0,
+      "withProvisionReference": 0,
+      "internalIdentifierOnly": 3
+    },
+    {
+      "stage": 4,
+      "id": "stage4_claim_text_not_persisted",
+      "detail": "3 citation row(s) have text null because the provider returned the sentence under \"claim\" and the mapper only read \"text\" (the sentence survives only in aiClaims).",
+      "aiClaimsRetained": 3
+    },
+    {
+      "stage": 5,
+      "id": "stage5_citations",
+      "detail": "3 claim(s): 0 with a quotation, 0 with a provision reference, 3 citing only an internal section identifier.",
+      "claimCount": 3,
+      "withQuotation": 0,
+      "withProvisionReference": 0,
+      "internalIdentifierOnly": 3
+    },
+    {
+      "stage": 5,
+      "id": "stage5_claim_text_not_persisted",
+      "detail": "3 citation row(s) have text null because the provider returned the sentence under \"claim\" and the mapper only read \"text\" (the sentence survives only in aiClaims).",
+      "aiClaimsRetained": 3
+    }
+  ],
+  "unjustified_risk_ratings": [
+    {
+      "stage": 3,
+      "id": "inherent_rating_without_rationale",
+      "detail": "inherent_risk \"High\" is stored with no documented rationale in the record."
+    },
+    {
+      "stage": 3,
+      "id": "residual_rating_without_control_evidence",
+      "detail": "residual_risk \"Medium\" was set although no control-effectiveness evidence existed (the mapper defaulted it)."
+    },
+    {
+      "stage": 2,
+      "id": "impact_materiality_from_model_confidence",
+      "detail": "Impact materiality \"LOW\" and complexity \"HIGH\" are computed from model confidence (55%) and the count of impact dimensions, not from regulatory or organisational evidence. Left unchanged; flagged for expert review."
+    }
+  ],
+  "control_gaps": [
+    {
+      "stage": 4,
+      "id": "control_does_not_address_borrower_notification",
+      "detail": "The control detects and logs missed payments internally; nothing in it notifies the borrower or delivers the (2)(b) information, which is what CONC 7.20.1R(2) requires."
+    },
+    {
+      "stage": 4,
+      "id": "requirement_uncovered:CONC 7.20.1R(2)(a):notification",
+      "detail": "No coverage for CONC 7.20.1R(2)(a) (notification)."
+    },
+    {
+      "stage": 4,
+      "id": "requirement_uncovered:CONC 7.20.1R(2)(b):information_completeness",
+      "detail": "No coverage for CONC 7.20.1R(2)(b) (information_completeness)."
+    },
+    {
+      "stage": 4,
+      "id": "requirement_uncovered:CONC 7.20.1R(3):information_completeness",
+      "detail": "No coverage for CONC 7.20.1R(3) (information_completeness)."
+    },
+    {
+      "stage": 4,
+      "id": "requirement_uncovered:CONC 7.20.1R(2):timeliness",
+      "detail": "No coverage for CONC 7.20.1R(2) (timeliness)."
+    }
+  ],
+  "assurance_deficiencies": [
+    {
+      "stage": 5,
+      "id": "procedure_truncated_at_1500",
+      "detail": "The Procedure section is exactly 1500 characters and stops mid-sentence (\"...eview open and ageing exceptions for esc\"). Cause: assurance-plan-mapper sliced it to 1500 characters.",
+      "characters": 1500
+    },
+    {
+      "stage": 5,
+      "id": "evidence_list_flattened",
+      "detail": "The evidence requirements were an array coerced to one string with bare commas (\"...Procedure,Full obligation...\"), losing the list structure."
+    },
+    {
+      "stage": 5,
+      "id": "frequency_not_persisted",
+      "detail": "The plan frequency was requested but never written to the notes."
+    },
+    {
+      "stage": 5,
+      "id": "plan_does_not_test_regulatory_outcome",
+      "detail": "The test plan covers reconciliation operation, not whether borrowers were notified correctly and in time."
+    }
+  ]
+}

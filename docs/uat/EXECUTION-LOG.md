@@ -940,3 +940,13 @@ pm run qa (ci) **29/29 PASS** including RI-SONNET-55-COMPAT, RI-SHARED-SPEND, RI
 | Harness change | Persona preflight retries handshake navigation and expects `aiRequest` only while paid AI is enabled |
 | Evidence | `docs/uat/evidence/live-ai-pilot-2026-11-26/` (PILOT-REPORT.md, RESTORE.md, ledger-reconciliation.json, raw responses) |
 | Not touched | `platform`, `brieftick`, `www.forgeniq.com`; no Clerk or permission changes; no deployment deleted |
+
+## 2026-11-26 - FCA-EVAL-001 pilot findings and regulatory accuracy hardening (tranche)
+
+| Item | Outcome |
+|---|---|
+| Scope | Local hardening only; 0 paid AI calls; paid AI remains disabled |
+| Decisions | Instrument-level legal status separated from document type (consultation never promoted); commencement derived only from the instrument's Commencement clauses/annex table, with explicit unresolved states; applicability/definition limbs are not standalone obligations; internal section ids are not regulatory evidence; ratings provisional/unassessed without rationale/control evidence; assurance truncation root cause was the mapper slice, not provider/DB/UI |
+| Tests | RI-PILOT-ACCURACY-HARDENING 80/80; npm run qa (ci) 30/30; tsc clean; related legacy acceptance pass |
+| Staging data | Pilot obligation dc63a70a effective_date set to 2026-07-15 with provenance metadata (additive jsonb merge, existing keys preserved, OPEN status unchanged); no historical stage output altered |
+| Evidence | docs/uat/evidence/live-ai-pilot-2026-11-26/HARDENING-REPORT.md, EVALUATION-DETERMINISTIC.json, ORIGINALS-MANIFEST.json |

@@ -28,6 +28,7 @@ import {
   loadPublicationClassificationContext,
 } from '@/lib/ri/services/classification-policy';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
+import { legalRecordForProvision } from '@/lib/ri/ai/provision-legal-status.mjs';
 
 const FINDING_REVIEW_USE_CASE = 'UC-RI-005';
 
@@ -169,6 +170,46 @@ async function loadPdfPageTexts(publicationId: string, expectedRevisionId: strin
   return { admin, pages };
 }
 
+/**
+ * Persist the instrument-traced commencement date and the provision limb breakdown on each materialised obligation.
+ * The effective date is written only when the instrument's own commencement clause or part heading resolves it.
+ */
+async function recordProvisionLegalRecords(params: {
+  organisationId: string;
+  pages: Map<number, string>;
+  materialised: Array<{ findingId: string; obligationId: string }>;
+  provisionByFinding: Map<string, string | null>;
+}) {
+  const admin = createSupabaseAdminClient();
+  if (!admin) return;
+  const pages = [...params.pages.entries()].map(([pageNumber, text]) => ({ pageNumber, text }));
+  for (const m of params.materialised) {
+    const provisionReference = params.provisionByFinding.get(m.findingId);
+    if (!provisionReference) continue;
+    const record = legalRecordForProvision({ pages, provisionReference });
+    const { data: row, error } = await admin
+      .from('regulatory_obligations')
+      .select('id, effective_date, metadata')
+      .eq('id', m.obligationId)
+      .eq('organisation_id', params.organisationId)
+      .maybeSingle();
+    if (error || !row) continue;
+    const update: Record<string, unknown> = {
+      metadata: {
+        ...((row.metadata as Record<string, unknown>) ?? {}),
+        commencement: record.commencement ?? { status: 'unresolved', reason: record.reason ?? 'unresolved' },
+        commencementTraceVersion: record.version ?? null,
+        provisionBreakdown: record.breakdown ?? null,
+        transitionalScan: record.transitional ?? null,
+      },
+    };
+    if (record.status === 'resolved' && !row.effective_date) {
+      update.effective_date = (record.commencement as { commencementDate: string }).commencementDate;
+    }
+    await admin.from('regulatory_obligations').update(update).eq('id', m.obligationId).eq('organisation_id', params.organisationId);
+  }
+}
+
 export async function submitFindingReview(
   supabase: SupabaseClient,
   params: {
@@ -206,6 +247,7 @@ export async function submitFindingReview(
 
   const toMaterialise = validated.decisions.filter((d: { createsObligation?: boolean }) => d.createsObligation);
   const insertedVerificationIds: string[] = [];
+  let materialisationPages: Map<number, string> | null = null;
   if (toMaterialise.length > 0) {
     assertHumanReviewedDraftMaterialisation({
       action: HUMAN_REVIEWED_DRAFT_MATERIALISATION,
@@ -214,6 +256,7 @@ export async function submitFindingReview(
       targetStatus: 'DRAFT',
     });
     const { admin, pages } = await loadPdfPageTexts(run.publication_id, view.evidence.extractionRevisionId);
+    materialisationPages = pages;
     const numberById = new Map<string, number>(
       view.findings.map((f: { findingId: string; number: number }) => [f.findingId, f.number]),
     );
@@ -303,6 +346,23 @@ export async function submitFindingReview(
     materialised: Array<{ findingId: string; claimIndex: number; obligationId: string; classificationCode: string; legalStatus: string }>;
     skipped: Array<{ findingId: string; claimIndex: number; decision: string; reason: string; triageQueue: string }>;
   };
+
+  if (materialisationPages && result.materialised?.length) {
+    try {
+      const provisionByFinding = new Map<string, string | null>(
+        validated.decisions.map((d: Record<string, unknown>) => [String(d.findingId), (d.provisionReference as string | null) ?? null]),
+      );
+      await recordProvisionLegalRecords({
+        organisationId: params.organisationId,
+        pages: materialisationPages,
+        materialised: result.materialised,
+        provisionByFinding,
+      });
+    } catch (e) {
+      // Non-fatal: the obligation stays a draft without a verified commencement; the date is never guessed.
+      console.error('[ri-ai] provision_legal_record_failed', e instanceof Error ? e.message.slice(0, 160) : 'unknown');
+    }
+  }
 
   try {
     await recordAiNotificationEvent(supabase, {
