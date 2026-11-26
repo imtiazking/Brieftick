@@ -1,0 +1,986 @@
+{
+  "at": "2026-11-26T16:06:48.428Z",
+  "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+  "elapsedMs": 18088,
+  "status": 200,
+  "body": {
+    "ok": true,
+    "control": {
+      "id": "bdb634df-e1a5-4883-9fca-990a44a294b8",
+      "name": "Missed payment detection and exception monitoring (existing control – proposed scope extension)",
+      "description": "Draft proposal to map the existing detective control (id cfc87ee5-1894-4627-841b-6e22a084d7c9) to the detection of missed payments under CONC 7.20.1R(1). No recorded test evidence is supplied, so effectiveness is NOT_TESTED. The control's actual design and scope have not been supplied and must be confirmed by a human reviewer. It is assumed not to notify borrowers or provide information, so it does not claim coverage of CONC 7.20.1R(2)(a), (2)(b) or (3). Whether it covers regulated deferred payment credit agreements specifically, and applies the CONC 7.20.1R(4) definition of 'payment' (capital repayment only, excluding charges for non-compliance), needs confirmation.\n\nAddresses: CONC 7.20.1R(1) (detection); CONC 7.20.1R (monitoring).\n\nRequires human confirmation — not verified organisational fact.",
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "owner": "user_3Fa…",
+      "controlType": "Detective",
+      "frequency": null,
+      "effectiveness": "NOT_TESTED",
+      "testingStatus": "NOT_TESTED",
+      "status": "Active",
+      "updatedAt": "2026-11-26T16:06:31.693508+00:00",
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "tenantScope": true,
+      "sourceApprovedRiskId": "dd826913-7d44-48f8-b3f1-0ca00dd2e429",
+      "sourceRegulatoryObligationId": "8385215c-c108-4731-aa64-56385f8b4b6d",
+      "riskIds": [
+        "dd826913-7d44-48f8-b3f1-0ca00dd2e429"
+      ],
+      "obligationIds": [
+        "8385215c-c108-4731-aa64-56385f8b4b6d"
+      ],
+      "_connected": true
+    }
+  },
+  "after": {
+    "ok": true,
+    "control": {
+      "id": "bdb634df-e1a5-4883-9fca-990a44a294b8",
+      "name": "Missed payment detection and exception monitoring (existing control – proposed scope extension)",
+      "description": "Draft proposal to map the existing detective control (id cfc87ee5-1894-4627-841b-6e22a084d7c9) to the detection of missed payments under CONC 7.20.1R(1). No recorded test evidence is supplied, so effectiveness is NOT_TESTED. The control's actual design and scope have not been supplied and must be confirmed by a human reviewer. It is assumed not to notify borrowers or provide information, so it does not claim coverage of CONC 7.20.1R(2)(a), (2)(b) or (3). Whether it covers regulated deferred payment credit agreements specifically, and applies the CONC 7.20.1R(4) definition of 'payment' (capital repayment only, excluding charges for non-compliance), needs confirmation.\n\nAddresses: CONC 7.20.1R(1) (detection); CONC 7.20.1R (monitoring).\n\nRequires human confirmation — not verified organisational fact.",
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "owner": "user_3Fa…",
+      "controlType": "Detective",
+      "frequency": null,
+      "effectiveness": "NOT_TESTED",
+      "testingStatus": "NOT_TESTED",
+      "status": "Active",
+      "updatedAt": "2026-11-26T16:06:31.693508+00:00",
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "tenantScope": true,
+      "sourceApprovedRiskId": "dd826913-7d44-48f8-b3f1-0ca00dd2e429",
+      "sourceRegulatoryObligationId": "8385215c-c108-4731-aa64-56385f8b4b6d",
+      "riskIds": [
+        "dd826913-7d44-48f8-b3f1-0ca00dd2e429"
+      ],
+      "obligationIds": [],
+      "_connected": true,
+      "evidenceIds": [],
+      "findingIds": [],
+      "assuranceReviewIds": [
+        "4da58d49-11a5-4f0e-aa83-120c3d538fc9"
+      ]
+    },
+    "detail": {
+      "id": "bdb634df-e1a5-4883-9fca-990a44a294b8",
+      "organisation_id": "b8f5e3a1-00ad-4000-8000-000000000001",
+      "external_key": null,
+      "name": "Missed payment detection and exception monitoring (existing control – proposed scope extension)",
+      "description": "Draft proposal to map the existing detective control (id cfc87ee5-1894-4627-841b-6e22a084d7c9) to the detection of missed payments under CONC 7.20.1R(1). No recorded test evidence is supplied, so effectiveness is NOT_TESTED. The control's actual design and scope have not been supplied and must be confirmed by a human reviewer. It is assumed not to notify borrowers or provide information, so it does not claim coverage of CONC 7.20.1R(2)(a), (2)(b) or (3). Whether it covers regulated deferred payment credit agreements specifically, and applies the CONC 7.20.1R(4) definition of 'payment' (capital repayment only, excluding charges for non-compliance), needs confirmation.\n\nAddresses: CONC 7.20.1R(1) (detection); CONC 7.20.1R (monitoring).\n\nRequires human confirmation — not verified organisational fact.",
+      "owner_user_id": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "control_type": "Detective",
+      "frequency": null,
+      "nature": null,
+      "execution_type": null,
+      "effectiveness": "NOT_TESTED",
+      "testing_status": "NOT_TESTED",
+      "status": "ACTIVE",
+      "created_at": "2026-11-26T16:06:00.459821+00:00",
+      "updated_at": "2026-11-26T16:06:31.693508+00:00",
+      "metadata": {
+        "stage4Ai": {
+          "model": "claude-sonnet-5-5",
+          "aiClaims": [
+            {
+              "text": "Notification and timeliness controls are required to address the binding obligation to notify the borrower of the missed payment and unpaid sums as soon as possible.",
+              "claim": "Notification and timeliness controls are required to address the binding obligation to notify the borrower of the missed payment and unpaid sums as soon as possible.",
+              "evidenceLevel": "regulatory_verified",
+              "sourceQuotation": "As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement)",
+              "sourceSectionIds": [
+                "REG-1"
+              ],
+              "provisionReference": "CONC 7.20.1R",
+              "onlyInternalIdentifiers": false
+            },
+            {
+              "text": "A control is needed so that the required information is delivered in a single communication.",
+              "claim": "A control is needed so that the required information is delivered in a single communication.",
+              "evidenceLevel": "regulatory_verified",
+              "sourceQuotation": "The information required under (2) must be provided together.",
+              "sourceSectionIds": [
+                "REG-1"
+              ],
+              "provisionReference": "CONC 7.20.1R(3)",
+              "onlyInternalIdentifiers": false
+            },
+            {
+              "text": "Detection of missed payments is the trigger for the obligations, so detection controls are relevant to this limb.",
+              "claim": "Detection of missed payments is the trigger for the obligations, so detection controls are relevant to this limb.",
+              "evidenceLevel": "regulatory_verified",
+              "sourceQuotation": "This rule applies where a borrower has failed to make a payment by the time it has fallen due under the terms of a regulated deferred payment credit agreement (‘a missed payment’).",
+              "sourceSectionIds": [
+                "REG-1"
+              ],
+              "provisionReference": "CONC 7.20.1R(1)",
+              "onlyInternalIdentifiers": false
+            }
+          ],
+          "citations": [
+            {
+              "text": "Notification and timeliness controls are required to address the binding obligation to notify the borrower of the missed payment and unpaid sums as soon as possible.",
+              "citation": null,
+              "sourceQuotation": "As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement)",
+              "sourceSectionIds": [
+                "REG-1"
+              ],
+              "provisionReference": "CONC 7.20.1R"
+            },
+            {
+              "text": "A control is needed so that the required information is delivered in a single communication.",
+              "citation": null,
+              "sourceQuotation": "The information required under (2) must be provided together.",
+              "sourceSectionIds": [
+                "REG-1"
+              ],
+              "provisionReference": "CONC 7.20.1R(3)"
+            },
+            {
+              "text": "Detection of missed payments is the trigger for the obligations, so detection controls are relevant to this limb.",
+              "citation": null,
+              "sourceQuotation": "This rule applies where a borrower has failed to make a payment by the time it has fallen due under the terms of a regulated deferred payment credit agreement (‘a missed payment’).",
+              "sourceSectionIds": [
+                "REG-1"
+              ],
+              "provisionReference": "CONC 7.20.1R(1)"
+            }
+          ],
+          "latencyMs": 17565,
+          "telemetry": {
+            "effort": "medium",
+            "stopReason": "end_turn",
+            "usageKnown": true,
+            "reservedUsd": 0.095776,
+            "outputTokens": 2727,
+            "thinkingType": "adaptive",
+            "responseModel": "claude-sonnet-5-5",
+            "pricingVersion": "anthropic-list-2026-11-26",
+            "requestedModel": "claude-sonnet-5-5",
+            "cacheReadTokens": 0,
+            "providerRequestId": "req_011ChRppbWM4vAadwcQXaGCC",
+            "cacheWrite1hTokens": 0,
+            "cacheWrite5mTokens": 0,
+            "settledEstimatedUsd": 0.035692,
+            "standardInputTokens": 4211
+          },
+          "aiProvider": "AIPROV-ANTHROPIC-001",
+          "aiUseCaseId": "UC-RI-007",
+          "fixtureMode": false,
+          "inputTokens": 4211,
+          "aiConfidence": 62,
+          "estimatedUsd": 0.035692,
+          "outputTokens": 2727,
+          "executionMode": "live",
+          "controlCoverage": {
+            "gaps": [],
+            "version": "control-coverage-v1",
+            "complete": true,
+            "perProposal": [
+              {
+                "name": "Missed payment detection and exception monitoring (existing control – proposed scope extension)",
+                "index": 0,
+                "accepted": [
+                  {
+                    "category": "detection",
+                    "justification": "Detecting a failure to pay by the due date under a regulated deferred payment credit agreement is the trigger for the rule. The existing control may support this if its scope is confirmed, and the CONC 7.20.1R(4) definition of 'payment' should be reflected in detection logic.",
+                    "obligationLimb": "CONC 7.20.1R(1)"
+                  },
+                  {
+                    "category": "monitoring",
+                    "justification": "Exception monitoring of missed payments could provide a basis for ongoing oversight. This is a recommended control, not rule text, and its adequacy is unconfirmed.",
+                    "obligationLimb": "CONC 7.20.1R"
+                  }
+                ],
+                "rejected": []
+              },
+              {
+                "name": "Missed payment borrower notification workflow with timeliness tracking (new)",
+                "index": 1,
+                "accepted": [
+                  {
+                    "category": "notification",
+                    "justification": "The workflow notifies the borrower that the missed payment has occurred and of unpaid sums, including unpaid charges for non-compliance.",
+                    "obligationLimb": "CONC 7.20.1R(2)(a)"
+                  },
+                  {
+                    "category": "timeliness",
+                    "justification": "A tracked internal timing standard, subject to expert confirmation, evidences that notification occurs as soon as possible after the missed payment.",
+                    "obligationLimb": "CONC 7.20.1R(2)"
+                  }
+                ],
+                "rejected": []
+              },
+              {
+                "name": "Single-communication content template and completeness check (new)",
+                "index": 2,
+                "accepted": [
+                  {
+                    "category": "information_completeness",
+                    "justification": "The template and check ensure the agreement identification, adverse consequences, likely consequences and relevant mitigation steps are included.",
+                    "obligationLimb": "CONC 7.20.1R(2)(b)"
+                  },
+                  {
+                    "category": "information_completeness",
+                    "justification": "Issuing all required information in a single communication supports the requirement that it be provided together.",
+                    "obligationLimb": "CONC 7.20.1R(3)"
+                  }
+                ],
+                "rejected": []
+              },
+              {
+                "name": "Missed payment notification monitoring and evidence retention (new)",
+                "index": 3,
+                "accepted": [
+                  {
+                    "category": "monitoring",
+                    "justification": "Reconciling detected missed payments to notifications issued identifies gaps and late notifications.",
+                    "obligationLimb": "CONC 7.20.1R"
+                  },
+                  {
+                    "category": "evidence_retention",
+                    "justification": "Retaining communications and timestamps provides evidence of compliance for review.",
+                    "obligationLimb": "CONC 7.20.1R"
+                  }
+                ],
+                "rejected": []
+              }
+            ],
+            "requirements": [
+              {
+                "basis": "rule_limb",
+                "category": "detection",
+                "limbKind": "applicability_condition",
+                "reference": "CONC 7.20.1R(1)"
+              },
+              {
+                "basis": "rule_limb",
+                "category": "notification",
+                "limbKind": "mandatory_notification",
+                "reference": "CONC 7.20.1R(2)(a)"
+              },
+              {
+                "basis": "rule_limb",
+                "category": "information_completeness",
+                "limbKind": "mandatory_information",
+                "reference": "CONC 7.20.1R(2)(b)"
+              },
+              {
+                "basis": "rule_limb",
+                "category": "information_completeness",
+                "limbKind": "information_together_requirement",
+                "reference": "CONC 7.20.1R(3)"
+              },
+              {
+                "basis": "rule_limb",
+                "category": "timeliness",
+                "limbKind": "operative_lead_in",
+                "reference": "CONC 7.20.1R(2)"
+              },
+              {
+                "basis": "recommended_not_rule_text",
+                "category": "monitoring",
+                "limbKind": null,
+                "reference": "CONC 7.20.1R"
+              },
+              {
+                "basis": "recommended_not_rule_text",
+                "category": "evidence_retention",
+                "limbKind": null,
+                "reference": "CONC 7.20.1R"
+              }
+            ],
+            "ruleLimbGaps": [],
+            "gapsPrimaryControlOnly": [
+              {
+                "basis": "rule_limb",
+                "category": "notification",
+                "limbKind": "mandatory_notification",
+                "reference": "CONC 7.20.1R(2)(a)"
+              },
+              {
+                "basis": "rule_limb",
+                "category": "information_completeness",
+                "limbKind": "mandatory_information",
+                "reference": "CONC 7.20.1R(2)(b)"
+              },
+              {
+                "basis": "rule_limb",
+                "category": "information_completeness",
+                "limbKind": "information_together_requirement",
+                "reference": "CONC 7.20.1R(3)"
+              },
+              {
+                "basis": "rule_limb",
+                "category": "timeliness",
+                "limbKind": "operative_lead_in",
+                "reference": "CONC 7.20.1R(2)"
+              },
+              {
+                "basis": "recommended_not_rule_text",
+                "category": "evidence_retention",
+                "limbKind": null,
+                "reference": "CONC 7.20.1R"
+              }
+            ],
+            "limbBreakdownAvailable": true
+          },
+          "controlProposals": [
+            {
+              "name": "Missed payment detection and exception monitoring (existing control – proposed scope extension)",
+              "coverage": [
+                {
+                  "category": "detection",
+                  "justification": "Detecting a failure to pay by the due date under a regulated deferred payment credit agreement is the trigger for the rule. The existing control may support this if its scope is confirmed, and the CONC 7.20.1R(4) definition of 'payment' should be reflected in detection logic.",
+                  "obligationLimb": "CONC 7.20.1R(1)"
+                },
+                {
+                  "category": "monitoring",
+                  "justification": "Exception monitoring of missed payments could provide a basis for ongoing oversight. This is a recommended control, not rule text, and its adequacy is unconfirmed.",
+                  "obligationLimb": "CONC 7.20.1R"
+                }
+              ],
+              "description": "Draft proposal to map the existing detective control (id cfc87ee5-1894-4627-841b-6e22a084d7c9) to the detection of missed payments under CONC 7.20.1R(1). No recorded test evidence is supplied, so effectiveness is NOT_TESTED. The control's actual design and scope have not been supplied and must be confirmed by a human reviewer. It is assumed not to notify borrowers or provide information, so it does not claim coverage of CONC 7.20.1R(2)(a), (2)(b) or (3). Whether it covers regulated deferred payment credit agreements specifically, and applies the CONC 7.20.1R(4) definition of 'payment' (capital repayment only, excluding charges for non-compliance), needs confirmation.",
+              "control_type": "Detective",
+              "effectiveness": "NOT_TESTED"
+            },
+            {
+              "name": "Missed payment borrower notification workflow with timeliness tracking (new)",
+              "coverage": [
+                {
+                  "category": "notification",
+                  "justification": "The workflow notifies the borrower that the missed payment has occurred and of unpaid sums, including unpaid charges for non-compliance.",
+                  "obligationLimb": "CONC 7.20.1R(2)(a)"
+                },
+                {
+                  "category": "timeliness",
+                  "justification": "A tracked internal timing standard, subject to expert confirmation, evidences that notification occurs as soon as possible after the missed payment.",
+                  "obligationLimb": "CONC 7.20.1R(2)"
+                }
+              ],
+              "description": "Draft new preventive control. When a missed payment is detected, a notification to the borrower is generated and issued, stating that the missed payment has occurred and listing all sums payable but unpaid, including unpaid charges for non-compliance. An internal service-level target for 'as soon as possible' is set and tracked, with breaches escalated. The rule fixes no number of days, so the target requires expert confirmation of FCA expectations. Data accuracy checks on unpaid sums are included. No existing control in the catalogue is evidenced as performing borrower notification; the 'Mitigating control (AI draft)' entries have no supplied description and cannot be relied on.",
+              "control_type": "Preventive",
+              "effectiveness": "NOT_TESTED"
+            },
+            {
+              "name": "Single-communication content template and completeness check (new)",
+              "coverage": [
+                {
+                  "category": "information_completeness",
+                  "justification": "The template and check ensure the agreement identification, adverse consequences, likely consequences and relevant mitigation steps are included.",
+                  "obligationLimb": "CONC 7.20.1R(2)(b)"
+                },
+                {
+                  "category": "information_completeness",
+                  "justification": "Issuing all required information in a single communication supports the requirement that it be provided together.",
+                  "obligationLimb": "CONC 7.20.1R(3)"
+                }
+              ],
+              "description": "Draft new preventive control. A standard communication template and pre-issue completeness check ensure the borrower receives, together in one communication, sufficient information to understand: the agreement concerned, adverse consequences arising, adverse consequences the firm considers likely, and, where relevant, steps to mitigate. Criteria for 'sufficient', 'adverse', 'likely' and 'relevant' need expert confirmation. Documented case-by-case judgement for likely consequences and mitigation steps is recommended.",
+              "control_type": "Preventive",
+              "effectiveness": "NOT_TESTED"
+            },
+            {
+              "name": "Missed payment notification monitoring and evidence retention (new)",
+              "coverage": [
+                {
+                  "category": "monitoring",
+                  "justification": "Reconciling detected missed payments to notifications issued identifies gaps and late notifications.",
+                  "obligationLimb": "CONC 7.20.1R"
+                },
+                {
+                  "category": "evidence_retention",
+                  "justification": "Retaining communications and timestamps provides evidence of compliance for review.",
+                  "obligationLimb": "CONC 7.20.1R"
+                }
+              ],
+              "description": "Draft new detective control. Management information tracks missed payments against notifications issued, timing and content completeness, and retains copies of communications, timestamps and the rationale for judgements on likely consequences and mitigation steps. Monitoring and retention are recommended controls and are not stated in the rule text. Retention periods require confirmation.",
+              "control_type": "Detective",
+              "effectiveness": "NOT_TESTED"
+            }
+          ],
+          "processingStatus": "DRAFT_AI_SUGGESTION",
+          "rawProviderOutput": {
+            "claims": [
+              {
+                "claim": "Notification and timeliness controls are required to address the binding obligation to notify the borrower of the missed payment and unpaid sums as soon as possible.",
+                "sourceQuotation": "As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement)",
+                "sourceSectionIds": [
+                  "REG-1"
+                ],
+                "provisionReference": "CONC 7.20.1R"
+              },
+              {
+                "claim": "A control is needed so that the required information is delivered in a single communication.",
+                "sourceQuotation": "The information required under (2) must be provided together.",
+                "sourceSectionIds": [
+                  "REG-1"
+                ],
+                "provisionReference": "CONC 7.20.1R(3)"
+              },
+              {
+                "claim": "Detection of missed payments is the trigger for the obligations, so detection controls are relevant to this limb.",
+                "sourceQuotation": "This rule applies where a borrower has failed to make a payment by the time it has fallen due under the terms of a regulated deferred payment credit agreement (‘a missed payment’).",
+                "sourceSectionIds": [
+                  "REG-1"
+                ],
+                "provisionReference": "CONC 7.20.1R(1)"
+              }
+            ],
+            "caveats": [
+              "All proposals are draft recommendations requiring human review before any regulatory decision.",
+              "No control-effectiveness evidence is supplied, so all effectiveness values are NOT_TESTED.",
+              "Monitoring and evidence retention are recommended controls, not rule text.",
+              "Expert judgement is needed on 'as soon as possible', 'sufficient information', 'adverse consequences', 'likely' and 'relevant' mitigation steps.",
+              "Existing controls named 'Mitigating control (AI draft)' and the UAT-E2E controls lack descriptions and are not mapped."
+            ],
+            "confidence": 62,
+            "controlProposals": [
+              {
+                "name": "Missed payment detection and exception monitoring (existing control – proposed scope extension)",
+                "coverage": [
+                  {
+                    "category": "detection",
+                    "justification": "Detecting a failure to pay by the due date under a regulated deferred payment credit agreement is the trigger for the rule. The existing control may support this if its scope is confirmed, and the CONC 7.20.1R(4) definition of 'payment' should be reflected in detection logic.",
+                    "obligationLimb": "CONC 7.20.1R(1)"
+                  },
+                  {
+                    "category": "monitoring",
+                    "justification": "Exception monitoring of missed payments could provide a basis for ongoing oversight. This is a recommended control, not rule text, and its adequacy is unconfirmed.",
+                    "obligationLimb": "CONC 7.20.1R"
+                  }
+                ],
+                "description": "Draft proposal to map the existing detective control (id cfc87ee5-1894-4627-841b-6e22a084d7c9) to the detection of missed payments under CONC 7.20.1R(1). No recorded test evidence is supplied, so effectiveness is NOT_TESTED. The control's actual design and scope have not been supplied and must be confirmed by a human reviewer. It is assumed not to notify borrowers or provide information, so it does not claim coverage of CONC 7.20.1R(2)(a), (2)(b) or (3). Whether it covers regulated deferred payment credit agreements specifically, and applies the CONC 7.20.1R(4) definition of 'payment' (capital repayment only, excluding charges for non-compliance), needs confirmation.",
+                "control_type": "Detective",
+                "effectiveness": "NOT_TESTED"
+              },
+              {
+                "name": "Missed payment borrower notification workflow with timeliness tracking (new)",
+                "coverage": [
+                  {
+                    "category": "notification",
+                    "justification": "The workflow notifies the borrower that the missed payment has occurred and of unpaid sums, including unpaid charges for non-compliance.",
+                    "obligationLimb": "CONC 7.20.1R(2)(a)"
+                  },
+                  {
+                    "category": "timeliness",
+                    "justification": "A tracked internal timing standard, subject to expert confirmation, evidences that notification occurs as soon as possible after the missed payment.",
+                    "obligationLimb": "CONC 7.20.1R(2)"
+                  }
+                ],
+                "description": "Draft new preventive control. When a missed payment is detected, a notification to the borrower is generated and issued, stating that the missed payment has occurred and listing all sums payable but unpaid, including unpaid charges for non-compliance. An internal service-level target for 'as soon as possible' is set and tracked, with breaches escalated. The rule fixes no number of days, so the target requires expert confirmation of FCA expectations. Data accuracy checks on unpaid sums are included. No existing control in the catalogue is evidenced as performing borrower notification; the 'Mitigating control (AI draft)' entries have no supplied description and cannot be relied on.",
+                "control_type": "Preventive",
+                "effectiveness": "NOT_TESTED"
+              },
+              {
+                "name": "Single-communication content template and completeness check (new)",
+                "coverage": [
+                  {
+                    "category": "information_completeness",
+                    "justification": "The template and check ensure the agreement identification, adverse consequences, likely consequences and relevant mitigation steps are included.",
+                    "obligationLimb": "CONC 7.20.1R(2)(b)"
+                  },
+                  {
+                    "category": "information_completeness",
+                    "justification": "Issuing all required information in a single communication supports the requirement that it be provided together.",
+                    "obligationLimb": "CONC 7.20.1R(3)"
+                  }
+                ],
+                "description": "Draft new preventive control. A standard communication template and pre-issue completeness check ensure the borrower receives, together in one communication, sufficient information to understand: the agreement concerned, adverse consequences arising, adverse consequences the firm considers likely, and, where relevant, steps to mitigate. Criteria for 'sufficient', 'adverse', 'likely' and 'relevant' need expert confirmation. Documented case-by-case judgement for likely consequences and mitigation steps is recommended.",
+                "control_type": "Preventive",
+                "effectiveness": "NOT_TESTED"
+              },
+              {
+                "name": "Missed payment notification monitoring and evidence retention (new)",
+                "coverage": [
+                  {
+                    "category": "monitoring",
+                    "justification": "Reconciling detected missed payments to notifications issued identifies gaps and late notifications.",
+                    "obligationLimb": "CONC 7.20.1R"
+                  },
+                  {
+                    "category": "evidence_retention",
+                    "justification": "Retaining communications and timestamps provides evidence of compliance for review.",
+                    "obligationLimb": "CONC 7.20.1R"
+                  }
+                ],
+                "description": "Draft new detective control. Management information tracks missed payments against notifications issued, timing and content completeness, and retains copies of communications, timestamps and the rationale for judgements on likely consequences and mitigation steps. Monitoring and retention are recommended controls and are not stated in the rule text. Retention periods require confirmation.",
+                "control_type": "Detective",
+                "effectiveness": "NOT_TESTED"
+              }
+            ],
+            "uncoveredRequirements": [],
+            "existingControlMappings": [
+              {
+                "note": "Possible match for detection only. It does not address notification, information content, together-provision or timeliness. Scope needs human confirmation.",
+                "controlId": "cfc87ee5-1894-4627-841b-6e22a084d7c9",
+                "controlName": "Missed payment detection and exception monitoring",
+                "effectiveness": "NOT_TESTED",
+                "obligationLimbs": [
+                  "CONC 7.20.1R(1)"
+                ]
+              }
+            ]
+          },
+          "primaryProposalIndex": 0,
+          "humanConfirmationRequired": [
+            "Control design and risk linkage require human approval."
+          ]
+        },
+        "stage4Workflow": "risk_validated_to_control_draft",
+        "labCreationMode": "uat_authorised",
+        "recordProvenance": "uat_authorised",
+        "regulatoryEvidence": {
+          "pack": {
+            "source": {
+              "legalBasis": "FCA Handbook CONC 7.20.1R, inserted by the Consumer Credit (Deferred Payment Credit) Instrument 2026 (FCA 2026/2), PS26/1 Annex F",
+              "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+              "publicationType": "policy_statement_with_instrument",
+              "extractionRevisionId": "e3f3991b-6b6e-41d6-9fa8-331784f2bc3b"
+            },
+            "version": "regulatory-evidence-pack-v1",
+            "breakdown": {
+              "limbs": [
+                {
+                  "kind": "applicability_condition",
+                  "text": "This rule applies where a borrower has failed to make a payment by the time it has fallen due under the terms of a regulated deferred payment credit agreement (‘a missed payment’).",
+                  "reference": "CONC 7.20.1R(1)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "operative_lead_in",
+                  "text": "As soon as possible after a missed payment has occurred the firm must:",
+                  "reference": "CONC 7.20.1R(2)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "mandatory_notification",
+                  "text": "notify the borrower:",
+                  "reference": "CONC 7.20.1R(2)(a)",
+                  "standaloneObligation": true
+                },
+                {
+                  "kind": "content_element",
+                  "text": "that the missed payment has occurred; and",
+                  "reference": "CONC 7.20.1R(2)(a)(i)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "content_element",
+                  "text": "about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement); and",
+                  "reference": "CONC 7.20.1R(2)(a)(ii)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "mandatory_information",
+                  "text": "provide the borrower with sufficient information for the borrower to understand:",
+                  "reference": "CONC 7.20.1R(2)(b)",
+                  "standaloneObligation": true
+                },
+                {
+                  "kind": "content_element",
+                  "text": "which regulated deferred payment credit agreement the missed payment relates to;",
+                  "reference": "CONC 7.20.1R(2)(b)(i)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "content_element",
+                  "text": "any adverse consequences for the borrower arising out of the missed payment;",
+                  "reference": "CONC 7.20.1R(2)(b)(ii)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "content_element",
+                  "text": "any adverse consequences for the borrower that the firm considers are likely to arise out of the missed payment; and",
+                  "reference": "CONC 7.20.1R(2)(b)(iii)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "content_element",
+                  "text": "(where relevant) any steps the borrower can take to mitigate those adverse consequences.",
+                  "reference": "CONC 7.20.1R(2)(b)(iv)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "information_together_requirement",
+                  "text": "The information required under (2) must be provided together.",
+                  "reference": "CONC 7.20.1R(3)",
+                  "standaloneObligation": true
+                },
+                {
+                  "kind": "definition_or_scope_qualification",
+                  "text": "In this rule references to ‘payment’ refer to the repayment of capital but exclude payment of a charge for non-compliance with a regulated deferred payment credit agreement.",
+                  "reference": "CONC 7.20.1R(4)",
+                  "standaloneObligation": false
+                }
+              ],
+              "reference": "CONC 7.20.1R",
+              "standaloneObligationPaths": [
+                "CONC 7.20.1R(2)(a)",
+                "CONC 7.20.1R(2)(b)",
+                "CONC 7.20.1R(3)"
+              ]
+            },
+            "effective": {
+              "date": "2026-07-15",
+              "source": "instrument_commencement",
+              "evidence": [
+                {
+                  "kind": "commencement_clause",
+                  "page": 63,
+                  "quotation": "H. All other parts of this instrument come into force on 15 July 2026"
+                }
+              ]
+            },
+            "provision": {
+              "core": "7.20.1R",
+              "reference": "CONC 7.20.1R",
+              "legalStatus": "binding",
+              "bindingNature": "binding_requirement",
+              "provisionFunction": "OPERATIVE_REQUIREMENT",
+              "regulatoryClassificationCode": "R"
+            },
+            "quotation": {
+              "page": 95,
+              "text": "As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement)",
+              "verified": true,
+              "coversLimbs": [
+                "CONC 7.20.1R(2)",
+                "CONC 7.20.1R(2)(a)",
+                "CONC 7.20.1R(2)(a)(i)",
+                "CONC 7.20.1R(2)(a)(ii)"
+              ],
+              "verificationId": "f608aad8-64c2-47e3-9c1a-492c569ec27f",
+              "citationLocation": "PDF p.95"
+            },
+            "assumptions": [
+              "Organisational systems, controls, control-effectiveness evidence and incident data are not supplied; none are assumed.",
+              "Recommendations are draft proposals for human review and are not regulatory advice."
+            ],
+            "obligationId": "8385215c-c108-4731-aa64-56385f8b4b6d",
+            "uncertainties": [
+              "Expert judgement needed (CONC 7.20.1R(2)): What period satisfies \"as soon as possible\"? The rule fixes no number of days; the FCA expectation on timing needs expert confirmation.",
+              "Expert judgement needed (CONC 7.20.1R(2)(b)): What level of detail is \"sufficient information for the borrower to understand\"? This is an outcome standard, not a content list.",
+              "Expert judgement needed (CONC 7.20.1R(2)(b)(ii)): Which consequences count as adverse (charges, credit reporting, enforcement, loss of facility)? The rule does not enumerate them.",
+              "Expert judgement needed (CONC 7.20.1R(2)(b)(iii)): The firm is asked to judge likely consequences. What evidence of that judgement is expected?",
+              "Expert judgement needed (CONC 7.20.1R(2)(b)(iii)): Which consequences count as adverse (charges, credit reporting, enforcement, loss of facility)? The rule does not enumerate them.",
+              "Expert judgement needed (CONC 7.20.1R(2)(b)(iv)): When is a mitigation step \"relevant\"? The firm must decide per case; expert view on defensible criteria is needed.",
+              "Expert judgement needed (CONC 7.20.1R(2)(b)(iv)): Which consequences count as adverse (charges, credit reporting, enforcement, loss of facility)? The rule does not enumerate them."
+            ],
+            "provisionBreakdown": {
+              "core": "7.20.1R",
+              "limbs": [
+                {
+                  "kind": "applicability_condition",
+                  "text": "This rule applies where a borrower has failed to make a payment by the time it has fallen due under the terms of a regulated deferred payment credit agreement (‘a missed payment’).",
+                  "label": "1",
+                  "level": 1,
+                  "reference": "CONC 7.20.1R(1)",
+                  "conditions": [],
+                  "legalEffect": "condition_precedent_to_the_rule",
+                  "expertJudgement": [],
+                  "parentReference": null,
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "operative_lead_in",
+                  "text": "As soon as possible after a missed payment has occurred the firm must:",
+                  "label": "2",
+                  "level": 1,
+                  "reference": "CONC 7.20.1R(2)",
+                  "conditions": [],
+                  "legalEffect": "imposes_duty_and_timing_on_child_limbs",
+                  "expertJudgement": [
+                    {
+                      "id": "timing_as_soon_as_possible",
+                      "question": "What period satisfies \"as soon as possible\"? The rule fixes no number of days; the FCA expectation on timing needs expert confirmation."
+                    }
+                  ],
+                  "parentReference": null,
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "mandatory_notification",
+                  "text": "notify the borrower:",
+                  "label": "a",
+                  "level": 2,
+                  "reference": "CONC 7.20.1R(2)(a)",
+                  "conditions": [],
+                  "legalEffect": "binding_requirement",
+                  "expertJudgement": [],
+                  "parentReference": "CONC 7.20.1R(2)",
+                  "inheritedFromLeadIn": {
+                    "timing": "As soon as possible after a missed payment has occurred",
+                    "reference": "CONC 7.20.1R(2)",
+                    "dutyHolder": "the firm",
+                    "leadInText": "As soon as possible after a missed payment has occurred the firm must:"
+                  },
+                  "standaloneObligation": true
+                },
+                {
+                  "kind": "content_element",
+                  "text": "that the missed payment has occurred; and",
+                  "label": "i",
+                  "level": 3,
+                  "reference": "CONC 7.20.1R(2)(a)(i)",
+                  "conditions": [],
+                  "legalEffect": "required_content_of_parent_limb",
+                  "expertJudgement": [],
+                  "parentReference": "CONC 7.20.1R(2)(a)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "content_element",
+                  "text": "about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement); and",
+                  "label": "ii",
+                  "level": 3,
+                  "reference": "CONC 7.20.1R(2)(a)(ii)",
+                  "conditions": [],
+                  "legalEffect": "required_content_of_parent_limb",
+                  "expertJudgement": [],
+                  "parentReference": "CONC 7.20.1R(2)(a)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "mandatory_information",
+                  "text": "provide the borrower with sufficient information for the borrower to understand:",
+                  "label": "b",
+                  "level": 2,
+                  "reference": "CONC 7.20.1R(2)(b)",
+                  "conditions": [],
+                  "legalEffect": "binding_requirement",
+                  "expertJudgement": [
+                    {
+                      "id": "sufficiency_standard",
+                      "question": "What level of detail is \"sufficient information for the borrower to understand\"? This is an outcome standard, not a content list."
+                    }
+                  ],
+                  "parentReference": "CONC 7.20.1R(2)",
+                  "inheritedFromLeadIn": {
+                    "timing": "As soon as possible after a missed payment has occurred",
+                    "reference": "CONC 7.20.1R(2)",
+                    "dutyHolder": "the firm",
+                    "leadInText": "As soon as possible after a missed payment has occurred the firm must:"
+                  },
+                  "standaloneObligation": true
+                },
+                {
+                  "kind": "content_element",
+                  "text": "which regulated deferred payment credit agreement the missed payment relates to;",
+                  "label": "i",
+                  "level": 3,
+                  "reference": "CONC 7.20.1R(2)(b)(i)",
+                  "conditions": [],
+                  "legalEffect": "required_content_of_parent_limb",
+                  "expertJudgement": [],
+                  "parentReference": "CONC 7.20.1R(2)(b)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "content_element",
+                  "text": "any adverse consequences for the borrower arising out of the missed payment;",
+                  "label": "ii",
+                  "level": 3,
+                  "reference": "CONC 7.20.1R(2)(b)(ii)",
+                  "conditions": [],
+                  "legalEffect": "required_content_of_parent_limb",
+                  "expertJudgement": [
+                    {
+                      "id": "adverse_consequences_scope",
+                      "question": "Which consequences count as adverse (charges, credit reporting, enforcement, loss of facility)? The rule does not enumerate them."
+                    }
+                  ],
+                  "parentReference": "CONC 7.20.1R(2)(b)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "content_element",
+                  "text": "any adverse consequences for the borrower that the firm considers are likely to arise out of the missed payment; and",
+                  "label": "iii",
+                  "level": 3,
+                  "reference": "CONC 7.20.1R(2)(b)(iii)",
+                  "conditions": [],
+                  "legalEffect": "required_content_of_parent_limb",
+                  "expertJudgement": [
+                    {
+                      "id": "firm_judgement",
+                      "question": "The firm is asked to judge likely consequences. What evidence of that judgement is expected?"
+                    },
+                    {
+                      "id": "adverse_consequences_scope",
+                      "question": "Which consequences count as adverse (charges, credit reporting, enforcement, loss of facility)? The rule does not enumerate them."
+                    }
+                  ],
+                  "parentReference": "CONC 7.20.1R(2)(b)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "content_element",
+                  "text": "(where relevant) any steps the borrower can take to mitigate those adverse consequences.",
+                  "label": "iv",
+                  "level": 3,
+                  "reference": "CONC 7.20.1R(2)(b)(iv)",
+                  "conditions": [
+                    "where relevant"
+                  ],
+                  "legalEffect": "required_content_of_parent_limb",
+                  "expertJudgement": [
+                    {
+                      "id": "conditional_relevance",
+                      "question": "When is a mitigation step \"relevant\"? The firm must decide per case; expert view on defensible criteria is needed."
+                    },
+                    {
+                      "id": "adverse_consequences_scope",
+                      "question": "Which consequences count as adverse (charges, credit reporting, enforcement, loss of facility)? The rule does not enumerate them."
+                    }
+                  ],
+                  "parentReference": "CONC 7.20.1R(2)(b)",
+                  "standaloneObligation": false
+                },
+                {
+                  "kind": "information_together_requirement",
+                  "text": "The information required under (2) must be provided together.",
+                  "label": "3",
+                  "level": 1,
+                  "reference": "CONC 7.20.1R(3)",
+                  "conditions": [],
+                  "legalEffect": "binding_requirement",
+                  "expertJudgement": [],
+                  "parentReference": null,
+                  "standaloneObligation": true
+                },
+                {
+                  "kind": "definition_or_scope_qualification",
+                  "text": "In this rule references to ‘payment’ refer to the repayment of capital but exclude payment of a charge for non-compliance with a regulated deferred payment credit agreement.",
+                  "label": "4",
+                  "level": 1,
+                  "reference": "CONC 7.20.1R(4)",
+                  "conditions": [],
+                  "legalEffect": "interpretation_or_scope",
+                  "expertJudgement": [],
+                  "parentReference": null,
+                  "standaloneObligation": false
+                }
+              ],
+              "pages": [
+                94,
+                95
+              ],
+              "parsed": true,
+              "version": "provision-breakdown-v1",
+              "verbatim": "7.20.1 R (1) This rule applies where a borrower has failed to make a payment by the time it has fallen due under the terms of a regulated deferred payment credit agreement (‘a missed payment’). (2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement); and (b) provide the borrower with sufficient information for the borrower to understand: (i) which regulated deferred payment credit agreement the missed payment relates to; (ii) any adverse consequences for the borrower arising out of the missed payment; (iii) any adverse consequences for the borrower that the firm considers are likely to arise out of the missed payment; and (iv) (where relevant) any steps the borrower can take to mitigate those adverse consequences. (3) The information required under (2) must be provided together. (4) In this rule references to ‘payment’ refer to the repayment of capital but exclude payment of a charge for non-compliance with a regulated deferred payment credit agreement.",
+              "reference": "CONC 7.20.1R",
+              "definitionPaths": [
+                "CONC 7.20.1R(4)"
+              ],
+              "expertJudgement": [
+                {
+                  "id": "timing_as_soon_as_possible",
+                  "question": "What period satisfies \"as soon as possible\"? The rule fixes no number of days; the FCA expectation on timing needs expert confirmation.",
+                  "reference": "CONC 7.20.1R(2)"
+                },
+                {
+                  "id": "sufficiency_standard",
+                  "question": "What level of detail is \"sufficient information for the borrower to understand\"? This is an outcome standard, not a content list.",
+                  "reference": "CONC 7.20.1R(2)(b)"
+                },
+                {
+                  "id": "adverse_consequences_scope",
+                  "question": "Which consequences count as adverse (charges, credit reporting, enforcement, loss of facility)? The rule does not enumerate them.",
+                  "reference": "CONC 7.20.1R(2)(b)(ii)"
+                },
+                {
+                  "id": "firm_judgement",
+                  "question": "The firm is asked to judge likely consequences. What evidence of that judgement is expected?",
+                  "reference": "CONC 7.20.1R(2)(b)(iii)"
+                },
+                {
+                  "id": "adverse_consequences_scope",
+                  "question": "Which consequences count as adverse (charges, credit reporting, enforcement, loss of facility)? The rule does not enumerate them.",
+                  "reference": "CONC 7.20.1R(2)(b)(iii)"
+                },
+                {
+                  "id": "conditional_relevance",
+                  "question": "When is a mitigation step \"relevant\"? The firm must decide per case; expert view on defensible criteria is needed.",
+                  "reference": "CONC 7.20.1R(2)(b)(iv)"
+                },
+                {
+                  "id": "adverse_consequences_scope",
+                  "question": "Which consequences count as adverse (charges, credit reporting, enforcement, loss of facility)? The rule does not enumerate them.",
+                  "reference": "CONC 7.20.1R(2)(b)(iv)"
+                }
+              ],
+              "applicabilityPaths": [
+                "CONC 7.20.1R(1)"
+              ],
+              "standaloneObligationPaths": [
+                "CONC 7.20.1R(2)(a)",
+                "CONC 7.20.1R(2)(b)",
+                "CONC 7.20.1R(3)"
+              ]
+            }
+          },
+          "trace": [
+            {
+              "claim": "Notification and timeliness controls are required to address the binding obligation to notify the borrower of the missed payment and unpaid sums as soon as possible.",
+              "claimIndex": 0,
+              "legalBasis": "FCA Handbook CONC 7.20.1R, inserted by the Consumer Credit (Deferred Payment Credit) Instrument 2026 (FCA 2026/2), PS26/1 Annex F",
+              "evidenceLevel": "regulatory_verified",
+              "sourceQuotation": "As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement)",
+              "citationLocation": "PDF p.95",
+              "sourceSectionIds": [
+                "REG-1"
+              ],
+              "provisionReference": "CONC 7.20.1R",
+              "originatingObligationId": "8385215c-c108-4731-aa64-56385f8b4b6d"
+            },
+            {
+              "claim": "A control is needed so that the required information is delivered in a single communication.",
+              "claimIndex": 1,
+              "legalBasis": "FCA Handbook CONC 7.20.1R, inserted by the Consumer Credit (Deferred Payment Credit) Instrument 2026 (FCA 2026/2), PS26/1 Annex F",
+              "evidenceLevel": "regulatory_verified",
+              "sourceQuotation": "The information required under (2) must be provided together.",
+              "citationLocation": "PDF p.95",
+              "sourceSectionIds": [
+                "REG-1"
+              ],
+              "provisionReference": "CONC 7.20.1R",
+              "originatingObligationId": "8385215c-c108-4731-aa64-56385f8b4b6d"
+            },
+            {
+              "claim": "Detection of missed payments is the trigger for the obligations, so detection controls are relevant to this limb.",
+              "claimIndex": 2,
+              "legalBasis": "FCA Handbook CONC 7.20.1R, inserted by the Consumer Credit (Deferred Payment Credit) Instrument 2026 (FCA 2026/2), PS26/1 Annex F",
+              "evidenceLevel": "regulatory_verified",
+              "sourceQuotation": "This rule applies where a borrower has failed to make a payment by the time it has fallen due under the terms of a regulated deferred payment credit agreement (‘a missed payment’).",
+              "citationLocation": "PDF p.95",
+              "sourceSectionIds": [
+                "REG-1"
+              ],
+              "provisionReference": "CONC 7.20.1R",
+              "originatingObligationId": "8385215c-c108-4731-aa64-56385f8b4b6d"
+            }
+          ],
+          "citationValidation": {
+            "rejected": [],
+            "claimCount": 3,
+            "sufficient": true,
+            "acceptedCount": 3,
+            "rejectedCount": 0,
+            "insufficiencyReason": null,
+            "regulatoryEvidencedCount": 3
+          }
+        },
+        "stage4PrimaryDraft": true,
+        "labProvenanceLocked": true,
+        "sourceApprovedRiskId": "dd826913-7d44-48f8-b3f1-0ca00dd2e429",
+        "labProvenanceRecordedAt": "2026-11-26T15:26:20.208Z",
+        "parentRegulatoryChangeId": "cb1e415a-2605-4c46-a0d8-3ab17de4dab7",
+        "sourceImpactAssessmentId": "8834a25f-d6f4-4100-8d53-e03e2114366b",
+        "sourceRegulatoryObligationId": "8385215c-c108-4731-aa64-56385f8b4b6d",
+        "labProvenanceRecordedByUserId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+      },
+      "created_by_user_id": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "at": "2026-11-26T15:26:08.342Z",
+  "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+  "status": 200,
+  "body": {
+    "ok": true,
+    "obligation": {
+      "id": "8385215c-c108-4731-aa64-56385f8b4b6d",
+      "externalKey": null,
+      "changeId": "cb1e415a-2605-4c46-a0d8-3ab17de4dab7",
+      "changeTitle": "FCA-EVAL-002 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)",
+      "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "publicationTitle": null,
+      "title": "As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement) (3) The information required under (2) must be provided together.",
+      "citation": "PDF p.95",
+      "status": "In review",
+      "statusCode": "IN_REVIEW",
+      "origin": "AI_ASSISTED",
+      "updatedAt": "2026-11-26T15:26:08.396929+00:00",
+      "priority": null,
+      "effectiveDate": "2026-07-15",
+      "dueDate": null,
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "ownerLabel": "User user_3Fa…",
+      "tenantScope": true,
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "classificationCode": "R",
+      "legalStatus": "binding",
+      "classificationReviewRequired": false,
+      "supportsObligationId": null,
+      "authoritativeReference": null,
+      "_connected": true,
+      "sourceSection": "EVD-PDF-6f160bf6c84e2d9d",
+      "impacts": [],
+      "stage2ImpactAssessment": null,
+      "complianceLifecycle": {
+        "obligationId": "8385215c-c108-4731-aa64-56385f8b4b6d",
+        "obligationStatus": "IN_REVIEW",
+        "currentStage": "obligation",
+        "impact": null,
+        "risk": null,
+        "control": null,
+        "assurance": null,
+        "links": {
+          "impactId": null,
+          "riskId": null,
+          "controlId": null,
+          "assuranceReviewId": null
+        }
+      },
+      "risks": [],
+      "controls": [],
+      "riskIds": [],
+      "controlIds": []
+    }
+  }
+}

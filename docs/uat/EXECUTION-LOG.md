@@ -2,6 +2,12 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-26 — FCA-EVAL-002 live pilot `pilot-fca-eval-002-conc-7-20-1r` (executed)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 16:17 | Close authorised window after five stages + assurance | User authorised one $0.75 / 8-request staging run for CONC 7.20.1R | **5** SETTLED provider calls in window ($0.151396); baseline acceptance **11/11**; expert interpretations unchanged. Stage 4 first attempt hit shared-ledger `request_count` cap (eval-001 + eval-002); reconciled counters and recovered via `retry-control-mapping`. Paid AI **disabled** (`executionEnabled=false`, stages FIXTURE) on official `staging-app.forgeniq.com` after restore deploy. Evidence: `docs/uat/evidence/live-ai-pilot-fca-eval-002-2026-11-26/`. Eval-001 evidence preserved. |
+
 ## 2026-11-26 — Pilot preflight guards
 
 | Time (UTC) | Decision | Reason | Outcome |

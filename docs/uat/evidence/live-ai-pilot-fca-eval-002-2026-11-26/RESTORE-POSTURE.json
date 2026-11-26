@@ -1,0 +1,13 @@
+{
+  "verifiedAt": "2026-11-26T16:17:16.525Z",
+  "origin": "https://staging-app.forgeniq.com",
+  "executionEnabled": false,
+  "stageModes": {
+    "stage2": "fixture",
+    "stage3": "fixture",
+    "stage4": "fixture",
+    "stage5": "fixture"
+  },
+  "closedRunReference": "closed-pilot-fca-eval-002-conc-7-20-1r-consumed",
+  "note": "Post-restore readiness check; live-pilot posture evaluatePosture intentionally fails when execution is off (expected)."
+}

@@ -1,0 +1,63 @@
+{
+  "at": "2026-11-26T15:25:55.875Z",
+  "status": 200,
+  "body": {
+    "ok": true,
+    "skipped": [
+      {
+        "reason": "rejected",
+        "decision": "REJECTED",
+        "findingId": "69aa057c-9884-462f-b732-87a095851127",
+        "claimIndex": 1,
+        "triageQueue": "OBLIGATION_TRIAGE",
+        "exceptionReasons": [],
+        "provisionFunction": null,
+        "classificationCode": null
+      },
+      {
+        "reason": "rejected",
+        "decision": "REJECTED",
+        "findingId": "fa15edbc-8301-46e8-8ee0-47985b13e03e",
+        "claimIndex": 2,
+        "triageQueue": "OBLIGATION_TRIAGE",
+        "exceptionReasons": [],
+        "provisionFunction": null,
+        "classificationCode": null
+      }
+    ],
+    "decision": "PARTIALLY_ACCEPTED",
+    "reviewId": "391efc45-3d0b-4368-8fab-9f995710f0a3",
+    "materialised": [
+      {
+        "findingId": "96f7167e-7f92-42cd-8a19-ffe74ca9423b",
+        "claimIndex": 0,
+        "legalStatus": "binding",
+        "obligationId": "8385215c-c108-4731-aa64-56385f8b4b6d",
+        "classificationCode": "R"
+      }
+    ],
+    "evidencePathway": "human_verified_uat",
+    "classificationPolicyVersion": 4
+  },
+  "decision": {
+    "findingId": "96f7167e-7f92-42cd-8a19-ffe74ca9423b",
+    "claimTextSha256": "a6192c9351b2ad51e0ae640393f7b241e51ac6c4868be0ffa6d6305e6e12f4f1",
+    "decision": "ACCEPTED",
+    "regulatoryClassificationCode": "R",
+    "provisionFunction": "OPERATIVE_REQUIREMENT",
+    "disposition": "CONVERT_TO_DRAFT_OBLIGATION",
+    "provisionReference": "CONC 7.20.1R",
+    "legalBasis": "FCA Handbook CONC 7.20.1R, inserted by the Consumer Credit (Deferred Payment Credit) Instrument 2026 (FCA 2026/2), PS26/1 Annex F",
+    "reclassificationEvidence": "Quoted text is CONC 7.20.1R(2), a rule (R) set out as new text in the legal instrument on PDF p.95.",
+    "quotation": "As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement)",
+    "quotationPage": 95,
+    "supplementaryQuotations": [
+      {
+        "quotation": "(3) The information required under (2) must be provided together.",
+        "quotationPage": 95
+      }
+    ],
+    "obligationStatement": "As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement) (3) The information required under (2) must be provided together.",
+    "comment": "SYNTHETIC UAT DECISION (automated persona B, not a professional judgement). Where the model quotation did not cover all operative limbs, the operative text was replaced by a verbatim pp.94–95 quotation verified against the independent FCA PDF text. Interpretative topics (timing, sufficiency, consequences) remain escalated for expert review. Draft only."
+  }
+}

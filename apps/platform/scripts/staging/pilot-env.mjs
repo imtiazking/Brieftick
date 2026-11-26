@@ -14,8 +14,11 @@ import { spawnSync } from 'node:child_process';
 
 const SCOPE = 'imis-projects-8e15dca0';
 const PROJECT = 'forgeniq-platform-staging';
-export const PILOT_RUN_REFERENCE = 'pilot-fca-eval-001-2026-11-26';
-const CLOSED_RUN_REFERENCE = 'closed-pilot-fca-eval-001-2026-11-26-consumed';
+/** Override with FORGENIQ_PILOT_RUN_REFERENCE / FORGENIQ_PILOT_CLOSED_RUN_REFERENCE for a specific authorised window. */
+export const PILOT_RUN_REFERENCE =
+  process.env.FORGENIQ_PILOT_RUN_REFERENCE?.trim() || 'pilot-fca-eval-002-conc-7-20-1r';
+const CLOSED_RUN_REFERENCE =
+  process.env.FORGENIQ_PILOT_CLOSED_RUN_REFERENCE?.trim() || `closed-${PILOT_RUN_REFERENCE}-consumed`;
 
 export const ACTIVATE = {
   RI_AI_EXECUTION_ENABLED: 'true',

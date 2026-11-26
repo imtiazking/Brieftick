@@ -1,0 +1,147 @@
+{
+  "runReference": "pilot-fca-eval-002-conc-7-20-1r",
+  "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+  "ids": {
+    "changeId": "cb1e415a-2605-4c46-a0d8-3ab17de4dab7",
+    "stage1RunId": "4d841dfe-06b7-437e-9f1e-b19925dab561",
+    "reviewId": "391efc45-3d0b-4368-8fab-9f995710f0a3",
+    "obligationId": "8385215c-c108-4731-aa64-56385f8b4b6d",
+    "impactId": "8834a25f-d6f4-4100-8d53-e03e2114366b",
+    "riskId": "dd826913-7d44-48f8-b3f1-0ca00dd2e429",
+    "controlId": "bdb634df-e1a5-4883-9fca-990a44a294b8",
+    "assuranceId": "4da58d49-11a5-4f0e-aa83-120c3d538fc9"
+  },
+  "phases": {
+    "stage1": {
+      "triggeredAt": "2026-11-26T14:03:11.840Z",
+      "http": 202,
+      "trigger": {
+        "ok": true,
+        "runId": "4d841dfe-06b7-437e-9f1e-b19925dab561",
+        "reused": false,
+        "dispatched": true,
+        "executionStatus": "RUNNING"
+      },
+      "completedAt": "2026-11-26T14:03:28.899Z",
+      "status": "COMPLETED",
+      "elapsedMs": 17059,
+      "runId": "4d841dfe-06b7-437e-9f1e-b19925dab561"
+    },
+    "review1": {
+      "at": "2026-11-26T15:25:55.880Z",
+      "reviewer": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "reviewId": "391efc45-3d0b-4368-8fab-9f995710f0a3",
+      "obligationId": "8385215c-c108-4731-aa64-56385f8b4b6d"
+    },
+    "stage2": {
+      "submittedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "submittedAt": "2026-11-26T15:26:08.343Z",
+      "approvedBy": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "approvedAt": "2026-11-26T15:26:35.708Z",
+      "http": 200,
+      "elapsedMs": 17329
+    },
+    "stage3": {
+      "submittedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "submittedAt": "2026-11-26T15:26:47.483Z",
+      "statusAfterSubmit": "IN_REVIEW",
+      "approvedBy": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "approvedAt": "2026-11-26T15:27:13.807Z",
+      "http": 200,
+      "elapsedMs": 16743,
+      "parentStatus": "APPROVED",
+      "childIds": [
+        "dd826913-7d44-48f8-b3f1-0ca00dd2e429",
+        "c3476126-ae8b-48e0-b523-4a86f3d65301"
+      ]
+    },
+    "stage4": {
+      "submittedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "submittedAt": "2026-11-26T15:27:24.568Z",
+      "statusAfterSubmit": "IN_REVIEW",
+      "approvedBy": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "approvedAt": "2026-11-26T15:52:41.648Z",
+      "http": 200,
+      "elapsedMs": 2128,
+      "parentStatus": "APPROVED",
+      "childIds": []
+    },
+    "stage4downstream": {
+      "at": "2026-11-26T16:06:01.639Z",
+      "http": 200,
+      "elapsedMs": 20957,
+      "downstream": {
+        "ok": true,
+        "skipped": false,
+        "controlId": "bdb634df-e1a5-4883-9fca-990a44a294b8",
+        "reused": false
+      },
+      "controlId": "bdb634df-e1a5-4883-9fca-990a44a294b8",
+      "childIds": [
+        "bdb634df-e1a5-4883-9fca-990a44a294b8",
+        "cfc87ee5-1894-4627-841b-6e22a084d7c9"
+      ]
+    },
+    "stage5": {
+      "submittedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "submittedAt": "2026-11-26T16:06:21.075Z",
+      "statusAfterSubmit": "IN_REVIEW",
+      "approvedBy": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "approvedAt": "2026-11-26T16:06:48.429Z",
+      "http": 200,
+      "elapsedMs": 18088,
+      "parentStatus": "ACTIVE",
+      "childIds": [
+        "4da58d49-11a5-4f0e-aa83-120c3d538fc9"
+      ]
+    },
+    "assurance": {
+      "at": "2026-11-26T16:07:17.130Z",
+      "submitStatus": 200,
+      "approveStatus": 200,
+      "submittedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "approvedBy": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+    },
+    "export": {
+      "at": "2026-11-26T16:08:24.557Z",
+      "keys": [
+        "obligation",
+        "impact",
+        "risk",
+        "control",
+        "assurance"
+      ]
+    }
+  },
+  "changeCreated": {
+    "at": "2026-11-26T14:03:11.837Z",
+    "by": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+    "body": {
+      "id": "cb1e415a-2605-4c46-a0d8-3ab17de4dab7",
+      "externalKey": null,
+      "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "publicationTitle": null,
+      "regulator": "—",
+      "regulatoryReference": null,
+      "scenario": "all",
+      "title": "FCA-EVAL-002 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)",
+      "description": "Synthetic UAT change created for the FORGENIQ live five-stage AI pilot. Not a customer compliance decision.",
+      "changeType": "Policy update",
+      "materiality": "—",
+      "status": "Draft",
+      "statusCode": "DRAFT",
+      "effectiveDate": null,
+      "dueDate": null,
+      "updatedAt": "2026-11-26T14:03:11.937081+00:00",
+      "ownerId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "ownerLabel": "User user_3LA…",
+      "applicabilityRecommendation": "Pending",
+      "applicabilityDecision": null,
+      "tenantScope": true,
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "_connected": true
+    }
+  }
+}

@@ -177,7 +177,14 @@ export function describeSelectedSections(allBlocks, selected, instrumentStartPag
       }
       section.provisionsSetOut = [...merged];
       for (const core of merged) {
-        const st = provisionPages.get(core)?.status?.[section.pageNumber];
+        const info = provisionPages.get(core);
+        if (!info) continue;
+        const st =
+          info.status?.[section.pageNumber] ||
+          [...info.pages]
+            .sort((a, b) => a - b)
+            .map((p) => info.status?.[p])
+            .find(Boolean);
         if (st) section.provisionTextStatus[core] = st;
       }
     }

@@ -1,0 +1,92 @@
+{
+  "at": "2026-11-26T15:27:13.806Z",
+  "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+  "elapsedMs": 16743,
+  "status": 200,
+  "body": {
+    "ok": true,
+    "assessment": {
+      "id": "8834a25f-d6f4-4100-8d53-e03e2114366b",
+      "changeId": "cb1e415a-2605-4c46-a0d8-3ab17de4dab7",
+      "changeTitle": "FCA-EVAL-002 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)",
+      "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "title": "Impact — FCA-EVAL-002 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)",
+      "materiality": "UNASSESSED",
+      "status": "Approved",
+      "dueDate": null,
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "ownerLabel": "User user_3Fa…",
+      "reviewerId": null,
+      "approverId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "sourceRegulatoryObligationId": "8385215c-c108-4731-aa64-56385f8b4b6d",
+      "tenantScope": true,
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "_connected": true,
+      "businessImpact": "Operations / business impact areas flagged: Compliance, Operations, Technology, Customer Communications, Legal, Governance and Risk. Requires human confirmation — not verified organisational fact.",
+      "operationalImpact": "Operations / business impact areas flagged: Compliance, Operations, Technology, Customer Communications, Legal, Governance and Risk. Requires human confirmation — not verified organisational fact.",
+      "technologyImpact": "Technology and systems: review interfaces, data flows and monitoring tied to change \"FCA-EVAL-002 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)\". Requires human confirmation — not verified organisational fact.",
+      "complianceImpact": "Regulatory impact (draft, AI-assisted): obligation approval on \"As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreemen\" (PDF p.95). Regulatory source: CONC 7.20.1R (FCA Handbook CONC 7.20.1R, inserted by the Consumer Credit (Deferred Payment Credit) Instrument 2026 (FCA 2026/2), PS26/1 Annex F), PDF p.95; verified quotation: \"As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement)\". Effective date: 2026-07-15 (instrument_commencement). Requires human confirmation — not verified organisational fact.",
+      "financialImpact": "Financial / resource: estimate implementation effort after owner review. Requires human confirmation — not verified organisational fact.",
+      "implementationComplexity": "HIGH (provisional)",
+      "businessAreas": [
+        "Compliance",
+        "Operations",
+        "Technology",
+        "Customer Communications",
+        "Legal",
+        "Governance and Risk"
+      ],
+      "riskIds": [
+        "dd826913-7d44-48f8-b3f1-0ca00dd2e429",
+        "c3476126-ae8b-48e0-b523-4a86f3d65301"
+      ],
+      "updatedAt": "2026-11-26T15:26:58.542075+00:00"
+    }
+  },
+  "after": {
+    "ok": true,
+    "assessment": {
+      "id": "8834a25f-d6f4-4100-8d53-e03e2114366b",
+      "changeId": "cb1e415a-2605-4c46-a0d8-3ab17de4dab7",
+      "changeTitle": "FCA-EVAL-002 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)",
+      "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "title": "Impact — FCA-EVAL-002 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)",
+      "materiality": "UNASSESSED",
+      "status": "Approved",
+      "dueDate": null,
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "ownerLabel": "User user_3Fa…",
+      "reviewerId": null,
+      "approverId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "sourceRegulatoryObligationId": "8385215c-c108-4731-aa64-56385f8b4b6d",
+      "tenantScope": true,
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "_connected": true,
+      "businessImpact": "Operations / business impact areas flagged: Compliance, Operations, Technology, Customer Communications, Legal, Governance and Risk. Requires human confirmation — not verified organisational fact.",
+      "operationalImpact": "Operations / business impact areas flagged: Compliance, Operations, Technology, Customer Communications, Legal, Governance and Risk. Requires human confirmation — not verified organisational fact.",
+      "technologyImpact": "Technology and systems: review interfaces, data flows and monitoring tied to change \"FCA-EVAL-002 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)\". Requires human confirmation — not verified organisational fact.",
+      "complianceImpact": "Regulatory impact (draft, AI-assisted): obligation approval on \"As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreemen\" (PDF p.95). Regulatory source: CONC 7.20.1R (FCA Handbook CONC 7.20.1R, inserted by the Consumer Credit (Deferred Payment Credit) Instrument 2026 (FCA 2026/2), PS26/1 Annex F), PDF p.95; verified quotation: \"As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement)\". Effective date: 2026-07-15 (instrument_commencement). Requires human confirmation — not verified organisational fact.",
+      "financialImpact": "Financial / resource: estimate implementation effort after owner review. Requires human confirmation — not verified organisational fact.",
+      "implementationComplexity": "HIGH (provisional)",
+      "businessAreas": [
+        "Compliance",
+        "Operations",
+        "Technology",
+        "Customer Communications",
+        "Legal",
+        "Governance and Risk"
+      ],
+      "riskIds": [
+        "dd826913-7d44-48f8-b3f1-0ca00dd2e429",
+        "c3476126-ae8b-48e0-b523-4a86f3d65301"
+      ],
+      "submittedAt": "2026-11-26T15:26:47.627+00:00",
+      "approvedAt": "2026-11-26T15:26:58.464+00:00",
+      "updatedAt": "2026-11-26T15:26:58.542075+00:00"
+    }
+  }
+}

@@ -33,12 +33,31 @@ export async function findPrimaryDraftControlForRisk(
   return data;
 }
 
+async function recordControlMappingSkipped(
+  supabase: SupabaseClient,
+  params: { organisationId: string; riskId: string; actorUserId: string },
+  reason: string,
+  detail?: Record<string, unknown>,
+) {
+  await recordWorkflowEvent(supabase, {
+    organisationId: params.organisationId,
+    entityType: 'risk',
+    entityId: params.riskId,
+    eventType: 'CONTROL_MAPPING_SKIPPED',
+    actorUserId: params.actorUserId,
+    toStatus: 'APPROVED',
+    metadata: { reason, ...(detail || {}) },
+  });
+}
+
 export async function ensureControlMappingFromApprovedRisk(
   supabase: SupabaseClient,
   params: {
     organisationId: string;
     riskId: string;
     actorUserId: string;
+    /** Override when recovering a failed first attempt (must still be unique per paid call). */
+    idempotencyKey?: string;
   },
 ): Promise<Stage4DownstreamResult> {
   await assertRowInOrganisation(supabase, 'risks', params.riskId, params.organisationId);
@@ -51,6 +70,7 @@ export async function ensureControlMappingFromApprovedRisk(
     .single();
   if (riskErr || !risk) throw new Error('not_found');
   if (risk.status !== 'APPROVED') {
+    await recordControlMappingSkipped(supabase, params, 'risk_not_validated', { observedStatus: risk.status });
     return { ok: true, skipped: true, reason: 'risk_not_validated' };
   }
 
@@ -71,10 +91,11 @@ export async function ensureControlMappingFromApprovedRisk(
     params.organisationId,
     (risk.metadata || {}) as Record<string, unknown>,
   );
+  const idempotencyKey = params.idempotencyKey?.trim() || `stage4:${params.riskId}`;
   const analysis = await runLifecycleStageAnalysis({
     stage: 4,
     organisationId: params.organisationId,
-    idempotencyKey: `stage4:${params.riskId}`,
+    idempotencyKey,
     sourceSections: [
       {
         sourceSectionId: 'RISK-1',
@@ -98,6 +119,12 @@ export async function ensureControlMappingFromApprovedRisk(
     },
   });
   if (!analysis.ok) {
+    await recordControlMappingSkipped(supabase, params, analysis.code, {
+      message: analysis.message,
+      executionMode: analysis.executionMode,
+      idempotencyKey,
+      spendAudit: analysis.spendAudit ?? null,
+    });
     return { ok: true, skipped: true, reason: analysis.code };
   }
 

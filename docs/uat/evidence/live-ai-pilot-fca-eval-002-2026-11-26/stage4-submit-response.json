@@ -1,0 +1,31 @@
+{
+  "at": "2026-11-26T15:27:24.567Z",
+  "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+  "status": 200,
+  "body": {
+    "ok": true,
+    "risk": {
+      "id": "dd826913-7d44-48f8-b3f1-0ca00dd2e429",
+      "title": "Failure to notify borrower promptly of a missed payment and unpaid sums under CONC 7.20.1R(2)(a)",
+      "description": "The firm may not notify the borrower, as soon as possible after a missed payment, that the payment has occurred and of any sums that have become payable but remain unpaid (including unpaid charges for non-compliance). Risk drivers include missed payment detection, timing of notification, and the accuracy of unpaid sums data. Because the rule fixes no number of days, the timing standard needs expert confirmation. This proposal overlaps with an existing approved catalogue risk, which is mapped below.\n\nInherent rating: HIGH (provisional) — CONC 7.20.1R(2)(a) is a binding rule requiring the firm to notify the borrower as soon as possible after a missed payment of the missed payment and of any unpaid sums, including unpaid charges. If this is missed, borrowers may not know they are in arrears, may incur further charges or adverse credit consequences, and the firm may breach a binding FCA rule that takes effect on 15 July 2026. The rating is drawn from the verified quotation in REG-1 and the impact summary in IMP-1; it is an inherent rating only and requires human validation.\nResidual rating: UNASSESSED — no control-effectiveness evidence is available.\n\nRequires human confirmation — not verified organisational fact.",
+      "category": "Compliance",
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "owner": "user_3Fa…",
+      "inherentRisk": "HIGH (provisional)",
+      "residualRisk": "UNASSESSED",
+      "status": "In Review",
+      "reviewDate": null,
+      "updatedAt": "2026-11-26T15:27:24.994337+00:00",
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "tenantScope": true,
+      "sourceImpactAssessmentId": "8834a25f-d6f4-4100-8d53-e03e2114366b",
+      "sourceRegulatoryObligationId": "8385215c-c108-4731-aa64-56385f8b4b6d",
+      "obligationIds": [
+        "8385215c-c108-4731-aa64-56385f8b4b6d"
+      ],
+      "_connected": true
+    }
+  }
+}

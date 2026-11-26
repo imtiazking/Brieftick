@@ -1,0 +1,42 @@
+{
+  "at": "2026-11-26T15:25:53.059Z",
+  "aiQuote": "As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement)",
+  "aiQuoteCheck": {
+    "found": false,
+    "page": null
+  },
+  "reviewQuotation": "As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement)",
+  "reviewQuoteCheck": {
+    "found": false,
+    "page": null
+  },
+  "limb3": "(3) The information required under (2) must be provided together.",
+  "limb3Check": {
+    "found": true,
+    "page": 95
+  },
+  "phraseChecks": [
+    {
+      "phrase": "as soon as possible after a missed payment has occurred the firm must",
+      "found": true,
+      "page": 95
+    },
+    {
+      "phrase": "notify the borrower",
+      "found": true,
+      "page": 95
+    },
+    {
+      "phrase": "sufficient information for the borrower to understand",
+      "found": true,
+      "page": 95
+    }
+  ],
+  "checks": {
+    "sourceHashMatchesStaged": true,
+    "aiQuotationVerifiedInFcaSource": false,
+    "reviewQuotationVerified": false,
+    "operativePhraseBundleVerified": true,
+    "limb3Verified": true
+  }
+}
