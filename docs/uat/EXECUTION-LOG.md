@@ -2,6 +2,13 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-26 — Production Readiness Programme, Phase 2: run-scoped AI execution ledger
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 18:40 | Replace the single shared account with run-reference-scoped execution (`ai_execution_runs`, `ai_execution_limits`, `ai_execution_ledger_events`) and make it the default ledger mode | Root cause of the eval-002 Stage 4 failure: one `scope_key` account carried eval-001's request count into eval-002. Counters were then reconciled by hand SQL, which must never be needed again | Run budget, request cap, tenant and validity window now come from an authorised run row. Counters, settled rows, run authorisation fields and the event log are immutable by trigger. A new run inherits nothing. Tenant and platform limits, retry accounting (retry must reference a FAILED request), interrupted-execution reconciliation (charged at full reserve) and operator recovery are covered. Local `acceptance-ri-run-scoped-ledger` PASS (all checks); legacy ledger, lifecycle live-AI, PS26.1 budget guard and UC-RI-005 suites PASS; `tsc` clean. Commit `596f81d`. |
+| 18:55 | Apply the migration to forgeniq-ri-staging (additive, non-destructive) after a logical snapshot | Pre-authorised non-destructive staging migration | Snapshot in `docs/uat/evidence/production-readiness/PRE-MIGRATION-LEDGER-SNAPSHOT.json`. Verified: 3 tables, 5 triggers, forced RLS, 0 client-executable functions, 7 service_role functions, 10 historical reservations unchanged, 0 runs authorised. No paid calls. No deployment. |
+
 ## 2026-11-26 — FCA-EVAL-002 live pilot `pilot-fca-eval-002-conc-7-20-1r` (executed)
 
 | Time (UTC) | Decision | Reason | Outcome |

@@ -64,6 +64,10 @@ export const STAGING_MIGRATION_STEPS = [
     name: '20261126180000_ai_execution_run_ledger',
     path: join(migrationsDir, '20261126180000_ai_execution_run_ledger.sql'),
   },
+  {
+    name: '20261126190000_ai_execution_run_ledger_inflight_guard',
+    path: join(migrationsDir, '20261126190000_ai_execution_run_ledger_inflight_guard.sql'),
+  },
 ];
 
 /** Legacy MCP names that may exist without full DDL — do not treat as complete. */

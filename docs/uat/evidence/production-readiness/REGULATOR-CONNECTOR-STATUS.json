@@ -1,0 +1,1589 @@
+{
+  "generatedAt": "2026-11-26T18:34:40.133Z",
+  "method": "Static code + catalogue join with read-only staging queries. No live regulator fetch was performed by this report.",
+  "staleAfterHours": 72,
+  "totals": {
+    "regulators": 36,
+    "catalogueSources": 41,
+    "codeConnectors": 40,
+    "sourcesWithConnector": 40,
+    "sourcesWithPublicationsOnStaging": 39,
+    "sourcesCurrent": 0,
+    "sourcesStale": 38,
+    "sourcesFailing": 1,
+    "sourcesDisabled": 1,
+    "sourcesWithoutConnector": 1,
+    "regulatorsWithApprovedClassificationPolicy": 1,
+    "regulatorsWithoutSource": 1
+  },
+  "scheduling": {
+    "hostedSchedulerRoute": "app/api/internal/ri-ingestion/scheduler-tick (implemented, secret-gated)",
+    "vercelCronConfigured": false,
+    "productionPollingEnabledSources": 0
+  },
+  "regulators": [
+    {
+      "regulatorId": "REG-FCA",
+      "name": "Financial Conduct Authority",
+      "jurisdiction": "United Kingdom",
+      "sources": [
+        {
+          "sourceId": "SRC-FCA-PUBLICATIONS-RSS",
+          "sourceType": "RSS feed",
+          "catalogueStatus": "VERIFIED_EXISTING",
+          "connector": {
+            "connectorId": "CONN-LEGACY-FCA",
+            "retrievalMethod": "official_rss",
+            "allowedHosts": [
+              "www.fca.org.uk",
+              "fca.org.uk"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 48,
+            "publications": 25,
+            "lastSuccessAt": "2026-11-17 04:57:30.140214+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED||2026-11-18 20:06:05.658986+00",
+            "hoursSinceLastSuccess": 230
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": true,
+        "approved": true,
+        "activated": true,
+        "notes": null
+      }
+    },
+    {
+      "regulatorId": "REG-PRA",
+      "name": "Prudential Regulation Authority",
+      "jurisdiction": "United Kingdom",
+      "sources": [
+        {
+          "sourceId": "SRC-PRA-PUBLICATIONS",
+          "sourceType": "Official publications web",
+          "catalogueStatus": "VERIFIED_EXISTING",
+          "connector": {
+            "connectorId": "CONN-LEGACY-PRA",
+            "retrievalMethod": "official_rss",
+            "allowedHosts": [
+              "www.bankofengland.co.uk",
+              "bankofengland.co.uk"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 22,
+            "publications": 14,
+            "lastSuccessAt": "2026-11-16 04:57:16.47291+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:11.359765+00",
+            "hoursSinceLastSuccess": 254
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "Authoritative research draft only; fail-closed on staging"
+      }
+    },
+    {
+      "regulatorId": "REG-BOE",
+      "name": "Bank of England",
+      "jurisdiction": "United Kingdom",
+      "sources": [],
+      "status": "NO_SOURCE_IN_CATALOGUE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-HMT",
+      "name": "HM Treasury",
+      "jurisdiction": "United Kingdom",
+      "sources": [
+        {
+          "sourceId": "SRC-HMT-PUBLICATIONS",
+          "sourceType": "GOV.UK collection",
+          "catalogueStatus": "VERIFIED_EXISTING",
+          "connector": {
+            "connectorId": "CONN-LEGACY-HMT",
+            "retrievalMethod": "official_atom",
+            "allowedHosts": [
+              "www.gov.uk",
+              "gov.uk"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 22,
+            "publications": 21,
+            "lastSuccessAt": "2026-11-16 04:58:02.579897+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:57.83378+00",
+            "hoursSinceLastSuccess": 254
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-TPR",
+      "name": "The Pensions Regulator",
+      "jurisdiction": "United Kingdom",
+      "sources": [
+        {
+          "sourceId": "SRC-TPR-DOCUMENT-LIBRARY",
+          "sourceType": "Document library + sitemap",
+          "catalogueStatus": "VERIFIED_EXISTING",
+          "connector": {
+            "connectorId": "CONN-LEGACY-TPR",
+            "retrievalMethod": "official_sitemap",
+            "allowedHosts": [
+              "www.tpr.gov.uk",
+              "tpr.gov.uk",
+              "www.thepensionsregulator.gov.uk",
+              "thepensionsregulator.gov.uk"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 22,
+            "publications": 9,
+            "lastSuccessAt": "2026-11-16 04:57:41.943612+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:37.255421+00",
+            "hoursSinceLastSuccess": 254
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-UK-LEG",
+      "name": "UK Legislation (The National Archives)",
+      "jurisdiction": "United Kingdom",
+      "sources": [
+        {
+          "sourceId": "SRC-UK-LEGISLATION-ATOM",
+          "sourceType": "Atom legislation feed",
+          "catalogueStatus": "VERIFIED_EXISTING",
+          "connector": {
+            "connectorId": "CONN-LEGACY-UK-LEG",
+            "retrievalMethod": "official_atom",
+            "allowedHosts": [
+              "www.legislation.gov.uk",
+              "legislation.gov.uk"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 22,
+            "publications": 25,
+            "lastSuccessAt": "2026-11-16 04:57:46.998578+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:42.373036+00",
+            "hoursSinceLastSuccess": 254
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-BIS",
+      "name": "Bank for International Settlements / Basel Committee on Banking Supervision",
+      "jurisdiction": "International",
+      "sources": [
+        {
+          "sourceId": "SRC-BASEL-FRAMEWORK",
+          "sourceType": "Official standard pages",
+          "catalogueStatus": "VERIFIED_EXISTING",
+          "connector": {
+            "connectorId": "CONN-LEGACY-BASEL",
+            "retrievalMethod": "official_curated_bcbs_publications",
+            "allowedHosts": [
+              "www.bis.org",
+              "bis.org"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 22,
+            "publications": 3,
+            "lastSuccessAt": "2026-11-17 00:55:26.999968+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:19.353588+00",
+            "hoursSinceLastSuccess": 234
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-OFSI",
+      "name": "Office of Financial Sanctions Implementation",
+      "jurisdiction": "United Kingdom",
+      "sources": [
+        {
+          "sourceId": "SRC-OFSI-SANCTIONS-GUIDANCE",
+          "sourceType": "Sanctions lists and guidance",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B1-OFSI",
+            "retrievalMethod": "official_atom",
+            "allowedHosts": [
+              "www.gov.uk",
+              "gov.uk"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 21,
+            "publications": 4,
+            "lastSuccessAt": "2026-11-17 04:58:45.79768+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:58:41.122083+00",
+            "hoursSinceLastSuccess": 230
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-ICO",
+      "name": "Information Commissioner's Office",
+      "jurisdiction": "United Kingdom",
+      "sources": [
+        {
+          "sourceId": "SRC-ICO-GUIDANCE",
+          "sourceType": "Guidance and regulatory publications",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B1-ICO",
+            "retrievalMethod": "official_sitemap",
+            "allowedHosts": [
+              "ico.org.uk"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 22,
+            "publications": 21,
+            "lastSuccessAt": "2026-11-17 04:58:00.84754+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:56.227688+00",
+            "hoursSinceLastSuccess": 230
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "Authoritative research draft only; fail-closed on staging"
+      }
+    },
+    {
+      "regulatorId": "REG-FRC",
+      "name": "Financial Reporting Council",
+      "jurisdiction": "United Kingdom",
+      "sources": [
+        {
+          "sourceId": "SRC-FRC-PUBLICATIONS",
+          "sourceType": "Standards and publications",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B1-FRC",
+            "retrievalMethod": "official_html_listing",
+            "allowedHosts": [
+              "frc.org.uk",
+              "www.frc.org.uk"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 23,
+            "publications": 11,
+            "lastSuccessAt": "2026-11-17 04:57:52.526851+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:46.057721+00",
+            "hoursSinceLastSuccess": 230
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "Unverified conversion policy — suspension pending OP1/OP2"
+      }
+    },
+    {
+      "regulatorId": "REG-PSR-UK",
+      "name": "Payment Systems Regulator",
+      "jurisdiction": "United Kingdom",
+      "sources": [
+        {
+          "sourceId": "SRC-PSR-UK-RULES",
+          "sourceType": "Rules and policy publications",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B1-PSR",
+            "retrievalMethod": "official_html_listing",
+            "allowedHosts": [
+              "psr.org.uk",
+              "www.psr.org.uk"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 21,
+            "publications": 4,
+            "lastSuccessAt": "2026-11-16 04:57:22.937885+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:16.523761+00",
+            "hoursSinceLastSuccess": 254
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "Authoritative research draft only; fail-closed on staging"
+      }
+    },
+    {
+      "regulatorId": "REG-CMA-UK",
+      "name": "Competition and Markets Authority",
+      "jurisdiction": "United Kingdom",
+      "sources": [
+        {
+          "sourceId": "SRC-CMA-UK-ENFORCEMENT",
+          "sourceType": "Decisions and publications",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B1-CMA-UK",
+            "retrievalMethod": "official_atom",
+            "allowedHosts": [
+              "www.gov.uk",
+              "gov.uk"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 22,
+            "publications": 20,
+            "lastSuccessAt": "2026-11-17 04:57:15.915864+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:11.061917+00",
+            "hoursSinceLastSuccess": 230
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-SAMA",
+      "name": "Saudi Central Bank",
+      "jurisdiction": "Saudi Arabia",
+      "sources": [
+        {
+          "sourceId": "SRC-SAMA-RULEBOOK",
+          "sourceType": "Rulebook and circulars",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B1B-SAMA",
+            "retrievalMethod": "official_rulebook_html",
+            "allowedHosts": [
+              "rulebook.sama.gov.sa"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 22,
+            "publications": 1,
+            "lastSuccessAt": "2026-11-16 04:57:26.403621+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:22.971494+00",
+            "hoursSinceLastSuccess": 254
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-CMA-SA",
+      "name": "Capital Market Authority (Saudi Arabia)",
+      "jurisdiction": "Saudi Arabia",
+      "sources": [
+        {
+          "sourceId": "SRC-CMA-SA-RULES",
+          "sourceType": "Rules, consultations, enforcement",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B1B-CMA-SA",
+            "retrievalMethod": "official_document_library",
+            "allowedHosts": [
+              "cma.gov.sa",
+              "cma.org.sa",
+              "www.cma.org.sa"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 21,
+            "publications": 3,
+            "lastSuccessAt": "2026-11-17 00:55:53.556409+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:48.700012+00",
+            "hoursSinceLastSuccess": 234
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-IA-SA",
+      "name": "Insurance Authority (Saudi Arabia)",
+      "jurisdiction": "Saudi Arabia",
+      "sources": [
+        {
+          "sourceId": "SRC-IA-SA-REGULATIONS",
+          "sourceType": "Regulations and circulars",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-IA-SA",
+            "retrievalMethod": "official_html_pattern",
+            "allowedHosts": [
+              "www.ia.gov.sa",
+              "ia.gov.sa"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 21,
+            "publications": 1,
+            "lastSuccessAt": "2026-11-17 04:57:56.209883+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:52.547152+00",
+            "hoursSinceLastSuccess": 230
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-TADAWUL",
+      "name": "Saudi Exchange (Tadawul)",
+      "jurisdiction": "Saudi Arabia",
+      "sources": [
+        {
+          "sourceId": "SRC-TADAWUL-RULEBOOK",
+          "sourceType": "Exchange rulebook and notices",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-TADAWUL",
+            "retrievalMethod": "official_cma_regulator_rules_index",
+            "allowedHosts": [
+              "cma.gov.sa",
+              "cma.org.sa",
+              "www.cma.org.sa",
+              "www.cma.gov.sa"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "ACCESS_RESTRICTED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 18,
+            "publications": 3,
+            "lastSuccessAt": "2026-11-16 04:58:08.42471+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:58:02.613432+00",
+            "hoursSinceLastSuccess": 254
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-SDAIA",
+      "name": "Saudi Data & AI Authority",
+      "jurisdiction": "Saudi Arabia",
+      "sources": [
+        {
+          "sourceId": "SRC-SDAIA-PDPL",
+          "sourceType": "PDPL legislation and guidance",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-SDAIA",
+            "retrievalMethod": "official_dgp_knowledge_center_pdf",
+            "allowedHosts": [
+              "dgp.sdaia.gov.sa"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "RESEARCH_REQUIRED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 16,
+            "publications": 3,
+            "lastSuccessAt": "2026-11-17 00:55:14.014878+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:54:59.398832+00",
+            "hoursSinceLastSuccess": 234
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-ZATCA",
+      "name": "Zakat, Tax and Customs Authority",
+      "jurisdiction": "Saudi Arabia",
+      "sources": [
+        {
+          "sourceId": "SRC-ZATCA-EINVOICING",
+          "sourceType": "Tax and e-invoicing requirements",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-ZATCA",
+            "retrievalMethod": "official_guidelines_pages",
+            "allowedHosts": [
+              "zatca.gov.sa",
+              "www.zatca.gov.sa"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "RESEARCH_REQUIRED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 18,
+            "publications": 1,
+            "lastSuccessAt": "2026-11-16 12:52:32.072275+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 12:52:28.306169+00",
+            "hoursSinceLastSuccess": 246
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-MOCI-SA",
+      "name": "Ministry of Commerce (Saudi Arabia)",
+      "jurisdiction": "Saudi Arabia",
+      "sources": [
+        {
+          "sourceId": "SRC-MOCI-SA-COMPANIES-LAW",
+          "sourceType": "Companies Law publications",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-MOCI-SA",
+            "retrievalMethod": "official_mc_regulations_detail_html",
+            "allowedHosts": [
+              "mc.gov.sa",
+              "www.mc.gov.sa"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "FAILING",
+            "verificationStatus": "RETRIEVAL_FAILED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 16,
+            "publications": 3,
+            "lastSuccessAt": "2026-10-30 09:22:24.770776+00",
+            "lastFailureAt": "2026-11-17 00:54:38.48608+00",
+            "lastRun": "FAILED|UNKNOWN|2026-11-17 00:54:38.118164+00",
+            "hoursSinceLastSuccess": 657
+          },
+          "status": "FAILING"
+        }
+      ],
+      "status": "FAILING",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-NCA-SA",
+      "name": "National Cybersecurity Authority (Saudi Arabia)",
+      "jurisdiction": "Saudi Arabia",
+      "sources": [
+        {
+          "sourceId": "SRC-NCA-SA-FRAMEWORKS",
+          "sourceType": "Cybersecurity frameworks and controls",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-NCA-SA",
+            "retrievalMethod": "official_laws_and_regulations_index",
+            "allowedHosts": [
+              "nca.gov.sa",
+              "www.nca.gov.sa",
+              "cdn.nca.gov.sa"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "RESEARCH_REQUIRED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 18,
+            "publications": 3,
+            "lastSuccessAt": "2026-11-16 12:52:22.551727+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 12:52:17.389893+00",
+            "hoursSinceLastSuccess": 246
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-SA-LEG",
+      "name": "Saudi official legislation / gazette",
+      "jurisdiction": "Saudi Arabia",
+      "sources": [
+        {
+          "sourceId": "SRC-SA-LEGISLATION-GAZETTE",
+          "sourceType": "Official legislation / gazette",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-SA-LEG",
+            "retrievalMethod": "official_uqn_news_publications",
+            "allowedHosts": [
+              "uqn.gov.sa",
+              "www.uqn.gov.sa"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "RETRIEVAL_FAILED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 16,
+            "publications": 17,
+            "lastSuccessAt": "2026-11-17 00:54:59.371989+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:54:54.319994+00",
+            "hoursSinceLastSuccess": 234
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-DFSA",
+      "name": "Dubai Financial Services Authority",
+      "jurisdiction": "DIFC (Dubai)",
+      "sources": [
+        {
+          "sourceId": "SRC-DFSA-RULEBOOK",
+          "sourceType": "DFSA Rulebook",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B1B-DFSA",
+            "retrievalMethod": "official_rulebook_platform_html",
+            "allowedHosts": [
+              "dfsaen.thomsonreuters.com"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 21,
+            "publications": 3,
+            "lastSuccessAt": "2026-11-17 04:57:21.397469+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:15.964249+00",
+            "hoursSinceLastSuccess": 230
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-CBUAE",
+      "name": "Central Bank of the UAE",
+      "jurisdiction": "United Arab Emirates (federal)",
+      "sources": [
+        {
+          "sourceId": "SRC-CBUAE-DIGITAL-RULEBOOK",
+          "sourceType": "Digital Rulebook",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B1B-CBUAE",
+            "allowedHosts": [
+              "rulebook.centralbank.ae",
+              "centralbank.ae",
+              "www.centralbank.ae"
+            ]
+          },
+          "staging": {
+            "enabled": false,
+            "healthStatus": null,
+            "verificationStatus": "ACCESS_RESTRICTED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 5,
+            "publications": 0,
+            "lastSuccessAt": null,
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED||2026-10-30 10:11:48.308812+00",
+            "hoursSinceLastSuccess": null
+          },
+          "status": "CONNECTOR_DISABLED"
+        }
+      ],
+      "status": "CONNECTOR_DISABLED",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-VARA",
+      "name": "Virtual Assets Regulatory Authority",
+      "jurisdiction": "Dubai (excluding DIFC where applicable)",
+      "sources": [
+        {
+          "sourceId": "SRC-VARA-RULEBOOK",
+          "sourceType": "VARA rulebooks",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-SEM-VARA-RULEBOOK",
+            "retrievalMethod": "official_rulebook_discovery",
+            "allowedHosts": [
+              "www.vara.ae",
+              "vara.ae"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 21,
+            "publications": 1,
+            "lastSuccessAt": "2026-11-16 04:57:57.801638+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:53.349803+00",
+            "hoursSinceLastSuccess": 254
+          },
+          "status": "INGESTED_STALE"
+        },
+        {
+          "sourceId": "SRC-VARA-REGULATORY-UPDATES",
+          "sourceType": "VARA regulatory news and market notices",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-VARA-UPDATES",
+            "retrievalMethod": "official_html_listing",
+            "allowedHosts": [
+              "www.vara.ae",
+              "vara.ae"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 20,
+            "publications": 3,
+            "lastSuccessAt": "2026-11-16 04:57:53.317077+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:47.034256+00",
+            "hoursSinceLastSuccess": 254
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-SCA-UAE",
+      "name": "Securities and Commodities Authority",
+      "jurisdiction": "United Arab Emirates (federal; zone boundaries apply)",
+      "sources": [
+        {
+          "sourceId": "SRC-SCA-UAE-REGULATIONS",
+          "sourceType": "Regulations and publications",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-SCA-UAE",
+            "retrievalMethod": "official_uaecma_latest_regulations_pdf",
+            "allowedHosts": [
+              "www.uaecma.gov.ae",
+              "uaecma.gov.ae"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "RESEARCH_REQUIRED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 17,
+            "publications": 2,
+            "lastSuccessAt": "2026-11-17 00:55:19.325863+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:14.039637+00",
+            "hoursSinceLastSuccess": 234
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-FSRA",
+      "name": "Financial Services Regulatory Authority (ADGM)",
+      "jurisdiction": "ADGM (Abu Dhabi)",
+      "sources": [
+        {
+          "sourceId": "SRC-FSRA-RULEBOOK",
+          "sourceType": "FSRA Rulebook",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-FSRA",
+            "retrievalMethod": "official_adgm_publications",
+            "allowedHosts": [
+              "www.adgm.com",
+              "adgm.com"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "ACCESS_RESTRICTED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 18,
+            "publications": 7,
+            "lastSuccessAt": "2026-11-16 12:52:28.26651+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 12:52:22.611986+00",
+            "hoursSinceLastSuccess": 246
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-UAE-FIU",
+      "name": "UAE Financial Intelligence Unit",
+      "jurisdiction": "United Arab Emirates",
+      "sources": [
+        {
+          "sourceId": "SRC-UAE-FIU-GUIDANCE",
+          "sourceType": "AML/CFT guidance and publications",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-UAE-FIU",
+            "retrievalMethod": "official_html_listing",
+            "allowedHosts": [
+              "www.uaefiu.gov.ae",
+              "uaefiu.gov.ae"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 20,
+            "publications": 3,
+            "lastSuccessAt": "2026-11-16 04:57:42.340823+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:41.976658+00",
+            "hoursSinceLastSuccess": 254
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-SEC",
+      "name": "U.S. Securities and Exchange Commission",
+      "jurisdiction": "United States",
+      "sources": [
+        {
+          "sourceId": "SRC-SEC-RULES-PUBLICATIONS",
+          "sourceType": "Rules, rulemaking, releases",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B1-SEC",
+            "retrievalMethod": "official_rss",
+            "allowedHosts": [
+              "sec.gov",
+              "www.sec.gov"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 21,
+            "publications": 7,
+            "lastSuccessAt": "2026-11-16 04:57:37.201971+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:31.200088+00",
+            "hoursSinceLastSuccess": 254
+          },
+          "status": "INGESTED_STALE"
+        },
+        {
+          "sourceId": "SRC-SEC-RULEMAKING",
+          "sourceType": "SEC rules and rulemaking",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-SEM-SEC-RULEMAKING",
+            "retrievalMethod": "official_html_listing",
+            "allowedHosts": [
+              "www.sec.gov",
+              "sec.gov"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 21,
+            "publications": 3,
+            "lastSuccessAt": "2026-11-16 04:57:31.167749+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:26.437092+00",
+            "hoursSinceLastSuccess": 254
+          },
+          "status": "INGESTED_STALE"
+        },
+        {
+          "sourceId": "SRC-SEC-FEDERAL-REGISTER",
+          "sourceType": "Federal Register (SEC-related)",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-FR-SEC",
+            "retrievalMethod": "official_federal_register_api",
+            "allowedHosts": [
+              "www.federalregister.gov",
+              "federalregister.gov"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "NOT_TESTED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 21,
+            "publications": 1,
+            "lastSuccessAt": "2026-11-17 00:54:43.41155+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:54:38.551268+00",
+            "hoursSinceLastSuccess": 234
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-CFTC",
+      "name": "U.S. Commodity Futures Trading Commission",
+      "jurisdiction": "United States",
+      "sources": [
+        {
+          "sourceId": "SRC-CFTC-PUBLICATIONS",
+          "sourceType": "CFTC publications",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-CFTC",
+            "retrievalMethod": "official_html_pattern",
+            "allowedHosts": [
+              "www.cftc.gov",
+              "cftc.gov"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 23,
+            "publications": 11,
+            "lastSuccessAt": "2026-11-17 00:55:43.890811+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:37.756046+00",
+            "hoursSinceLastSuccess": 234
+          },
+          "status": "INGESTED_STALE"
+        },
+        {
+          "sourceId": "SRC-CFTC-RULEMAKING",
+          "sourceType": "CFTC rulemaking and Federal Register releases",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-FR-CFTC-RULEMAKING",
+            "retrievalMethod": "official_federal_register_api",
+            "allowedHosts": [
+              "www.federalregister.gov",
+              "federalregister.gov"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "RESEARCH_REQUIRED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 22,
+            "publications": 1,
+            "lastSuccessAt": "2026-11-17 00:55:48.675806+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:43.916296+00",
+            "hoursSinceLastSuccess": 234
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-FINRA",
+      "name": "Financial Industry Regulatory Authority",
+      "jurisdiction": "United States",
+      "sources": [
+        {
+          "sourceId": "SRC-FINRA-RULEBOOK",
+          "sourceType": "FINRA Rulebook and regulatory notices",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B1-FINRA",
+            "retrievalMethod": "official_html_pattern",
+            "allowedHosts": [
+              "finra.org",
+              "www.finra.org"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 21,
+            "publications": 4,
+            "lastSuccessAt": "2026-11-17 04:57:41.399167+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:36.675325+00",
+            "hoursSinceLastSuccess": 230
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-FRB",
+      "name": "Board of Governors of the Federal Reserve System",
+      "jurisdiction": "United States",
+      "sources": [
+        {
+          "sourceId": "SRC-FRB-SUPERVISION",
+          "sourceType": "Supervision and regulatory publications",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-FRB",
+            "retrievalMethod": "official_rss",
+            "allowedHosts": [
+              "www.federalreserve.gov",
+              "federalreserve.gov"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 22,
+            "publications": 9,
+            "lastSuccessAt": "2026-11-17 04:57:46.038771+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:41.4175+00",
+            "hoursSinceLastSuccess": 230
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-FDIC",
+      "name": "Federal Deposit Insurance Corporation",
+      "jurisdiction": "United States",
+      "sources": [
+        {
+          "sourceId": "SRC-FDIC-GUIDANCE",
+          "sourceType": "Supervisory guidance and publications",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-FDIC",
+            "retrievalMethod": "official_fil_index_pattern",
+            "allowedHosts": [
+              "www.fdic.gov",
+              "fdic.gov"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 21,
+            "publications": 9,
+            "lastSuccessAt": "2026-11-17 04:57:36.658055+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:30.162391+00",
+            "hoursSinceLastSuccess": 230
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-OCC",
+      "name": "Office of the Comptroller of the Currency",
+      "jurisdiction": "United States",
+      "sources": [
+        {
+          "sourceId": "SRC-OCC-BULLETINS",
+          "sourceType": "Bulletins and issuances",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-OCC",
+            "retrievalMethod": "official_bulletin_pattern",
+            "allowedHosts": [
+              "www.occ.gov",
+              "occ.gov"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 20,
+            "publications": 2,
+            "lastSuccessAt": "2026-11-17 04:58:02.545776+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:58:00.868636+00",
+            "hoursSinceLastSuccess": 230
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-CFPB",
+      "name": "Consumer Financial Protection Bureau",
+      "jurisdiction": "United States",
+      "sources": [
+        {
+          "sourceId": "SRC-CFPB-RULES",
+          "sourceType": "Final and proposed rules",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-SEM-CFPB-RULES",
+            "retrievalMethod": "official_html_listing",
+            "allowedHosts": [
+              "www.consumerfinance.gov",
+              "consumerfinance.gov"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 20,
+            "publications": 3,
+            "lastSuccessAt": "2026-11-17 00:55:37.728912+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:31.639065+00",
+            "hoursSinceLastSuccess": 234
+          },
+          "status": "INGESTED_STALE"
+        },
+        {
+          "sourceId": "SRC-CFPB-REGULATORY-UPDATES",
+          "sourceType": "CFPB news and announcements",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-CFPB-UPDATES",
+            "retrievalMethod": "official_rss",
+            "allowedHosts": [
+              "www.consumerfinance.gov",
+              "consumerfinance.gov"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 21,
+            "publications": 3,
+            "lastSuccessAt": "2026-11-17 00:55:31.611912+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:27.024664+00",
+            "hoursSinceLastSuccess": 234
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-OFAC",
+      "name": "Office of Foreign Assets Control",
+      "jurisdiction": "United States",
+      "sources": [
+        {
+          "sourceId": "SRC-OFAC-SDN-LISTS",
+          "sourceType": "Sanctions lists and program guidance",
+          "catalogueStatus": "PLANNED",
+          "connector": null,
+          "staging": {
+            "enabled": false,
+            "healthStatus": null,
+            "verificationStatus": "NOT_TESTED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 0,
+            "publications": 0,
+            "lastSuccessAt": null,
+            "lastFailureAt": null,
+            "lastRun": null,
+            "hoursSinceLastSuccess": null
+          },
+          "status": "NO_CONNECTOR"
+        },
+        {
+          "sourceId": "SRC-OFAC-REGULATORY-UPDATES",
+          "sourceType": "OFAC sanctions policy and recent regulatory actions",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-OFAC-REG-UPDATES",
+            "retrievalMethod": "official_html_pattern",
+            "allowedHosts": [
+              "ofac.treasury.gov"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "LIVE_VERIFIED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 24,
+            "publications": 8,
+            "lastSuccessAt": "2026-11-17 04:58:41.104477+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:58:02.56357+00",
+            "hoursSinceLastSuccess": 230
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "NO_CONNECTOR",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    },
+    {
+      "regulatorId": "REG-NFA",
+      "name": "National Futures Association",
+      "jurisdiction": "United States",
+      "sources": [
+        {
+          "sourceId": "SRC-NFA-RULEBOOK",
+          "sourceType": "NFA rulebook and notices",
+          "catalogueStatus": "PLANNED",
+          "connector": {
+            "connectorId": "CONN-B2-NFA",
+            "retrievalMethod": "official_nfa_rulebook_sections",
+            "allowedHosts": [
+              "www.nfa.futures.org",
+              "nfa.futures.org"
+            ]
+          },
+          "staging": {
+            "enabled": true,
+            "healthStatus": "HEALTHY",
+            "verificationStatus": "RESEARCH_REQUIRED",
+            "productionStatus": "NOT_ENABLED",
+            "runsTotal": 17,
+            "publications": 3,
+            "lastSuccessAt": "2026-11-17 00:54:54.291441+00",
+            "lastFailureAt": null,
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:54:43.441299+00",
+            "hoursSinceLastSuccess": 234
+          },
+          "status": "INGESTED_STALE"
+        }
+      ],
+      "status": "INGESTED_STALE",
+      "classificationPolicy": {
+        "verified": false,
+        "approved": false,
+        "activated": false,
+        "notes": "No approved classification policy: conversion is fail-closed"
+      }
+    }
+  ]
+}

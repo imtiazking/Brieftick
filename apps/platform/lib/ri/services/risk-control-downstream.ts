@@ -58,6 +58,8 @@ export async function ensureControlMappingFromApprovedRisk(
     actorUserId: string;
     /** Override when recovering a failed first attempt (must still be unique per paid call). */
     idempotencyKey?: string;
+    /** Idempotency key of the FAILED request this attempt repeats (run ledger retry accounting). */
+    retryOfIdempotencyKey?: string | null;
   },
 ): Promise<Stage4DownstreamResult> {
   await assertRowInOrganisation(supabase, 'risks', params.riskId, params.organisationId);
@@ -96,6 +98,7 @@ export async function ensureControlMappingFromApprovedRisk(
     stage: 4,
     organisationId: params.organisationId,
     idempotencyKey,
+    retryOfIdempotencyKey: params.retryOfIdempotencyKey ?? null,
     sourceSections: [
       {
         sourceSectionId: 'RISK-1',

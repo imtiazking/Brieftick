@@ -79,6 +79,9 @@ export function createCbUAEConnector() {
       'https://www.centralbank.ae/en/our-operations/regulations',
     ],
     productionStrategy: 'LICENSED_FEED_RECOMMENDED',
+    // Declared so the registry contract can distinguish a candidate-probing connector from an undeclared one.
+    // CBUAE currently answers HTTP 403 from programme egress: an authorised feed or allow-listing is required.
+    retrievalMethod: 'official_document_library_candidates',
   };
 
   return {

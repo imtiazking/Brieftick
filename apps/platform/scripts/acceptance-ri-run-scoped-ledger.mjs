@@ -28,6 +28,7 @@ const sql = [
   '20261126020000_lab_ai_spend_reservation_recovery.sql',
   '20261126120000_lab_ai_spend_usage_categories_and_recovery_v2.sql',
   '20261126180000_ai_execution_run_ledger.sql',
+  '20261126190000_ai_execution_run_ledger_inflight_guard.sql',
 ].map(readMigration).join('\n');
 
 let fail = 0;
@@ -178,8 +179,13 @@ try {
   await authorise('run-idem-0001', 'org-a', 1, 5);
   const i1 = await reserve(clients[0], 'run-idem-0001', 'org-a', 0.02, 'same');
   const i2 = await reserve(clients[1], 'run-idem-0001', 'org-a', 0.02, 'same');
-  check('inflight_reuse_not_double_counted', i2.ok && i2.reused === true && i2.reservationId === i1.reservationId, i2);
-  check('inflight_reuse_request_count', (await one(`select request_count from public.ai_execution_runs where run_reference = 'run-idem-0001'`)).request_count === 1, 'count');
+  check('inflight_duplicate_denied_no_second_provider_call', i1.ok === true && i2.ok === false && i2.code === 'AI_RESERVATION_IN_FLIGHT', { i1: i1.ok, i2 });
+  check('inflight_duplicate_request_count', (await one(`select request_count from public.ai_execution_runs where run_reference = 'run-idem-0001'`)).request_count === 1, 'count');
+  check('inflight_duplicate_audited', (await one(`select count(*)::int n from public.ai_execution_ledger_events where run_reference = 'run-idem-0001' and event_type = 'DUPLICATE_BLOCKED_IN_FLIGHT'`)).n === 1, 'audit');
+  await authorise('run-race-0001', 'org-a', 1, 5);
+  const race = await Promise.all(clients.map((c) => reserve(c, 'run-race-0001', 'org-a', 0.02, 'double-click')));
+  check('same_key_race_single_winner', race.filter((x) => x.ok).length === 1 && race.filter((x) => x.code === 'AI_RESERVATION_IN_FLIGHT').length === race.length - 1, race.map((x) => x.code ?? 'ok'));
+  check('same_key_race_counts_one_request', (await one(`select request_count from public.ai_execution_runs where run_reference = 'run-race-0001'`)).request_count === 1, 'count');
   await settle(clients[0], i1.reservationId, 0.01);
   const i3 = await reserve(clients[0], 'run-idem-0001', 'org-a', 0.02, 'same');
   check('settled_key_cannot_be_reused', i3.ok === false && i3.code === 'LAB_SPEND_ALREADY_SETTLED', i3);

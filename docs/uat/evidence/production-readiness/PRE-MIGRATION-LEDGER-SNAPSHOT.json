@@ -1,0 +1,7 @@
+{
+  "capturedAt": "2026-11-26",
+  "purpose": "Pre-migration logical snapshot before 20261126180000_ai_execution_run_ledger on forgeniq-ri-staging (lhgzdicffkhaaykzthep)",
+  "accounts": [{"scope_key":"forgeniq-lab-anthropic","budget_usd":0.75,"max_requests":8,"request_count":5,"settled_usd":0.151396,"reserved_usd":0,"output_tokens":16766,"standard_input_tokens":28606,"cache_read_tokens":0,"cache_write_tokens":0}],
+  "reservations": {"total": 10, "SETTLED": {"n": 10, "usd": 0.224872}, "RESERVED": 0, "FAILED": 0},
+  "note": "Account counters show the eval-002 reconciled window (5 requests, $0.151396); reservation rows remain unchanged. Migration is additive (3 tables, 2 nullable columns, triggers, functions) and drops one foreign key only."
+}
