@@ -83,9 +83,9 @@ const mapped = mapImpactSuggestionToDraftFields({
   structured: { confidence: 80, dimensions: ['Operations'], claims: [{ text: 'Obligation grounding', sourceSectionIds: ['OBL-1'] }] },
   obligationStatement: 'Must report incidents within 72 hours',
 });
-if (/human confirmation/i.test(mapped.compliance_impact) && mapped.materiality) {
-  pass('mapper labels uncertainty in draft narratives');
-} else fail('mapper missing human confirmation labelling', mapped);
+if (/human confirmation/i.test(mapped.compliance_impact) && mapped.materiality === 'UNASSESSED') {
+  pass('mapper labels uncertainty in draft narratives and leaves materiality UNASSESSED without org evidence');
+} else fail('mapper missing human confirmation labelling or materiality policy', mapped);
 
 const { embedded, adminUrl } = await resetAndStartEmbedded({ port: 54358 });
 const admin = new pg.Client({ connectionString: adminUrl });

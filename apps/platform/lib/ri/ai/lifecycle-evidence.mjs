@@ -72,6 +72,7 @@ export function buildRegulatoryEvidencePack(obligation) {
       bindingNature: str(meta.bindingNature),
       provisionFunction: str(meta.provisionFunction),
     },
+    provisionBreakdown: breakdown,
     quotation: {
       text: quotationText,
       page: Number.isInteger(meta.quotationPage) ? meta.quotationPage : null,

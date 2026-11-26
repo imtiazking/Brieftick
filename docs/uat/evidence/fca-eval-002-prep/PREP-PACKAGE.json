@@ -1,0 +1,339 @@
+{
+  "generatedAt": "2026-11-26T13:18:48.573Z",
+  "paidAiCallsInPrep": 0,
+  "runReference": "pilot-fca-eval-002-conc-7-20-1r",
+  "proposedBudgetUsd": 0.75,
+  "proposedMaxRequests": 8,
+  "proposedStageRequests": 5,
+  "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+  "targetCores": [
+    "7.20.1R"
+  ],
+  "stagingOnly": true,
+  "productionAuthorised": false,
+  "stages": [
+    {
+      "stage": 1,
+      "useCase": "UC-RI-005",
+      "name": "Regulatory publication and obligation extraction"
+    },
+    {
+      "stage": 2,
+      "useCase": "UC-RI-004",
+      "name": "Impact assessment"
+    },
+    {
+      "stage": 3,
+      "useCase": "UC-RI-006",
+      "name": "Risk assessment"
+    },
+    {
+      "stage": 4,
+      "useCase": "UC-RI-007",
+      "name": "Control recommendations"
+    },
+    {
+      "stage": 5,
+      "useCase": "UC-RI-008",
+      "name": "Assurance and testing recommendations"
+    }
+  ],
+  "acceptanceCriteria": [
+    "correct_provision_level_legal_classification",
+    "correct_effective_dates_with_provenance",
+    "no_missing_mandatory_requirements_in_scope",
+    "no_fabricated_obligations",
+    "no_fabricated_regulatory_citations",
+    "complete_requirement_to_control_traceability",
+    "evidence_based_or_provisional_risk_ratings",
+    "proposed_controls_not_presented_as_existing",
+    "complete_assurance_procedures_without_truncation",
+    "unresolved_interpretations_escalated",
+    "full_human_review_and_maker_checker_auditability"
+  ],
+  "captureRequirements": [
+    "raw_provider_response_per_stage",
+    "structured_output_json",
+    "source_quotations_and_citations",
+    "validateStageClaims_results",
+    "processing_duration_ms",
+    "input_output_token_counts",
+    "settled_usd_per_request_and_total"
+  ],
+  "expectedOutcomes": {
+    "provision": "CONC 7.20.1R",
+    "legalClassification": "final_made_rule",
+    "instrumentStatus": "made",
+    "effectiveDate": "2026-07-15",
+    "commencementBasis": "commencement_clause_all_other_parts",
+    "standaloneObligationPaths": [
+      "CONC 7.20.1R(2)(a)",
+      "CONC 7.20.1R(2)(b)",
+      "CONC 7.20.1R(3)"
+    ],
+    "applicabilityPaths": [
+      "CONC 7.20.1R(1)"
+    ],
+    "definitionPaths": [
+      "CONC 7.20.1R(4)"
+    ],
+    "expertJudgementIds": [
+      "timing_as_soon_as_possible",
+      "sufficiency_standard",
+      "adverse_consequences_scope",
+      "firm_judgement",
+      "adverse_consequences_scope",
+      "conditional_relevance",
+      "adverse_consequences_scope"
+    ],
+    "mandatoryLimbsVerbatim": [
+      {
+        "reference": "CONC 7.20.1R(2)(a)",
+        "kind": "mandatory_notification"
+      },
+      {
+        "reference": "CONC 7.20.1R(2)(b)",
+        "kind": "mandatory_information"
+      },
+      {
+        "reference": "CONC 7.20.1R(3)",
+        "kind": "information_together_requirement"
+      }
+    ]
+  },
+  "regulatoryInterpretation": {
+    "version": "conc-7-20-1r-interpretation-v1",
+    "provision": "CONC 7.20.1R",
+    "sources": {
+      "publication": "FCA PS26/1 (fixture)",
+      "instrument": "FCA 2026/2",
+      "instrumentStatus": "made",
+      "fixturePdf": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf"
+    },
+    "commencement": {
+      "status": "resolved",
+      "commencementDate": "2026-07-15",
+      "dateText": "15 July 2026",
+      "basis": "commencement_clause_all_other_parts",
+      "clause": "H",
+      "part": null,
+      "annex": "F",
+      "instrument": {
+        "title": "Deferred Payment Credit Instrument 2026",
+        "number": "FCA 2026/2"
+      },
+      "evidence": [
+        {
+          "kind": "commencement_clause",
+          "page": 63,
+          "quotation": "H. All other parts of this instrument come into force on 15 July 2026"
+        }
+      ]
+    },
+    "explicitRequirements": [
+      {
+        "id": "applicability_missed_payment",
+        "reference": "CONC 7.20.1R(1)",
+        "type": "explicit_requirement",
+        "text": "This rule applies where a borrower has failed to make a payment by the time it has fallen due under the terms of a regulated deferred payment credit agreement (‘a missed payment’).",
+        "note": "Condition precedent: rule applies only where a borrower has a missed payment under a regulated deferred payment credit agreement."
+      },
+      {
+        "id": "notify_borrower",
+        "reference": "CONC 7.20.1R(2)(a)",
+        "type": "explicit_requirement",
+        "text": "Notify the borrower that the missed payment occurred and about unpaid sums (including non-compliance charges).",
+        "parentTiming": "As soon as possible after a missed payment has occurred (CONC 7.20.1R(2))."
+      },
+      {
+        "id": "sufficient_information",
+        "reference": "CONC 7.20.1R(2)(b)",
+        "type": "explicit_requirement",
+        "text": "Provide the borrower with sufficient information to understand the agreement, adverse consequences (actual and likely), and mitigation steps where relevant.",
+        "parentTiming": "As soon as possible after a missed payment has occurred (CONC 7.20.1R(2))."
+      },
+      {
+        "id": "information_together",
+        "reference": "CONC 7.20.1R(3)",
+        "type": "explicit_requirement",
+        "text": "The information required under (2) must be provided together."
+      },
+      {
+        "id": "payment_definition",
+        "reference": "CONC 7.20.1R(4)",
+        "type": "explicit_requirement",
+        "text": "In this rule references to ‘payment’ refer to the repayment of capital but exclude payment of a charge for non-compliance with a regulated deferred payment credit agreement.",
+        "note": "Definition limb — not a standalone operational obligation."
+      }
+    ],
+    "interpretativeTopics": [
+      {
+        "id": "timing_as_soon_as_possible",
+        "reference": "CONC 7.20.1R(2)",
+        "topic": "As soon as possible",
+        "regulatoryText": "As soon as possible after a missed payment has occurred the firm must:",
+        "classification": "interpretative_recommendation_only",
+        "explicitDeadlineInSource": false,
+        "platformStance": "Do not invent a day-count SLA. Record the statutory wording and escalate timing standards to compliance/legal expert review.",
+        "escalationRequired": true
+      },
+      {
+        "id": "sufficiency_standard",
+        "reference": "CONC 7.20.1R(2)(b)",
+        "topic": "Sufficient information",
+        "regulatoryText": "…provide the borrower with sufficient information for the borrower to understand…",
+        "classification": "interpretative_recommendation_only",
+        "explicitThresholdInSource": false,
+        "platformStance": "Outcome-based standard. Firm must judge sufficiency per case; expert review on defensible content and channel.",
+        "escalationRequired": true
+      },
+      {
+        "id": "adverse_consequences",
+        "reference": "CONC 7.20.1R(2)(b)(ii)–(iii)",
+        "topic": "Adverse consequences",
+        "regulatoryText": "Any adverse consequences arising … and any that the firm considers are likely to arise…",
+        "classification": "interpretative_recommendation_only",
+        "platformStance": "Rule does not enumerate consequences. Escalate which consequences must be disclosed (charges, credit reporting, enforcement, etc.).",
+        "escalationRequired": true
+      },
+      {
+        "id": "firm_likelihood_judgement",
+        "reference": "CONC 7.20.1R(2)(b)(iii)",
+        "topic": "Likelihood assessment",
+        "regulatoryText": "…adverse consequences … that the firm considers are likely to arise…",
+        "classification": "interpretative_recommendation_only",
+        "platformStance": "Requires firm judgement and evidence of that judgement. Escalate governance for documenting \"likely\" consequences.",
+        "escalationRequired": true
+      },
+      {
+        "id": "conditional_relevance",
+        "reference": "CONC 7.20.1R(2)(b)(iv)",
+        "topic": "Relevant mitigation measures",
+        "regulatoryText": "(where relevant) any steps the borrower can take to mitigate those adverse consequences.",
+        "classification": "interpretative_recommendation_only",
+        "platformStance": "Firm decides when mitigation is relevant. No invented list of steps.",
+        "escalationRequired": true
+      },
+      {
+        "id": "transitional_provisions",
+        "reference": "CONC 7.20.1R",
+        "topic": "Transitional provisions",
+        "regulatoryText": "No transitional material in the instrument references this provision. This is a text search, not a legal conclusion on in-flight agreements or temporary-permission firms.",
+        "classification": "interpretative_recommendation_only",
+        "provisionSpecificTransitionalFound": false,
+        "platformStance": "Commencement for the rule is traced to instrument clause H (15 July 2026) unless superseded by transitional material. Text search found no provision-specific transitional reference; expert confirmation still required for in-flight agreements.",
+        "escalationRequired": true
+      },
+      {
+        "id": "temporary_permission_firms",
+        "reference": "CONC 7.20.1R",
+        "topic": "Applicability to temporary-permission firms",
+        "regulatoryText": "8• Not expanding the Financial Ombudsman’s Voluntary Jurisdiction (VJ) to cover DPC activities by a respondent from a European Economic Area (EEA) or Gibraltar establishment. • Suspending our complaints reporting rules for complaints arisin",
+        "classification": "interpretative_recommendation_only",
+        "temporaryPermissionMentionsInPublication": true,
+        "platformStance": "Handbook applicability for temporary-permission firms is not determined by this engine. Escalate to regulatory expert with firm permission status.",
+        "escalationRequired": true
+      }
+    ],
+    "escalationsForExpertReview": [
+      {
+        "topicId": "timing_as_soon_as_possible",
+        "reference": "CONC 7.20.1R(2)",
+        "question": "As soon as possible",
+        "reason": "Do not invent a day-count SLA. Record the statutory wording and escalate timing standards to compliance/legal expert review."
+      },
+      {
+        "topicId": "sufficiency_standard",
+        "reference": "CONC 7.20.1R(2)(b)",
+        "question": "Sufficient information",
+        "reason": "Outcome-based standard. Firm must judge sufficiency per case; expert review on defensible content and channel."
+      },
+      {
+        "topicId": "adverse_consequences",
+        "reference": "CONC 7.20.1R(2)(b)(ii)–(iii)",
+        "question": "Adverse consequences",
+        "reason": "Rule does not enumerate consequences. Escalate which consequences must be disclosed (charges, credit reporting, enforcement, etc.)."
+      },
+      {
+        "topicId": "firm_likelihood_judgement",
+        "reference": "CONC 7.20.1R(2)(b)(iii)",
+        "question": "Likelihood assessment",
+        "reason": "Requires firm judgement and evidence of that judgement. Escalate governance for documenting \"likely\" consequences."
+      },
+      {
+        "topicId": "conditional_relevance",
+        "reference": "CONC 7.20.1R(2)(b)(iv)",
+        "question": "Relevant mitigation measures",
+        "reason": "Firm decides when mitigation is relevant. No invented list of steps."
+      },
+      {
+        "topicId": "transitional_provisions",
+        "reference": "CONC 7.20.1R",
+        "question": "Transitional provisions",
+        "reason": "Commencement for the rule is traced to instrument clause H (15 July 2026) unless superseded by transitional material. Text search found no provision-specific transitional reference; expert confirmation still required for in-flight agreements."
+      },
+      {
+        "topicId": "temporary_permission_firms",
+        "reference": "CONC 7.20.1R",
+        "question": "Applicability to temporary-permission firms",
+        "reason": "Handbook applicability for temporary-permission firms is not determined by this engine. Escalate to regulatory expert with firm permission status."
+      }
+    ],
+    "prohibitions": [
+      "Do not invent calendar deadlines for \"as soon as possible\".",
+      "Do not invent numeric sufficiency thresholds for borrower information.",
+      "Do not treat interpretative recommendations as binding FCA deadlines."
+    ]
+  },
+  "expertReviewQuestions": [
+    {
+      "topicId": "timing_as_soon_as_possible",
+      "reference": "CONC 7.20.1R(2)",
+      "question": "As soon as possible",
+      "reason": "Do not invent a day-count SLA. Record the statutory wording and escalate timing standards to compliance/legal expert review."
+    },
+    {
+      "topicId": "sufficiency_standard",
+      "reference": "CONC 7.20.1R(2)(b)",
+      "question": "Sufficient information",
+      "reason": "Outcome-based standard. Firm must judge sufficiency per case; expert review on defensible content and channel."
+    },
+    {
+      "topicId": "adverse_consequences",
+      "reference": "CONC 7.20.1R(2)(b)(ii)–(iii)",
+      "question": "Adverse consequences",
+      "reason": "Rule does not enumerate consequences. Escalate which consequences must be disclosed (charges, credit reporting, enforcement, etc.)."
+    },
+    {
+      "topicId": "firm_likelihood_judgement",
+      "reference": "CONC 7.20.1R(2)(b)(iii)",
+      "question": "Likelihood assessment",
+      "reason": "Requires firm judgement and evidence of that judgement. Escalate governance for documenting \"likely\" consequences."
+    },
+    {
+      "topicId": "conditional_relevance",
+      "reference": "CONC 7.20.1R(2)(b)(iv)",
+      "question": "Relevant mitigation measures",
+      "reason": "Firm decides when mitigation is relevant. No invented list of steps."
+    },
+    {
+      "topicId": "transitional_provisions",
+      "reference": "CONC 7.20.1R",
+      "question": "Transitional provisions",
+      "reason": "Commencement for the rule is traced to instrument clause H (15 July 2026) unless superseded by transitional material. Text search found no provision-specific transitional reference; expert confirmation still required for in-flight agreements."
+    },
+    {
+      "topicId": "temporary_permission_firms",
+      "reference": "CONC 7.20.1R",
+      "question": "Applicability to temporary-permission firms",
+      "reason": "Handbook applicability for temporary-permission firms is not determined by this engine. Escalate to regulatory expert with firm permission status."
+    }
+  ],
+  "authorisationPrerequisites": [
+    "Written authorisation of budget, max requests and run reference",
+    "RI_AI_EXECUTION_ENABLED=true on staging only for the run window",
+    "Stages 2–5 live posture enabled with spend ledger scope forgeniq-lab-anthropic",
+    "Expert review of interpretative topics or explicit acceptance of escalations in the assurance record"
+  ],
+  "comparisonMethod": "Each stage output is scored against expectedOutcomes and ACCEPTANCE_CRITERIA using deterministic evaluators (pilot-saved-output-evaluator pattern) plus validateStageClaims; no historical pilot records are overwritten."
+}

@@ -163,7 +163,9 @@ export async function updateImpactAssessment(
 
   const { data: existing } = await supabase
     .from('impact_assessments')
-    .select('status, updated_at, reviewer_user_id, approver_user_id, owner_user_id')
+    .select(
+      'status, updated_at, reviewer_user_id, approver_user_id, owner_user_id, materiality, implementation_complexity, metadata',
+    )
     .eq('id', params.impactId)
     .single();
   if (!existing) throw new Error('not_found');
@@ -239,6 +241,27 @@ export async function updateImpactAssessment(
     update.status = 'APPROVED';
     update.approver_user_id = params.userId;
     update.approved_at = new Date().toISOString();
+    const priorMeta = (existing.metadata || {}) as Record<string, unknown>;
+    const stage2Ai = (priorMeta.stage2Ai || {}) as Record<string, unknown>;
+    const materialityAssessment = (stage2Ai.materialityAssessment || {}) as Record<string, unknown>;
+    update.metadata = {
+      ...priorMeta,
+      stage2Ai: {
+        ...stage2Ai,
+        assessmentOrigin: 'HUMAN_APPROVED',
+        processingStatus: 'HUMAN_APPROVED',
+        materialityAssessment: {
+          ...materialityAssessment,
+          assessmentOrigin: 'HUMAN_APPROVED',
+          humanApprovedAt: new Date().toISOString(),
+          humanApprovedBy: params.userId,
+          materialityStatus:
+            existing.materiality && existing.materiality !== 'UNASSESSED'
+              ? 'HUMAN_APPROVED_MATERIALITY'
+              : materialityAssessment.materialityStatus ?? 'UNASSESSED_NO_ORGANISATIONAL_EVIDENCE',
+        },
+      },
+    };
     pendingEvent = {
       eventType: 'IMPACT_APPROVED',
       fromStatus: existing.status,

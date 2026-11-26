@@ -35,6 +35,7 @@ const coverageMod = await import('../lib/ri/ai/control-coverage.mjs');
 const { mapAssurancePlanToDraftFields, ASSURANCE_NOTES_MAX_CHARS } = await import('../lib/ri/ai/assurance-plan-mapper.mjs');
 const { mapRiskMappingToDraftFields } = await import('../lib/ri/ai/risk-mapping-mapper.mjs');
 const { mapControlMappingToDraftFields } = await import('../lib/ri/ai/control-mapping-mapper.mjs');
+const { mapImpactSuggestionToDraftFields } = await import('../lib/ri/ai/impact-suggestion-mapper.mjs');
 const { extractProvisionScopedExcerpt } = await import('../lib/ri/ai/deterministic-provision-candidates.mjs');
 const { buildAnthropicPrompts, compactRegulatoryAnalysisForPrompt } = await import('../lib/ri/ai/anthropic-prompts-core.mjs');
 const { runLifecycleStageAnalysis, liveGroundedCitations } = await import('../lib/ri/ai/lifecycle-stage-ai.ts');
@@ -255,6 +256,19 @@ const riskDraft = mapRiskMappingToDraftFields({ structured: { confidence: 55, ri
 check('risk mapper: no invented rating, all proposals retained, residual guidance recorded', riskDraft.inherent_risk === 'UNASSESSED' && riskDraft.residual_risk === 'UNASSESSED' && riskDraft.stage3Metadata.riskProposals.length === 2 && riskDraft.stage3Metadata.humanConfirmationRequired.some((s) => /Residual risk is unassessed/.test(s)));
 const riskNoProposal = mapRiskMappingToDraftFields({ structured: { confidence: 10, claims: [] } });
 check('risk mapper: empty output no longer defaults to MEDIUM/MEDIUM', riskNoProposal.inherent_risk === 'UNASSESSED' && riskNoProposal.residual_risk === 'UNASSESSED');
+
+const impactConf99 = mapImpactSuggestionToDraftFields({
+  structured: { confidence: 99, dimensions: ['Operations', 'Technology', 'Compliance', 'Finance'], claims: [] },
+  obligationStatement: 'Notify borrower',
+  evidencePack: pack,
+});
+check(
+  'impact mapper: materiality UNASSESSED without org evidence; complexity not from dimension count alone',
+  impactConf99.materiality === 'UNASSESSED' &&
+    impactConf99.stage2Metadata.assessmentOrigin === 'AI_DRAFT' &&
+    impactConf99.stage2Metadata.materialityAssessment.rejectedHeuristics.includes('ungrounded_dimension_count'),
+  JSON.stringify({ materiality: impactConf99.materiality, complexity: impactConf99.implementation_complexity }),
+);
 
 // ---- 6. Control coverage ------------------------------------------------------------------------------------
 const reconciliationOnly = coverageMod.assessControlCoverage(

@@ -17,6 +17,7 @@ Include claims[] with sourceSectionIds for each candidate where possible.`;
 Include claims[] with text, confidence, sourceSectionIds grounded only in regulatory source sections (not catalogue rows).
 Every material claim must cite the regulatory section ${'`REG-1`'} (when supplied) and carry sourceQuotation copied verbatim from it plus provisionReference exactly as given; an internal id such as OBL-1 alone is not regulatory evidence. Never invent a quotation, provision reference or section id.
 State assumptions and uncertainties explicitly. Do not invent firm systems, headcount, or financials.
+Do not output materiality or implementation_complexity ratings for the firm: the platform scores those from regulatory evidence and organisational facts only (model confidence is not used).
 Draft only — never an approved impact decision.`;
     case 'RiskMappingResult':
       return `Required: confidence (0-100), riskProposals[] with title, description, category, inherent_risk (LOW|MEDIUM|HIGH|CRITICAL), inherent_rationale (at least two sentences naming the regulatory requirement, the harm if it is missed and the source it comes from).
