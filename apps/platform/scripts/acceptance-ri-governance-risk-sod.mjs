@@ -51,7 +51,7 @@ const { updateImpactAssessment } = await import('../lib/ri/services/impact.ts');
 const { ensureRiskMappingFromApprovedImpact } = await import('../lib/ri/services/impact-risk-downstream.ts');
 const { updateRiskWithGovernance } = await import('../lib/ri/services/risks.ts');
 
-const { adminUrl } = await resetAndStartEmbedded({ port: 54364 });
+const { adminUrl, embedded } = await resetAndStartEmbedded({ port: 54364 });
 const admin = new pg.Client({ connectionString: adminUrl });
 await admin.connect();
 
@@ -152,5 +152,6 @@ try {
   console.log('PASS risk_owner_self_approve — segregation enforced, status remains IN_REVIEW');
 } finally {
   await admin.end();
-  await stopEmbedded();
+  // The embedded server handle is required: without it the postmaster child keeps the process alive indefinitely.
+  await stopEmbedded(embedded);
 }
