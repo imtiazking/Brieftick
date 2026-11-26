@@ -150,6 +150,11 @@ if (!pan.includes('data-connected-assurance-create-mode') || !pan.includes('assu
 } else {
   pass('ui_mode', 'UAT create mode UI');
 }
+if (!pan.includes('renderAssuranceFindingLinks') || !pan.includes('#/finding/')) {
+  failTest('finding_nav', 'assurance detail must link findings');
+} else {
+  pass('finding_nav', 'finding links on assurance review');
+}
 
 const cat = readFileSync(join(lab, 'js/platform/connected-catalogue.js'), 'utf8');
 if (!cat.includes('mergeAssuranceCatalogueRow') || !cat.includes('assuranceDetailsById')) {

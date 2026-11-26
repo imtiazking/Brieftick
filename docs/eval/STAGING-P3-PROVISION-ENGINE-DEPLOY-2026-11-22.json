@@ -1,38 +1,32 @@
 {
-  "capturedAt": "2026-11-25T22:19:46.022Z",
-  "status": "PROMOTED",
-  "gitHead": "83a33cd22e3837d72555706cd5b97bdae152ccc0",
-  "buildId": "83a33cd22e3837d72555706cd5b97bdae152ccc0",
+  "capturedAt": "2026-11-26T00:12:29.525Z",
+  "gitHead": "dbf216f9f3d83b9fc9229492c36ddec2958d184f",
+  "buildId": "dbf216f9f3d83b9fc9229492c36ddec2958d184f",
   "vercelScope": "imis-projects-8e15dca0",
   "vercelProjectName": "forgeniq-platform-staging",
-  "previewDeploymentId": "dpl_83MfoihicphZm4hmbs5nMe7YTzia",
-  "previewUrl": "https://forgeniq-platform-staging-cazkd8vqp-imis-projects-8e15dca0.vercel.app",
-  "deploymentId": "dpl_83MfoihicphZm4hmbs5nMe7YTzia",
+  "previewDeploymentId": "dpl_7DvDaEBeyDwmrEjETBCoN5k26THb",
+  "previewUrl": "https://forgeniq-platform-staging-knraxfgn9-imis-projects-8e15dca0.vercel.app",
+  "deploymentId": "dpl_7DvDaEBeyDwmrEjETBCoN5k26THb",
   "deploymentUrl": "https://staging-app.forgeniq.com",
   "alias": "https://staging-app.forgeniq.com",
   "candidateAlias": "https://candidate-staging.forgeniq.com",
-  "candidateDeploymentId": "dpl_83MfoihicphZm4hmbs5nMe7YTzia",
-  "protectedOfficialDeploymentId": "dpl_D3sRnLSz1bdf3eLGKqhf2ZgroCQ6",
-  "officialDeploymentIdBeforePromotion": "dpl_D3sRnLSz1bdf3eLGKqhf2ZgroCQ6",
+  "candidateDeploymentId": "dpl_7DvDaEBeyDwmrEjETBCoN5k26THb",
+  "protectedOfficialDeploymentId": "dpl_6isCeKaCNMuAYR9PvCGfdSSXirPR",
+  "officialDeploymentIdBeforePromotion": "dpl_6isCeKaCNMuAYR9PvCGfdSSXirPR",
   "prePromotionAuth": {
     "mode": "candidate-first",
     "host": "https://candidate-staging.forgeniq.com",
-    "status": "PASS",
-    "checks": 19
+    "exitCode": 0,
+    "status": "PASS"
   },
-  "prePromotionUnauthSmoke": {
-    "host": "https://candidate-staging.forgeniq.com",
-    "status": "PASS",
-    "checks": 13
-  },
-  "postPromotionIdentity": {
-    "official": "dpl_83MfoihicphZm4hmbs5nMe7YTzia",
-    "candidate": "dpl_83MfoihicphZm4hmbs5nMe7YTzia",
-    "sameDeployment": true
+  "postPromotionAuth": {
+    "host": "https://staging-app.forgeniq.com",
+    "exitCode": 0,
+    "status": "PASS"
   },
   "promoted": true,
   "promotionMechanism": "vercel_alias_to_validated_preview",
   "businessUatApproved": false,
   "productionReleaseAuthorised": false,
-  "note": "Candidate validated before promotion. Official alias moved only after isolation, Clerk, unauthenticated smoke and authenticated smoke passed. Not a production tenant."
+  "note": "Candidate validated before promotion when DNS is ready; otherwise promote-verify with post-promotion auth and rollback. Not a production tenant."
 }

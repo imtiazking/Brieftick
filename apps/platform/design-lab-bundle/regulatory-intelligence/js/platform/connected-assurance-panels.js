@@ -64,6 +64,24 @@ function renderAssuranceControlBody(assuranceId, r) {
     ${writeForm}`;
 }
 
+function renderAssuranceFindingLinks(r) {
+  const linked =
+    (r?.linkedFindings || []).length > 0
+      ? r.linkedFindings
+      : (r?.findingIds || []).map((id) => ({ id: String(id), title: '', severity: '' }));
+  if (!linked.length) {
+    return '<p class="ri-muted">No findings linked to this assurance review yet.</p>';
+  }
+  const items = linked
+    .map((f) => {
+      const label = f.title?.trim() ? f.title : `${String(f.id).slice(0, 8)}…`;
+      const sev = f.severity ? ` ${badge(f.severity)}` : '';
+      return `<li><a href="#/finding/${esc(f.id)}">${esc(label)}</a>${sev}</li>`;
+    })
+    .join('');
+  return `<p>Linked findings from control testing:</p><ul>${items}</ul>`;
+}
+
 export function renderConnectedAssuranceRelationshipsPanel(assuranceId, r, loadState = {}) {
   if (loadState.loading) {
     return `<section class="ri-panel" data-connected-assurance-links="${esc(assuranceId)}">
@@ -81,6 +99,8 @@ export function renderConnectedAssuranceRelationshipsPanel(assuranceId, r, loadS
   return `<section class="ri-panel" data-connected-assurance-links="${esc(assuranceId)}">
     <h2>Control linkage</h2>
     ${renderAssuranceControlBody(assuranceId, r)}
+    <h3>Findings</h3>
+    ${renderAssuranceFindingLinks(r)}
   </section>`;
 }
 
@@ -115,9 +135,11 @@ export function renderConnectedAssuranceExecutionPanel(assuranceId, r) {
     <p class="ri-muted">Workflow: <strong>${esc(String(wf))}</strong>. Plan approval does not close the obligation lifecycle — record tests, evidence, remediation and independent closure.</p>
     <label>Evidence item ID (UUID) <input data-connected-assurance-evidence-id placeholder="evidence id" autocomplete="off" /></label>
     <div class="ri-btn-row">
+      <button type="button" class="ri-btn ri-btn--ghost" data-connected-assurance-action="submit">Submit plan</button>
       <button type="button" class="ri-btn ri-btn--ghost" data-connected-assurance-action="approve">Approve plan (→ testing)</button>
       <button type="button" class="ri-btn ri-btn--ghost" data-connected-assurance-action="record_test" data-connected-assurance-test-result="PASS">Record test PASS</button>
       <button type="button" class="ri-btn ri-btn--ghost" data-connected-assurance-action="record_test" data-connected-assurance-test-result="FAIL">Record test FAIL</button>
+      <button type="button" class="ri-btn ri-btn--ghost" data-connected-assurance-action="record_test" data-connected-assurance-test-result="PASS" data-connected-assurance-retest="true">Record retest PASS</button>
       <button type="button" class="ri-btn ri-btn--ghost" data-connected-assurance-action="complete_remediation">Complete remediation</button>
       <button type="button" class="ri-btn ri-btn--primary" data-connected-assurance-action="close_lifecycle">Independent closure</button>
     </div>

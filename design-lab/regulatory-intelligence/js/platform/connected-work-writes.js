@@ -50,20 +50,36 @@ async function refreshConnectedWorkflowEvents(state) {
   cat.workflowEvents = Array.isArray(body.workflowEvents) ? body.workflowEvents : cat.workflowEvents;
 }
 
+const GOVERNANCE_PATCH_MESSAGES = {
+  segregation_of_duties:
+    'Segregation of duties check — this item requires approval by a different authorised reviewer.',
+  insufficient_role: 'Your role cannot perform this governance action.',
+  stale_record: 'Record was updated elsewhere — refresh this page and try again.',
+  risk_invalid_transition: 'This risk is not in the correct status for that action.',
+  control_invalid_transition: 'This control is not in the correct status for that action.',
+  impact_invalid_transition: 'This assessment is not in the correct status for that action.',
+  assurance_invalid_transition: 'This assurance review is not in the correct status for that action.',
+};
+
 export function formatConnectedPatchError(body, fallback) {
   if (!body || typeof body !== 'object') return fallback;
+  if (body.message && typeof body.message === 'string' && body.message.trim().length > 12) {
+    return body.message.trim();
+  }
   if (body.error === 'unauthorized') {
     return 'Session expired or not sent — refresh, sign in again, then retry Save outcome';
   }
-  if (body.error === 'stale_record') return 'Record was updated elsewhere — refresh and save again';
+  if (body.error === 'stale_record') return GOVERNANCE_PATCH_MESSAGES.stale_record;
   if (body.error === 'validation_error' && body.detail) return body.detail;
   if (body.error === 'connected_writes_disabled') return 'Connected writes are disabled on staging';
-  if (body.reason === 'segregation_of_duties' && body.message) return body.message;
+  const reason = body.reason || body.error;
+  if (reason && GOVERNANCE_PATCH_MESSAGES[reason]) return GOVERNANCE_PATCH_MESSAGES[reason];
   if (body.error === 'forbidden') return body.message || 'Insufficient permission to update this record';
   if (body.error === 'internal_error') {
     return 'The server could not complete this request. Refresh this page — if the change appears, do not submit again.';
   }
   if (body.error === 'invalid_entity_type') return 'Workflow audit is not available for this entity type yet';
+  if (GOVERNANCE_PATCH_MESSAGES[body.error]) return GOVERNANCE_PATCH_MESSAGES[body.error];
   return body.detail || body.error || fallback;
 }
 
@@ -76,7 +92,12 @@ async function patchEntity(state, path, payload) {
     body: JSON.stringify(payload),
   });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.ok) throw new Error(formatConnectedPatchError(body, 'update_failed'));
+  if (!res.ok || !body.ok) {
+    const err = new Error(formatConnectedPatchError(body, 'update_failed'));
+    err.code = body.reason || body.error || null;
+    err.status = res.status;
+    throw err;
+  }
   return body;
 }
 

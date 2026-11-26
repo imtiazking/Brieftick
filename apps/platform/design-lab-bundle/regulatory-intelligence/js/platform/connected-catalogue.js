@@ -672,7 +672,11 @@ function listRowUpdatedAt(cat, detailsKey, id) {
 function scheduleConnectedDetailFetch(state, detailsKey, id, fetcher) {
   const cat = initConnectedCatalogueState(state);
   const cached = cat[detailsKey]?.[id];
-  const alwaysRevalidate = detailsKey === 'obligationDetailsById';
+  const alwaysRevalidate =
+    detailsKey === 'obligationDetailsById' ||
+    detailsKey === 'assuranceDetailsById' ||
+    detailsKey === 'riskDetailsById' ||
+    detailsKey === 'controlDetailsById';
   if (cached) {
     const listUpdated = listRowUpdatedAt(cat, detailsKey, id);
     if (alwaysRevalidate || (listUpdated && cached.updatedAt && listUpdated > cached.updatedAt)) {
@@ -1086,10 +1090,19 @@ export async function fetchConnectedAssuranceDetail(state, assuranceId) {
       const ctrl = controls.find((c) => c.id === metaControl);
       linkedControls = [{ id: metaControl, name: ctrl?.name || ctrl?.title || '' }];
     }
+    const linkedFindings = (body.findings || [])
+      .filter((f) => f?.id)
+      .map((f) => ({
+        id: String(f.id),
+        title: String(f.title || ''),
+        severity: f.severity ? String(f.severity) : '',
+      }));
     const merged = {
       ...body.assuranceReview,
       notes: body.assuranceReview.notes ?? body.detail?.notes ?? null,
       linkedControls,
+      linkedFindings,
+      findingIds: linkedFindings.map((f) => f.id),
       controlIds: body.assuranceReview.controlIds?.length
         ? body.assuranceReview.controlIds
         : linkedControls.map((c) => c.id),
@@ -1109,16 +1122,6 @@ export async function fetchConnectedAssuranceDetail(state, assuranceId) {
 export function scheduleConnectedAssuranceDetailFetch(state, assuranceId) {
   const cat = initConnectedCatalogueState(state);
   cat.assuranceDetailsById = cat.assuranceDetailsById || {};
-  const fromList =
-    cat.assuranceReviews?.find((r) => r.id === assuranceId) ||
-    cat.authorisedUatAssuranceReviews?.find((r) => r.id === assuranceId);
-  const token = `assuranceDetailsById:${assuranceId}`;
-  const inflight = coerceInflightPromise(cat._detailInflight?.[token]);
-  if (inflight) return inflight;
-  const cached = cat.assuranceDetailsById?.[assuranceId];
-  if (fromList && cached?._detailHydrated === true && !cached._detailLoadError) {
-    return Promise.resolve(cached);
-  }
   return scheduleConnectedDetailFetch(state, 'assuranceDetailsById', assuranceId, fetchConnectedAssuranceDetail);
 }
 

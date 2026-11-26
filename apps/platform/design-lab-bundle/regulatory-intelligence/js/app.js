@@ -1166,6 +1166,44 @@ function bindViewHandlers() {
     });
   });
 
+  document.querySelectorAll('[data-connected-risk-action]').forEach((btn) => {
+    if (btn.dataset.riBoundRiskAction) return;
+    btn.dataset.riBoundRiskAction = '1';
+    btn.addEventListener('click', async () => {
+      const id = btn.dataset.riskId;
+      const action = btn.dataset.connectedRiskAction;
+      if (!id || !action || btn.disabled) return;
+      btn.disabled = true;
+      try {
+        await patchConnectedRisk(getState(), id, { action }, btn.dataset.expectedUpdatedAt || null);
+        showToast(action === 'approve' ? 'Risk approved' : 'Risk submitted');
+        renderShell();
+      } catch (e) {
+        showToast(e?.message || 'Risk action failed');
+        btn.disabled = false;
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-connected-control-action]').forEach((btn) => {
+    if (btn.dataset.riBoundControlAction) return;
+    btn.dataset.riBoundControlAction = '1';
+    btn.addEventListener('click', async () => {
+      const id = btn.dataset.controlId;
+      const action = btn.dataset.connectedControlAction;
+      if (!id || !action || btn.disabled) return;
+      btn.disabled = true;
+      try {
+        await patchConnectedControl(getState(), id, { action }, btn.dataset.expectedUpdatedAt || null);
+        showToast(action === 'approve' ? 'Control approved' : 'Control submitted');
+        renderShell();
+      } catch (e) {
+        showToast(e?.message || 'Control action failed');
+        btn.disabled = false;
+      }
+    });
+  });
+
   document.querySelectorAll('button[data-connected-create-obligation]').forEach((btn) => {
     if (btn.dataset.riBoundCreateObligation) return;
     btn.dataset.riBoundCreateObligation = '1';
@@ -1696,7 +1734,8 @@ function bindViewHandlers() {
       };
       if (testResult) {
         body.result = testResult;
-        body.retest = panel?.dataset?.assuranceRetest === 'true';
+        body.retest =
+          actionBtn.dataset.connectedAssuranceRetest === 'true' || panel?.dataset?.assuranceRetest === 'true';
         if (evidenceId) body.evidenceIds = [evidenceId];
       }
       actionBtn.disabled = true;

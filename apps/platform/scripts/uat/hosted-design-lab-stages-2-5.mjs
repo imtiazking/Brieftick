@@ -278,6 +278,12 @@ if (ids.assuranceId) {
     watch(page);
     await openHash(page, `#/assurance/${ids.assuranceId}`);
     await shot(page, 'browser-s5-plan.png');
+    const findingLink = page.locator(`a[href^="#/finding/"]`).first();
+    const findingNav = await findingLink.waitFor({ timeout: 12_000 }).then(() => true).catch(() => false);
+    record('BROWSER-S5-FINDING-LINKS', findingNav ? 'PASS' : 'FAIL', {
+      assuranceId: ids.assuranceId,
+      href: findingNav ? await findingLink.getAttribute('href') : null,
+    });
     await clickNamed(page, '[data-connected-assurance-action="submit"]');
     const submitted = await toastMatching(page, 'submit|invalid|failed');
     record('BROWSER-S5-SUBMIT', /submit/i.test(submitted) ? 'PASS' : 'FAIL', { toast: submitted });

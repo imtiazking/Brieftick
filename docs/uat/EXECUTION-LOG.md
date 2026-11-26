@@ -2,6 +2,13 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-26 — UAT governance feedback + live AI prep (no paid AI)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 00:12 | Governance PATCH errors and assurance finding links in Design Lab | Risk maker self-approve produced no toast; assurance detail hid finding navigation | Per-render risk/control action bindings; `formatConnectedPatchError`; `renderAssuranceFindingLinks`; acceptance `RI-GOV-PATCH-FEEDBACK` + `RI-GOV-RISK-SOD` PASS; promoted `dpl_7DvDaEBeyDwmrEjETBCoN5k26THb` from `dbf216f` (evidence-only — code commit + second promote required for UI fixes) |
+| — | Live AI pilot package | User mandate phases 2–6 without executing paid calls | `docs/uat/LIVE-AI-*.md`, FCA eval cases, pilot budget **$0.75 ceiling** awaiting approval |
+
 ## 2026-11-25 — Design Lab stages 2–5 browser completion
 
 | Time (UTC) | Decision | Reason | Outcome |

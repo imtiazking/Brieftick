@@ -1166,6 +1166,44 @@ function bindViewHandlers() {
     });
   });
 
+  document.querySelectorAll('[data-connected-risk-action]').forEach((btn) => {
+    if (btn.dataset.riBoundRiskAction) return;
+    btn.dataset.riBoundRiskAction = '1';
+    btn.addEventListener('click', async () => {
+      const id = btn.dataset.riskId;
+      const action = btn.dataset.connectedRiskAction;
+      if (!id || !action || btn.disabled) return;
+      btn.disabled = true;
+      try {
+        await patchConnectedRisk(getState(), id, { action }, btn.dataset.expectedUpdatedAt || null);
+        showToast(action === 'approve' ? 'Risk approved' : 'Risk submitted');
+        renderShell();
+      } catch (e) {
+        showToast(e?.message || 'Risk action failed');
+        btn.disabled = false;
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-connected-control-action]').forEach((btn) => {
+    if (btn.dataset.riBoundControlAction) return;
+    btn.dataset.riBoundControlAction = '1';
+    btn.addEventListener('click', async () => {
+      const id = btn.dataset.controlId;
+      const action = btn.dataset.connectedControlAction;
+      if (!id || !action || btn.disabled) return;
+      btn.disabled = true;
+      try {
+        await patchConnectedControl(getState(), id, { action }, btn.dataset.expectedUpdatedAt || null);
+        showToast(action === 'approve' ? 'Control approved' : 'Control submitted');
+        renderShell();
+      } catch (e) {
+        showToast(e?.message || 'Control action failed');
+        btn.disabled = false;
+      }
+    });
+  });
+
   document.querySelectorAll('button[data-connected-create-obligation]').forEach((btn) => {
     if (btn.dataset.riBoundCreateObligation) return;
     btn.dataset.riBoundCreateObligation = '1';
@@ -2896,23 +2934,6 @@ function initConnectedWriteDelegation() {
   document.addEventListener(
     'click',
     async (ev) => {
-      const riskAction = ev.target.closest('[data-connected-risk-action]');
-      if (riskAction && !riskAction.disabled) {
-        const id = riskAction.dataset.riskId;
-        const action = riskAction.dataset.connectedRiskAction;
-        if (!id || !action) return;
-        riskAction.disabled = true;
-        try {
-          await patchConnectedRisk(getState(), id, { action }, riskAction.dataset.expectedUpdatedAt || null);
-          showToast(action === 'approve' ? 'Risk approved' : 'Risk submitted');
-          renderShell();
-        } catch (e) {
-          showToast(e?.message || 'Risk action failed');
-          riskAction.disabled = false;
-        }
-        return;
-      }
-
       const riskBtn = ev.target.closest('[data-connected-risk-save]');
       if (riskBtn && !riskBtn.disabled) {
         const id = riskBtn.dataset.riskId;
@@ -2952,23 +2973,6 @@ function initConnectedWriteDelegation() {
         } catch (e) {
           showToast(e?.message || 'Save failed');
           actionBtn.disabled = false;
-        }
-        return;
-      }
-
-      const controlAction = ev.target.closest('[data-connected-control-action]');
-      if (controlAction && !controlAction.disabled) {
-        const id = controlAction.dataset.controlId;
-        const action = controlAction.dataset.connectedControlAction;
-        if (!id || !action) return;
-        controlAction.disabled = true;
-        try {
-          await patchConnectedControl(getState(), id, { action }, controlAction.dataset.expectedUpdatedAt || null);
-          showToast(action === 'approve' ? 'Control approved' : 'Control submitted');
-          renderShell();
-        } catch (e) {
-          showToast(e?.message || 'Control action failed');
-          controlAction.disabled = false;
         }
         return;
       }

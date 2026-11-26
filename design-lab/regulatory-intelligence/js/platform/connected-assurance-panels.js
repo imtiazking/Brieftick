@@ -64,6 +64,24 @@ function renderAssuranceControlBody(assuranceId, r) {
     ${writeForm}`;
 }
 
+function renderAssuranceFindingLinks(r) {
+  const linked =
+    (r?.linkedFindings || []).length > 0
+      ? r.linkedFindings
+      : (r?.findingIds || []).map((id) => ({ id: String(id), title: '', severity: '' }));
+  if (!linked.length) {
+    return '<p class="ri-muted">No findings linked to this assurance review yet.</p>';
+  }
+  const items = linked
+    .map((f) => {
+      const label = f.title?.trim() ? f.title : `${String(f.id).slice(0, 8)}…`;
+      const sev = f.severity ? ` ${badge(f.severity)}` : '';
+      return `<li><a href="#/finding/${esc(f.id)}">${esc(label)}</a>${sev}</li>`;
+    })
+    .join('');
+  return `<p>Linked findings from control testing:</p><ul>${items}</ul>`;
+}
+
 export function renderConnectedAssuranceRelationshipsPanel(assuranceId, r, loadState = {}) {
   if (loadState.loading) {
     return `<section class="ri-panel" data-connected-assurance-links="${esc(assuranceId)}">
@@ -81,6 +99,8 @@ export function renderConnectedAssuranceRelationshipsPanel(assuranceId, r, loadS
   return `<section class="ri-panel" data-connected-assurance-links="${esc(assuranceId)}">
     <h2>Control linkage</h2>
     ${renderAssuranceControlBody(assuranceId, r)}
+    <h3>Findings</h3>
+    ${renderAssuranceFindingLinks(r)}
   </section>`;
 }
 
