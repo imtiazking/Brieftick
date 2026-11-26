@@ -1011,3 +1011,13 @@ pm run qa (ci) **29/29 PASS** including RI-SONNET-55-COMPAT, RI-SHARED-SPEND, RI
 | Process finding | Acceptance suites rewrite committed `docs/eval/*` evidence; restored from git after each sweep and recorded as OPEN-008. Not committed. |
 | Decisions | The 18 disconnected obligations were not bulk-backfilled (would fabricate unreviewed impacts). Hosted cross-tenant denial left BLOCKED rather than creating a second tenant (new access needs approval). Overall readiness not claimed; capability matrix has 0 PRODUCTION_READY. |
 | Evidence | `docs/uat/evidence/production-readiness/` (12 files), `browser-abc-2026-11-26/`, `compliance-lifecycle-2026-11-26/`. Commits `782d55c`, `ee7ee42`. |
+
+## 2026-11-27 — Remediation tranche: horizon scheduler config, reviewer Stage 2 pin, sidebar nav
+
+| Item | Outcome |
+|---|---|
+| P1 Horizon | Root cause: scheduler disabled since mid-Nov; 38/41 sources stale; 1 failing (MOCI-SA), 1 disabled (OFAC SDN), 1 no connector (CBUAE). Added four UTC crons to `vercel.json`; phase8d4 expects crons. Activation still needs Vercel env (`FORGENIQ_RI_SCHEDULER_CRON_ENABLED=true`, `CRON_SECRET`, staging DB URL). |
+| P3 Security | `stage2ApprovalPin` on IN_REVIEW; RPC rejects REVIEWER-authored impact unless pin matches; `acceptance-ri-obligation-open-atomic` 74/74. Cross-tenant harness requirements documented (blocked). |
+| P6 Engineering | Master triple → `docs/uat/qa/transient/`; audit history loading timeout. |
+| P7 Design Lab | Collapsible left sidebar + Ask RI in header; bundle synced. |
+| Evidence | `REMEDIATION-REPORT-2026-11-27.md`, scheduler activation, classification draft proposals, cross-tenant harness. |

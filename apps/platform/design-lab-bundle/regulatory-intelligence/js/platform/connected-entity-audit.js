@@ -68,11 +68,16 @@ export function scheduleConnectedEntityWorkflowEventsFetch(state, entityType, en
     delete cat.entityWorkflowEventsLoadStateByKey[key];
   }
   cat.entityWorkflowEventsLoadStateByKey[key] = 'loading';
-  cat._entityAuditInflight[key] = fetchConnectedEntityWorkflowEvents(state, entityType, entityId).finally(
-    () => {
-      delete cat._entityAuditInflight[key];
-    },
-  );
+  const timeoutMs = 20_000;
+  cat._entityAuditInflight[key] = fetchConnectedEntityWorkflowEvents(state, entityType, entityId).finally(() => {
+    delete cat._entityAuditInflight[key];
+  });
+  setTimeout(() => {
+    if (cat.entityWorkflowEventsLoadStateByKey?.[key] === 'loading') {
+      recordEntityWorkflowEventsLoadFailure(state, entityType, entityId, 'entity_workflow_events_timeout');
+      delete cat._entityAuditInflight?.[key];
+    }
+  }, timeoutMs);
   return cat._entityAuditInflight[key];
 }
 

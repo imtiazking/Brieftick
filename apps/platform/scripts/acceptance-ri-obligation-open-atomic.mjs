@@ -112,10 +112,12 @@ try {
         c.query(`update regulatory_obligations set status = $2::public.obligation_status where id = $1`, [id, status]),
       );
     }
-    await admin.query(
-      `insert into workflow_events (organisation_id, entity_type, entity_id, event_type, to_status, actor_user_id) values ($1, 'regulatory_obligation', $2, 'OBLIGATION_STATUS_CHANGED', 'IN_REVIEW', $3)`,
-      [ORG_A, id, MAKER],
-    );
+    if (status === 'IN_REVIEW') {
+      await admin.query(
+        `insert into workflow_events (organisation_id, entity_type, entity_id, event_type, to_status, actor_user_id) values ($1, 'regulatory_obligation', $2, 'OBLIGATION_STATUS_CHANGED', 'IN_REVIEW', $3)`,
+        [ORG_A, id, MAKER],
+      );
+    }
     return id;
   }
   const snap = async (id) => {
@@ -142,7 +144,7 @@ try {
   const stateOf = async (id) => (await q(`select stage2_state from obligation_stage2_integrity where obligation_id = $1`, [id]))[0]?.stage2_state ?? null;
   const asUser = (sub) => createPgSupabaseClient(adminUrl, sub);
   const payload = (extra = {}) => ({
-    status: 'DRAFT', business_impact: 'b', operational_impact: 'o', technology_impact: 't', compliance_impact: 'c',
+    business_impact: 'b', operational_impact: 'o', technology_impact: 't', compliance_impact: 'c',
     financial_impact: 'f', implementation_complexity: 'MEDIUM', materiality: 'UNASSESSED',
     metadata: { labProvenanceLocked: true }, business_areas: ['Operations', 'Compliance'], ...extra,
   });
@@ -152,6 +154,31 @@ try {
       p_impact: payload(), p_skip_reason: null, p_impact_event_metadata: { source: 'test' }, p_ai_provider: 'fixture',
       p_fields: {}, p_expected_updated_at: null, ...args,
     });
+  const rpcWithStoredPin = async (sub, id, args = {}) => {
+    const [row] = await q(`select metadata from regulatory_obligations where id = $1`, [id]);
+    const impact = row?.metadata?.stage2ApprovalPin?.impact ?? payload();
+    return rpc(sub, id, { p_impact: impact, ...args });
+  };
+  const pinStage2 = async (id, impact = payload()) => {
+    const pin = {
+      kind: 'create',
+      impact: {
+        business_impact: impact.business_impact,
+        operational_impact: impact.operational_impact,
+        technology_impact: impact.technology_impact,
+        compliance_impact: impact.compliance_impact,
+        financial_impact: impact.financial_impact,
+        implementation_complexity: impact.implementation_complexity,
+        materiality: impact.materiality,
+        business_areas: impact.business_areas,
+      },
+      pinnedAt: new Date().toISOString(),
+    };
+    await admin.query(
+      `update regulatory_obligations set metadata = coalesce(metadata, '{}'::jsonb) || jsonb_build_object('stage2ApprovalPin', $2::jsonb) where id = $1`,
+      [id, JSON.stringify(pin)],
+    );
+  };
 
   // ---------------------------------------------------------------- grants
   const fnSig = 'public.approve_obligation_with_stage2(uuid,uuid,text,text,jsonb,text,jsonb,text,jsonb,timestamptz)';
@@ -230,10 +257,23 @@ try {
     {
       // An independent REVIEWER IS allowed to complete a checker approval; the function must not block that
       // legitimate maker-checker path, and must still produce the full Stage 2 hand-off atomically.
-      const id = await mkOb();
-      const r = await rpc(REV, id);
+      const id = await mkOb({ status: 'DRAFT' });
+      await updateObligation(createPgSupabaseClient(adminUrl, CM), {
+        organisationId: ORG_A, obligationId: id, userId: CM, role: 'COMPLIANCE_MANAGER', fields: { status: 'IN_REVIEW' },
+      });
+      const r = await rpcWithStoredPin(REV, id);
       const s = await snap(id);
       check('auth: an independent REVIEWER (the checker) can approve and gets the full Stage 2 hand-off', !r.error && s.status === 'OPEN' && s.impacts === 1 && (await stateOf(id)) === 'LINKED', { r, s });
+    }
+    {
+      const id = await mkOb({ status: 'DRAFT' });
+      await updateObligation(createPgSupabaseClient(adminUrl, CM), {
+        organisationId: ORG_A, obligationId: id, userId: CM, role: 'COMPLIANCE_MANAGER', fields: { status: 'IN_REVIEW' },
+      });
+      const before = await snap(id);
+      const r = await rpcWithStoredPin(REV, id, { p_impact: payload({ business_impact: 'SMUGGLED-CONTENT' }) });
+      check('auth: REVIEWER smuggling unapproved Stage 2 impact content is refused', /reviewer_stage2_content_forbidden/.test(r.error?.message ?? ''), r);
+      check('auth: smuggle attempt leaves no mutation', JSON.stringify(await snap(id)) === JSON.stringify(before));
     }
     await refusal('caller impersonating another actor', CM, { p_actor_user_id: CM2 }, /actor_mismatch/);
     {
@@ -368,7 +408,10 @@ try {
     // Governed (policy-classified) obligation: an independent REVIEWER may approve via the review-decision path,
     // atomically with Stage 2. (AI_ASSISTED rows are governed identically; their pilot-organisation fixtures live in
     // the AI pilot suites.)
-    const ai = await mkOb();
+    const ai = await mkOb({ status: 'DRAFT' });
+    await updateObligation(createPgSupabaseClient(adminUrl, MAKER), {
+      organisationId: ORG_A, obligationId: ai, userId: MAKER, role: 'ANALYST', fields: { status: 'IN_REVIEW' },
+    });
     const row = await updateObligation(createPgSupabaseClient(adminUrl, REV), {
       organisationId: ORG_A, obligationId: ai, userId: REV, role: 'REVIEWER', fields: { status: 'OPEN' }, reviewDecisionOnly: true,
     });

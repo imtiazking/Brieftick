@@ -15,7 +15,7 @@ import {
 
 const platformRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 const repoRoot = join(platformRoot, '..', '..');
-const evalDir = join(repoRoot, 'docs', 'eval');
+const evalDir = join(repoRoot, 'docs', 'uat', 'qa', 'transient');
 const JOURNAL = join(evalDir, 'RI-MASTER-TRIPLE-JOURNAL.jsonl');
 const SUITE_TIMEOUT_MS = Number(process.env.RI_MASTER_SUITE_TIMEOUT_MS || masterTimeouts.DEFAULT_SUITE_TIMEOUT_MS);
 

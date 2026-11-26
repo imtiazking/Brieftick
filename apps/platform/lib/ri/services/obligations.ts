@@ -34,6 +34,7 @@ import {
   ensureImpactAssessmentFromApprovedObligation,
   prepareStage2ImpactDraft,
 } from '@/lib/ri/services/obligation-impact-downstream';
+import { buildStage2ApprovalPinFromDraft } from '@/lib/ri/services/stage2-approval-pin.mjs';
 
 export function summarizeObligationListRows(rows: { status: string }[]) {
   return summarizeProductionObligationRows(rows);
@@ -415,7 +416,7 @@ export async function updateObligation(
     // any point leaves the obligation exactly as it was; it can never be OPEN without its Stage 2 linkage.
     const { status: _status, ...fieldEdits } = update;
     void _status;
-    const draft = await prepareStage2ImpactDraft(supabase, {
+    let draft = await prepareStage2ImpactDraft(supabase, {
       organisationId: params.organisationId,
       obligationId: params.obligationId,
       actorUserId: params.userId,
@@ -423,6 +424,14 @@ export async function updateObligation(
       overrides: fieldEdits,
     });
     if (draft.kind === 'skip' && draft.reason === 'obligation_not_approved') throw new Error('stale_record');
+  if (params.role === 'REVIEWER' && draft.kind === 'create') {
+    const stored = (existing.metadata as Record<string, unknown> | null)?.stage2ApprovalPin as
+      | { kind?: string; impact?: Record<string, unknown> }
+      | undefined;
+    if (stored?.kind === 'create' && stored.impact && typeof stored.impact === 'object') {
+      draft = { ...draft, impact: stored.impact };
+    }
+  }
     if (draft.kind === 'unavailable') {
       // Stage 2 applies but cannot be drafted now. Refuse the approval and leave the obligation untouched; the
       // refusal is audited (append-only) and the same request can simply be repeated once Stage 2 is available.
@@ -485,6 +494,33 @@ export async function updateObligation(
       throw new Error(error.message);
     }
     data = updated;
+    if (update.status === 'IN_REVIEW' && existing.status !== 'IN_REVIEW') {
+      try {
+        const draft = await prepareStage2ImpactDraft(supabase, {
+          organisationId: params.organisationId,
+          obligationId: params.obligationId,
+          actorUserId: params.userId,
+          expectedStatus: 'IN_REVIEW',
+        });
+        const pin = buildStage2ApprovalPinFromDraft(draft);
+        if (pin) {
+          const prior =
+            typeof data.metadata === 'object' && data.metadata && !Array.isArray(data.metadata)
+              ? (data.metadata as Record<string, unknown>)
+              : {};
+          const { data: pinned, error: pinError } = await supabase
+            .from('regulatory_obligations')
+            .update({ metadata: { ...prior, stage2ApprovalPin: pin } })
+            .eq('id', params.obligationId)
+            .eq('organisation_id', params.organisationId)
+            .select()
+            .single();
+          if (!pinError && pinned) data = pinned;
+        }
+      } catch {
+        /* pin is required for REVIEWER approval; makers may still approve as COMPLIANCE_MANAGER */
+      }
+    }
     if (update.status === 'OPEN') {
       // Already OPEN: idempotent recovery. Any outcome other than a linked impact is recorded, never silent.
       try {

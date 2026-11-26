@@ -3,6 +3,12 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install",
   "regions": ["lhr1"],
+  "crons": [
+    { "path": "/api/internal/ri-ingestion/scheduler-tick", "schedule": "0 0 * * *" },
+    { "path": "/api/internal/ri-ingestion/scheduler-tick", "schedule": "0 4 * * *" },
+    { "path": "/api/internal/ri-ingestion/scheduler-tick", "schedule": "0 12 * * *" },
+    { "path": "/api/internal/ri-ingestion/scheduler-tick", "schedule": "0 20 * * *" }
+  ],
   "functions": {
     "app/api/ri-lab/ai-analysis-runs/route.ts": {
       "maxDuration": 300

@@ -2,6 +2,16 @@
 
 Severity: Critical, High, Medium, Low. Status: RESOLVED (fixed, tested, evidenced), OPEN, BLOCKED (needs external action).
 
+## Resolved in remediation tranche (27 Nov 2026)
+
+| ID | Fix |
+|---|---|
+| SEC-001 | Stage 2 approval pin + RPC enforcement; 74-check atomic suite |
+| OPEN-008 | Master triple output → `docs/uat/qa/transient/` |
+| DEF-011 | Audit history 20s timeout fallback |
+| P1-sched-config | Vercel crons in repo; phase8d4 updated |
+| P7-nav | Collapsible sidebar shell (Design Lab) |
+
 ## Resolved in this programme
 
 | ID | Sev | Defect | Root cause | Evidence |

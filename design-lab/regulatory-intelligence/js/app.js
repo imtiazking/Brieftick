@@ -216,6 +216,7 @@ import {
   refreshLabOrganisationContext,
   setActiveOrganisation,
 } from './platform/lab-connectivity.js';
+import { renderSidebarNav, bindSidebarNav } from './shell-navigation.js';
 import {
   applyPersistedConnectedRestore,
   canRestorePersistedConnectedSession,
@@ -490,7 +491,12 @@ function renderShell() {
   const preserved = capturePreservedInputs(main, routeKey);
   main.innerHTML = `${scenarioRibbon}${walk}${body}`;
   restorePreservedInputs(main, routeKey, preserved);
+  const sideNav = document.querySelector('.ri-sidebar__nav');
+  if (sideNav) {
+    sideNav.innerHTML = renderSidebarNav(routeKey);
+  }
   syncNavActive(routeKey);
+  bindSidebarNav();
   closeTopNavMenus();
   const routeSeg = routeKey.split('/')[0] || 'dashboard';
   document.title = routeSeg === 'dashboard' ? DOCUMENT_TITLE_RI : `${DOCUMENT_TITLE_RI} · ${routeSeg}`;
@@ -554,15 +560,18 @@ function renderChrome() {
         <div class="ri-chrome__right">
           ${renderChromeScenarioControls()}
           ${renderChromeUserSlot()}
+          <a class="ri-chrome__link" href="#/ask-ri" id="chrome-ask-ri">Ask RI</a>
           <a class="ri-chrome__link" href="#/notifications" id="chrome-notifications">Alerts</a>
           <a class="ri-chrome__link" href="/">Platform home</a>
         </div>
       </div>
-      <nav class="ri-topnav" aria-label="Regulatory Intelligence">
-        <div class="ri-topnav__inner">${renderTopNav()}</div>
-      </nav>
     </header>
-    <main class="ri-main" id="ri-main"></main>
+    <div class="ri-layout">
+      <aside class="ri-sidebar" id="ri-sidebar" aria-label="Regulatory Intelligence navigation">
+        <nav class="ri-sidebar__nav" data-route-key="">${renderSidebarNav('dashboard')}</nav>
+      </aside>
+      <main class="ri-main" id="ri-main"></main>
+    </div>
     <div class="ri-toast" id="ri-toast" hidden role="status"></div>
     ${confirmDialog('reset-dialog', 'Reset presentation environment', 'Restore all Regulatory Intelligence presentation data to the baseline? Your in-session changes will be cleared.')}
   `;
@@ -636,6 +645,7 @@ function bindChromeHandlers() {
     }
   });
   bindAccountChromeHandlers();
+  bindSidebarNav();
 }
 
 function askRiSubmitToast(res) {

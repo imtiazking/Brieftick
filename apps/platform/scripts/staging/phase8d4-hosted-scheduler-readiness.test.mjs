@@ -89,9 +89,11 @@ await check('route is public to Clerk middleware but guarded by its own bearer a
   }
 });
 
-await check('vercel.json registers no cron (scheduler stays off until approved activation)', () => {
+await check('vercel.json registers four UTC scheduler crons (execution still gated by FORGENIQ_RI_SCHEDULER_CRON_ENABLED)', () => {
   const v = JSON.parse(readFileSync(join(platformRoot, 'vercel.json'), 'utf8'));
-  if (Array.isArray(v.crons) && v.crons.length > 0) throw new Error(`crons present: ${JSON.stringify(v.crons)}`);
+  if (!Array.isArray(v.crons) || v.crons.length !== 4) throw new Error(`expected 4 crons, got ${JSON.stringify(v.crons)}`);
+  const path = '/api/internal/ri-ingestion/scheduler-tick';
+  if (!v.crons.every((c) => c.path === path)) throw new Error(`cron path must be ${path}`);
 });
 
 await check('enable flag off → hosted_scheduler_disabled', async () => {

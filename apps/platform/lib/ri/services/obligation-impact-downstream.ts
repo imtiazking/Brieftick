@@ -250,6 +250,9 @@ export async function commitObligationApprovalWithStage2(
     if (/segregation_of_duties/.test(message)) throw new Error('segregation_of_duties');
     const classified = /(classified_obligation_[a-z_]+|obligation_classification_immutable)/.exec(message);
     if (classified) throw new RiConflictError(classified[1]);
+    if (/reviewer_stage2_pin_missing|reviewer_stage2_content_forbidden|reviewer_stage2_pin_mismatch/.test(message)) {
+      throw new Error(message);
+    }
     if (error.code === '42501' || /insufficient_role|actor_mismatch|unauthenticated/.test(message)) {
       throw new Error('insufficient_role');
     }
