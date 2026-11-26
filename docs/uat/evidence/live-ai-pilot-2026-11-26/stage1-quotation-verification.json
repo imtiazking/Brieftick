@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-26T10:59:12.309Z",
+  "aiQuote": "7.20.1 R (1) This rule applies where a borrower has failed to make a payment by the time it has fallen due under the terms of a regulated deferred payment credit agreement (‘a missed payment’).",
+  "aiQuoteCheck": {
+    "found": true,
+    "page": 94
+  },
+  "reviewQuotation": "(2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid",
+  "reviewQuoteCheck": {
+    "found": true,
+    "page": 95
+  },
+  "checks": {
+    "sourceHashMatchesStaged": true,
+    "aiQuotationVerifiedInFcaSource": true,
+    "reviewQuotationVerifiedOnP95": true
+  }
+}

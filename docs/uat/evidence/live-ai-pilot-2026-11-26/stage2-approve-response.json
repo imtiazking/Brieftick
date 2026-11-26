@@ -1,0 +1,328 @@
+{
+  "at": "2026-11-26T11:01:10.052Z",
+  "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+  "elapsedMs": 12056,
+  "status": 200,
+  "body": {
+    "ok": true,
+    "obligation": {
+      "id": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+      "externalKey": null,
+      "changeId": "7d7e7712-ee1e-45fa-b1be-54b19f2ba2f8",
+      "changeTitle": "FCA-EVAL-001 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)",
+      "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "publicationTitle": null,
+      "title": "(2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid",
+      "citation": "PDF p.95",
+      "status": "OPEN",
+      "statusCode": "OPEN",
+      "origin": "AI_ASSISTED",
+      "updatedAt": "2026-11-26T11:00:58.218691+00:00",
+      "priority": null,
+      "effectiveDate": null,
+      "dueDate": null,
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "ownerLabel": "User user_3Fa…",
+      "tenantScope": true,
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "classificationCode": "R",
+      "legalStatus": "binding",
+      "classificationReviewRequired": false,
+      "supportsObligationId": null,
+      "authoritativeReference": null,
+      "_connected": true,
+      "sourceSection": "EVD-PDF-6f160bf6c84e2d9d",
+      "impacts": [
+        {
+          "id": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+          "status": "DRAFT",
+          "materiality": "LOW"
+        }
+      ],
+      "stage2ImpactAssessment": {
+        "id": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+        "status": "DRAFT",
+        "materiality": "LOW",
+        "metadata": {
+          "stage2Ai": {
+            "model": "claude-sonnet-5-5",
+            "citations": [
+              {
+                "text": "The excerpt indicates an obligation to notify the borrower as soon as possible after a missed payment has occurred, so the firm may need a process to detect missed payments promptly and trigger notification without undue delay.",
+                "citation": null,
+                "sourceQuotation": null,
+                "sourceSectionIds": [
+                  "OBL-1"
+                ],
+                "provisionReference": null
+              },
+              {
+                "text": "The notification must state that the missed payment has occurred, so notification content or templates may need to include a clear statement of the missed payment.",
+                "citation": null,
+                "sourceQuotation": null,
+                "sourceSectionIds": [
+                  "OBL-1"
+                ],
+                "provisionReference": null
+              },
+              {
+                "text": "The notification must also cover any sums that have become payable under the regulated deferred payment credit agreement but remain unpaid, so account data may need to support accurate calculation and presentation of these sums.",
+                "citation": null,
+                "sourceQuotation": null,
+                "sourceSectionIds": [
+                  "OBL-1"
+                ],
+                "provisionReference": null
+              },
+              {
+                "text": "Because the requirement is time-sensitive ('as soon as possible'), the firm may need to define internal timing standards, monitoring and escalation, and keep records evidencing when notifications were sent. The excerpt does not specify a fixed deadline or record-keeping rule, so this is an inference to be verified.",
+                "citation": null,
+                "sourceQuotation": null,
+                "sourceSectionIds": [
+                  "OBL-1"
+                ],
+                "provisionReference": null
+              }
+            ],
+            "latencyMs": 9400,
+            "telemetry": {
+              "effort": "medium",
+              "stopReason": "end_turn",
+              "usageKnown": true,
+              "reservedUsd": 0.084048,
+              "outputTokens": 1213,
+              "thinkingType": "adaptive",
+              "responseModel": "claude-sonnet-5-5",
+              "pricingVersion": "anthropic-list-2026-11-26",
+              "requestedModel": "claude-sonnet-5-5",
+              "cacheReadTokens": 0,
+              "providerRequestId": "req_011ChRRasTEKWbF9NdRT3AZb",
+              "cacheWrite1hTokens": 0,
+              "cacheWrite5mTokens": 0,
+              "settledEstimatedUsd": 0.01334,
+              "standardInputTokens": 605
+            },
+            "aiProvider": "AIPROV-ANTHROPIC-001",
+            "aiUseCaseId": "UC-RI-004",
+            "fixtureMode": false,
+            "inputTokens": 605,
+            "aiConfidence": 55,
+            "estimatedUsd": 0.01334,
+            "outputTokens": 1213,
+            "aiAssumptions": [
+              "Assessment draft is generated from obligation text and publication grounding only.",
+              "No live organisational inventory was consulted."
+            ],
+            "executionMode": "live",
+            "aiEvidenceClaims": [
+              "1. The excerpt indicates an obligation to notify the borrower as soon as possible after a missed payment has occurred, so the firm may need a process to detect missed payments promptly and trigger notification without undue delay. [sections: OBL-1]",
+              "2. The notification must state that the missed payment has occurred, so notification content or templates may need to include a clear statement of the missed payment. [sections: OBL-1]",
+              "3. The notification must also cover any sums that have become payable under the regulated deferred payment credit agreement but remain unpaid, so account data may need to support accurate calculation and presentation of these sums. [sections: OBL-1]",
+              "4. Because the requirement is time-sensitive ('as soon as possible'), the firm may need to define internal timing standards, monitoring and escalation, and keep records evidencing when notifications were sent. The excerpt does not specify a fixed deadline or record-keeping rule, so this is an inference to be verified. [sections: OBL-1]"
+            ],
+            "processingStatus": "DRAFT_AI_SUGGESTION",
+            "humanConfirmationRequired": [
+              "Organisation-specific facts were not asserted by AI.",
+              "Implementation deadlines depend on regulatory effective dates and internal planning.",
+              "Low model confidence — mandatory human review before submit."
+            ]
+          },
+          "stage2Workflow": "obligation_approved_to_impact_draft",
+          "labCreationMode": "uat_authorised",
+          "recordProvenance": "uat_authorised",
+          "labProvenanceLocked": true,
+          "labProvenanceRecordedAt": "2026-11-26T11:00:59.190Z",
+          "parentRegulatoryChangeId": "7d7e7712-ee1e-45fa-b1be-54b19f2ba2f8",
+          "sourceRegulatoryObligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+          "labProvenanceRecordedByUserId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+        }
+      },
+      "complianceLifecycle": {
+        "obligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+        "obligationStatus": "OPEN",
+        "currentStage": "impact",
+        "impact": {
+          "id": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+          "status": "DRAFT",
+          "owner_user_id": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr"
+        },
+        "risk": null,
+        "control": null,
+        "assurance": null,
+        "links": {
+          "impactId": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+          "riskId": null,
+          "controlId": null,
+          "assuranceReviewId": null
+        }
+      },
+      "risks": [],
+      "controls": [],
+      "riskIds": [],
+      "controlIds": []
+    }
+  },
+  "after": {
+    "ok": true,
+    "obligation": {
+      "id": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+      "externalKey": null,
+      "changeId": "7d7e7712-ee1e-45fa-b1be-54b19f2ba2f8",
+      "changeTitle": "FCA-EVAL-001 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)",
+      "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "publicationTitle": null,
+      "title": "(2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid",
+      "citation": "PDF p.95",
+      "status": "OPEN",
+      "statusCode": "OPEN",
+      "origin": "AI_ASSISTED",
+      "updatedAt": "2026-11-26T11:00:58.218691+00:00",
+      "priority": null,
+      "effectiveDate": null,
+      "dueDate": null,
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "ownerLabel": "User user_3Fa…",
+      "tenantScope": true,
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "classificationCode": "R",
+      "legalStatus": "binding",
+      "classificationReviewRequired": false,
+      "supportsObligationId": null,
+      "authoritativeReference": null,
+      "_connected": true,
+      "sourceSection": "EVD-PDF-6f160bf6c84e2d9d",
+      "impacts": [
+        {
+          "id": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+          "status": "DRAFT",
+          "materiality": "LOW"
+        }
+      ],
+      "stage2ImpactAssessment": {
+        "id": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+        "status": "DRAFT",
+        "materiality": "LOW",
+        "metadata": {
+          "stage2Ai": {
+            "model": "claude-sonnet-5-5",
+            "citations": [
+              {
+                "text": "The excerpt indicates an obligation to notify the borrower as soon as possible after a missed payment has occurred, so the firm may need a process to detect missed payments promptly and trigger notification without undue delay.",
+                "citation": null,
+                "sourceQuotation": null,
+                "sourceSectionIds": [
+                  "OBL-1"
+                ],
+                "provisionReference": null
+              },
+              {
+                "text": "The notification must state that the missed payment has occurred, so notification content or templates may need to include a clear statement of the missed payment.",
+                "citation": null,
+                "sourceQuotation": null,
+                "sourceSectionIds": [
+                  "OBL-1"
+                ],
+                "provisionReference": null
+              },
+              {
+                "text": "The notification must also cover any sums that have become payable under the regulated deferred payment credit agreement but remain unpaid, so account data may need to support accurate calculation and presentation of these sums.",
+                "citation": null,
+                "sourceQuotation": null,
+                "sourceSectionIds": [
+                  "OBL-1"
+                ],
+                "provisionReference": null
+              },
+              {
+                "text": "Because the requirement is time-sensitive ('as soon as possible'), the firm may need to define internal timing standards, monitoring and escalation, and keep records evidencing when notifications were sent. The excerpt does not specify a fixed deadline or record-keeping rule, so this is an inference to be verified.",
+                "citation": null,
+                "sourceQuotation": null,
+                "sourceSectionIds": [
+                  "OBL-1"
+                ],
+                "provisionReference": null
+              }
+            ],
+            "latencyMs": 9400,
+            "telemetry": {
+              "effort": "medium",
+              "stopReason": "end_turn",
+              "usageKnown": true,
+              "reservedUsd": 0.084048,
+              "outputTokens": 1213,
+              "thinkingType": "adaptive",
+              "responseModel": "claude-sonnet-5-5",
+              "pricingVersion": "anthropic-list-2026-11-26",
+              "requestedModel": "claude-sonnet-5-5",
+              "cacheReadTokens": 0,
+              "providerRequestId": "req_011ChRRasTEKWbF9NdRT3AZb",
+              "cacheWrite1hTokens": 0,
+              "cacheWrite5mTokens": 0,
+              "settledEstimatedUsd": 0.01334,
+              "standardInputTokens": 605
+            },
+            "aiProvider": "AIPROV-ANTHROPIC-001",
+            "aiUseCaseId": "UC-RI-004",
+            "fixtureMode": false,
+            "inputTokens": 605,
+            "aiConfidence": 55,
+            "estimatedUsd": 0.01334,
+            "outputTokens": 1213,
+            "aiAssumptions": [
+              "Assessment draft is generated from obligation text and publication grounding only.",
+              "No live organisational inventory was consulted."
+            ],
+            "executionMode": "live",
+            "aiEvidenceClaims": [
+              "1. The excerpt indicates an obligation to notify the borrower as soon as possible after a missed payment has occurred, so the firm may need a process to detect missed payments promptly and trigger notification without undue delay. [sections: OBL-1]",
+              "2. The notification must state that the missed payment has occurred, so notification content or templates may need to include a clear statement of the missed payment. [sections: OBL-1]",
+              "3. The notification must also cover any sums that have become payable under the regulated deferred payment credit agreement but remain unpaid, so account data may need to support accurate calculation and presentation of these sums. [sections: OBL-1]",
+              "4. Because the requirement is time-sensitive ('as soon as possible'), the firm may need to define internal timing standards, monitoring and escalation, and keep records evidencing when notifications were sent. The excerpt does not specify a fixed deadline or record-keeping rule, so this is an inference to be verified. [sections: OBL-1]"
+            ],
+            "processingStatus": "DRAFT_AI_SUGGESTION",
+            "humanConfirmationRequired": [
+              "Organisation-specific facts were not asserted by AI.",
+              "Implementation deadlines depend on regulatory effective dates and internal planning.",
+              "Low model confidence — mandatory human review before submit."
+            ]
+          },
+          "stage2Workflow": "obligation_approved_to_impact_draft",
+          "labCreationMode": "uat_authorised",
+          "recordProvenance": "uat_authorised",
+          "labProvenanceLocked": true,
+          "labProvenanceRecordedAt": "2026-11-26T11:00:59.190Z",
+          "parentRegulatoryChangeId": "7d7e7712-ee1e-45fa-b1be-54b19f2ba2f8",
+          "sourceRegulatoryObligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+          "labProvenanceRecordedByUserId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+        }
+      },
+      "complianceLifecycle": {
+        "obligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+        "obligationStatus": "OPEN",
+        "currentStage": "impact",
+        "impact": {
+          "id": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+          "status": "DRAFT",
+          "owner_user_id": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr"
+        },
+        "risk": null,
+        "control": null,
+        "assurance": null,
+        "links": {
+          "impactId": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+          "riskId": null,
+          "controlId": null,
+          "assuranceReviewId": null
+        }
+      },
+      "risks": [],
+      "controls": [],
+      "riskIds": [],
+      "controlIds": []
+    }
+  }
+}

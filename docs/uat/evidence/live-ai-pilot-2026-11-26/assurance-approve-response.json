@@ -1,0 +1,208 @@
+{
+  "submit": {
+    "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+    "status": 200,
+    "body": {
+      "ok": true,
+      "assuranceReview": {
+        "id": "802c3e80-8e19-477c-b06b-1251da7368aa",
+        "reviewType": "Control design and operating effectiveness assurance review (draft recommendation for human review)",
+        "result": "NOT_TESTED",
+        "reviewDate": "2026-11-26",
+        "notes": "To recommend how the firm could assess whether the automated daily reconciliation of scheduled against received payments identifies missed payments on regulated deferred payment credit agreements, and whether exceptions are logged, assigned a named owner and tracked to resolution. The scope, timing and data sources of the control are stated as requiring confirmation once the full obligation text is reviewed, so this plan is provisional and no conclusion on effectiveness is made or implied.\n\nProcedure: 1. Confirm scope: once the full obligation text has been reviewed, document the agreement populations, payment types and data sources the control is intended to cover, and have the control owner confirm these. The source describes this as requiring human confirmation and not as verified organisational fact.\n2. Walk through the design: obtain the control description, reconciliation logic, scheduling and run-time configuration, and the exception workflow. Check that the design covers the daily frequency, the comparison of scheduled and received payments, exception logging, named owner assignment and tracking to resolution.\n3. Test data completeness and accuracy: for a sample of dates, compare the source scheduled-payment and received-payment data with the inputs used in the reconciliation, to check that the population is complete and that the matching rules are accurate.\n4. Test detection: select a sample of known or seeded missed-payment cases, or reperform the reconciliation independently for sampled days, and compare the results with the exceptions the control logged.\n5. Test run consistency: review job logs or scheduler evidence for a sample period to assess whether the reconciliation ran daily and how failed or skipped runs were handled and escalated.\n6. Test exception handling: for a sample of logged exceptions, check that each has a named owner, is tracked through to resolution, and has evidence of the resolution action and date. Review open and ageing exceptions for esc\n\nEvidence: Approved control description and procedure document, with confirmation of scope, timing and data sources from the control owner,Full obligation text and the firm's documented mapping of the obligation to this control (to be obtained, as the source indicates scope depends on it),Reconciliation configuration, matching rules and scheduler or job run logs for the sample period,Extracts of scheduled-payment and received-payment data for sampled dates, with lineage to the source systems,Exception log extracts showing date raised, named owner, status, resolution action and resolution date,Ageing and open exception reports, with any escalation records,Evidence of independent reperformance or seeded-case testing and the comparison to control output,Records of failed or skipped runs, and of any remediation or change management applied to the control\n\nRequires human confirmation — not verified organisational fact.",
+        "reviewerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+        "reviewer": "user_3Fa…",
+        "updatedAt": "2026-11-26T11:05:14.807228+00:00",
+        "parentControlId": null,
+        "dataProvenance": "uat_authorised",
+        "labClassification": "uat_authorised",
+        "labClassificationLabel": "Authorised UAT / acceptance",
+        "tenantScope": true,
+        "_connected": true
+      }
+    }
+  },
+  "approve": {
+    "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+    "status": 200,
+    "body": {
+      "ok": true,
+      "assuranceReview": {
+        "id": "802c3e80-8e19-477c-b06b-1251da7368aa",
+        "reviewType": "Control design and operating effectiveness assurance review (draft recommendation for human review)",
+        "result": "NOT_TESTED",
+        "reviewDate": "2026-11-26",
+        "notes": "To recommend how the firm could assess whether the automated daily reconciliation of scheduled against received payments identifies missed payments on regulated deferred payment credit agreements, and whether exceptions are logged, assigned a named owner and tracked to resolution. The scope, timing and data sources of the control are stated as requiring confirmation once the full obligation text is reviewed, so this plan is provisional and no conclusion on effectiveness is made or implied.\n\nProcedure: 1. Confirm scope: once the full obligation text has been reviewed, document the agreement populations, payment types and data sources the control is intended to cover, and have the control owner confirm these. The source describes this as requiring human confirmation and not as verified organisational fact.\n2. Walk through the design: obtain the control description, reconciliation logic, scheduling and run-time configuration, and the exception workflow. Check that the design covers the daily frequency, the comparison of scheduled and received payments, exception logging, named owner assignment and tracking to resolution.\n3. Test data completeness and accuracy: for a sample of dates, compare the source scheduled-payment and received-payment data with the inputs used in the reconciliation, to check that the population is complete and that the matching rules are accurate.\n4. Test detection: select a sample of known or seeded missed-payment cases, or reperform the reconciliation independently for sampled days, and compare the results with the exceptions the control logged.\n5. Test run consistency: review job logs or scheduler evidence for a sample period to assess whether the reconciliation ran daily and how failed or skipped runs were handled and escalated.\n6. Test exception handling: for a sample of logged exceptions, check that each has a named owner, is tracked through to resolution, and has evidence of the resolution action and date. Review open and ageing exceptions for esc\n\nEvidence: Approved control description and procedure document, with confirmation of scope, timing and data sources from the control owner,Full obligation text and the firm's documented mapping of the obligation to this control (to be obtained, as the source indicates scope depends on it),Reconciliation configuration, matching rules and scheduler or job run logs for the sample period,Extracts of scheduled-payment and received-payment data for sampled dates, with lineage to the source systems,Exception log extracts showing date raised, named owner, status, resolution action and resolution date,Ageing and open exception reports, with any escalation records,Evidence of independent reperformance or seeded-case testing and the comparison to control output,Records of failed or skipped runs, and of any remediation or change management applied to the control\n\nRequires human confirmation — not verified organisational fact.",
+        "reviewerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+        "reviewer": "user_3Fa…",
+        "updatedAt": "2026-11-26T11:05:23.643513+00:00",
+        "parentControlId": null,
+        "dataProvenance": "uat_authorised",
+        "labClassification": "uat_authorised",
+        "labClassificationLabel": "Authorised UAT / acceptance",
+        "tenantScope": true,
+        "_connected": true
+      }
+    }
+  },
+  "after": {
+    "status": 200,
+    "body": {
+      "ok": true,
+      "assuranceReview": {
+        "id": "802c3e80-8e19-477c-b06b-1251da7368aa",
+        "reviewType": "Control design and operating effectiveness assurance review (draft recommendation for human review)",
+        "result": "NOT_TESTED",
+        "reviewDate": "2026-11-26",
+        "notes": "To recommend how the firm could assess whether the automated daily reconciliation of scheduled against received payments identifies missed payments on regulated deferred payment credit agreements, and whether exceptions are logged, assigned a named owner and tracked to resolution. The scope, timing and data sources of the control are stated as requiring confirmation once the full obligation text is reviewed, so this plan is provisional and no conclusion on effectiveness is made or implied.\n\nProcedure: 1. Confirm scope: once the full obligation text has been reviewed, document the agreement populations, payment types and data sources the control is intended to cover, and have the control owner confirm these. The source describes this as requiring human confirmation and not as verified organisational fact.\n2. Walk through the design: obtain the control description, reconciliation logic, scheduling and run-time configuration, and the exception workflow. Check that the design covers the daily frequency, the comparison of scheduled and received payments, exception logging, named owner assignment and tracking to resolution.\n3. Test data completeness and accuracy: for a sample of dates, compare the source scheduled-payment and received-payment data with the inputs used in the reconciliation, to check that the population is complete and that the matching rules are accurate.\n4. Test detection: select a sample of known or seeded missed-payment cases, or reperform the reconciliation independently for sampled days, and compare the results with the exceptions the control logged.\n5. Test run consistency: review job logs or scheduler evidence for a sample period to assess whether the reconciliation ran daily and how failed or skipped runs were handled and escalated.\n6. Test exception handling: for a sample of logged exceptions, check that each has a named owner, is tracked through to resolution, and has evidence of the resolution action and date. Review open and ageing exceptions for esc\n\nEvidence: Approved control description and procedure document, with confirmation of scope, timing and data sources from the control owner,Full obligation text and the firm's documented mapping of the obligation to this control (to be obtained, as the source indicates scope depends on it),Reconciliation configuration, matching rules and scheduler or job run logs for the sample period,Extracts of scheduled-payment and received-payment data for sampled dates, with lineage to the source systems,Exception log extracts showing date raised, named owner, status, resolution action and resolution date,Ageing and open exception reports, with any escalation records,Evidence of independent reperformance or seeded-case testing and the comparison to control output,Records of failed or skipped runs, and of any remediation or change management applied to the control\n\nRequires human confirmation — not verified organisational fact.",
+        "reviewerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+        "reviewer": "user_3Fa…",
+        "updatedAt": "2026-11-26T11:05:23.643513+00:00",
+        "parentControlId": null,
+        "dataProvenance": "uat_authorised",
+        "labClassification": "uat_authorised",
+        "labClassificationLabel": "Authorised UAT / acceptance",
+        "tenantScope": true,
+        "_connected": true,
+        "controlIds": [
+          "cfc87ee5-1894-4627-841b-6e22a084d7c9"
+        ],
+        "linkedControls": [
+          {
+            "id": "cfc87ee5-1894-4627-841b-6e22a084d7c9",
+            "name": "Missed payment detection and exception monitoring"
+          }
+        ]
+      },
+      "linkedControls": [
+        {
+          "id": "cfc87ee5-1894-4627-841b-6e22a084d7c9",
+          "name": "Missed payment detection and exception monitoring"
+        }
+      ],
+      "detail": {
+        "id": "802c3e80-8e19-477c-b06b-1251da7368aa",
+        "organisation_id": "b8f5e3a1-00ad-4000-8000-000000000001",
+        "review_type": "Control design and operating effectiveness assurance review (draft recommendation for human review)",
+        "result": "NOT_TESTED",
+        "reviewer_user_id": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+        "review_date": "2026-11-26",
+        "next_review_date": null,
+        "notes": "To recommend how the firm could assess whether the automated daily reconciliation of scheduled against received payments identifies missed payments on regulated deferred payment credit agreements, and whether exceptions are logged, assigned a named owner and tracked to resolution. The scope, timing and data sources of the control are stated as requiring confirmation once the full obligation text is reviewed, so this plan is provisional and no conclusion on effectiveness is made or implied.\n\nProcedure: 1. Confirm scope: once the full obligation text has been reviewed, document the agreement populations, payment types and data sources the control is intended to cover, and have the control owner confirm these. The source describes this as requiring human confirmation and not as verified organisational fact.\n2. Walk through the design: obtain the control description, reconciliation logic, scheduling and run-time configuration, and the exception workflow. Check that the design covers the daily frequency, the comparison of scheduled and received payments, exception logging, named owner assignment and tracking to resolution.\n3. Test data completeness and accuracy: for a sample of dates, compare the source scheduled-payment and received-payment data with the inputs used in the reconciliation, to check that the population is complete and that the matching rules are accurate.\n4. Test detection: select a sample of known or seeded missed-payment cases, or reperform the reconciliation independently for sampled days, and compare the results with the exceptions the control logged.\n5. Test run consistency: review job logs or scheduler evidence for a sample period to assess whether the reconciliation ran daily and how failed or skipped runs were handled and escalated.\n6. Test exception handling: for a sample of logged exceptions, check that each has a named owner, is tracked through to resolution, and has evidence of the resolution action and date. Review open and ageing exceptions for esc\n\nEvidence: Approved control description and procedure document, with confirmation of scope, timing and data sources from the control owner,Full obligation text and the firm's documented mapping of the obligation to this control (to be obtained, as the source indicates scope depends on it),Reconciliation configuration, matching rules and scheduler or job run logs for the sample period,Extracts of scheduled-payment and received-payment data for sampled dates, with lineage to the source systems,Exception log extracts showing date raised, named owner, status, resolution action and resolution date,Ageing and open exception reports, with any escalation records,Evidence of independent reperformance or seeded-case testing and the comparison to control output,Records of failed or skipped runs, and of any remediation or change management applied to the control\n\nRequires human confirmation — not verified organisational fact.",
+        "created_at": "2026-11-26T11:04:20.859177+00:00",
+        "updated_at": "2026-11-26T11:05:23.643513+00:00",
+        "metadata": {
+          "stage5Ai": {
+            "model": "claude-sonnet-5-5",
+            "aiClaims": [
+              {
+                "claim": "The control is an automated daily reconciliation of scheduled payments against received payments intended to identify missed payments on regulated deferred payment credit agreements, so the plan should test detection and run frequency.",
+                "sourceSectionIds": [
+                  "CTRL-1"
+                ]
+              },
+              {
+                "claim": "Exceptions are logged, assigned a named owner and tracked to resolution, so the plan should test exception logging, ownership and resolution evidence.",
+                "sourceSectionIds": [
+                  "CTRL-1"
+                ]
+              },
+              {
+                "claim": "The scope, timing and data sources of the control require confirmation once the full obligation text is reviewed, and the description is not verified organisational fact, so this plan is provisional and needs human confirmation before use.",
+                "sourceSectionIds": [
+                  "CTRL-1"
+                ]
+              }
+            ],
+            "citations": [
+              {
+                "text": null,
+                "citation": null,
+                "sourceQuotation": null,
+                "sourceSectionIds": [
+                  "CTRL-1"
+                ],
+                "provisionReference": null
+              },
+              {
+                "text": null,
+                "citation": null,
+                "sourceQuotation": null,
+                "sourceSectionIds": [
+                  "CTRL-1"
+                ],
+                "provisionReference": null
+              },
+              {
+                "text": null,
+                "citation": null,
+                "sourceQuotation": null,
+                "sourceSectionIds": [
+                  "CTRL-1"
+                ],
+                "provisionReference": null
+              }
+            ],
+            "latencyMs": 10870,
+            "telemetry": {
+              "effort": "medium",
+              "stopReason": "end_turn",
+              "usageKnown": true,
+              "reservedUsd": 0.084124,
+              "outputTokens": 1309,
+              "thinkingType": "adaptive",
+              "responseModel": "claude-sonnet-5-5",
+              "pricingVersion": "anthropic-list-2026-11-26",
+              "requestedModel": "claude-sonnet-5-5",
+              "cacheReadTokens": 0,
+              "providerRequestId": "req_011ChRRpvBZbeaU2Zteg6iBb",
+              "cacheWrite1hTokens": 0,
+              "cacheWrite5mTokens": 0,
+              "settledEstimatedUsd": 0.014254,
+              "standardInputTokens": 582
+            },
+            "aiProvider": "AIPROV-ANTHROPIC-001",
+            "aiUseCaseId": "UC-RI-008",
+            "fixtureMode": false,
+            "inputTokens": 582,
+            "aiConfidence": 55,
+            "estimatedUsd": 0.014254,
+            "outputTokens": 1309,
+            "executionMode": "live",
+            "processingStatus": "DRAFT_AI_TEST_PLAN",
+            "assignedTesterHint": null,
+            "humanConfirmationRequired": [
+              "Test execution and pass/fail must be recorded by authorised testers.",
+              "AI cannot close assurance without independent human approval."
+            ]
+          },
+          "stage5Workflow": "control_approved_to_assurance_plan",
+          "assuranceStatus": "TESTING_READY",
+          "labCreationMode": "uat_authorised",
+          "recordProvenance": "uat_authorised",
+          "assuranceWorkflow": true,
+          "stage5PrimaryPlan": true,
+          "labProvenanceLocked": true,
+          "sourceApprovedRiskId": "c3476126-ae8b-48e0-b523-4a86f3d65301",
+          "assurancePlanApprovedAt": "2026-11-26T11:05:23.623Z",
+          "labProvenanceRecordedAt": "2026-11-26T11:00:59.190Z",
+          "sourceApprovedControlId": "cfc87ee5-1894-4627-841b-6e22a084d7c9",
+          "parentRegulatoryChangeId": "7d7e7712-ee1e-45fa-b1be-54b19f2ba2f8",
+          "sourceImpactAssessmentId": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+          "sourceRegulatoryObligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+          "assurancePlanApprovedByUserId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+          "labProvenanceRecordedByUserId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+        }
+      },
+      "controls": [
+        {
+          "id": "cfc87ee5-1894-4627-841b-6e22a084d7c9",
+          "name": "Missed payment detection and exception monitoring",
+          "effectiveness": "NOT_TESTED"
+        }
+      ],
+      "obligations": [],
+      "findings": []
+    }
+  }
+}

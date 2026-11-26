@@ -1,0 +1,172 @@
+{
+  "at": "2026-11-26T11:03:42.016Z",
+  "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+  "elapsedMs": 10116,
+  "status": 200,
+  "body": {
+    "ok": true,
+    "risk": {
+      "id": "c3476126-ae8b-48e0-b523-4a86f3d65301",
+      "title": "Failure to notify borrowers promptly of missed payments under regulated deferred payment credit agreements",
+      "description": "The draft impact assessment flags an obligation requiring the firm, as soon as possible after a missed payment, to notify the borrower that the missed payment has occurred and about any sums that have become payable under the agreement. There is a risk that current processes cannot detect missed payments and issue accurate, timely notifications. Contributing factors may include system limitations, manual handoffs, and unclear ownership. The excerpt is truncated, so the full scope of the obligation must be confirmed against the source rule text. Draft proposal requiring human review. Requires human confirmation — not verified organisational fact.",
+      "category": "Compliance",
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "owner": "user_3Fa…",
+      "inherentRisk": "High",
+      "residualRisk": "Medium",
+      "status": "Approved",
+      "reviewDate": null,
+      "updatedAt": "2026-11-26T11:03:32.320827+00:00",
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "tenantScope": true,
+      "sourceImpactAssessmentId": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+      "sourceRegulatoryObligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+      "obligationIds": [
+        "dc63a70a-d795-430a-99bc-34a5e73896c5"
+      ],
+      "_connected": true
+    }
+  },
+  "after": {
+    "ok": true,
+    "risk": {
+      "id": "c3476126-ae8b-48e0-b523-4a86f3d65301",
+      "title": "Failure to notify borrowers promptly of missed payments under regulated deferred payment credit agreements",
+      "description": "The draft impact assessment flags an obligation requiring the firm, as soon as possible after a missed payment, to notify the borrower that the missed payment has occurred and about any sums that have become payable under the agreement. There is a risk that current processes cannot detect missed payments and issue accurate, timely notifications. Contributing factors may include system limitations, manual handoffs, and unclear ownership. The excerpt is truncated, so the full scope of the obligation must be confirmed against the source rule text. Draft proposal requiring human review. Requires human confirmation — not verified organisational fact.",
+      "category": "Compliance",
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "owner": "user_3Fa…",
+      "inherentRisk": "High",
+      "residualRisk": "Medium",
+      "status": "Approved",
+      "reviewDate": null,
+      "updatedAt": "2026-11-26T11:03:32.320827+00:00",
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "tenantScope": true,
+      "sourceImpactAssessmentId": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+      "sourceRegulatoryObligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+      "obligationIds": [
+        "dc63a70a-d795-430a-99bc-34a5e73896c5"
+      ],
+      "_connected": true,
+      "controlIds": [
+        "cfc87ee5-1894-4627-841b-6e22a084d7c9"
+      ]
+    },
+    "detail": {
+      "id": "c3476126-ae8b-48e0-b523-4a86f3d65301",
+      "organisation_id": "b8f5e3a1-00ad-4000-8000-000000000001",
+      "external_key": null,
+      "title": "Failure to notify borrowers promptly of missed payments under regulated deferred payment credit agreements",
+      "description": "The draft impact assessment flags an obligation requiring the firm, as soon as possible after a missed payment, to notify the borrower that the missed payment has occurred and about any sums that have become payable under the agreement. There is a risk that current processes cannot detect missed payments and issue accurate, timely notifications. Contributing factors may include system limitations, manual handoffs, and unclear ownership. The excerpt is truncated, so the full scope of the obligation must be confirmed against the source rule text. Draft proposal requiring human review. Requires human confirmation — not verified organisational fact.",
+      "category": "Compliance",
+      "owner_user_id": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "inherent_risk": "High",
+      "residual_risk": "Medium",
+      "status": "APPROVED",
+      "review_date": null,
+      "created_at": "2026-11-26T11:02:48.519416+00:00",
+      "updated_at": "2026-11-26T11:03:32.320827+00:00",
+      "metadata": {
+        "stage3Ai": {
+          "model": "claude-sonnet-5-5",
+          "aiClaims": [
+            {
+              "claim": "The draft impact assessment identifies an obligation requiring the firm to notify the borrower as soon as possible after a missed payment that the missed payment has occurred, and about any sums that have become payable under the regulated deferred payment credit agreement (excerpt truncated; PDF p.95).",
+              "sourceSectionIds": [
+                "IMP-1"
+              ]
+            },
+            {
+              "claim": "Impact areas flagged are Operations, Technology, Compliance, Customer Communications, Data and Management Information, and Governance and Controls. These are AI-assisted and require human confirmation.",
+              "sourceSectionIds": [
+                "IMP-1"
+              ]
+            },
+            {
+              "claim": "No existing tenant risk is clearly relevant on the evidence supplied. The catalogue entries are test records or generic AI-draft compliance items, so none have been mapped, and new risks are proposals only.",
+              "sourceSectionIds": [
+                "IMP-1"
+              ]
+            }
+          ],
+          "citations": [
+            {
+              "text": null,
+              "citation": null,
+              "sourceQuotation": null,
+              "sourceSectionIds": [
+                "IMP-1"
+              ],
+              "provisionReference": null
+            },
+            {
+              "text": null,
+              "citation": null,
+              "sourceQuotation": null,
+              "sourceSectionIds": [
+                "IMP-1"
+              ],
+              "provisionReference": null
+            },
+            {
+              "text": null,
+              "citation": null,
+              "sourceQuotation": null,
+              "sourceSectionIds": [
+                "IMP-1"
+              ],
+              "provisionReference": null
+            }
+          ],
+          "latencyMs": 7308,
+          "telemetry": {
+            "effort": "medium",
+            "stopReason": "end_turn",
+            "usageKnown": true,
+            "reservedUsd": 0.085792,
+            "outputTokens": 1060,
+            "thinkingType": "adaptive",
+            "responseModel": "claude-sonnet-5-5",
+            "pricingVersion": "anthropic-list-2026-11-26",
+            "requestedModel": "claude-sonnet-5-5",
+            "cacheReadTokens": 0,
+            "providerRequestId": "req_011ChRRiKVLLGDW6sg3GfcXn",
+            "cacheWrite1hTokens": 0,
+            "cacheWrite5mTokens": 0,
+            "settledEstimatedUsd": 0.012972,
+            "standardInputTokens": 1186
+          },
+          "aiProvider": "AIPROV-ANTHROPIC-001",
+          "aiUseCaseId": "UC-RI-006",
+          "fixtureMode": false,
+          "inputTokens": 1186,
+          "aiConfidence": 58,
+          "estimatedUsd": 0.012972,
+          "outputTokens": 1060,
+          "executionMode": "live",
+          "processingStatus": "DRAFT_AI_SUGGESTION",
+          "humanConfirmationRequired": [
+            "Risk ratings and owners require authorised human validation.",
+            "Existing risk mappings must be confirmed before operational use."
+          ]
+        },
+        "stage3Workflow": "impact_approved_to_risk_draft",
+        "labCreationMode": "uat_authorised",
+        "recordProvenance": "uat_authorised",
+        "stage3PrimaryDraft": true,
+        "labProvenanceLocked": true,
+        "labProvenanceRecordedAt": "2026-11-26T11:00:59.190Z",
+        "parentRegulatoryChangeId": "7d7e7712-ee1e-45fa-b1be-54b19f2ba2f8",
+        "sourceImpactAssessmentId": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+        "sourceRegulatoryObligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+        "labProvenanceRecordedByUserId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+      },
+      "created_by_user_id": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "at": "2026-11-26T11:02:30.186Z",
+  "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+  "status": 200,
+  "body": {
+    "ok": true,
+    "assessment": {
+      "id": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+      "changeId": "7d7e7712-ee1e-45fa-b1be-54b19f2ba2f8",
+      "changeTitle": "FCA-EVAL-001 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)",
+      "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "title": "Impact — FCA-EVAL-001 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)",
+      "materiality": "Low",
+      "status": "In review",
+      "dueDate": null,
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "ownerLabel": "User user_3Fa…",
+      "reviewerId": null,
+      "approverId": null,
+      "sourceRegulatoryObligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+      "tenantScope": true,
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "_connected": true,
+      "businessImpact": "Operations / business impact areas flagged: Operations, Technology, Compliance, Customer Communications, Data and Management Information, Governance and Controls. Requires human confirmation — not verified organisational fact.",
+      "operationalImpact": "Operations / business impact areas flagged: Operations, Technology, Compliance, Customer Communications, Data and Management Information, Governance and Controls. Requires human confirmation — not verified organisational fact.",
+      "technologyImpact": "Technology and systems: review interfaces, data flows and monitoring tied to change \"FCA-EVAL-001 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)\". Requires human confirmation — not verified organisational fact.",
+      "complianceImpact": "Regulatory impact (draft, AI-assisted): obligation approval on \"(2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agre\" (PDF p.95). Requires human confirmation — not verified organisational fact.",
+      "financialImpact": "Financial / resource: estimate implementation effort after owner review. Requires human confirmation — not verified organisational fact.",
+      "implementationComplexity": "HIGH",
+      "businessAreas": [
+        "Operations",
+        "Technology",
+        "Compliance",
+        "Customer Communications",
+        "Data and Management Information",
+        "Governance and Controls"
+      ],
+      "riskIds": [],
+      "updatedAt": "2026-11-26T11:02:29.944738+00:00"
+    }
+  }
+}

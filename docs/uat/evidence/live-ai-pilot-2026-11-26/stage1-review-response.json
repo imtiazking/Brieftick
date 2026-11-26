@@ -1,0 +1,36 @@
+{
+  "at": "2026-11-26T10:59:14.554Z",
+  "status": 200,
+  "body": {
+    "ok": true,
+    "skipped": [],
+    "decision": "ACCEPTED",
+    "reviewId": "94e48c1e-985d-42d2-ade8-c4c400a98b8b",
+    "materialised": [
+      {
+        "findingId": "49f7a26a-419a-4f86-b0ec-f7afad087706",
+        "claimIndex": 0,
+        "legalStatus": "binding",
+        "obligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+        "classificationCode": "R"
+      }
+    ],
+    "evidencePathway": "human_verified_uat",
+    "classificationPolicyVersion": 4
+  },
+  "decision": {
+    "findingId": "49f7a26a-419a-4f86-b0ec-f7afad087706",
+    "claimTextSha256": "10da40e595db55fc3c43c29e8667536f52bfdcd07da815f87dda1982df2ffec3",
+    "decision": "ACCEPTED",
+    "regulatoryClassificationCode": "R",
+    "provisionFunction": "OPERATIVE_REQUIREMENT",
+    "disposition": "CONVERT_TO_DRAFT_OBLIGATION",
+    "provisionReference": "CONC 7.20.1R",
+    "legalBasis": "FCA Handbook CONC 7.20.1R, inserted by the Consumer Credit (Deferred Payment Credit) Instrument 2026 (FCA 2026/2), PS26/1 Annex F",
+    "reclassificationEvidence": "Quoted text is CONC 7.20.1R(2), a rule (R) set out as new text in the legal instrument on PDF p.95.",
+    "quotation": "(2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid",
+    "quotationPage": 95,
+    "obligationStatement": "(2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid",
+    "comment": "SYNTHETIC UAT DECISION (automated persona B, not a professional judgement). The AI quotation covered only the 7.20.1R(1) applicability limb; the operative duty text was replaced by a verbatim p.95 quotation verified against the independent FCA PDF text. Draft only; PENDING_HUMAN_REVIEW for regulatory accuracy."
+  }
+}

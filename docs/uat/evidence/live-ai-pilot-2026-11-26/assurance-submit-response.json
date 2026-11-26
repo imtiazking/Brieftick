@@ -1,0 +1,23 @@
+{
+  "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+  "status": 200,
+  "body": {
+    "ok": true,
+    "assuranceReview": {
+      "id": "802c3e80-8e19-477c-b06b-1251da7368aa",
+      "reviewType": "Control design and operating effectiveness assurance review (draft recommendation for human review)",
+      "result": "NOT_TESTED",
+      "reviewDate": "2026-11-26",
+      "notes": "To recommend how the firm could assess whether the automated daily reconciliation of scheduled against received payments identifies missed payments on regulated deferred payment credit agreements, and whether exceptions are logged, assigned a named owner and tracked to resolution. The scope, timing and data sources of the control are stated as requiring confirmation once the full obligation text is reviewed, so this plan is provisional and no conclusion on effectiveness is made or implied.\n\nProcedure: 1. Confirm scope: once the full obligation text has been reviewed, document the agreement populations, payment types and data sources the control is intended to cover, and have the control owner confirm these. The source describes this as requiring human confirmation and not as verified organisational fact.\n2. Walk through the design: obtain the control description, reconciliation logic, scheduling and run-time configuration, and the exception workflow. Check that the design covers the daily frequency, the comparison of scheduled and received payments, exception logging, named owner assignment and tracking to resolution.\n3. Test data completeness and accuracy: for a sample of dates, compare the source scheduled-payment and received-payment data with the inputs used in the reconciliation, to check that the population is complete and that the matching rules are accurate.\n4. Test detection: select a sample of known or seeded missed-payment cases, or reperform the reconciliation independently for sampled days, and compare the results with the exceptions the control logged.\n5. Test run consistency: review job logs or scheduler evidence for a sample period to assess whether the reconciliation ran daily and how failed or skipped runs were handled and escalated.\n6. Test exception handling: for a sample of logged exceptions, check that each has a named owner, is tracked through to resolution, and has evidence of the resolution action and date. Review open and ageing exceptions for esc\n\nEvidence: Approved control description and procedure document, with confirmation of scope, timing and data sources from the control owner,Full obligation text and the firm's documented mapping of the obligation to this control (to be obtained, as the source indicates scope depends on it),Reconciliation configuration, matching rules and scheduler or job run logs for the sample period,Extracts of scheduled-payment and received-payment data for sampled dates, with lineage to the source systems,Exception log extracts showing date raised, named owner, status, resolution action and resolution date,Ageing and open exception reports, with any escalation records,Evidence of independent reperformance or seeded-case testing and the comparison to control output,Records of failed or skipped runs, and of any remediation or change management applied to the control\n\nRequires human confirmation — not verified organisational fact.",
+      "reviewerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "reviewer": "user_3Fa…",
+      "updatedAt": "2026-11-26T11:05:14.807228+00:00",
+      "parentControlId": null,
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "tenantScope": true,
+      "_connected": true
+    }
+  }
+}

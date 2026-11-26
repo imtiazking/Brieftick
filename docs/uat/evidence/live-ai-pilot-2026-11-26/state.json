@@ -1,0 +1,122 @@
+{
+  "runReference": "pilot-fca-eval-001-2026-11-26",
+  "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+  "ids": {
+    "changeId": "7d7e7712-ee1e-45fa-b1be-54b19f2ba2f8",
+    "stage1RunId": "5609228c-be99-4f98-a14b-8c38122bbd5a",
+    "reviewId": "94e48c1e-985d-42d2-ade8-c4c400a98b8b",
+    "obligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+    "impactId": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+    "riskId": "c3476126-ae8b-48e0-b523-4a86f3d65301",
+    "controlId": "cfc87ee5-1894-4627-841b-6e22a084d7c9",
+    "assuranceId": "802c3e80-8e19-477c-b06b-1251da7368aa"
+  },
+  "phases": {
+    "stage1": {
+      "triggeredAt": "2026-11-26T10:56:01.909Z",
+      "http": 202,
+      "trigger": {
+        "ok": true,
+        "runId": "5609228c-be99-4f98-a14b-8c38122bbd5a",
+        "reused": false,
+        "dispatched": true,
+        "executionStatus": "RUNNING"
+      },
+      "completedAt": "2026-11-26T10:56:14.429Z",
+      "status": "COMPLETED",
+      "elapsedMs": 12520,
+      "runId": "5609228c-be99-4f98-a14b-8c38122bbd5a"
+    },
+    "review1": {
+      "at": "2026-11-26T10:59:14.555Z",
+      "reviewer": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "reviewId": "94e48c1e-985d-42d2-ade8-c4c400a98b8b",
+      "obligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5"
+    },
+    "stage2": {
+      "submittedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "submittedAt": "2026-11-26T11:00:48.430Z",
+      "approvedBy": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "approvedAt": "2026-11-26T11:01:10.053Z",
+      "http": 200,
+      "elapsedMs": 12056
+    },
+    "stage3": {
+      "submittedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "submittedAt": "2026-11-26T11:02:30.187Z",
+      "statusAfterSubmit": "IN_REVIEW",
+      "approvedBy": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "approvedAt": "2026-11-26T11:02:55.814Z",
+      "http": 200,
+      "elapsedMs": 16510,
+      "parentStatus": "APPROVED",
+      "childIds": [
+        "c3476126-ae8b-48e0-b523-4a86f3d65301"
+      ]
+    },
+    "stage4": {
+      "submittedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "submittedAt": "2026-11-26T11:03:22.603Z",
+      "statusAfterSubmit": "IN_REVIEW",
+      "approvedBy": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "approvedAt": "2026-11-26T11:03:42.017Z",
+      "http": 200,
+      "elapsedMs": 10116,
+      "parentStatus": "APPROVED",
+      "childIds": [
+        "cfc87ee5-1894-4627-841b-6e22a084d7c9"
+      ]
+    },
+    "stage5": {
+      "submittedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "submittedAt": "2026-11-26T11:04:00.312Z",
+      "statusAfterSubmit": "IN_REVIEW",
+      "approvedBy": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "approvedAt": "2026-11-26T11:04:21.460Z",
+      "http": 200,
+      "elapsedMs": 12294,
+      "parentStatus": "ACTIVE",
+      "childIds": [
+        "802c3e80-8e19-477c-b06b-1251da7368aa"
+      ]
+    },
+    "assurance": {
+      "at": "2026-11-26T11:05:24.296Z",
+      "submitStatus": 200,
+      "approveStatus": 200,
+      "submittedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "approvedBy": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+    }
+  },
+  "changeCreated": {
+    "at": "2026-11-26T10:56:01.906Z",
+    "by": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+    "body": {
+      "id": "7d7e7712-ee1e-45fa-b1be-54b19f2ba2f8",
+      "externalKey": null,
+      "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "publicationTitle": null,
+      "regulator": "—",
+      "regulatoryReference": null,
+      "scenario": "all",
+      "title": "FCA-EVAL-001 live AI pilot — CONC 7.20.1R (synthetic UAT, 2026-11-26)",
+      "description": "Synthetic UAT change created for the FORGENIQ live five-stage AI pilot. Not a customer compliance decision.",
+      "changeType": "Policy update",
+      "materiality": "—",
+      "status": "Draft",
+      "statusCode": "DRAFT",
+      "effectiveDate": null,
+      "dueDate": null,
+      "updatedAt": "2026-11-26T10:56:01.846382+00:00",
+      "ownerId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "ownerLabel": "User user_3LA…",
+      "applicabilityRecommendation": "Pending",
+      "applicabilityDecision": null,
+      "tenantScope": true,
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "_connected": true
+    }
+  }
+}

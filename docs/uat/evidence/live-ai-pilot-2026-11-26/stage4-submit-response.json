@@ -1,0 +1,31 @@
+{
+  "at": "2026-11-26T11:03:22.602Z",
+  "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+  "status": 200,
+  "body": {
+    "ok": true,
+    "risk": {
+      "id": "c3476126-ae8b-48e0-b523-4a86f3d65301",
+      "title": "Failure to notify borrowers promptly of missed payments under regulated deferred payment credit agreements",
+      "description": "The draft impact assessment flags an obligation requiring the firm, as soon as possible after a missed payment, to notify the borrower that the missed payment has occurred and about any sums that have become payable under the agreement. There is a risk that current processes cannot detect missed payments and issue accurate, timely notifications. Contributing factors may include system limitations, manual handoffs, and unclear ownership. The excerpt is truncated, so the full scope of the obligation must be confirmed against the source rule text. Draft proposal requiring human review. Requires human confirmation — not verified organisational fact.",
+      "category": "Compliance",
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "owner": "user_3Fa…",
+      "inherentRisk": "High",
+      "residualRisk": "Medium",
+      "status": "In Review",
+      "reviewDate": null,
+      "updatedAt": "2026-11-26T11:03:22.573785+00:00",
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "tenantScope": true,
+      "sourceImpactAssessmentId": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+      "sourceRegulatoryObligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+      "obligationIds": [
+        "dc63a70a-d795-430a-99bc-34a5e73896c5"
+      ],
+      "_connected": true
+    }
+  }
+}

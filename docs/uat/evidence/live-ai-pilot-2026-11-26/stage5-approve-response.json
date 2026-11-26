@@ -1,0 +1,180 @@
+{
+  "at": "2026-11-26T11:04:21.459Z",
+  "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+  "elapsedMs": 12294,
+  "status": 200,
+  "body": {
+    "ok": true,
+    "control": {
+      "id": "cfc87ee5-1894-4627-841b-6e22a084d7c9",
+      "name": "Missed payment detection and exception monitoring",
+      "description": "Automated daily reconciliation of scheduled payments against received payments to identify missed payments on regulated deferred payment credit agreements. Exceptions are logged, assigned a named owner and tracked to resolution. Scope, timing and data sources require confirmation once the full obligation text is reviewed. Requires human confirmation — not verified organisational fact.",
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "owner": "user_3Fa…",
+      "controlType": "Detective",
+      "frequency": null,
+      "effectiveness": "NOT_TESTED",
+      "testingStatus": "NOT_TESTED",
+      "status": "Active",
+      "updatedAt": "2026-11-26T11:04:09.593101+00:00",
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "tenantScope": true,
+      "sourceApprovedRiskId": "c3476126-ae8b-48e0-b523-4a86f3d65301",
+      "sourceRegulatoryObligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+      "riskIds": [
+        "c3476126-ae8b-48e0-b523-4a86f3d65301"
+      ],
+      "obligationIds": [
+        "dc63a70a-d795-430a-99bc-34a5e73896c5"
+      ],
+      "_connected": true
+    }
+  },
+  "after": {
+    "ok": true,
+    "control": {
+      "id": "cfc87ee5-1894-4627-841b-6e22a084d7c9",
+      "name": "Missed payment detection and exception monitoring",
+      "description": "Automated daily reconciliation of scheduled payments against received payments to identify missed payments on regulated deferred payment credit agreements. Exceptions are logged, assigned a named owner and tracked to resolution. Scope, timing and data sources require confirmation once the full obligation text is reviewed. Requires human confirmation — not verified organisational fact.",
+      "ownerId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "owner": "user_3Fa…",
+      "controlType": "Detective",
+      "frequency": null,
+      "effectiveness": "NOT_TESTED",
+      "testingStatus": "NOT_TESTED",
+      "status": "Active",
+      "updatedAt": "2026-11-26T11:04:09.593101+00:00",
+      "dataProvenance": "uat_authorised",
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance",
+      "tenantScope": true,
+      "sourceApprovedRiskId": "c3476126-ae8b-48e0-b523-4a86f3d65301",
+      "sourceRegulatoryObligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+      "riskIds": [
+        "c3476126-ae8b-48e0-b523-4a86f3d65301"
+      ],
+      "obligationIds": [],
+      "_connected": true,
+      "evidenceIds": [],
+      "findingIds": [],
+      "assuranceReviewIds": [
+        "802c3e80-8e19-477c-b06b-1251da7368aa"
+      ]
+    },
+    "detail": {
+      "id": "cfc87ee5-1894-4627-841b-6e22a084d7c9",
+      "organisation_id": "b8f5e3a1-00ad-4000-8000-000000000001",
+      "external_key": null,
+      "name": "Missed payment detection and exception monitoring",
+      "description": "Automated daily reconciliation of scheduled payments against received payments to identify missed payments on regulated deferred payment credit agreements. Exceptions are logged, assigned a named owner and tracked to resolution. Scope, timing and data sources require confirmation once the full obligation text is reviewed. Requires human confirmation — not verified organisational fact.",
+      "owner_user_id": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "control_type": "Detective",
+      "frequency": null,
+      "nature": null,
+      "execution_type": null,
+      "effectiveness": "NOT_TESTED",
+      "testing_status": "NOT_TESTED",
+      "status": "ACTIVE",
+      "created_at": "2026-11-26T11:03:41.329436+00:00",
+      "updated_at": "2026-11-26T11:04:09.593101+00:00",
+      "metadata": {
+        "stage4Ai": {
+          "model": "claude-sonnet-5-5",
+          "aiClaims": [
+            {
+              "claim": "The draft impact assessment flags an obligation to notify the borrower, as soon as possible after a missed payment, that the payment has been missed and of any sums that have become payable under the agreement.",
+              "sourceSectionIds": [
+                "RISK-1"
+              ]
+            },
+            {
+              "claim": "There is a risk that current processes cannot detect missed payments and issue accurate, timely notifications, with possible contributing factors of system limitations, manual handoffs and unclear ownership.",
+              "sourceSectionIds": [
+                "RISK-1"
+              ]
+            },
+            {
+              "claim": "The excerpt is truncated, so the full scope of the obligation must be confirmed against the source rule text before the proposed controls are relied upon.",
+              "sourceSectionIds": [
+                "RISK-1"
+              ]
+            }
+          ],
+          "citations": [
+            {
+              "text": null,
+              "citation": null,
+              "sourceQuotation": null,
+              "sourceSectionIds": [
+                "RISK-1"
+              ],
+              "provisionReference": null
+            },
+            {
+              "text": null,
+              "citation": null,
+              "sourceQuotation": null,
+              "sourceSectionIds": [
+                "RISK-1"
+              ],
+              "provisionReference": null
+            },
+            {
+              "text": null,
+              "citation": null,
+              "sourceQuotation": null,
+              "sourceSectionIds": [
+                "RISK-1"
+              ],
+              "provisionReference": null
+            }
+          ],
+          "latencyMs": 8581,
+          "telemetry": {
+            "effort": "medium",
+            "stopReason": "end_turn",
+            "usageKnown": true,
+            "reservedUsd": 0.085824,
+            "outputTokens": 1192,
+            "thinkingType": "adaptive",
+            "responseModel": "claude-sonnet-5-5",
+            "pricingVersion": "anthropic-list-2026-11-26",
+            "requestedModel": "claude-sonnet-5-5",
+            "cacheReadTokens": 0,
+            "providerRequestId": "req_011ChRRnAq3Vv9qpmNh225xa",
+            "cacheWrite1hTokens": 0,
+            "cacheWrite5mTokens": 0,
+            "settledEstimatedUsd": 0.014208,
+            "standardInputTokens": 1144
+          },
+          "aiProvider": "AIPROV-ANTHROPIC-001",
+          "aiUseCaseId": "UC-RI-007",
+          "fixtureMode": false,
+          "inputTokens": 1144,
+          "aiConfidence": 42,
+          "estimatedUsd": 0.014208,
+          "outputTokens": 1192,
+          "executionMode": "live",
+          "processingStatus": "DRAFT_AI_SUGGESTION",
+          "humanConfirmationRequired": [
+            "Control design and risk linkage require human approval."
+          ]
+        },
+        "stage4Workflow": "risk_validated_to_control_draft",
+        "labCreationMode": "uat_authorised",
+        "recordProvenance": "uat_authorised",
+        "stage4PrimaryDraft": true,
+        "labProvenanceLocked": true,
+        "sourceApprovedRiskId": "c3476126-ae8b-48e0-b523-4a86f3d65301",
+        "labProvenanceRecordedAt": "2026-11-26T11:00:59.190Z",
+        "parentRegulatoryChangeId": "7d7e7712-ee1e-45fa-b1be-54b19f2ba2f8",
+        "sourceImpactAssessmentId": "6a40d4b2-2c07-4124-9651-a67d194e98c2",
+        "sourceRegulatoryObligationId": "dc63a70a-d795-430a-99bc-34a5e73896c5",
+        "labProvenanceRecordedByUserId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+      },
+      "created_by_user_id": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+    }
+  }
+}

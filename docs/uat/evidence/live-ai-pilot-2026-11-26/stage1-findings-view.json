@@ -1,0 +1,895 @@
+{
+  "at": "2026-11-26T10:59:12.308Z",
+  "reviewer": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+  "status": 200,
+  "body": {
+    "ok": true,
+    "runId": "5609228c-be99-4f98-a14b-8c38122bbd5a",
+    "enabled": true,
+    "reviewStatus": "HUMAN_REVIEW_REQUIRED",
+    "executionStatus": "COMPLETED",
+    "requestedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+    "classifications": [
+      {
+        "id": "binding_requirement",
+        "label": "Binding requirement",
+        "createsObligation": true
+      },
+      {
+        "id": "guidance_on_requirement",
+        "label": "Guidance on a binding requirement",
+        "createsObligation": false
+      },
+      {
+        "id": "non_binding_guidance",
+        "label": "Non-binding guidance / expectation",
+        "createsObligation": false
+      },
+      {
+        "id": "permission",
+        "label": "Permission",
+        "createsObligation": false
+      },
+      {
+        "id": "scope_exclusion",
+        "label": "Scope exclusion",
+        "createsObligation": false
+      },
+      {
+        "id": "definition",
+        "label": "Definition / interpretation",
+        "createsObligation": false
+      },
+      {
+        "id": "safe_harbour",
+        "label": "Safe harbour / liability protection",
+        "createsObligation": false
+      },
+      {
+        "id": "explanatory_statement",
+        "label": "Explanatory statement",
+        "createsObligation": false
+      }
+    ],
+    "classificationPolicy": {
+      "id": "5715fa4d-0b65-4717-aebc-6ec59675205a",
+      "regulatorKey": "REG-FCA",
+      "policyVersion": 4,
+      "effectiveFrom": "2026-11-22",
+      "approvedAt": "2026-11-22T14:09:00.620195+00:00",
+      "nonBindingPublicationTypes": [
+        "consultation_paper",
+        "discussion_paper",
+        "feedback_statement",
+        "finalised_guidance",
+        "guidance",
+        "news",
+        "press_release",
+        "speech"
+      ],
+      "entries": [
+        {
+          "code": "C",
+          "description": "Conduct — market abuse conclusive provisions (FCA Handbook MAR); binding conduct rules are R",
+          "legalStatus": "non_binding",
+          "conversionEnabled": false,
+          "destinationQueue": "NON_OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "CONS",
+          "description": "Consultation proposals",
+          "legalStatus": "non_binding",
+          "conversionEnabled": false,
+          "destinationQueue": "NON_OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "D",
+          "description": "Direction",
+          "legalStatus": "binding",
+          "conversionEnabled": true,
+          "destinationQueue": "OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "DEF",
+          "description": "Definitions",
+          "legalStatus": "interpretive",
+          "conversionEnabled": false,
+          "destinationQueue": "NON_OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "E",
+          "description": "Evidential provision (must be linked to the binding provision it evidences)",
+          "legalStatus": "evidential",
+          "conversionEnabled": true,
+          "destinationQueue": "OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": true
+        },
+        {
+          "code": "EU",
+          "description": "Applicable EU legislation",
+          "legalStatus": "binding",
+          "conversionEnabled": true,
+          "destinationQueue": "OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "EXEMPT",
+          "description": "Exemptions",
+          "legalStatus": "non_binding",
+          "conversionEnabled": false,
+          "destinationQueue": "NON_OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "EXPL",
+          "description": "Explanatory statements",
+          "legalStatus": "interpretive",
+          "conversionEnabled": false,
+          "destinationQueue": "NON_OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "G",
+          "description": "Guidance",
+          "legalStatus": "non_binding",
+          "conversionEnabled": false,
+          "destinationQueue": "NON_OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "GBR",
+          "description": "Guidance on binding requirements",
+          "legalStatus": "non_binding",
+          "conversionEnabled": false,
+          "destinationQueue": "NON_OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "GP",
+          "description": "Good practice",
+          "legalStatus": "non_binding",
+          "conversionEnabled": false,
+          "destinationQueue": "NON_OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "NBE",
+          "description": "Non-binding expectations",
+          "legalStatus": "non_binding",
+          "conversionEnabled": false,
+          "destinationQueue": "NON_OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "P",
+          "description": "Principle",
+          "legalStatus": "binding",
+          "conversionEnabled": true,
+          "destinationQueue": "OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "PERM",
+          "description": "Permissions",
+          "legalStatus": "non_binding",
+          "conversionEnabled": false,
+          "destinationQueue": "NON_OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "R",
+          "description": "Rule",
+          "legalStatus": "binding",
+          "conversionEnabled": true,
+          "destinationQueue": "OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "REC",
+          "description": "Recommendations",
+          "legalStatus": "non_binding",
+          "conversionEnabled": false,
+          "destinationQueue": "NON_OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "REPEALED",
+          "description": "Repealed requirements",
+          "legalStatus": "repealed",
+          "conversionEnabled": false,
+          "destinationQueue": "NON_OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "SH",
+          "description": "Safe harbours",
+          "legalStatus": "non_binding",
+          "conversionEnabled": false,
+          "destinationQueue": "NON_OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "TS",
+          "description": "Binding technical standards",
+          "legalStatus": "binding",
+          "conversionEnabled": true,
+          "destinationQueue": "OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "UK",
+          "description": "UK legislation",
+          "legalStatus": "binding",
+          "conversionEnabled": true,
+          "destinationQueue": "OBLIGATION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        },
+        {
+          "code": "UNKNOWN",
+          "description": "Staging RI-CLS-003 UAT — UNKNOWN routes to exception triage (edited).",
+          "legalStatus": "unknown",
+          "conversionEnabled": false,
+          "destinationQueue": "EXCEPTION_TRIAGE",
+          "humanReviewRequired": true,
+          "supportingObligationLinkRequired": false
+        }
+      ]
+    },
+    "publicationType": "policy_statement_with_instrument",
+    "queueCounts": {
+      "OBLIGATION_TRIAGE": 0,
+      "NON_OBLIGATION_TRIAGE": 1,
+      "EXCEPTION_TRIAGE": 0
+    },
+    "findings": [
+      {
+        "findingId": "49f7a26a-419a-4f86-b0ec-f7afad087706",
+        "number": 1,
+        "claimIndex": 0,
+        "statement": "CONC 7.20.1R (proposed) would require a firm, as soon as possible after a borrower's missed payment under a regulated deferred payment credit agreement, to notify the borrower of the missed payment and of unpaid sums, and to provide information on the agreement concerned and the adverse consequences and mitigation steps, all together. This is a consultation proposal, not a binding obligation.",
+        "claimTextSha256": "10da40e595db55fc3c43c29e8667536f52bfdcd07da815f87dda1982df2ffec3",
+        "modelConfidence": 55,
+        "citationStatus": "VERIFIED",
+        "sourceSectionIds": [
+          "EVD-PDF-90eac526516055e9",
+          "EVD-PDF-6f160bf6c84e2d9d"
+        ],
+        "pages": [
+          94,
+          95,
+          96
+        ],
+        "sections": [
+          {
+            "sourceSectionId": "EVD-PDF-90eac526516055e9",
+            "pageNumber": 94,
+            "citation": "PDF p.94 · legal instrument",
+            "excerpt": "FCA 2026/2 FOS 2026/1 Page 33 of 46 ... 7 Arrears, default and recovery (including repossessions) 7.1 Application ... Agreements where there is a guarantor etc 7.1.4 R ... (3) This rule does not apply to CONC 7.3.1G, CONC 7.4.1R, CONC 7.4.2R, CONC 7.5.1G, CONC 7.6.2AR, CONC 7.6.2BG, CONC 7.15.3G, CONC 7.15.4R, CONC 7.15.5G, or CONC 7.17 to CONC 7.19, CONC 7.20.1R or CONC 7.20.2G. ... ... 7.6 Exercise of continuous payment authority Recovery and continuous payment authorities etc. ... 7.6.2B G ... Regulated deferred payment credit agreements: adequate explanations relating to continuous payment",
+            "inLegalInstrument": true,
+            "transitionalProvisions": false,
+            "provisionsSetOut": [
+              "7.1.4R",
+              "7.6.2BG",
+              "7.6.2CR",
+              "7.20.1R"
+            ],
+            "provisionTextStatus": {
+              "7.1.4R": "AMENDMENT_MARKUP_UNCERTAIN",
+              "7.20.1R": "NEW_TEXT",
+              "7.6.2BG": "AMENDMENT_MARKUP_UNCERTAIN",
+              "7.6.2CR": "AMENDMENT_MARKUP_UNCERTAIN"
+            }
+          },
+          {
+            "sourceSectionId": "EVD-PDF-6f160bf6c84e2d9d",
+            "pageNumber": 95,
+            "citation": "PDF p.95 · legal instrument",
+            "excerpt": "FCA 2026/2 FOS 2026/1 Page 34 of 46 (2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement); and (b) provide the borrower with sufficient information for the borrower to understand: (i) which regulated deferred payment credit agreement the missed payment relates to; (ii) any adverse consequences for the borrower arising out o",
+            "inLegalInstrument": true,
+            "transitionalProvisions": false,
+            "provisionsSetOut": [
+              "7.20.2G",
+              "7.20.3R",
+              "7.20.1R"
+            ],
+            "provisionTextStatus": {
+              "7.20.2G": "NEW_TEXT",
+              "7.20.3R": "NEW_TEXT"
+            }
+          }
+        ],
+        "modelLabels": [
+          "consultation_proposal"
+        ],
+        "regulatorySourceExcerpt": [
+          {
+            "pageNumber": 94,
+            "excerpt": "FCA 2026/2 FOS 2026/1 Page 33 of 46 ... 7 Arrears, default and recovery (including repossessions) 7.1 Application ... Agreements where there is a guarantor etc 7.1.4 R ... (3) This rule does not apply to CONC 7.3.1G, CONC 7.4.1R, CONC 7.4.2R, CONC 7.5.1G, CONC 7.6.2AR, CONC 7.6.2BG, CONC 7.15.3G, CONC 7.15.4R, CONC 7.15.5G, or CONC 7.17 to CONC 7.19, CONC 7.20.1R or CONC 7.20.2G. ... ... 7.6 Exercise of continuous payment authority Recovery and continuous payment authorities etc. ... 7.6.2B G ... Regulated deferred payment credit agreements: adequate explanations relating to continuous payment"
+          },
+          {
+            "pageNumber": 95,
+            "excerpt": "FCA 2026/2 FOS 2026/1 Page 34 of 46 (2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement); and (b) provide the borrower with sufficient information for the borrower to understand: (i) which regulated deferred payment credit agreement the missed payment relates to; (ii) any adverse consequences for the borrower arising out o"
+          }
+        ],
+        "suggestion": {
+          "candidateIndex": 0,
+          "score": 0.47,
+          "modelBindingNature": "consultation_proposal",
+          "sourceQuotation": "7.20.1 R (1) This rule applies where a borrower has failed to make a payment by the time it has fallen due under the terms of a regulated deferred payment credit agreement (‘a missed payment’).",
+          "citation": "PDF p.94 and p.95 · legal instrument (CONC 7.20.1R)",
+          "applicabilityConditions": "Applies to firms in relation to regulated deferred payment credit agreements where a borrower has a missed payment. Capital repayments only; charges for non-compliance are excluded from 'payment' under 7.20.1R(4). The authoritative excerpt supplied for the target core is truncated ('7.20.1R or'), so the assessment relies on the operative text on PDF pp.94-95. No effective date is stated in the provided excerpts."
+        },
+        "triage": {
+          "queue": "NON_OBLIGATION_TRIAGE",
+          "provisional": true,
+          "exceptionReasons": [],
+          "conversionEligible": false,
+          "code": null,
+          "legalStatus": null,
+          "allowedActions": [
+            "review",
+            "LINK_TO_EXISTING_OBLIGATION",
+            "SUPPORTING_INFORMATION",
+            "HORIZON_SCANNING",
+            "ARCHIVE",
+            "RECLASSIFICATION_REQUESTED"
+          ]
+        },
+        "provisionPageIndex": {
+          "2.3.1R": [
+            68
+          ],
+          "2.3.2R": [
+            86
+          ],
+          "2.5.1R": [
+            81,
+            84
+          ],
+          "2.7.1R": [
+            86
+          ],
+          "4.2.1R": [
+            87
+          ],
+          "4.2.2G": [
+            68,
+            70,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80
+          ],
+          "4.6.2R": [
+            92
+          ],
+          "4.8.2R": [
+            93
+          ],
+          "7.1.4R": [
+            94
+          ],
+          "11.1.2R": [
+            96
+          ],
+          "16.1.1R": [
+            97
+          ],
+          "16.1.2G": [
+            97
+          ],
+          "16.1.3G": [
+            97
+          ],
+          "16.1.4R": [
+            97
+          ],
+          "16.1.5R": [
+            97,
+            98,
+            99,
+            100,
+            101,
+            102
+          ],
+          "16.1.6R": [
+            103
+          ],
+          "2.7.7FG": [
+            104
+          ],
+          "2.8.6CG": [
+            106
+          ],
+          "4.2A.1R": [
+            87
+          ],
+          "4.2A.2G": [
+            87
+          ],
+          "4.2A.3R": [
+            87,
+            88
+          ],
+          "4.2A.4R": [
+            88
+          ],
+          "4.2A.5R": [
+            88,
+            89
+          ],
+          "4.2A.6R": [
+            90
+          ],
+          "4.2A.7R": [
+            90
+          ],
+          "4.2A.8R": [
+            91
+          ],
+          "4.2A.9G": [
+            91
+          ],
+          "4.6.2AR": [
+            92
+          ],
+          "6.7.42G": [
+            93
+          ],
+          "6.7.43G": [
+            93
+          ],
+          "7.20.1R": [
+            94,
+            95
+          ],
+          "7.20.2G": [
+            95
+          ],
+          "7.20.3R": [
+            95,
+            96
+          ],
+          "7.6.2BG": [
+            94
+          ],
+          "7.6.2CR": [
+            94
+          ],
+          "11.1.2AG": [
+            96
+          ],
+          "2.7.19GG": [
+            104
+          ],
+          "2.7.19HG": [
+            104
+          ],
+          "4.2A.10G": [
+            91
+          ],
+          "4.2A.11R": [
+            92
+          ],
+          "4.2A.12G": [
+            92
+          ],
+          "TP 13.1R": [
+            66
+          ],
+          "TP 13.2G": [
+            66
+          ],
+          "TP 13.3R": [
+            66
+          ],
+          "TP 13.4R": [
+            66,
+            67
+          ],
+          "TP 13.5G": [
+            67
+          ],
+          "8.12.11AG": [
+            107
+          ]
+        }
+      }
+    ],
+    "evidence": {
+      "kind": "pdf_primary_v1",
+      "extractionRevisionId": "e3f3991b-6b6e-41d6-9fa8-331784f2bc3b",
+      "selection": {
+        "scope": "PARTIAL_DOCUMENT",
+        "strategy": "instrument_priority_v1",
+        "maxSections": 18,
+        "documentPages": 108,
+        "selectedPages": [
+          66,
+          68,
+          81,
+          86,
+          94,
+          95
+        ],
+        "instrumentPages": 48,
+        "selectedSections": 6,
+        "truncatedSections": 0,
+        "documentCharacters": 195291,
+        "selectedCharacters": 8538,
+        "instrumentStartPage": 61,
+        "instrumentPagesSelected": 6,
+        "maxCharactersPerSection": 3200,
+        "characterCoveragePercent": 4.37,
+        "instrumentProvisionsSetOut": 47,
+        "instrumentProvisionsOmitted": [
+          {
+            "pages": [
+              67
+            ],
+            "provision": "TP 13.5G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              87
+            ],
+            "provision": "4.2.1R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              87
+            ],
+            "provision": "4.2A.1R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              87
+            ],
+            "provision": "4.2A.2G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              87,
+              88
+            ],
+            "provision": "4.2A.3R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              88
+            ],
+            "provision": "4.2A.4R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              88,
+              89
+            ],
+            "provision": "4.2A.5R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              90
+            ],
+            "provision": "4.2A.6R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              90
+            ],
+            "provision": "4.2A.7R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              91
+            ],
+            "provision": "4.2A.8R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              91
+            ],
+            "provision": "4.2A.9G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              91
+            ],
+            "provision": "4.2A.10G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              92
+            ],
+            "provision": "4.2A.11R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              92
+            ],
+            "provision": "4.2A.12G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              92
+            ],
+            "provision": "4.6.2R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              92
+            ],
+            "provision": "4.6.2AR",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              93
+            ],
+            "provision": "4.8.2R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              93
+            ],
+            "provision": "6.7.42G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              93
+            ],
+            "provision": "6.7.43G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              96
+            ],
+            "provision": "11.1.2R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              96
+            ],
+            "provision": "11.1.2AG",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              97
+            ],
+            "provision": "16.1.1R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              97
+            ],
+            "provision": "16.1.2G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              97
+            ],
+            "provision": "16.1.3G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              97
+            ],
+            "provision": "16.1.4R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              97,
+              98,
+              99,
+              100,
+              101,
+              102
+            ],
+            "provision": "16.1.5R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              103
+            ],
+            "provision": "16.1.6R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              104
+            ],
+            "provision": "2.7.7FG",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              104
+            ],
+            "provision": "2.7.19GG",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              104
+            ],
+            "provision": "2.7.19HG",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              106
+            ],
+            "provision": "2.8.6CG",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              107
+            ],
+            "provision": "8.12.11AG",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          }
+        ],
+        "suppliedProvisionTextStatus": {
+          "NEW_TEXT": 7,
+          "AMENDMENT_MARKUP_UNCERTAIN": 8
+        },
+        "instrumentProvisionsSupplied": 15,
+        "instrumentProvisionsNotSupplied": [
+          "TP 13.5G",
+          "4.2.1R",
+          "4.2A.1R",
+          "4.2A.2G",
+          "4.2A.3R",
+          "4.2A.4R",
+          "4.2A.5R",
+          "4.2A.6R",
+          "4.2A.7R",
+          "4.2A.8R",
+          "4.2A.9G",
+          "4.2A.10G",
+          "4.2A.11R",
+          "4.2A.12G",
+          "4.6.2R",
+          "4.6.2AR",
+          "4.8.2R",
+          "6.7.42G",
+          "6.7.43G",
+          "11.1.2R",
+          "11.1.2AG",
+          "16.1.1R",
+          "16.1.2G",
+          "16.1.3G",
+          "16.1.4R",
+          "16.1.5R",
+          "16.1.6R",
+          "2.7.7FG",
+          "2.7.19GG",
+          "2.7.19HG",
+          "2.8.6CG",
+          "8.12.11AG"
+        ]
+      },
+      "obligationGradeSuitable": false,
+      "pathway": "human_verified_uat"
+    },
+    "decisions": [],
+    "reassessments": [],
+    "runReviewCompleted": false
+  }
+}

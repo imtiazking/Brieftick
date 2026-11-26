@@ -1,0 +1,1276 @@
+{
+  "phase": "stage1",
+  "at": "2026-11-26T10:56:14.429Z",
+  "runId": "5609228c-be99-4f98-a14b-8c38122bbd5a",
+  "status": "COMPLETED",
+  "elapsedMs": 12520,
+  "trigger": {
+    "ok": true,
+    "runId": "5609228c-be99-4f98-a14b-8c38122bbd5a",
+    "reused": false,
+    "dispatched": true,
+    "executionStatus": "RUNNING"
+  },
+  "run": {
+    "ok": true,
+    "aiAnalysisRun": {
+      "id": "5609228c-be99-4f98-a14b-8c38122bbd5a",
+      "useCaseId": "UC-RI-005",
+      "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "executionStatus": "Completed",
+      "errorCode": null,
+      "reviewStatus": "Human Review Required",
+      "provider": "AIPROV-ANTHROPIC-001",
+      "model": "claude-sonnet-5-5",
+      "createdAt": "2026-11-26T10:56:05.228624+00:00",
+      "completedAt": "2026-11-26T10:56:11.841+00:00",
+      "humanReviewRequired": false,
+      "labClassification": "uat_authorised",
+      "labClassificationLabel": "Authorised UAT / acceptance execution",
+      "findingsPreview": "CONC 7.20.1R (proposed) would require a firm, as soon as possible after a borrower's missed payment under a regulated deferred payment credit agreement, to notify the borrower of the missed payment and of unpaid sums, and to provide information on the agreement concerned and the adverse consequences and mitigation steps, all together. This is a consultation proposal, not a binding obligation.",
+      "claimsCount": 1,
+      "tenantScope": true,
+      "_connected": true
+    },
+    "detail": {
+      "id": "5609228c-be99-4f98-a14b-8c38122bbd5a",
+      "organisation_id": "b8f5e3a1-00ad-4000-8000-000000000001",
+      "use_case_id": "UC-RI-005",
+      "publication_id": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "publication_version_id": "a12a0769-31a5-4b2a-a6e0-962a5cb70dcd",
+      "target_entity_type": null,
+      "target_entity_id": "7d7e7712-ee1e-45fa-b1be-54b19f2ba2f8",
+      "execution_status": "COMPLETED",
+      "review_status": "HUMAN_REVIEW_REQUIRED",
+      "freshness": "CURRENT",
+      "provider": "AIPROV-ANTHROPIC-001",
+      "model": "claude-sonnet-5-5",
+      "prompt_version": "PROMPT-REG-CHANGE-04",
+      "processing_eligibility": "REVIEW_REQUIRED",
+      "structured_output": {
+        "notes": "Draft recommendation requiring human review. The supplied authoritativeExcerpt for 7.20.1R is truncated, so the full rule text was taken from the adjacent source sections on pp.94-95 where CONC 7.20.1R is set out. The binding nature is limited by the consultation status signals.",
+        "claims": [
+          {
+            "text": "CONC 7.20.1R (proposed) would require a firm, as soon as possible after a borrower's missed payment under a regulated deferred payment credit agreement, to notify the borrower of the missed payment and of unpaid sums, and to provide information on the agreement concerned and the adverse consequences and mitigation steps, all together. This is a consultation proposal, not a binding obligation.",
+            "confidence": 55,
+            "sourceSectionIds": [
+              "EVD-PDF-90eac526516055e9",
+              "EVD-PDF-6f160bf6c84e2d9d"
+            ],
+            "provisionReference": "CONC 7.20.1R"
+          }
+        ],
+        "candidates": [
+          {
+            "citation": "PDF p.94 and p.95 · legal instrument (CONC 7.20.1R)",
+            "statement": "CONC 7.20.1R, as set out in the legal instrument, applies where a borrower has failed to make a payment by the time it has fallen due under a regulated deferred payment credit agreement (a 'missed payment'). Once a missed payment has occurred, the firm must notify the borrower as soon as possible, and must provide the information required by the rule together. The rule is drafted as a duty on firms. However, the publication is signalled as a consultation-phase document with proposed changes and no published final rules. The provision should therefore be treated as a draft proposal and not as a binding obligation, and human review is required.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "7.20.1 R (1) This rule applies where a borrower has failed to make a payment by the time it has fallen due under the terms of a regulated deferred payment credit agreement (‘a missed payment’).",
+            "sourceSectionIds": [
+              "EVD-PDF-90eac526516055e9",
+              "EVD-PDF-6f160bf6c84e2d9d"
+            ],
+            "provisionReference": "CONC 7.20.1R",
+            "applicabilityConditions": "Applies to firms in relation to regulated deferred payment credit agreements where a borrower has a missed payment. Capital repayments only; charges for non-compliance are excluded from 'payment' under 7.20.1R(4). The authoritative excerpt supplied for the target core is truncated ('7.20.1R or'), so the assessment relies on the operative text on PDF pp.94-95. No effective date is stated in the provided excerpts.",
+            "_forgeniqRegulatoryGuard": {
+              "documentType": "consultation",
+              "inLegalInstrumentSection": true,
+              "provisionSetOutInSection": true,
+              "conversionEligibilityRoute": "EXCEPTION",
+              "provisionSetOutInQuotation": true,
+              "conversionEligibilityReasons": [
+                "provision_duty_language_unconfirmed"
+              ],
+              "mustNotPresentAsIndependentBinding": true
+            },
+            "regulatoryClassificationCode": "R"
+          }
+        ],
+        "confidence": 55,
+        "_normalizedAt": "2026-11-26T10:56:11.839Z",
+        "_normalizedSchema": "ObligationExtractionResult",
+        "_forgeniqGrounding": {
+          "kind": "pdf_primary_v1",
+          "pageCount": 108,
+          "selection": {
+            "scope": "PARTIAL_DOCUMENT",
+            "strategy": "instrument_priority_v1",
+            "maxSections": 18,
+            "documentPages": 108,
+            "selectedPages": [
+              66,
+              68,
+              81,
+              86,
+              94,
+              95
+            ],
+            "instrumentPages": 48,
+            "selectedSections": 6,
+            "truncatedSections": 0,
+            "documentCharacters": 195291,
+            "selectedCharacters": 8538,
+            "instrumentStartPage": 61,
+            "instrumentPagesSelected": 6,
+            "maxCharactersPerSection": 3200,
+            "characterCoveragePercent": 4.37,
+            "instrumentProvisionsSetOut": 47,
+            "instrumentProvisionsOmitted": [
+              {
+                "pages": [
+                  67
+                ],
+                "provision": "TP 13.5G",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  87
+                ],
+                "provision": "4.2.1R",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  87
+                ],
+                "provision": "4.2A.1R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  87
+                ],
+                "provision": "4.2A.2G",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  87,
+                  88
+                ],
+                "provision": "4.2A.3R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  88
+                ],
+                "provision": "4.2A.4R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  88,
+                  89
+                ],
+                "provision": "4.2A.5R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  90
+                ],
+                "provision": "4.2A.6R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  90
+                ],
+                "provision": "4.2A.7R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  91
+                ],
+                "provision": "4.2A.8R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  91
+                ],
+                "provision": "4.2A.9G",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  91
+                ],
+                "provision": "4.2A.10G",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  92
+                ],
+                "provision": "4.2A.11R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  92
+                ],
+                "provision": "4.2A.12G",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  92
+                ],
+                "provision": "4.6.2R",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  92
+                ],
+                "provision": "4.6.2AR",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  93
+                ],
+                "provision": "4.8.2R",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  93
+                ],
+                "provision": "6.7.42G",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  93
+                ],
+                "provision": "6.7.43G",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  96
+                ],
+                "provision": "11.1.2R",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  96
+                ],
+                "provision": "11.1.2AG",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  97
+                ],
+                "provision": "16.1.1R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  97
+                ],
+                "provision": "16.1.2G",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  97
+                ],
+                "provision": "16.1.3G",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  97
+                ],
+                "provision": "16.1.4R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  97,
+                  98,
+                  99,
+                  100,
+                  101,
+                  102
+                ],
+                "provision": "16.1.5R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  103
+                ],
+                "provision": "16.1.6R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  104
+                ],
+                "provision": "2.7.7FG",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  104
+                ],
+                "provision": "2.7.19GG",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  104
+                ],
+                "provision": "2.7.19HG",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  106
+                ],
+                "provision": "2.8.6CG",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  107
+                ],
+                "provision": "8.12.11AG",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              }
+            ],
+            "suppliedProvisionTextStatus": {
+              "NEW_TEXT": 7,
+              "AMENDMENT_MARKUP_UNCERTAIN": 8
+            },
+            "instrumentProvisionsSupplied": 15,
+            "instrumentProvisionsNotSupplied": [
+              "TP 13.5G",
+              "4.2.1R",
+              "4.2A.1R",
+              "4.2A.2G",
+              "4.2A.3R",
+              "4.2A.4R",
+              "4.2A.5R",
+              "4.2A.6R",
+              "4.2A.7R",
+              "4.2A.8R",
+              "4.2A.9G",
+              "4.2A.10G",
+              "4.2A.11R",
+              "4.2A.12G",
+              "4.6.2R",
+              "4.6.2AR",
+              "4.8.2R",
+              "6.7.42G",
+              "6.7.43G",
+              "11.1.2R",
+              "11.1.2AG",
+              "16.1.1R",
+              "16.1.2G",
+              "16.1.3G",
+              "16.1.4R",
+              "16.1.5R",
+              "16.1.6R",
+              "2.7.7FG",
+              "2.7.19GG",
+              "2.7.19HG",
+              "2.8.6CG",
+              "8.12.11AG"
+            ]
+          },
+          "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+          "sectionCatalog": [
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 5 of 46 Annex B Amendments to the Senior Management Arrangements, Systems and Controls sourcebook (SYSC) Insert the following new transitional provisions, SYSC TP 13, after SYSC TP 12 (Updates to the dual-regulated firms Remuneration Code transitional provision). All the text is new and is not underlined. TP 13 SMCR: application to firms with deferred payment credit temporary permission Application TP 13.1 R SYSC TP 13 applies to a firm with a deferred payment credit temporary permission. [Note: articles 10 and 11 of the Deferred Payment Credit Order.] TP 13.2 G Once",
+              "citation": "PDF p.66 · legal instrument",
+              "pageNumber": 66,
+              "sourceSectionId": "EVD-PDF-c972b7acef43cd7f",
+              "provisionsSetOut": [
+                "TP 13.1R",
+                "TP 13.2G",
+                "TP 13.3R",
+                "TP 13.4R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "TP 13.1R": "NEW_TEXT",
+                "TP 13.2G": "NEW_TEXT",
+                "TP 13.3R": "NEW_TEXT",
+                "TP 13.4R": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 7 of 46 Annex C Amendments to the General Provisions (GEN) In this Annex, underlining indicates new text and striking through indicates deleted text. 2 Interpreting the Handbook ... 2.3 General saving of the Handbook for Gibraltar Continued application of the Handbook with respect to Gibraltar 2.3.1 R ... (4) ... (5) A Gibraltar-based firm carrying on deferred payment credit activity must comply with the relevant Handbook provisions relating to deferred payment credit activity. ... 4 Statutory status disclosure ... 4.2 Purpose ... 4.2.2 G There are other pre-contract",
+              "citation": "PDF p.68 · legal instrument",
+              "pageNumber": 68,
+              "sourceSectionId": "EVD-PDF-f38ea22635f39d76",
+              "provisionsSetOut": [
+                "2.3.1R",
+                "4.2.2G"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "2.3.1R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "4.2.2G": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 20 of 46 ... Part 2: Comes into force on 31 December 2026 [Editor’s note: This Part takes into account the changes introduced by the Complaints Reporting Instrument 2025 (FCA 2025/53). That instrument deletes and replaces DISP 1 Annex 1 in its entirety from its entry into force on 31 December 2026.] 1 Annex 1 Complaints return form ... CCR return information as referred to at DISP 1.10.1IR ... 1 Annex 1.9 R ‘Service provided’ includes any of the following: ... (4) rent-to-own agreements; (4A) regulated deferred payment credit agreements; ... ... ... Part 3: Comes int",
+              "citation": "PDF p.81 · legal instrument",
+              "pageNumber": 81,
+              "sourceSectionId": "EVD-PDF-89a7bb24ba4ab06a",
+              "provisionsSetOut": [
+                "2.5.1R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "2.5.1R": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 25 of 46 Annex F Amendments to the Consumer Credit sourcebook (CONC) In this Annex, underlining indicates new text and striking through indicates deleted text, unless otherwise stated. 2 Conduct of business standards: general ... 2.3 Conduct of business: lenders and restrictions on provision of credit card cheques ... General conduct 2.3.2 R (1) A In relation to a regulated credit agreement other than a regulated deferred payment credit agreement, a firm must explain the key features of a regulated credit agreement to enable the customer to make an informed choice as",
+              "citation": "PDF p.86 · legal instrument",
+              "pageNumber": 86,
+              "sourceSectionId": "EVD-PDF-8bf3984f6a750455",
+              "provisionsSetOut": [
+                "2.3.2R",
+                "2.7.1R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "2.3.2R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "2.7.1R": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 33 of 46 ... 7 Arrears, default and recovery (including repossessions) 7.1 Application ... Agreements where there is a guarantor etc 7.1.4 R ... (3) This rule does not apply to CONC 7.3.1G, CONC 7.4.1R, CONC 7.4.2R, CONC 7.5.1G, CONC 7.6.2AR, CONC 7.6.2BG, CONC 7.15.3G, CONC 7.15.4R, CONC 7.15.5G, or CONC 7.17 to CONC 7.19, CONC 7.20.1R or CONC 7.20.2G. ... ... 7.6 Exercise of continuous payment authority Recovery and continuous payment authorities etc. ... 7.6.2B G ... Regulated deferred payment credit agreements: adequate explanations relating to continuous payment",
+              "citation": "PDF p.94 · legal instrument",
+              "pageNumber": 94,
+              "sourceSectionId": "EVD-PDF-90eac526516055e9",
+              "provisionsSetOut": [
+                "7.1.4R",
+                "7.6.2BG",
+                "7.6.2CR",
+                "7.20.1R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "7.1.4R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "7.20.1R": "NEW_TEXT",
+                "7.6.2BG": "AMENDMENT_MARKUP_UNCERTAIN",
+                "7.6.2CR": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 34 of 46 (2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement); and (b) provide the borrower with sufficient information for the borrower to understand: (i) which regulated deferred payment credit agreement the missed payment relates to; (ii) any adverse consequences for the borrower arising out o",
+              "citation": "PDF p.95 · legal instrument",
+              "pageNumber": 95,
+              "sourceSectionId": "EVD-PDF-6f160bf6c84e2d9d",
+              "provisionsSetOut": [
+                "7.20.2G",
+                "7.20.3R",
+                "7.20.1R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "7.20.2G": "NEW_TEXT",
+                "7.20.3R": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            }
+          ],
+          "extractionBatch": {
+            "stalled": false,
+            "estimate": {
+              "estimatedTokens": 2135,
+              "outputPreflight": {
+                "ok": true,
+                "provisionCap": 16,
+                "estimateTokens": 580,
+                "maxOutputTokens": 8192,
+                "targetProvisionCount": 1
+              },
+              "selectedCharacters": 8538,
+              "maxCharactersPerSection": 3200
+            },
+            "batchIndex": 0,
+            "planVersion": "instrument_coverage_v2",
+            "analysisScope": "FULL_INSTRUMENT_PROVISIONS",
+            "publicationCoverageComplete": true,
+            "instrumentProvisionsOutstanding": [
+              "TP 13.1R",
+              "TP 13.2G",
+              "TP 13.3R",
+              "TP 13.4R",
+              "TP 13.5G",
+              "2.3.1R",
+              "4.2.2G",
+              "2.5.1R",
+              "2.3.2R",
+              "2.7.1R",
+              "4.2.1R",
+              "4.2A.1R",
+              "4.2A.2G",
+              "4.2A.3R",
+              "4.2A.4R",
+              "4.2A.5R",
+              "4.2A.6R",
+              "4.2A.7R",
+              "4.2A.8R",
+              "4.2A.9G",
+              "4.2A.10G",
+              "4.2A.11R",
+              "4.2A.12G",
+              "4.6.2R",
+              "4.6.2AR",
+              "4.8.2R",
+              "6.7.42G",
+              "6.7.43G",
+              "7.1.4R",
+              "7.6.2BG",
+              "7.6.2CR",
+              "7.20.2G",
+              "7.20.3R",
+              "11.1.2R",
+              "11.1.2AG",
+              "16.1.1R",
+              "16.1.2G",
+              "16.1.3G",
+              "16.1.4R",
+              "16.1.5R",
+              "16.1.6R",
+              "2.7.7FG",
+              "2.7.19GG",
+              "2.7.19HG",
+              "2.8.6CG",
+              "8.12.11AG"
+            ],
+            "instrumentProvisionsNewlySupplied": [
+              "7.20.1R"
+            ]
+          },
+          "provisionInventory": {
+            "outcomes": {
+              "suppliedCount": 15,
+              "identifiedCount": 47,
+              "outputPreflight": {
+                "ok": true,
+                "estimateTokens": 580,
+                "maxOutputTokens": 8192
+              },
+              "unresolvedCores": [
+                "11.1.2AG",
+                "11.1.2R",
+                "16.1.1R",
+                "16.1.2G",
+                "16.1.3G",
+                "16.1.4R",
+                "16.1.5R",
+                "16.1.6R",
+                "2.7.19GG",
+                "2.7.19HG",
+                "2.7.7FG",
+                "2.8.6CG",
+                "4.2.1R",
+                "4.2A.10G",
+                "4.2A.11R",
+                "4.2A.12G",
+                "4.2A.1R",
+                "4.2A.2G",
+                "4.2A.3R",
+                "4.2A.4R",
+                "4.2A.5R",
+                "4.2A.6R",
+                "4.2A.7R",
+                "4.2A.8R",
+                "4.2A.9G",
+                "4.6.2AR",
+                "4.6.2R",
+                "4.8.2R",
+                "6.7.42G",
+                "6.7.43G",
+                "8.12.11AG",
+                "TP 13.5G"
+              ],
+              "provisionScopedExtraction": {
+                "policy": "Each provisionCore in targetCores must receive an explicit assessment in candidates[] (provisionReference + sourceQuotation from authoritativeExcerpt only). A completed batch without an assessment for every supplied core is invalid.",
+                "excerpts": [
+                  {
+                    "pages": [
+                      94,
+                      95
+                    ],
+                    "provisionCore": "7.20.1R",
+                    "authoritativeExcerpt": "7.20.1R or"
+                  }
+                ],
+                "targetCores": [
+                  "7.20.1R"
+                ]
+              },
+              "deterministicCandidateCount": 9,
+              "publicationCoverageComplete": true
+            },
+            "provisionCount": 47,
+            "instrumentStartPage": 61
+          },
+          "provisionPageIndex": {
+            "2.3.1R": [
+              68
+            ],
+            "2.3.2R": [
+              86
+            ],
+            "2.5.1R": [
+              81,
+              84
+            ],
+            "2.7.1R": [
+              86
+            ],
+            "4.2.1R": [
+              87
+            ],
+            "4.2.2G": [
+              68,
+              70,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80
+            ],
+            "4.6.2R": [
+              92
+            ],
+            "4.8.2R": [
+              93
+            ],
+            "7.1.4R": [
+              94
+            ],
+            "11.1.2R": [
+              96
+            ],
+            "16.1.1R": [
+              97
+            ],
+            "16.1.2G": [
+              97
+            ],
+            "16.1.3G": [
+              97
+            ],
+            "16.1.4R": [
+              97
+            ],
+            "16.1.5R": [
+              97,
+              98,
+              99,
+              100,
+              101,
+              102
+            ],
+            "16.1.6R": [
+              103
+            ],
+            "2.7.7FG": [
+              104
+            ],
+            "2.8.6CG": [
+              106
+            ],
+            "4.2A.1R": [
+              87
+            ],
+            "4.2A.2G": [
+              87
+            ],
+            "4.2A.3R": [
+              87,
+              88
+            ],
+            "4.2A.4R": [
+              88
+            ],
+            "4.2A.5R": [
+              88,
+              89
+            ],
+            "4.2A.6R": [
+              90
+            ],
+            "4.2A.7R": [
+              90
+            ],
+            "4.2A.8R": [
+              91
+            ],
+            "4.2A.9G": [
+              91
+            ],
+            "4.6.2AR": [
+              92
+            ],
+            "6.7.42G": [
+              93
+            ],
+            "6.7.43G": [
+              93
+            ],
+            "7.20.1R": [
+              94,
+              95
+            ],
+            "7.20.2G": [
+              95
+            ],
+            "7.20.3R": [
+              95,
+              96
+            ],
+            "7.6.2BG": [
+              94
+            ],
+            "7.6.2CR": [
+              94
+            ],
+            "11.1.2AG": [
+              96
+            ],
+            "2.7.19GG": [
+              104
+            ],
+            "2.7.19HG": [
+              104
+            ],
+            "4.2A.10G": [
+              91
+            ],
+            "4.2A.11R": [
+              92
+            ],
+            "4.2A.12G": [
+              92
+            ],
+            "TP 13.1R": [
+              66
+            ],
+            "TP 13.2G": [
+              66
+            ],
+            "TP 13.3R": [
+              66
+            ],
+            "TP 13.4R": [
+              66,
+              67
+            ],
+            "TP 13.5G": [
+              67
+            ],
+            "8.12.11AG": [
+              107
+            ]
+          },
+          "regulatoryAnalysis": {
+            "regulatoryStatus": {
+              "phase": "consultation",
+              "proposedChanges": true,
+              "nonBindingGuidance": false,
+              "isFinalisedGuidance": false,
+              "publishedFinalRules": false,
+              "informationalContent": false,
+              "bindingObligationsDetected": false,
+              "mustNotTreatProposalsAsBinding": true,
+              "existingBindingObligationsMentioned": false
+            },
+            "isFinalisedGuidance": false,
+            "consultationPreserved": true,
+            "publicationClassification": {
+              "label": null,
+              "primaryClass": "consultation_paper",
+              "allowedClasses": [
+                "consultation_paper",
+                "policy_statement",
+                "supervisory_statement",
+                "guidance",
+                "regulatory_rules",
+                "other_regulatory_publication"
+              ]
+            }
+          },
+          "extractionRevisionId": "e3f3991b-6b6e-41d6-9fa8-331784f2bc3b",
+          "publicationVersionId": "a12a0769-31a5-4b2a-a6e0-962a5cb70dcd",
+          "obligationGradeSuitable": false,
+          "provisionOutcomesSummary": {
+            "suppliedCount": 15,
+            "identifiedCount": 47,
+            "outputPreflight": {
+              "ok": true,
+              "estimateTokens": 580,
+              "maxOutputTokens": 8192
+            },
+            "unresolvedCores": [
+              "11.1.2AG",
+              "11.1.2R",
+              "16.1.1R",
+              "16.1.2G",
+              "16.1.3G",
+              "16.1.4R",
+              "16.1.5R",
+              "16.1.6R",
+              "2.7.19GG",
+              "2.7.19HG",
+              "2.7.7FG",
+              "2.8.6CG",
+              "4.2.1R",
+              "4.2A.10G",
+              "4.2A.11R",
+              "4.2A.12G",
+              "4.2A.1R",
+              "4.2A.2G",
+              "4.2A.3R",
+              "4.2A.4R",
+              "4.2A.5R",
+              "4.2A.6R",
+              "4.2A.7R",
+              "4.2A.8R",
+              "4.2A.9G",
+              "4.6.2AR",
+              "4.6.2R",
+              "4.8.2R",
+              "6.7.42G",
+              "6.7.43G",
+              "8.12.11AG",
+              "TP 13.5G"
+            ],
+            "provisionScopedExtraction": {
+              "policy": "Each provisionCore in targetCores must receive an explicit assessment in candidates[] (provisionReference + sourceQuotation from authoritativeExcerpt only). A completed batch without an assessment for every supplied core is invalid.",
+              "excerpts": [
+                {
+                  "pages": [
+                    94,
+                    95
+                  ],
+                  "provisionCore": "7.20.1R",
+                  "authoritativeExcerpt": "7.20.1R or"
+                }
+              ],
+              "targetCores": [
+                "7.20.1R"
+              ]
+            },
+            "deterministicCandidateCount": 9,
+            "publicationCoverageComplete": true
+          },
+          "obligationExtractionQuery": "regulatory obligations requirements firms must shall should guidance consumer duty binding rules provisions consultation",
+          "extractionBatchPlanSummary": {
+            "batchCount": 5,
+            "instrumentProvisionCount": 47,
+            "publicationCoverageComplete": true
+          },
+          "deterministicProvisionCandidates": [
+            {
+              "pages": [
+                68
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "2.3.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "68": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "2.3.1R",
+              "suggestedQuotation": "2.3.1 R ... (4) ... (5) A Gibraltar-based firm carrying on deferred payment credit activity must comply with the relevant Handbook provisions relating to deferred payment credit activity. ... 4 Statutory status disclosure ... 4.2 Purpose ...",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                86
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "2.3.2R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "86": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "2.3.2R",
+              "suggestedQuotation": "2.3.2 R (1) A In relation to a regulated credit agreement other than a regulated deferred payment credit agreement, a firm must explain the key features of a regulated credit agreement to enable the customer to make an informed choice as required by",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                81,
+                84
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "2.5.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "81": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "2.5.1R",
+              "suggestedQuotation": "2.5.1 R The Ombudsman can consider a complaint under the Voluntary Jurisdiction if: ... FCA 2026/2 FOS 2026/1 Page 23 of 46 activities received while the firm operated with a deferred payment credit temporary permission. To clarify: (a) the reporting frequencies, submission deadlines and time limits for publication for",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                86
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "2.7.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "86": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "2.7.1R",
+              "suggestedQuotation": "2.7.1 R (1) Subject to (2) and, (3) and (4), this section applies to a firm that carries on any distance marketing activity from an establishment in the UK, with or for a consumer in the UK. ... (3) ... (4) This section does not apply to any distance marketing activity carried on in relation to a regulated deferred pay",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                94
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "7.1.4R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "94": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "7.1.4R",
+              "suggestedQuotation": "7.1.4 R ... (3) This rule does not apply to",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                95,
+                96
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "7.20.3R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "95": "NEW_TEXT"
+              },
+              "provisionReference": "7.20.3R",
+              "suggestedQuotation": "7.20.3 R (1) Before a firm takes any of the actions specified in (2), it must give the borrower reasonable notice of its intention to do so. (2) The actions mentioned in (1) are: (a) taking steps to enforce a term of a regulated deferred payment credit agreement by: (i) demanding the earlier payment of any sum; FCA 202",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                66
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "TP 13.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "66": "NEW_TEXT"
+              },
+              "provisionReference": "TP 13.1R",
+              "suggestedQuotation": "TP 13.1 R SYSC TP 13 applies to a firm with a deferred payment credit temporary permission. [Note: articles 10 and 11 of the Deferred Payment Credit Order.]",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                66
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "TP 13.3R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "66": "NEW_TEXT"
+              },
+              "provisionReference": "TP 13.3R",
+              "suggestedQuotation": "TP 13.3 R In circumstances where the only regulated activities in a firm’s permission are deferred payment credit activities permitted by a deferred payment credit temporary permission, a firm is not an SMCR firm (and is included in Part Three of SYSC 23 Annex 1 (Definition of exempt firm)). Firms whose Part 4A permiss",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                66,
+                67
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "TP 13.4R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "66": "NEW_TEXT"
+              },
+              "provisionReference": "TP 13.4R",
+              "suggestedQuotation": "TP 13.4 R (1) This rule applies where a firm’s permission comprises permission to carry on regulated activities granted by the FCA under Part 4A of the Act and a deferred payment credit temporary permission. (2) The firm’s deferred payment credit temporary permission is to be disregarded for the purposes of categorisin",
+              "regulatoryClassificationCode": "R"
+            }
+          ]
+        },
+        "insufficientEvidence": false,
+        "_forgeniqProviderMeta": {
+          "effort": "medium",
+          "maxTokens": 2048,
+          "messageId": "msg_011ChRRDEA3weLJrzsFhikNz",
+          "requestId": "req_011ChRRDDiGUT2sPhaK3PYWv",
+          "httpStatus": 200,
+          "stopReason": "end_turn",
+          "textLength": 2458,
+          "usageKnown": true,
+          "inputTokens": 4831,
+          "outputTokens": 904,
+          "thinkingType": "adaptive",
+          "responseModel": "claude-sonnet-5-5",
+          "requestedModel": "claude-sonnet-5-5",
+          "cacheReadTokens": 0,
+          "responseReceived": true,
+          "cacheWrite1hTokens": 0,
+          "cacheWrite5mTokens": 0,
+          "requestReachedProvider": true
+        },
+        "_forgeniqLabSpendAudit": {
+          "model": "claude-sonnet-5-5",
+          "usage": {
+            "outputTokens": 904,
+            "cacheReadTokens": 0,
+            "cacheWrite1hTokens": 0,
+            "cacheWrite5mTokens": 0,
+            "standardInputTokens": 4831,
+            "cacheWriteTierAssumed": null
+          },
+          "shared": true,
+          "scopeKey": "forgeniq-lab-anthropic",
+          "budgetUsd": 0.75,
+          "settledUsd": 0,
+          "usageKnown": true,
+          "inputTokens": 4831,
+          "limitations": [
+            "HARD_INVOICE_CAP_NOT_GUARANTEED: the shared ledger reserves the maximum estimated cost and later reconciles reported tokens. It is not an Anthropic invoice or workspace cap.",
+            "Pricing uses the static published list prices in MODEL_PRICING_ESTIMATE (version recorded per row). Standard input, output, cache writes (5m/1h) and cache reads are priced separately. Actual Anthropic invoices may differ (discounts, taxes, tiers).",
+            "A crashed instance can leave a RESERVED row. Recover it only with release_abandoned_lab_ai_reservation: a registered operator, a reason, the provider deadline passed, and either verified usage with evidence or ASSUME_MAX (the full reserve stays spent). Nothing releases it automatically, a reservation is recovered at most once, and there is no automatic retry.",
+            "Failed provider calls still consume one request. HTTP error responses and refusals settle at the reported usage. A timeout or transport error has unknown provider usage and settles at the full reserve.",
+            "RI_LAB_SPEND_GUARD_MODE=memory is for offline tests only. Live execution without a shared database fails closed.",
+            "A request that passes pre-flight may still consume thinking tokens inside max_tokens before text appears; partial responses may still incur billed input tokens.",
+            "No org-wide Anthropic workspace spend cap — only per-request guard when env is set.",
+            "Retries inside callAnthropicMessages are not implemented; retryReserveFactor reserves headroom only.",
+            "Provider errors after HTTP 200 may still bill input/output tokens reported by Anthropic."
+          ],
+          "reservedUsd": 0.03736,
+          "outputTokens": 904,
+          "requestCount": 1,
+          "calculatedUsd": 0.018702,
+          "costBreakdown": {
+            "model": "claude-sonnet-5-5",
+            "totalUsd": 0.018702,
+            "outputUsd": 0.00904,
+            "cacheReadUsd": 0,
+            "outputTokens": 904,
+            "pricingVersion": "anthropic-list-2026-11-26",
+            "cacheReadTokens": 0,
+            "cacheWrite1hUsd": 0,
+            "cacheWrite5mUsd": 0,
+            "standardInputUsd": 0.009662,
+            "cacheWrite1hTokens": 0,
+            "cacheWrite5mTokens": 0,
+            "standardInputTokens": 4831,
+            "cacheWriteTierAssumed": null
+          },
+          "pricingVersion": "anthropic-list-2026-11-26",
+          "reconciliation": {
+            "ok": true,
+            "actualUsd": 0.018702,
+            "budgetUsd": 0.75,
+            "providerOk": true,
+            "reserveUsd": 0.03736,
+            "settledUsd": 0.018702,
+            "usageKnown": true,
+            "overReserve": false,
+            "reservedUsd": 0,
+            "requestCount": 1,
+            "reservationId": "fac35ba7-18f4-4ab8-b312-3d19ce218c40",
+            "releasedUnusedUsd": 0.018658
+          },
+          "accountSettledUsd": 0.018702,
+          "settledEstimatedUsd": 0.018702
+        },
+        "_forgeniqProvisionAssessments": [
+          {
+            "causes": [],
+            "outcome": "assessed_structured",
+            "identified": true,
+            "textHitCount": 2,
+            "provisionCore": "7.20.1R",
+            "requiresExceptionReview": false,
+            "authoritativeExcerptHead": "7.20.1R or",
+            "structuredReferenceCount": 2
+          }
+        ],
+        "_forgeniqProvisionCompleteness": {
+          "policy": "Batch SUCCEEDED does not imply regulatory accuracy; omissions are explicit.",
+          "omissionCores": [],
+          "omissionCount": 0,
+          "suppliedCount": 1,
+          "batchCompletenessOk": true,
+          "regulatoryAccuracySuccess": true,
+          "partialIdentificationCores": []
+        },
+        "_forgeniqPublicationRegulatoryContext": {
+          "documentType": "consultation",
+          "isFinalisedGuidance": false,
+          "legalInstrumentText": false,
+          "consultationPreserved": true,
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      "error_code": null,
+      "error_message": null,
+      "latency_ms": 6311,
+      "requested_by": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "correlation_id": null,
+      "idempotency_key": "UC-RI-005:a12a0769-31a5-4b2a-a6e0-962a5cb70dcd:b8f5e3a1-00ad-4000-8000-000000000001:pilot-fca-eval-001-2026-11-26",
+      "created_at": "2026-11-26T10:56:05.228624+00:00",
+      "completed_at": "2026-11-26T10:56:11.841+00:00"
+    },
+    "citations": [
+      {
+        "id": "49f7a26a-419a-4f86-b0ec-f7afad087706",
+        "claimIndex": 0,
+        "claimText": "CONC 7.20.1R (proposed) would require a firm, as soon as possible after a borrower's missed payment under a regulated deferred payment credit agreement, to notify the borrower of the missed payment and of unpaid sums, and to provide information on the agreement concerned and the adverse consequences and mitigation steps, all together. This is a consultation proposal, not a binding obligation.",
+        "citationStatus": "VERIFIED",
+        "groundingStatus": null,
+        "confidence": 55,
+        "sourceSectionIds": [
+          "EVD-PDF-90eac526516055e9",
+          "EVD-PDF-6f160bf6c84e2d9d"
+        ],
+        "sections": [
+          {
+            "sourceSectionId": "EVD-PDF-90eac526516055e9",
+            "citationLabel": "PDF p.94 · legal instrument",
+            "excerpt": "FCA 2026/2 FOS 2026/1 Page 33 of 46 ... 7 Arrears, default and recovery (including repossessions) 7.1 Application ... Agreements where there is a guarantor etc 7.1.4 R ... (3) This rule does not apply to CONC 7.3.1G, CONC 7.4.1R, CONC 7.4.2R, CONC 7.5.1G, CONC 7.6.2AR, CONC 7.6.2BG, CONC 7.15.3G, CONC 7.15.4R, CONC 7.15.5G, or CONC 7.17 to CONC 7.19, CONC 7.20.1R or CONC 7.20.2G. ... ... 7.6 Exercise of continuous payment authority Recovery and continuous payment authorities etc. ... 7.6.2B G ..",
+            "resolved": true,
+            "resolutionNote": null
+          },
+          {
+            "sourceSectionId": "EVD-PDF-6f160bf6c84e2d9d",
+            "citationLabel": "PDF p.95 · legal instrument",
+            "excerpt": "FCA 2026/2 FOS 2026/1 Page 34 of 46 (2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement); and (b) provide the borrower with sufficient information for the borrower to understand: (i) which regulated deferred payment credit a",
+            "resolved": true,
+            "resolutionNote": null
+          }
+        ],
+        "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+        "publicationTitle": "PS26/1 — Regulating Buy Now Pay Later (Deferred Payment Credit)",
+        "publicationSourceUrl": "https://www.fca.org.uk/publication/policy/ps26-1.pdf",
+        "regulatorAcronym": "FCA",
+        "publicationHref": "#/publication/829c5472-953a-40ff-9628-947afbfe4e7a",
+        "sourceTabHref": "#/publication/829c5472-953a-40ff-9628-947afbfe4e7a/source",
+        "evidenceSupported": true,
+        "evidenceWarning": null,
+        "tenantScope": true,
+        "_connected": true
+      }
+    ],
+    "publicationSource": {
+      "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "publicationVersionId": "a12a0769-31a5-4b2a-a6e0-962a5cb70dcd",
+      "publicationTitle": "PS26/1 — Regulating Buy Now Pay Later (Deferred Payment Credit)",
+      "sourceUrl": "https://www.fca.org.uk/publication/policy/ps26-1.pdf",
+      "regulatorAcronym": "FCA",
+      "versionLabel": "v1"
+    },
+    "reviews": []
+  }
+}
