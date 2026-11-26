@@ -193,7 +193,39 @@ function makeDb({ beforeUpdate, impactInsertError } = {}) {
     };
     return b;
   }
-  return { tables: t, client: { from: query } };
+  // Mirrors public.approve_obligation_with_stage2: ONE transaction (snapshot + restore on any failure). The real
+  // database behaviour is proven by acceptance-ri-obligation-open-atomic.mjs against embedded Postgres.
+  async function rpc(fn, a) {
+    if (fn !== 'approve_obligation_with_stage2') return { data: null, error: { message: `unknown_rpc:${fn}` } };
+    const snapshot = structuredClone(t);
+    const rollback = (message) => {
+      for (const k of Object.keys(t)) delete t[k];
+      Object.assign(t, snapshot);
+      return { data: null, error: { message } };
+    };
+    beforeUpdate?.(t, 'regulatory_obligations');
+    const ob = (t.regulatory_obligations || []).find((r) => r.id === a.p_obligation_id && r.organisation_id === a.p_organisation_id);
+    if (!ob) return rollback('not_found');
+    if (ob.status !== a.p_expected_status) return rollback('stale_record');
+    Object.assign(ob, a.p_fields ?? {}, { status: 'OPEN', updated_at: new Date().toISOString() });
+    (t.workflow_events ||= []).push({
+      organisation_id: ob.organisation_id, entity_type: 'regulatory_obligation', entity_id: ob.id,
+      event_type: 'OBLIGATION_STATUS_CHANGED', from_status: a.p_expected_status, to_status: 'OPEN', actor_user_id: a.p_actor_user_id,
+    });
+    if (a.p_impact == null) {
+      t.workflow_events.push({ organisation_id: ob.organisation_id, entity_type: 'regulatory_obligation', entity_id: ob.id, event_type: 'OBLIGATION_STAGE2_INITIATION_SKIPPED', actor_user_id: a.p_actor_user_id, metadata: { reason: a.p_skip_reason } });
+      return { data: { ok: true, statusChanged: true, impactAssessmentId: null, reused: false, skipped: true, skipReason: a.p_skip_reason }, error: null };
+    }
+    const existing = (t.impact_assessments || []).find((r) => r.organisation_id === ob.organisation_id && r.metadata?.sourceRegulatoryObligationId === ob.id);
+    if (existing) return { data: { ok: true, statusChanged: true, impactAssessmentId: existing.id, reused: true, skipped: false, skipReason: null }, error: null };
+    if (a.p_impact.reuseOnly) return rollback('stage2_impact_missing');
+    if (impactInsertError) return rollback(impactInsertError.message);
+    const impact = { id: `impact_assessments-${(t.impact_assessments || []).length + 1}`, organisation_id: ob.organisation_id, status: 'DRAFT', metadata: { sourceRegulatoryObligationId: ob.id } };
+    (t.impact_assessments ||= []).push(impact);
+    t.workflow_events.push({ organisation_id: ob.organisation_id, entity_type: 'impact_assessment', entity_id: impact.id, event_type: 'IMPACT_CREATED', actor_user_id: a.p_actor_user_id });
+    return { data: { ok: true, statusChanged: true, impactAssessmentId: impact.id, reused: false, skipped: false, skipReason: null }, error: null };
+  }
+  return { tables: t, client: { from: query, rpc } };
 }
 
 const statusOf = (db, id) => db.tables.regulatory_obligations.find((r) => r.id === id).status;
@@ -317,16 +349,16 @@ function stage2Obligation(db) {
     () => review(db, { obligationId: 'obl-stage2' }),
     'new row violates row-level security policy',
   );
-  check('failed approval restores the previous status', statusOf(db, 'obl-stage2'), 'IN_REVIEW');
+  check('failed approval leaves the obligation IN_REVIEW (rolled back, never reverted after the fact)', statusOf(db, 'obl-stage2'), 'IN_REVIEW');
   check(
     'failed approval does not audit OPEN',
     eventsFor(db, 'obl-stage2').some((e) => e.to_status === 'OPEN'),
     false,
   );
   check(
-    'failed approval records stage2 failure',
+    'failed approval is recorded as a refusal with the obligation unchanged',
     db.tables.workflow_events.some(
-      (e) => e.event_type === 'OBLIGATION_STAGE2_INITIATION_FAILED' && e.entity_id === 'obl-stage2',
+      (e) => e.event_type === 'OBLIGATION_STAGE2_APPROVAL_REFUSED' && e.entity_id === 'obl-stage2' && e.metadata?.obligationUnchanged === true,
     ),
     true,
   );

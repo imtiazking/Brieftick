@@ -68,6 +68,10 @@ export const STAGING_MIGRATION_STEPS = [
     name: '20261126190000_ai_execution_run_ledger_inflight_guard',
     path: join(migrationsDir, '20261126190000_ai_execution_run_ledger_inflight_guard.sql'),
   },
+  {
+    name: '20261126200000_obligation_open_atomic_stage2',
+    path: join(migrationsDir, '20261126200000_obligation_open_atomic_stage2.sql'),
+  },
 ];
 
 /** Legacy MCP names that may exist without full DDL — do not treat as complete. */

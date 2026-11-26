@@ -1,5 +1,6 @@
 import { summarizeObligationPortfolio, UI_LABEL_OPEN_OBLIGATIONS } from './ai/obligation-portfolio.js';
 import { viewQaDashboard } from './platform/qa-dashboard.js';
+import { peekButton } from './terminal-detail-modal.js';
 import {
   getState,
   computeDashboardStats,
@@ -1306,8 +1307,8 @@ function viewObligations() {
   const rows = obls.map((o) => {
     const statement = o.title || o.statement || '';
     const snippet = statement.length > 60 ? `${statement.slice(0, 60)}…` : statement;
-    return `<tr class="ri-row-link">
-      <td><a href="#/obligation/${o.id}">${esc(o.externalKey || o.id.slice(0, 8))}</a></td>
+    return `<tr class="ri-row-link" data-ri-detail-row="obligation" data-ri-detail-id="${esc(o.id)}">
+      <td><a href="#/obligation/${o.id}">${esc(o.externalKey || o.id.slice(0, 8))}</a>${peekButton('obligation', o.id, o.externalKey || snippet)}</td>
       <td>${esc(snippet)}</td>
       <td>${o.publicationId ? `<a href="#/publication/${esc(o.publicationId)}">${esc(o.publicationTitle || o.publicationId.slice(0, 8))}</a>` : '—'}</td>
       <td>${esc(o.ownerLabel || o.owner || '—')}</td>
@@ -1320,8 +1321,8 @@ function viewObligations() {
   const uatRows = uatObls.map((o) => {
     const statement = o.title || o.statement || '';
     const snippet = statement.length > 60 ? `${statement.slice(0, 60)}…` : statement;
-    return `<tr class="ri-row-link">
-      <td><a href="#/obligation/${o.id}">${esc(o.externalKey || o.id.slice(0, 8))}</a></td>
+    return `<tr class="ri-row-link" data-ri-detail-row="obligation" data-ri-detail-id="${esc(o.id)}">
+      <td><a href="#/obligation/${o.id}">${esc(o.externalKey || o.id.slice(0, 8))}</a>${peekButton('obligation', o.id, o.externalKey || snippet)}</td>
       <td>${esc(snippet)}</td>
       <td>${o.changeId ? `<a href="#/change/${esc(o.changeId)}">${esc(String(o.changeId).slice(0, 8))}</a>` : '—'}</td>
       <td>${badge(o.dataProvenance || 'uat_authorised')}</td>
@@ -1338,7 +1339,8 @@ function viewObligations() {
             : '<p class="ri-muted">No authorised UAT obligations in this tenant.</p>'
         }</section>`
     : '';
-  return `${pageHeader('Obligations', connected ? 'Tenant obligations · connected' : 'DEMO register')}
+  return `<div class="ri-terminal" data-ri-terminal="obligations">
+    ${pageHeader('Obligations', connected ? 'Tenant obligations · connected' : 'DEMO register')}
     ${connected ? connectedCatalogueBanner(s) : ''}
     ${connected ? connectedWorkModeBanner(s) : ''}
     ${
@@ -1356,7 +1358,8 @@ function viewObligations() {
     <section class="ri-panel"><h2>${connected ? 'Operational obligations' : 'Obligations'}</h2>
     ${rows.length ? dataTable(['ID', 'Statement', 'Source', 'Owner', 'Priority', 'Effective', 'Coverage', 'Status'], rows) : emptyState(connected ? 'No operational obligations for this organisation' : 'No obligations for this organisation')}
     </section>
-    ${uatSection}`;
+    ${uatSection}
+    </div>`;
 }
 
 function viewObligation(id) {
@@ -1892,21 +1895,23 @@ function viewLibrary() {
       if (!c) {
         return `<tr data-library-row data-search="${esc(search)}"><td colspan="9" class="ri-muted">Missing display mapping for ${esc(p.id)}</td></tr>`;
       }
-      return `<tr data-library-row data-search="${esc(search)}"><td>${esc(p.regulator)}</td><td><a href="#/publication/${p.id}">${esc(p.title)}</a>${c.fixtureNote || ''}</td>
+      return `<tr data-library-row data-search="${esc(search)}" data-ri-detail-row="publication" data-ri-detail-id="${esc(p.id)}"><td>${esc(p.regulator)}</td><td><a href="#/publication/${p.id}">${esc(p.title)}</a>${c.fixtureNote || ''}${peekButton('publication', p.id, p.title)}</td>
       <td>${esc(c.reference)}</td><td>${esc(c.publicationType)}</td><td>${esc(c.topic)}</td>
       <td>${c.published}</td><td>${c.effective}</td>
       <td>${esc(c.version)}</td><td>${esc(c.status)}</td></tr>`;
     }
-    return `<tr data-library-row data-search="${esc(search)}"><td>${esc(p.regulator)}</td><td><a href="#/publication/${p.id}">${esc(p.title)}</a></td>
+    return `<tr data-library-row data-search="${esc(search)}" data-ri-detail-row="publication" data-ri-detail-id="${esc(p.id)}"><td>${esc(p.regulator)}</td><td><a href="#/publication/${p.id}">${esc(p.title)}</a>${peekButton('publication', p.id, p.title)}</td>
       <td>${esc(p.reference)}</td><td>${esc(p.publicationType)}</td><td>${esc(p.topic)}</td>
       <td>${formatDate(p.publishedDate)}</td><td>${formatDate(p.effectiveDate)}</td>
       <td>1.0</td><td>${p.workflowStatus === 'Complete' ? 'Current' : 'Changed'}</td></tr>`;
   });
-  return `${pageHeader('Regulatory Library', connected ? 'Global catalogue · connected read-only' : 'Source of truth · DEMO')}
+  return `<div class="ri-terminal" data-ri-terminal="publications">
+    ${pageHeader('Regulatory Library', connected ? 'Global catalogue · connected read-only' : 'Source of truth · DEMO')}
     ${connected ? connectedCatalogueBanner(s) : ''}
-    <input type="search" class="ri-search-full" placeholder="Search title, reference, regulator, topic…" id="library-search" aria-controls="library-table-body" />
+    <div class="ri-terminal-prompt"><input type="search" class="ri-search-full" placeholder="Search title, reference, regulator, topic…" id="library-search" aria-label="Search publications" aria-controls="library-table-body" /></div>
     <p class="ri-muted" id="library-search-count" aria-live="polite"></p>
-    ${libraryDataTable(['Regulator', 'Publication', 'Reference', 'Type', 'Topic', 'Published', 'Effective', 'Version', 'Status'], rows, connected ? 'No publications in staging catalogue' : 'No publications for this scenario')}`;
+    ${libraryDataTable(['Regulator', 'Publication', 'Reference', 'Type', 'Topic', 'Published', 'Effective', 'Version', 'Status'], rows, connected ? 'No publications in staging catalogue' : 'No publications for this scenario')}
+    </div>`;
 }
 
 function libraryDataTable(headers, rows, empty) {

@@ -70,6 +70,7 @@ import { isWithinForwardDateWindow } from './workflow-helpers.js';
 import { renderViewSafe } from './router.js';
 import { viewPersistenceRecovery } from './error-views.js';
 import { confirmDialog } from './components.js';
+import { bindTerminalDetail } from './terminal-detail-modal.js';
 import { DEMO_JOURNEYS, getActiveWalkthroughStep, startWalkthrough, stopWalkthrough, advanceWalkthrough } from './demo-journey.js';
 import { renderWalkthroughBar } from './demo-views.js';
 import {
@@ -887,6 +888,7 @@ function applicabilityErrorMessage(code) {
 }
 
 function bindViewHandlers() {
+  bindTerminalDetail();
   const route = getRoute();
   hydrateConnectedTriage(document);
   hydrateConnectedMyTasks(document);

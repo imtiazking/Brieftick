@@ -29,7 +29,11 @@ import {
 import { summarizeProductionObligationRows } from '@/lib/ri/lab-compat/dashboard-parity.mjs';
 import { assertActiveOrganisationAssignee } from '@/lib/ri/organisation-assignee';
 import { getComplianceLifecycleForObligation } from '@/lib/ri/services/compliance-lifecycle';
-import { ensureImpactAssessmentFromApprovedObligation } from '@/lib/ri/services/obligation-impact-downstream';
+import {
+  commitObligationApprovalWithStage2,
+  ensureImpactAssessmentFromApprovedObligation,
+  prepareStage2ImpactDraft,
+} from '@/lib/ri/services/obligation-impact-downstream';
 
 export function summarizeObligationListRows(rows: { status: string }[]) {
   return summarizeProductionObligationRows(rows);
@@ -303,6 +307,17 @@ async function assertAiObligationTransition(
   }
 }
 
+async function readObligationRow(supabase: SupabaseClient, organisationId: string, obligationId: string) {
+  const { data, error } = await supabase
+    .from('regulatory_obligations')
+    .select()
+    .eq('id', obligationId)
+    .eq('organisation_id', organisationId)
+    .single();
+  if (error || !data) throw new Error(error?.message ?? 'not_found');
+  return data;
+}
+
 export async function updateObligation(
   supabase: SupabaseClient,
   params: {
@@ -391,56 +406,108 @@ export async function updateObligation(
     update.status = next;
   }
 
-  let updateQuery = supabase
-    .from('regulatory_obligations')
-    .update(update)
-    .eq('id', params.obligationId)
-    .eq('organisation_id', params.organisationId);
-  if ('status' in update) updateQuery = updateQuery.eq('status', existing.status);
-  const { data, error } = await updateQuery.select().single();
-  if (error) {
-    if (error.code === 'PGRST116' && ('status' in update || params.reviewDecisionOnly)) {
-      throw new Error('stale_record');
+  const becomingOpen = update.status === 'OPEN' && existing.status !== 'OPEN';
+  let data: Awaited<ReturnType<typeof readObligationRow>>;
+
+  if (becomingOpen) {
+    // Approval into OPEN is atomic: the Stage 2 draft is computed first (no writes), then the status change, the
+    // field edits, the impact assessment and every audit event commit in ONE database transaction. A failure at
+    // any point leaves the obligation exactly as it was; it can never be OPEN without its Stage 2 linkage.
+    const { status: _status, ...fieldEdits } = update;
+    void _status;
+    const draft = await prepareStage2ImpactDraft(supabase, {
+      organisationId: params.organisationId,
+      obligationId: params.obligationId,
+      actorUserId: params.userId,
+      expectedStatus: existing.status,
+      overrides: fieldEdits,
+    });
+    if (draft.kind === 'skip' && draft.reason === 'obligation_not_approved') throw new Error('stale_record');
+    if (draft.kind === 'unavailable') {
+      // Stage 2 applies but cannot be drafted now. Refuse the approval and leave the obligation untouched; the
+      // refusal is audited (append-only) and the same request can simply be repeated once Stage 2 is available.
+      await recordWorkflowEvent(supabase, {
+        organisationId: params.organisationId,
+        entityType: 'regulatory_obligation',
+        entityId: params.obligationId,
+        eventType: 'OBLIGATION_STAGE2_APPROVAL_REFUSED',
+        actorUserId: params.userId,
+        fromStatus: existing.status,
+        toStatus: existing.status,
+        metadata: { reason: draft.reason.slice(0, 500), obligationUnchanged: true },
+      }).catch(() => undefined);
+      throw new RiConflictError('stage2_unavailable');
     }
-    const dbCode = error.message.split(' ')[0];
-    if (/^(classified_obligation_|obligation_classification_immutable)/.test(dbCode)) throw new RiConflictError(dbCode);
-    throw new Error(error.message);
-  }
-  const becameOpen = update.status === 'OPEN' && existing.status !== 'OPEN';
-  if (update.status === 'OPEN') {
     try {
-      await ensureImpactAssessmentFromApprovedObligation(supabase, {
+      await commitObligationApprovalWithStage2(supabase, {
         organisationId: params.organisationId,
         obligationId: params.obligationId,
+        expectedStatus: existing.status,
         actorUserId: params.userId,
-        role: params.role ?? null,
+        draft,
+        fields: fieldEdits,
+        expectedUpdatedAt: params.expectedUpdatedAt ?? null,
       });
     } catch (err) {
       const reason = err instanceof Error ? err.message : String(err);
-      if (becameOpen) {
-        const { error: revertError } = await supabase
-          .from('regulatory_obligations')
-          .update({ status: existing.status })
-          .eq('id', params.obligationId)
-          .eq('organisation_id', params.organisationId)
-          .eq('status', 'OPEN');
+      // Caller-correctable refusals (stale, forbidden, SoD, classification guards) are returned as-is. Anything else
+      // is an unexpected fault: the transaction rolled back, so the obligation is unchanged, and the fault is audited
+      // (append-only, best effort) so an operator can see it and the same request can be repeated.
+      if (!/^(stale_record|insufficient_role|actor_mismatch|segregation_of_duties|not_found|unauthenticated|classified_obligation_|obligation_classification_immutable)/.test(reason)) {
         await recordWorkflowEvent(supabase, {
           organisationId: params.organisationId,
           entityType: 'regulatory_obligation',
           entityId: params.obligationId,
-          eventType: 'OBLIGATION_STAGE2_INITIATION_FAILED',
+          eventType: 'OBLIGATION_STAGE2_APPROVAL_REFUSED',
           actorUserId: params.userId,
-          fromStatus: 'OPEN',
-          toStatus: revertError ? 'OPEN' : existing.status,
-          metadata: {
-            reverted: !revertError,
-            reason: reason.slice(0, 500),
-          },
+          fromStatus: existing.status,
+          toStatus: existing.status,
+          metadata: { reason: reason.slice(0, 500), obligationUnchanged: true, stage: 'atomic_commit' },
         }).catch(() => undefined);
-        if (revertError) {
-          throw new Error(`stage2_initiation_failed_status_not_reverted:${revertError.message}`);
+      }
+      throw err;
+    }
+    data = await readObligationRow(supabase, params.organisationId, params.obligationId);
+  } else {
+    let updateQuery = supabase
+      .from('regulatory_obligations')
+      .update(update)
+      .eq('id', params.obligationId)
+      .eq('organisation_id', params.organisationId);
+    if ('status' in update) updateQuery = updateQuery.eq('status', existing.status);
+    const { data: updated, error } = await updateQuery.select().single();
+    if (error) {
+      if (error.code === 'PGRST116' && ('status' in update || params.reviewDecisionOnly)) {
+        throw new Error('stale_record');
+      }
+      const dbCode = error.message.split(' ')[0];
+      if (/^(classified_obligation_|obligation_classification_immutable)/.test(dbCode)) throw new RiConflictError(dbCode);
+      throw new Error(error.message);
+    }
+    data = updated;
+    if (update.status === 'OPEN') {
+      // Already OPEN: idempotent recovery. Any outcome other than a linked impact is recorded, never silent.
+      try {
+        const stage2 = await ensureImpactAssessmentFromApprovedObligation(supabase, {
+          organisationId: params.organisationId,
+          obligationId: params.obligationId,
+          actorUserId: params.userId,
+          role: params.role ?? null,
+        });
+        if (stage2.skipped) {
+          await recordWorkflowEvent(supabase, {
+            organisationId: params.organisationId,
+            entityType: 'regulatory_obligation',
+            entityId: params.obligationId,
+            eventType: 'OBLIGATION_STAGE2_INITIATION_SKIPPED',
+            actorUserId: params.userId,
+            fromStatus: 'OPEN',
+            toStatus: 'OPEN',
+            metadata: { reason: stage2.reason.slice(0, 500), alreadyOpen: true },
+          }).catch(() => undefined);
         }
-      } else {
+      } catch (err) {
+        const reason = err instanceof Error ? err.message : String(err);
         await recordWorkflowEvent(supabase, {
           organisationId: params.organisationId,
           entityType: 'regulatory_obligation',
@@ -449,22 +516,22 @@ export async function updateObligation(
           actorUserId: params.userId,
           fromStatus: 'OPEN',
           toStatus: 'OPEN',
-          metadata: { reverted: false, reason: reason.slice(0, 500), alreadyOpen: true },
+          metadata: { reason: reason.slice(0, 500), alreadyOpen: true },
         }).catch(() => undefined);
+        throw err;
       }
-      throw err;
     }
-  }
-  if ('status' in update && update.status !== existing.status) {
-    await recordWorkflowEvent(supabase, {
-      organisationId: params.organisationId,
-      entityType: 'regulatory_obligation',
-      entityId: params.obligationId,
-      eventType: 'OBLIGATION_STATUS_CHANGED',
-      actorUserId: params.userId,
-      fromStatus: existing.status,
-      toStatus: update.status as string,
-    });
+    if ('status' in update && update.status !== existing.status) {
+      await recordWorkflowEvent(supabase, {
+        organisationId: params.organisationId,
+        entityType: 'regulatory_obligation',
+        entityId: params.obligationId,
+        eventType: 'OBLIGATION_STATUS_CHANGED',
+        actorUserId: params.userId,
+        fromStatus: existing.status,
+        toStatus: update.status as string,
+      });
+    }
   }
   if (
     'owner_user_id' in update &&
