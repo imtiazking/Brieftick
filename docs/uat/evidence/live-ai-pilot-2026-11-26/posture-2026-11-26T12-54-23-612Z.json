@@ -1,0 +1,44 @@
+{
+  "phase": "posture",
+  "at": "2026-11-26T12:54:23.612Z",
+  "origin": "https://staging-app.forgeniq.com",
+  "role": "COMPLIANCE_MANAGER",
+  "http": 200,
+  "aiRuntimeState": "HEALTHY",
+  "posture": {
+    "executionEnabled": false,
+    "providerMode": "ANTHROPIC",
+    "stageModes": {
+      "stage2": "fixture",
+      "stage3": "fixture",
+      "stage4": "fixture",
+      "stage5": "fixture"
+    },
+    "anthropicKeyPresent": true,
+    "model": "claude-sonnet-5-5",
+    "modelPriced": true,
+    "effort": "default",
+    "thinking": "default",
+    "timeoutMs": 180000,
+    "budgetUsd": 0.75,
+    "maxRequests": 8,
+    "maxOutputTokens": null,
+    "spendScope": "forgeniq-lab-anthropic",
+    "ledgerRoute": "supabase_rpc",
+    "authorisedRunReferences": 1
+  },
+  "checks": {
+    "executionEnabled": false,
+    "providerModeAnthropic": true,
+    "stage2to5Live": false,
+    "anthropicKeyPresent": true,
+    "modelIsSonnet55": true,
+    "budgetIs075": true,
+    "maxRequestsIs8": true,
+    "scopeIsPilotLedger": true,
+    "ledgerRouteConfigured": true,
+    "exactlyOneRunReference": true,
+    "timeoutAtLeast120s": true
+  },
+  "pass": false
+}

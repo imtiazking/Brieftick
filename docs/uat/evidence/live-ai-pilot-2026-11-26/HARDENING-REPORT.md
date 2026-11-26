@@ -67,3 +67,10 @@ See section 2. Saved-output evaluation (deterministic, no AI): 4 correct, 4 inco
 ## Known limitation
 
 Raw provider output for stages 3–5 was not persisted during the pilot, so any extra control proposals the model returned cannot be proven. Raw output is now retained for live runs.
+
+## 11-14. CI, staging, readiness
+
+- GitHub Actions: run 32 (a9c4f85) failed on the embedded-Postgres readiness race (fixed in harness.mjs). Run 33 (56ae0ff) failed only because the evidence manifest keyed one file with a Windows path separator (fixed: forward-slash keys, line-ending-normalised hashes). **Run 34 (0b692ab): success**, 30/30 offline CI checks.
+- Staging: candidate-first deploy of 0b692ab to forgeniq-platform-staging, deployment dpl_mDJb3JUPERBguXau7Uvoh65uBvnM; candidate auth smoke PASS, alias promoted, post-promotion auth PASS. Previous official deployment dpl_xVuJVTVj6gfUQKDjBeTkhbV8onHU retained (no deployment deleted). Not deployed to platform, brieftick or www.forgeniq.com.
+- Paid AI posture after deploy (read-only readiness check, posture-2026-11-26T12-54-23-612Z.json): executionEnabled=false, stages 2-5 fixture. No paid call made in this tranche.
+- Readiness for a second live evaluation: engineering gates pass; recommended only after expert review of the outstanding questions above and explicit written authorisation of budget, requests and run reference. Not authorised by this report.
