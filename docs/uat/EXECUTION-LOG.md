@@ -997,3 +997,17 @@ pm run qa (ci) **29/29 PASS** including RI-SONNET-55-COMPAT, RI-SHARED-SPEND, RI
 | Hosted script | `S1-REVIEWER-APPROVE` was a stale expectation (independent REVIEWER may approve classified obligations by policy). Replaced by `S1-REVIEWER-NO-CONTENT-EDIT` (REVIEWER cannot smuggle priority/citation into an approval). Hard-coded deployment id removed. |
 | New | `scripts/uat/hosted-design-lab-browser-abc.mjs`: real-browser A/B/C UAT; PASS only from DOM observations. |
 | Commits | aaa1b0a, 1d93a65 |
+
+## 2026-11-26 23:00 - Phase 10 calendar, acceptance-sweep repair, consolidated staging deploy, hosted A/B/C UAT, readiness evidence set
+
+| Item | Outcome |
+|---|---|
+| Phase 10 | `GET /api/ri-lab/calendar` (`ri:read`, RLS-scoped tenant listers, windows 30/90/180/365, default 90) and a connected Design Lab calendar view replaced the Unavailable placeholder. `RI-LAB-CALENDAR` 41 checks, mutation-verified (2 of 4 mutants killed; 2 equivalent because the parity builder already titles and sorts). Staging has no operational dated records, so the hosted view renders its empty state; the `scope=all` API check returns 9 `uat_authorised` events. |
+| Acceptance sweep | 186 suites, run without provider or privileged credentials: 174 passed, 11 failed, 1 timed out. Nine repaired (stale against spend guard x2, Stage C policy cap x2, missing fixture, never-committed `83f1` runner, platform-foundation allow-list, triage regex, master suites via allow-list). BLOCKED honestly, not run: `pdf-grounded-uc-005` (admin credentials) and `stage-a-e2e-persistence` (paid provider). Five previously ungated suites added to the CI catalogue (60 entries, 45 CI). |
+| Deploy | One consolidated staging deploy: `dpl_71M4sVFpmG4WtXiJ7uBBkUS3wnqx` from `782d55c`, candidate `candidate-staging.forgeniq.com` then promoted to `staging-app.forgeniq.com`. Rollback target `dpl_GVwLPEAadswJe8pSxreWZJBpjapY` retained. QA promote gate 52/52, post-deploy 1/1. GitHub Actions run #38 success for `782d55c`. |
+| Hosted UAT | Lifecycle API 38 checks, 0 failed, `SEC-CROSS-TENANT` BLOCKED (single shared organisation). Browser A/B/C 34/34 (33 browser, 1 labelled `hosted-api`), 0 console errors, 0 page errors. Four consecutive clean runs after the script hydration fixes. |
+| Hosted UAT findings | Script defects: edit before hydration, same-hash navigation not a reload, link counted before request resolved. Product: none new. **Unexplained:** one first-run stuck "Loading workflow events" state on the assurance audit history that did not recur (DEF-011, diagnostics added). |
+| Posture and ledger | `executionEnabled=false` verified on the hosted readiness endpoint. Ledger unchanged from the pre-migration snapshot: 10 SETTLED, `$0.224872`, 0 recoveries, 0 ledger events. No paid AI run in this programme. Production hosts untouched. |
+| Process finding | Acceptance suites rewrite committed `docs/eval/*` evidence; restored from git after each sweep and recorded as OPEN-008. Not committed. |
+| Decisions | The 18 disconnected obligations were not bulk-backfilled (would fabricate unreviewed impacts). Hosted cross-tenant denial left BLOCKED rather than creating a second tenant (new access needs approval). Overall readiness not claimed; capability matrix has 0 PRODUCTION_READY. |
+| Evidence | `docs/uat/evidence/production-readiness/` (12 files), `browser-abc-2026-11-26/`, `compliance-lifecycle-2026-11-26/`. Commits `782d55c`, `ee7ee42`. |

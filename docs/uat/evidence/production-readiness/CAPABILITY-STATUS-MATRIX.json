@@ -1,0 +1,186 @@
+{
+  "generatedAt": "2026-11-26T23:00:00Z",
+  "gitHead": "ee7ee42",
+  "stagingDeployment": "dpl_71M4sVFpmG4WtXiJ7uBBkUS3wnqx (built from 782d55c; hosted UAT run against it)",
+  "statusVocabulary": ["NOT_IMPLEMENTED", "PARTIAL", "IMPLEMENTED_LOCAL_TESTED", "STAGING_VERIFIED", "BLOCKED", "PRODUCTION_READY"],
+  "rule": "PRODUCTION_READY is not assigned to any capability. STAGING_VERIFIED requires hosted evidence from this programme. Nothing is marked complete on API calls alone where a browser result is required.",
+  "summary": {
+    "PRODUCTION_READY": 0,
+    "STAGING_VERIFIED": 7,
+    "IMPLEMENTED_LOCAL_TESTED": 5,
+    "PARTIAL": 6,
+    "NOT_IMPLEMENTED": 1,
+    "BLOCKED": 2,
+    "total": 21
+  },
+  "capabilities": [
+    {
+      "phase": 1,
+      "id": "BASELINE-REGISTER",
+      "name": "Baseline and capability register",
+      "status": "IMPLEMENTED_LOCAL_TESTED",
+      "evidence": ["CAPABILITY-STATUS-MATRIX.json", "raw/ACCEPTANCE-SWEEP.json", "docs/uat/qa/run-2026-11-26T21-58-20-144Z.json"],
+      "gaps": []
+    },
+    {
+      "phase": 2,
+      "id": "AI-EXECUTION-LEDGER",
+      "name": "Run-reference-scoped AI execution ledger",
+      "status": "IMPLEMENTED_LOCAL_TESTED",
+      "evidence": ["PRE-MIGRATION-LEDGER-SNAPSHOT.json", "AI-EXECUTION-GOVERNANCE-REPORT.md", "QA RI-RUN-SCOPED-LEDGER / RI-SHARED-SPEND / RI-SONNET-55-COMPAT (ci)"],
+      "gaps": ["ai_execution_ledger_events has 0 rows on staging: no run has occurred since the migration, so the run-scoped path has not been exercised hosted (it needs a paid call, which is not authorised)."]
+    },
+    {
+      "phase": 3,
+      "id": "WORKFLOW-RELIABILITY",
+      "name": "Workflow reliability and recovery",
+      "status": "PARTIAL",
+      "evidence": ["atomic RPC approve_obligation_with_stage2 (hosted-verified)", "idempotent closure S5-IDEMPOTENT-CLOSE (hosted)", "RI-AI-RUN-FINALISATION (ci, repaired)"],
+      "gaps": ["hosted_scheduler component reports DISABLED; no Vercel cron configured", "no automated stuck-run sweeper proven on staging"]
+    },
+    {
+      "phase": 4,
+      "id": "HORIZON-CONNECTORS",
+      "name": "Horizon scanning and regulator connectors",
+      "status": "PARTIAL",
+      "evidence": ["REGULATOR-CONNECTOR-STATUS.json"],
+      "gaps": ["36 regulators / 41 sources / 40 connectors, but 0 current, 38 stale (>72h), 1 failing, 1 disabled, 1 with no connector", "no scheduled ingestion: vercelCronConfigured=false, 0 polling-enabled sources", "no live regulator fetch performed in this programme (no authorisation for external fetch volume)"]
+    },
+    {
+      "phase": 5,
+      "id": "PUBLICATION-CLASSIFICATION",
+      "name": "Publication classification and regulatory accuracy",
+      "status": "PARTIAL",
+      "evidence": ["classification safeguards (ci)", "REGULATORY-ACCURACY-REPORT.md"],
+      "gaps": ["only REG-FCA has an approved classification policy", "accuracy NOT_ASSESSED: no regulatory-expert review has taken place"]
+    },
+    {
+      "phase": 6,
+      "id": "END-TO-END-TRACEABILITY",
+      "name": "Traceability from horizon scan to audit trail",
+      "status": "PARTIAL",
+      "evidence": ["WORKFLOW-TRACEABILITY-REPORT.md", "hosted lifecycle 38/38 and browser 34/34"],
+      "gaps": ["the segment from scheduled horizon scan to publication is not live (Phase 4)", "18 OPEN obligations on staging are DISCONNECTED from a lifecycle (11 synthetic UAT, 7 legacy manual)"]
+    },
+    {
+      "phase": 7,
+      "id": "IMPACT-ASSESSMENT",
+      "name": "Impact assessment (impact-materiality-policy-v1 preserved)",
+      "status": "STAGING_VERIFIED",
+      "evidence": ["S2-AUTO-DRAFT / S2-SUBMIT / S2-APPROVE (hosted)", "B-UI-ATOMIC-STAGE2-HANDOFF and C-NAV-IMPACT (browser)", "QA RI-FCA-EVAL-002-PREP (ci)"],
+      "gaps": ["materiality remains UNASSESSED without organisation evidence by policy; regulatory accuracy NOT_ASSESSED"]
+    },
+    {
+      "phase": 8,
+      "id": "RISK-CONTROLS-INTEGRATION",
+      "name": "Risk & Controls integration",
+      "status": "STAGING_VERIFIED",
+      "evidence": ["S3 / S4 stages (hosted)", "C-NAV-RISK, C-NAV-CONTROL, C-REGISTER-RISKS, C-REGISTER-CONTROLS (browser)", "RI-GOV-RISK-SOD (ci)"],
+      "gaps": ["a REVIEWER invoking the approval RPC directly can author DRAFT impact content (audited, attributed)"]
+    },
+    {
+      "phase": 9,
+      "id": "ASSURANCE-EVIDENCE-REMEDIATION",
+      "name": "Assurance, evidence and remediation",
+      "status": "STAGING_VERIFIED",
+      "evidence": ["S5 stages incl. fail test, remediation, retest, finding closure, independent closure (hosted)", "C-ASSURANCE-WORKFLOW-STATE, C-ASSURANCE-AUDIT-HISTORY, C-ASSURANCE-LINKS-TO-CONTROL (browser)", "RI-EVIDENCE-UPLOAD-SAFETY 23 runtime checks (ci)"],
+      "gaps": ["evidence file upload is exercised hosted by API (S5-EVIDENCE), not through a browser file chooser"]
+    },
+    {
+      "phase": 10,
+      "id": "CALENDAR-TASKS-NOTIFICATIONS",
+      "name": "Regulatory calendar, tasks and notifications",
+      "status": "PARTIAL",
+      "evidence": ["GET /api/ri-lab/calendar + Design Lab connected view (browser: C-CALENDAR-RENDERS-FROM-TENANT-API, C-CALENDAR-WINDOW)", "RI-LAB-CALENDAR 41 checks (ci)", "C-CALENDAR-API-SCOPE-ALL (hosted-api): 9 dated UAT tenant events with provenance labels"],
+      "gaps": ["the operational calendar is empty on staging because the 12 dated tenant records are non-operational and no publication is dated in the next 12 months, so event rendering in the browser is not demonstrated with real rows", "tenant_notifications component reports DISABLED; no notification delivery evidence"]
+    },
+    {
+      "phase": 11,
+      "id": "ASK-RI-SEARCH",
+      "name": "Ask RI and search",
+      "status": "IMPLEMENTED_LOCAL_TESTED",
+      "evidence": ["RI-ASK-RI-PIPELINE-STAGE-C (ci, newly gated)", "acceptance-phase-8c-step-80d-ask-ri-production"],
+      "gaps": ["not exercised in a browser on staging in this programme", "answers are capped at PARTIAL_ANSWER while regulatory human review is pending (by Stage C policy)"]
+    },
+    {
+      "phase": 12,
+      "id": "DESIGN-LAB-FRONTEND",
+      "name": "Design Lab terminal UI (Publications, Obligations, modals)",
+      "status": "STAGING_VERIFIED",
+      "evidence": ["DESIGN-LAB-VERIFICATION-REPORT.md", "A-PUBLICATIONS-THEME/MODAL, A-OBLIGATIONS-THEME/MODAL (browser)", "design-lab/ screenshots"],
+      "gaps": ["verified at desktop width for both registers; mobile width evidenced for the Publications modal only"]
+    },
+    {
+      "phase": 13,
+      "id": "GOVERNANCE-MAKER-CHECKER",
+      "name": "Governance and maker-checker",
+      "status": "STAGING_VERIFIED",
+      "evidence": ["S1/S2/S3/S4-SELF-APPROVE refused, S1-REVIEWER-NO-CONTENT-EDIT (hosted)", "A-UI-SELF-APPROVAL-REFUSED (browser, persisted-state confirmed)"],
+      "gaps": []
+    },
+    {
+      "phase": 14,
+      "id": "MULTI-TENANT-SECURITY",
+      "name": "Multi-tenant security",
+      "status": "BLOCKED",
+      "evidence": ["RI-ROLE-AWARE-RLS-LOCAL-DB (real Postgres RLS, two organisations, non-superuser roles)", "RI-LAB-SCOPE-REGISTERS cross-tenant checks (ci)"],
+      "gaps": ["SEC-CROSS-TENANT is BLOCKED on hosted: personas A, B and C all belong to one organisation, so cross-tenant denial cannot be demonstrated without a second tenant and new user access (requires approval)"]
+    },
+    {
+      "phase": 15,
+      "id": "APPLICATION-AI-SECURITY",
+      "name": "Application and AI security",
+      "status": "IMPLEMENTED_LOCAL_TESTED",
+      "evidence": ["SECURITY-AND-TENANT-ISOLATION-REPORT.md", "spend guard fail-closed (RI-ANTHROPIC-SPEND-GUARD-PROVIDER)", "secret scan in platform-foundation", "QA security gates 3/3 in promote run"],
+      "gaps": ["no independent penetration test", "no hosted WAF/rate-limit evidence gathered in this programme"]
+    },
+    {
+      "phase": 16,
+      "id": "REPORTING",
+      "name": "Reporting",
+      "status": "PARTIAL",
+      "evidence": ["connected Reports view (route integrity)", "workflow/audit history panels (browser)"],
+      "gaps": ["report exports, scheduled reports and board-pack content were not verified in this programme"]
+    },
+    {
+      "phase": 17,
+      "id": "INFRASTRUCTURE-OPERATIONS",
+      "name": "Infrastructure and operations",
+      "status": "IMPLEMENTED_LOCAL_TESTED",
+      "evidence": ["OPERATIONAL-READINESS-REPORT.md", "GitHub Actions #38 success (782d55c)", "candidate-first deploy + promote + rollback target retained"],
+      "gaps": ["no scheduler, monitoring/alerting or backup-restore drill evidence", "Vercel CPU/storage not re-measured"]
+    },
+    {
+      "phase": 18,
+      "id": "ONBOARDING-COMMERCIAL",
+      "name": "Onboarding and commercial readiness",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": [],
+      "gaps": ["no billing or self-serve onboarding routes exist; live billing must not be activated under this programme"]
+    },
+    {
+      "phase": 19,
+      "id": "E2E-BROWSER-UAT",
+      "name": "End-to-end browser UAT on staging as Users A, B and C",
+      "status": "STAGING_VERIFIED",
+      "evidence": ["UAT-EXECUTION-REPORT.md", "docs/uat/evidence/browser-abc-2026-11-26/RESULT.json (34/34)", "docs/uat/evidence/compliance-lifecycle-2026-11-26/RESULT.json (38/38, 1 BLOCKED)"],
+      "gaps": ["synthetic records only; no business UAT sign-off (businessUatApproved=false)"]
+    },
+    {
+      "phase": 20,
+      "id": "REGRESSION-RELEASE-CANDIDATE",
+      "name": "Regression and release candidate (staging only)",
+      "status": "STAGING_VERIFIED",
+      "evidence": ["npm run qa promote gate 52/52", "post-deploy QA 1/1", "GitHub Actions #38 success", "dpl_71M4sVFpmG4WtXiJ7uBBkUS3wnqx candidate-first then promoted"],
+      "gaps": []
+    },
+    {
+      "phase": 21,
+      "id": "PRODUCTION-READINESS-GATES",
+      "name": "Production readiness gates",
+      "status": "BLOCKED",
+      "evidence": ["GO-LIVE-CHECKLIST.md"],
+      "gaps": ["gates requiring paid AI, a second tenant, regulatory-expert review, live feeds and production authorisation are BLOCKED with exact requirements in GO-LIVE-CHECKLIST.md"]
+    }
+  ]
+}
