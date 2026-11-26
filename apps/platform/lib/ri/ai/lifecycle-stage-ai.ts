@@ -174,10 +174,13 @@ export async function runLifecycleStageAnalysis(params: {
   }
 
   const mode = resolveAiProviderMode();
-  const provider = params.providerOverride || getAiProvider(mode);
+  const provider = (params.providerOverride || getAiProvider(mode)) as {
+    id: string;
+    execute: (request: Record<string, unknown>) => Promise<Record<string, unknown>>;
+  };
   const model = params.providerOverride ? 'mock-live-provider' : resolveModelForProviderMode(mode);
-  const result = await provider.execute(request);
-  if (!result.ok) {
+  const result = await provider.execute(request as unknown as Record<string, unknown>);
+  if (result.ok !== true) {
     return {
       ok: false,
       failClosed: true,
@@ -213,7 +216,10 @@ export async function runLifecycleStageAnalysis(params: {
     };
   }
 
-  const spend = result.spendAudit && typeof result.spendAudit === 'object' ? (result.spendAudit as Record<string, unknown>) : null;
+  const spend =
+    result.spendAudit && typeof result.spendAudit === 'object'
+      ? (result.spendAudit as Record<string, unknown>)
+      : null;
   return {
     ok: true,
     executionMode: 'live',
