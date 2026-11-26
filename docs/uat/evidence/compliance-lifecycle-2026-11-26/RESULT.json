@@ -1,21 +1,21 @@
 {
-  "run": "UAT-LIFECYCLE-20261126-mwy1p10f",
-  "deployment": "dpl_GVwLPEAadswJe8pSxreWZJBpjapY",
+  "run": "UAT-LIFECYCLE-20261126-mwy4bi14",
+  "deployment": "dpl_71M4sVFpmG4WtXiJ7uBBkUS3wnqx",
   "ids": {
-    "run": "UAT-LIFECYCLE-20261126-mwy1p10f",
+    "run": "UAT-LIFECYCLE-20261126-mwy4bi14",
     "origin": "https://staging-app.forgeniq.com",
     "changeId": "cb1e415a-2605-4c46-a0d8-3ab17de4dab7",
     "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
-    "obligationId": "ae715f54-439c-4419-8828-002de242f9a4",
+    "obligationId": "313e86bd-d705-420b-bbf6-78b477baa5fa",
     "obligationStatus": "OPEN",
-    "impactId": "2c2a8b3b-aeb0-4d47-bc36-c3b35f7288ef",
-    "riskId": "428fd306-07be-4833-af57-250b586f0c96",
-    "controlId": "47aab175-5e1b-4e7c-bad6-b502f27ea147",
-    "assuranceId": "2ff59648-22c2-49c1-b782-b2885d06081c",
-    "evidenceId": "0e79569a-62ab-43ab-af0c-05555a3b48ed",
-    "wrongEvidenceId": "0abbcb6d-ce35-4bb1-a79c-98c641e05a7a",
-    "remediationActionId": "bc11bac9-0de0-4b2c-8176-a8bef55c24b3",
-    "findingId": "1d563cac-7bc9-4079-b662-3bffedd527aa",
+    "impactId": "cff8e9f5-b895-43c3-b79d-ea165a9fd7a4",
+    "riskId": "aa262151-13bb-45e2-a816-0502940217c8",
+    "controlId": "4388760d-b74a-4bf2-8d8d-90dff08a28ce",
+    "assuranceId": "93e159e9-24c4-43f2-b6f2-4953f832705a",
+    "evidenceId": "debb4027-9072-4b7a-b054-d0413ec8c809",
+    "wrongEvidenceId": "27126975-88d4-4f30-9d51-dddf8caaaacc",
+    "remediationActionId": "1bed7756-44ee-46cc-b64e-350747abdc31",
+    "findingId": "9a0ba0e9-51f8-464a-98ef-88753f844ab5",
     "obligationEvents": [
       "COMPLIANCE_LIFECYCLE_CLOSED",
       "RISK_LINKED",
@@ -86,7 +86,7 @@
       "layer": "hosted-api",
       "status": "PASS",
       "detail": {
-        "obligationId": "ae715f54-439c-4419-8828-002de242f9a4",
+        "obligationId": "313e86bd-d705-420b-bbf6-78b477baa5fa",
         "status": "Draft"
       }
     },
@@ -131,9 +131,9 @@
       "layer": "hosted-api",
       "status": "PASS",
       "detail": {
-        "impactId": "2c2a8b3b-aeb0-4d47-bc36-c3b35f7288ef",
+        "impactId": "cff8e9f5-b895-43c3-b79d-ea165a9fd7a4",
         "impact": {
-          "id": "2c2a8b3b-aeb0-4d47-bc36-c3b35f7288ef",
+          "id": "cff8e9f5-b895-43c3-b79d-ea165a9fd7a4",
           "status": "DRAFT",
           "materiality": "UNASSESSED",
           "metadata": {
@@ -141,7 +141,7 @@
               "model": "fixture-ri",
               "citations": [
                 {
-                  "text": "Fixture claim 1 grounded in UAT-LIFECYCLE-20261126-mwy1p10f synthetic citation",
+                  "text": "Fixture claim 1 grounded in UAT-LIFECYCLE-20261126-mwy4bi14 synthetic citation",
                   "citation": null,
                   "sourceQuotation": null,
                   "sourceSectionIds": [
@@ -175,7 +175,7 @@
               ],
               "executionMode": "fixture",
               "aiEvidenceClaims": [
-                "1. Fixture claim 1 grounded in UAT-LIFECYCLE-20261126-mwy1p10f synthetic citation [sections: OBL-1]",
+                "1. Fixture claim 1 grounded in UAT-LIFECYCLE-20261126-mwy4bi14 synthetic citation [sections: OBL-1]",
                 "2. Fixture claim 2 grounded in section [sections: OBL-1]"
               ],
               "assessmentOrigin": "AI_DRAFT",
@@ -236,7 +236,7 @@
             "regulatoryEvidence": {
               "pack": {
                 "source": {
-                  "legalBasis": "UAT-LIFECYCLE-20261126-mwy1p10f synthetic legal basis for automated UAT only",
+                  "legalBasis": "UAT-LIFECYCLE-20261126-mwy4bi14 synthetic legal basis for automated UAT only",
                   "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
                   "publicationType": "policy_statement_with_instrument",
                   "extractionRevisionId": null
@@ -262,13 +262,13 @@
                   "verified": false,
                   "coversLimbs": null,
                   "verificationId": null,
-                  "citationLocation": "UAT-LIFECYCLE-20261126-mwy1p10f synthetic citation"
+                  "citationLocation": "UAT-LIFECYCLE-20261126-mwy4bi14 synthetic citation"
                 },
                 "assumptions": [
                   "Organisational systems, controls, control-effectiveness evidence and incident data are not supplied; none are assumed.",
                   "Recommendations are draft proposals for human review and are not regulatory advice."
                 ],
-                "obligationId": "ae715f54-439c-4419-8828-002de242f9a4",
+                "obligationId": "313e86bd-d705-420b-bbf6-78b477baa5fa",
                 "uncertainties": [
                   "The obligation quotation has no recorded human verification against the PDF page.",
                   "Commencement date is not verified against the instrument; no date is asserted."
@@ -279,9 +279,9 @@
               "citationValidation": null
             },
             "labProvenanceLocked": true,
-            "labProvenanceRecordedAt": "2026-11-26T21:09:38.428Z",
+            "labProvenanceRecordedAt": "2026-11-26T22:23:06.022Z",
             "parentRegulatoryChangeId": "cb1e415a-2605-4c46-a0d8-3ab17de4dab7",
-            "sourceRegulatoryObligationId": "ae715f54-439c-4419-8828-002de242f9a4",
+            "sourceRegulatoryObligationId": "313e86bd-d705-420b-bbf6-78b477baa5fa",
             "labProvenanceRecordedByUserId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
           }
         }
@@ -316,7 +316,7 @@
       "layer": "hosted-api",
       "status": "PASS",
       "detail": {
-        "riskId": "428fd306-07be-4833-af57-250b586f0c96"
+        "riskId": "aa262151-13bb-45e2-a816-0502940217c8"
       }
     },
     {
@@ -348,7 +348,7 @@
       "layer": "hosted-api",
       "status": "PASS",
       "detail": {
-        "controlId": "47aab175-5e1b-4e7c-bad6-b502f27ea147"
+        "controlId": "4388760d-b74a-4bf2-8d8d-90dff08a28ce"
       }
     },
     {
@@ -380,7 +380,7 @@
       "layer": "hosted-api",
       "status": "PASS",
       "detail": {
-        "assuranceId": "2ff59648-22c2-49c1-b782-b2885d06081c",
+        "assuranceId": "93e159e9-24c4-43f2-b6f2-4953f832705a",
         "http": 200
       }
     },

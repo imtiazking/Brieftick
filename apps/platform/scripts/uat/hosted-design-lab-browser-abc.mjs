@@ -26,7 +26,9 @@ const results = [];
 const ids = { run: RUN, lifecycleObligation: LIFECYCLE_OBLIGATION };
 const bag = { console: [], http: [], pageErrors: [] };
 const record = (id, status, detail = {}) => {
-  results.push({ id, layer: 'hosted-browser', status, detail });
+  // A check that is not driven through the browser must say so; only DOM-observed checks are 'hosted-browser'.
+  const { layer = 'hosted-browser', ...rest } = detail;
+  results.push({ id, layer, status, detail: rest });
   console.log(`${status} ${id}`);
 };
 
@@ -179,11 +181,20 @@ await runAs('A', async ({ page, identity }) => {
   record('A-UI-CREATE-OBLIGATION', ids.obligationId && /created/i.test(created) ? 'PASS' : 'FAIL', { toast: created, obligationId: ids.obligationId });
   await shot(page, 'A-obligation-draft.png');
 
+  // Let the record hydrate before editing: hydration rewrites the form fields, which would silently undo a value typed too early.
+  await page.waitForFunction(() => /Owner:/.test(document.body.innerText), null, { timeout: 30_000 }).catch(() => null);
+  await page.waitForTimeout(2000);
   let prior = await currentToast(page);
   await page.locator('[data-connected-obligation-field="status"]').fill('IN_REVIEW');
   await page.locator('[data-connected-obligation-save]').click();
   const submitted = await nextToast(page, prior);
-  record('A-UI-SUBMIT-FOR-REVIEW', /saved/i.test(submitted) ? 'PASS' : 'FAIL', { toast: submitted });
+  // PASS needs the toast AND the persisted record (after a real reload) to show IN_REVIEW.
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await ensureLabReady(page);
+  await page.locator('[data-connected-obligation-field="status"]').waitFor({ timeout: 30_000 });
+  await page.waitForTimeout(1500);
+  const submittedStatus = await page.locator('[data-connected-obligation-field="status"]').inputValue();
+  record('A-UI-SUBMIT-FOR-REVIEW', /saved/i.test(submitted) && submittedStatus === 'IN_REVIEW' ? 'PASS' : 'FAIL', { toast: submitted, persistedStatusAfterReload: submittedStatus });
 
   // Self-approval: the maker tries to approve their own submission in the UI. The result must be read from a NEW toast
   // and then confirmed against the persisted record after a reload (the form field can be locally edited).
@@ -194,7 +205,12 @@ await runAs('A', async ({ page, identity }) => {
   const self = await nextToast(page, prior);
   await page.waitForTimeout(1000);
   await shot(page, 'A-self-approval-refused.png');
-  await open(page, `#/obligation/${ids.obligationId}`);
+  // Re-opening the same hash is not a navigation, so the form would still show the locally typed value. A real reload
+  // re-reads the record from the server.
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await ensureLabReady(page);
+  await page.locator('[data-connected-obligation-field="status"]').waitFor({ timeout: 30_000 });
+  await page.waitForTimeout(1500);
   const persisted = await page.locator('[data-connected-obligation-field="status"]').inputValue();
   record('A-UI-SELF-APPROVAL-REFUSED', persisted !== 'OPEN' && persisted === 'IN_REVIEW' && !/saved/i.test(self) ? 'PASS' : 'FAIL', { toast: self, persistedStatusAfterReload: persisted });
 });
@@ -236,6 +252,11 @@ if (ids.obligationId) {
 // ------------------------------------------------------------------ User C: navigate the whole chain Obligation → Impact → Risk → Control → Assurance
 await runAs('C', async ({ page, identity }) => {
   watch(page, 'C');
+  const eventLog = [];
+  const t0 = Date.now();
+  page.on('request', (r) => { if (/workflow-events/.test(r.url())) eventLog.push(`+${Date.now() - t0}ms REQ ${new URL(r.url()).searchParams.get('entityType')}`); });
+  page.on('response', (r) => { if (/workflow-events/.test(r.url())) eventLog.push(`+${Date.now() - t0}ms RES ${r.status()} ${new URL(r.url()).searchParams.get('entityType')}`); });
+  page.on('requestfailed', (r) => { if (/workflow-events/.test(r.url())) eventLog.push(`+${Date.now() - t0}ms FAILED ${r.failure()?.errorText}`); });
   record('C-IDENTITY', identity.role === 'COMPLIANCE_MANAGER' ? 'PASS' : 'FAIL', { role: identity.role });
   await open(page, `#/obligation/${LIFECYCLE_OBLIGATION}`);
   const panel = page.locator('[data-connected-compliance-lifecycle]');
@@ -309,7 +330,26 @@ await runAs('C', async ({ page, identity }) => {
       const panel = [...document.querySelectorAll('section.ri-panel')].find((s) => /Audit history/.test(s.textContent || ''));
       return panel ? panel.querySelectorAll('tbody tr').length : -1;
     });
-    record('C-ASSURANCE-AUDIT-HISTORY', auditOk ? 'PASS' : 'FAIL', { rows: auditRows, expectedAtLeast: 5 });
+    const diagnostics = auditOk
+      ? undefined
+      : {
+          eventRequests: eventLog,
+          persistedAuditLoadState: await page.evaluate(() => {
+            try {
+              const s = JSON.parse(localStorage.getItem('forgeniq-ri-lab-v2') || '{}');
+              const cat = s.connectedCatalogue || {};
+              return {
+                loadState: cat.entityWorkflowEventsLoadStateByKey || null,
+                cachedEventCounts: Object.fromEntries(Object.entries(cat.entityWorkflowEventsByKey || {}).map(([k, v]) => [k, v.length])),
+              };
+            } catch (e) {
+              return { error: String(e) };
+            }
+          }),
+        };
+    record('C-ASSURANCE-AUDIT-HISTORY', auditOk ? 'PASS' : 'FAIL', { rows: auditRows, expectedAtLeast: 5, ...(diagnostics ? { diagnostics } : {}) });
+    // The audit history can render before the assurance detail request resolves; wait for the control link to hydrate.
+    await page.locator('a[href^="#/control/"]').first().waitFor({ timeout: 20_000 }).catch(() => null);
     const controlLinks = await page.locator('a[href^="#/control/"]').count();
     record('C-ASSURANCE-LINKS-TO-CONTROL', controlLinks >= 1 ? 'PASS' : 'FAIL', { controlLinks });
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
@@ -333,6 +373,44 @@ await runAs('C', async ({ page, identity }) => {
     record(`C-REGISTER-${name}`, t.length > 400 && !/Backend unavailable/i.test(t) ? 'PASS' : 'FAIL', { chars: t.length });
     await shot(page, `C-register-${name.toLowerCase()}.png`);
   }
+
+  // Phase 10: the regulatory calendar renders from the tenant API (not the demo seed or an Unavailable placeholder).
+  await open(page, '#/calendar');
+  const calStatus = page.locator('[data-connected-calendar-status]');
+  const calShown = await calStatus.waitFor({ timeout: 30_000 }).then(() => true).catch(() => false);
+  await page.waitForFunction(() => !/Loading tenant calendar/.test(document.querySelector('[data-connected-calendar-status]')?.textContent || ''), null, { timeout: 30_000 }).catch(() => null);
+  const calText = calShown ? (await calStatus.innerText()).trim() : '';
+  const calRows = await page.locator('[data-cal-item]').count();
+  const calApi = await page.request.fetch(`${STAGING_ORIGIN}/api/ri-lab/calendar?window=365&dataScope=operational`);
+  const calBody = await calApi.json().catch(() => ({}));
+  record('C-CALENDAR-RENDERS-FROM-TENANT-API', calShown && /event\(s\) between|No dated regulatory events/.test(calText) ? 'PASS' : 'FAIL', { status: calText, rows: calRows });
+  await shot(page, 'C-calendar.png');
+  // Window selector re-queries the API, and the API refuses to widen on an unsupported window.
+  await page.locator('[data-connected-calendar-window-select]').selectOption('365');
+  await page.waitForFunction(() => /event\(s\) between|No dated regulatory events/.test(document.querySelector('[data-connected-calendar-status]')?.textContent || ''), null, { timeout: 30_000 }).catch(() => null);
+  const calRows365 = await page.locator('[data-cal-item]').count();
+  const bad = await (await page.request.fetch(`${STAGING_ORIGIN}/api/ri-lab/calendar?window=99999`)).json().catch(() => ({}));
+  record('C-CALENDAR-WINDOW', calBody.ok === true && calApi.status() === 200 && calRows365 === calBody.total && bad.window === 90 ? 'PASS' : 'FAIL', {
+    apiTotal365: calBody.total, rows365: calRows365, unsupportedWindowFellBackTo: bad.window,
+    uatItemsHiddenFromOperational: calBody.events?.every((e) => e.dataProvenance !== 'uat_authorised') ?? null,
+  });
+  // API-level (NOT a browser check): the event path, title enrichment and provenance labels on real staging rows. The
+  // Design Lab requests the operational scope only, so non-operational records can only be seen through scope=all.
+  const allRes = await page.request.fetch(`${STAGING_ORIGIN}/api/ri-lab/calendar?window=365&dataScope=all`);
+  const allBody = await allRes.json().catch(() => ({}));
+  const tenantEvents = (allBody.events || []).filter((e) => e.recordType !== 'Publication');
+  const placeholder = tenantEvents.filter((e) => /^(Assessment due|Obligation effective): [0-9a-f-]{36}$/i.test(e.title));
+  record(
+    'C-CALENDAR-API-SCOPE-ALL',
+    allRes.status() === 200 && tenantEvents.length >= 1 && placeholder.length === 0 && tenantEvents.every((e) => ['operational', 'uat_authorised'].includes(e.dataProvenance)) && (allBody.total ?? 0) >= (calBody.total ?? 0) ? 'PASS' : 'FAIL',
+    {
+      layer: 'hosted-api',
+      tenantEventsAll: tenantEvents.length,
+      operationalTotal: calBody.total,
+      byProvenance: tenantEvents.reduce((m, e) => ({ ...m, [e.dataProvenance]: (m[e.dataProvenance] || 0) + 1 }), {}),
+      placeholderTitles: placeholder.length,
+    },
+  );
 });
 
 const failed = results.filter((r) => r.status === 'FAIL').length;

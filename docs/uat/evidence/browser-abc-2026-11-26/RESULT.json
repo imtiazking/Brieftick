@@ -1,11 +1,11 @@
 {
-  "run": "UAT-BROWSER-20261126-mwy1relu",
-  "deployment": "dpl_GVwLPEAadswJe8pSxreWZJBpjapY",
+  "run": "UAT-BROWSER-20261126-mwy4su8h",
+  "deployment": "dpl_71M4sVFpmG4WtXiJ7uBBkUS3wnqx",
   "origin": "https://staging-app.forgeniq.com",
   "ids": {
-    "run": "UAT-BROWSER-20261126-mwy1relu",
-    "lifecycleObligation": "ae715f54-439c-4419-8828-002de242f9a4",
-    "obligationId": "bd89345c-aa40-42f6-8a7d-92c963c7464b"
+    "run": "UAT-BROWSER-20261126-mwy4su8h",
+    "lifecycleObligation": "313e86bd-d705-420b-bbf6-78b477baa5fa",
+    "obligationId": "fc922239-986d-4ff8-b97b-2889a2834583"
   },
   "results": [
     {
@@ -57,7 +57,7 @@
       "layer": "hosted-browser",
       "status": "PASS",
       "detail": {
-        "rows": 23,
+        "rows": 36,
         "bg": "rgb(12, 15, 18)",
         "head": "rgb(52, 211, 153)",
         "font": "\"JetBrains Mono\", ui-monospace, \"SF Mono\", Menlo, Consolas, monospace"
@@ -72,7 +72,7 @@
         "blur": "blur(10px) saturate(1.1)",
         "trueModal": true,
         "focusInside": true,
-        "title": "UAT-LIFECYCLE-20261126-mwy1p10f synthetic UAT obligation — firms must retain lab",
+        "title": "UAT-BROWSER-20261126-mwy4qlzc synthetic UAT obligation. Firms must retain labell",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -93,15 +93,16 @@
       "status": "PASS",
       "detail": {
         "toast": "Obligation created",
-        "obligationId": "bd89345c-aa40-42f6-8a7d-92c963c7464b"
+        "obligationId": "fc922239-986d-4ff8-b97b-2889a2834583"
       }
     },
     {
       "id": "A-UI-SUBMIT-FOR-REVIEW",
       "layer": "hosted-browser",
-      "status": "FAIL",
+      "status": "PASS",
       "detail": {
-        "toast": "Obligation created"
+        "toast": "Obligation saved",
+        "persistedStatusAfterReload": "IN_REVIEW"
       }
     },
     {
@@ -109,8 +110,8 @@
       "layer": "hosted-browser",
       "status": "PASS",
       "detail": {
-        "toast": "Obligation saved",
-        "statusField": "IN_REVIEW"
+        "toast": "Segregation of duties check — this item requires approval by a different authorised reviewer.",
+        "persistedStatusAfterReload": "IN_REVIEW"
       }
     },
     {
@@ -142,7 +143,7 @@
       "layer": "hosted-browser",
       "status": "PASS",
       "detail": {
-        "url": "/assessment/b92c246d-becb-4373-a260-d19b049e1530"
+        "url": "/assessment/f5d6032f-684d-4990-b5b8-da927936027f"
       }
     },
     {
@@ -156,7 +157,7 @@
     {
       "id": "C-LIFECYCLE-PANEL",
       "layer": "hosted-browser",
-      "status": "FAIL",
+      "status": "PASS",
       "detail": {
         "stages": [
           "Obligation · OPEN",
@@ -165,7 +166,7 @@
           "Control · ACTIVE",
           "Assurance · PASS / CLOSED"
         ],
-        "linkableStages": 0
+        "linkableStages": 5
       }
     },
     {
@@ -174,7 +175,7 @@
       "status": "PASS",
       "detail": {
         "label": "Obligation · OPEN",
-        "hash": "#/obligation/ae715f54-439c-4419-8828-002de242f9a4",
+        "hash": "#/obligation/313e86bd-d705-420b-bbf6-78b477baa5fa",
         "hasStatus": true,
         "hasOwner": true,
         "hasHistory": true,
@@ -187,7 +188,7 @@
       "status": "PASS",
       "detail": {
         "label": "Impact · APPROVED",
-        "hash": "#/assessment/2c2a8b3b-aeb0-4d47-bc36-c3b35f7288ef",
+        "hash": "#/assessment/cff8e9f5-b895-43c3-b79d-ea165a9fd7a4",
         "hasStatus": true,
         "hasOwner": true,
         "hasHistory": true,
@@ -200,7 +201,7 @@
       "status": "PASS",
       "detail": {
         "label": "Risk · APPROVED",
-        "hash": "#/risk/428fd306-07be-4833-af57-250b586f0c96",
+        "hash": "#/risk/aa262151-13bb-45e2-a816-0502940217c8",
         "hasStatus": true,
         "hasOwner": true,
         "hasHistory": true,
@@ -213,7 +214,7 @@
       "status": "PASS",
       "detail": {
         "label": "Control · ACTIVE",
-        "hash": "#/control/47aab175-5e1b-4e7c-bad6-b502f27ea147",
+        "hash": "#/control/4388760d-b74a-4bf2-8d8d-90dff08a28ce",
         "hasStatus": true,
         "hasOwner": true,
         "hasHistory": true,
@@ -226,11 +227,11 @@
       "status": "PASS",
       "detail": {
         "label": "Assurance · PASS / CLOSED",
-        "hash": "#/assurance/2ff59648-22c2-49c1-b782-b2885d06081c",
+        "hash": "#/assurance/93e159e9-24c4-43f2-b6f2-4953f832705a",
         "hasStatus": false,
         "hasOwner": true,
         "hasHistory": true,
-        "chars": 1894
+        "chars": 2928
       }
     },
     {
@@ -250,6 +251,40 @@
       }
     },
     {
+      "id": "C-ASSURANCE-WORKFLOW-STATE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "shown": "CLOSED",
+        "expected": "CLOSED"
+      }
+    },
+    {
+      "id": "C-ASSURANCE-AUDIT-HISTORY",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "rows": 8,
+        "expectedAtLeast": 5
+      }
+    },
+    {
+      "id": "C-ASSURANCE-LINKS-TO-CONTROL",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "controlLinks": 1
+      }
+    },
+    {
+      "id": "C-CONTROL-LINKS-TO-ASSURANCE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "assuranceLinks": 1
+      }
+    },
+    {
       "id": "C-OBLIGATION-APPROVAL-HISTORY",
       "layer": "hosted-browser",
       "status": "PASS",
@@ -262,7 +297,7 @@
       "layer": "hosted-browser",
       "status": "PASS",
       "detail": {
-        "chars": 2505
+        "chars": 2763
       }
     },
     {
@@ -270,7 +305,7 @@
       "layer": "hosted-browser",
       "status": "PASS",
       "detail": {
-        "chars": 2376
+        "chars": 2610
       }
     },
     {
@@ -278,12 +313,47 @@
       "layer": "hosted-browser",
       "status": "PASS",
       "detail": {
-        "chars": 3966
+        "chars": 4368
+      }
+    },
+    {
+      "id": "C-CALENDAR-RENDERS-FROM-TENANT-API",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "status": "No dated regulatory events between 26 Nov 2026 and 24 Feb 2027.",
+        "rows": 0
+      }
+    },
+    {
+      "id": "C-CALENDAR-WINDOW",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "apiTotal365": 0,
+        "rows365": 0,
+        "unsupportedWindowFellBackTo": 90,
+        "uatItemsHiddenFromOperational": true
+      }
+    },
+    {
+      "id": "C-CALENDAR-API-SCOPE-ALL",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "tenantEventsAll": 9,
+        "operationalTotal": 0,
+        "byProvenance": {
+          "uat_authorised": 9
+        },
+        "placeholderTitles": 0
       }
     }
   ],
   "consoleErrors": [],
   "pageErrors": [],
-  "failedApiResponses": [],
-  "failed": 2
+  "failedApiResponses": [
+    "A: 403 /api/ri-lab/obligations/fc922239-986d-4ff8-b97b-2889a2834583"
+  ],
+  "failed": 0
 }
