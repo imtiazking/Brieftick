@@ -253,6 +253,22 @@ async function selectStagingOrganisation(page) {
 
 /** Server-side identity from /api/ri-lab/session (Clerk session → organisation membership → role). */
 async function readIdentity(page) {
+  // A Clerk handshake redirect can destroy the execution context mid-evaluate; settle and retry instead of failing the session.
+  let lastError;
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    try {
+      return await readIdentityOnce(page);
+    } catch (error) {
+      if (!/Execution context was destroyed|navigation/i.test(String(error?.message))) throw error;
+      lastError = error;
+      await page.waitForLoadState('load', { timeout: 30_000 }).catch(() => null);
+      await page.waitForTimeout(1500);
+    }
+  }
+  throw lastError;
+}
+
+async function readIdentityOnce(page) {
   const origin = activeOrigin();
   if (!onOrigin(page.url(), origin)) await page.goto(`${designLabUrl()}#/dashboard`, { waitUntil: 'domcontentloaded' });
   const signedIn = await page.evaluate(() => Boolean(window.Clerk?.user?.id)).catch(() => false);
@@ -271,6 +287,10 @@ async function readIdentity(page) {
       organisationName: body.organisationName,
       role: body.role,
       writeCapabilities: body.writeCapabilities || {},
+      aiExecutionEnabled: await fetch('/api/ri-lab/readiness', { credentials: 'same-origin', cache: 'no-store' })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((b) => b?.operationalReadiness?.components?.find((c) => c.id === 'ai_runtime')?.diagnostics?.livePosture?.executionEnabled ?? null)
+        .catch(() => null),
     };
   });
 }
@@ -292,7 +312,11 @@ export async function verifyIdentity(page, key) {
   if (id.organisationId !== STAGING_ORGANISATION_ID) problems.push(`organisation ${id.organisationId}, expected ${STAGING_ORGANISATION_ID}`);
   if (!ALLOWED_ROLES.has(id.role)) problems.push(`role ${id.role} cannot act`);
   if (p.expectedRole && id.role !== p.expectedRole) problems.push(`role ${id.role}, expected ${p.expectedRole}`);
-  for (const cap of p.requiredCapabilities) if (id.writeCapabilities[cap] !== true) problems.push(`capability ${cap} not granted`);
+  for (const cap of p.requiredCapabilities) {
+    // aiRequest is granted only while the deployment's paid-AI execution is enabled; a safely disabled deployment is expected to withhold it.
+    if (cap === 'aiRequest' && id.aiExecutionEnabled === false && id.writeCapabilities[cap] !== true) continue;
+    if (id.writeCapabilities[cap] !== true) problems.push(`capability ${cap} not granted`);
+  }
   if (p.operator === true) {
     const isOp = await page.evaluate(async () => {
       const res = await fetch('/api/ri-lab/classification-policy/admin', { credentials: 'same-origin', cache: 'no-store' });

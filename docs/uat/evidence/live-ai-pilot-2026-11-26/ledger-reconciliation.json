@@ -1,0 +1,37 @@
+{
+  "capturedAt": "2026-11-26T11:06:00Z",
+  "source": "lab_ai_spend_reservations / lab_ai_spend_accounts on forgeniq-ri-staging (read-only SQL)",
+  "scopeKey": "forgeniq-lab-anthropic",
+  "pricingVersion": "anthropic-list-2026-11-26",
+  "model": "claude-sonnet-5-5",
+  "budgetUsd": 0.75,
+  "maxRequests": 8,
+  "requests": [
+    { "stage": 1, "useCase": "UC-RI-005", "status": "SETTLED", "reserveUsd": 0.03736,  "actualUsd": 0.018702, "inputTokens": 4831, "outputTokens": 904,  "cacheReadTokens": 0, "cacheWriteTokens": 0, "providerRequestId": "req_011ChRRDDiGUT2sPhaK3PYWv", "providerLatencyMs": 6311 },
+    { "stage": 2, "useCase": "UC-RI-004", "status": "SETTLED", "reserveUsd": 0.084048, "actualUsd": 0.01334,  "inputTokens": 605,  "outputTokens": 1213, "cacheReadTokens": 0, "cacheWriteTokens": 0, "providerRequestId": "req_011ChRRasTEKWbF9NdRT3AZb", "providerLatencyMs": 9400 },
+    { "stage": 3, "useCase": "UC-RI-006", "status": "SETTLED", "reserveUsd": 0.085792, "actualUsd": 0.012972, "inputTokens": 1186, "outputTokens": 1060, "cacheReadTokens": 0, "cacheWriteTokens": 0, "providerRequestId": "req_011ChRRiKVLLGDW6sg3GfcXn", "providerLatencyMs": 7308 },
+    { "stage": 4, "useCase": "UC-RI-007", "status": "SETTLED", "reserveUsd": 0.085824, "actualUsd": 0.014208, "inputTokens": 1144, "outputTokens": 1192, "cacheReadTokens": 0, "cacheWriteTokens": 0, "providerRequestId": "req_011ChRRnAq3Vv9qpmNh225xa", "providerLatencyMs": 8581 },
+    { "stage": 5, "useCase": "UC-RI-008", "status": "SETTLED", "reserveUsd": 0.084124, "actualUsd": 0.014254, "inputTokens": 582,  "outputTokens": 1309, "cacheReadTokens": 0, "cacheWriteTokens": 0, "providerRequestId": "req_011ChRRpvBZbeaU2Zteg6iBb", "providerLatencyMs": 10870 }
+  ],
+  "totals": {
+    "requests": 5,
+    "inputTokens": 8348,
+    "outputTokens": 5678,
+    "cacheReadTokens": 0,
+    "cacheWriteTokens": 0,
+    "settledUsd": 0.073476,
+    "remainingBudgetUsd": 0.676524,
+    "remainingRequests": 3
+  },
+  "accountRow": { "settled_usd": 0.073476, "reserved_usd": 0, "request_count": 5, "note": "account row read after stage 5: equals the sum of the five SETTLED reservations" },
+  "reconciliation": {
+    "openReservations": 0,
+    "abandonedReservations": 0,
+    "recoveriesUsed": 0,
+    "sumOfSettledEqualsAccount": true,
+    "withinBudget": true,
+    "withinRequestLimit": true,
+    "allUsageKnown": true,
+    "allResponseModelEqualsRequested": true
+  }
+}
