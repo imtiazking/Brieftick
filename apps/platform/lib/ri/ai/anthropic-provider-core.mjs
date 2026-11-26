@@ -152,6 +152,7 @@ export function createAnthropicProvider(deps = {}) {
         maxOutputTokensOverride: budgetCtx.maxOutputTokens,
         model,
         timeoutMs,
+        retryOf: budgetCtx.retryOfIdempotencyKey,
       });
       if (!spendGuard.ok) {
         return {

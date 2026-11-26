@@ -51,6 +51,9 @@ delete process.env.SUPABASE_URL;
 delete process.env.NEXT_PUBLIC_SUPABASE_URL;
 delete process.env.SUPABASE_SERVICE_ROLE_KEY;
 delete globalThis.__forgeniqLabSpendQuery;
+// This suite covers the historical single-account ledger. The run-scoped ledger has its own suite
+// (acceptance-ri-run-scoped-ledger.mjs) and is the default for live execution.
+process.env.RI_LAB_SPEND_LEDGER_MODE = 'legacy';
 process.env.RI_AI_EXECUTION_ENABLED = 'true';
 process.env.RI_LAB_ANTHROPIC_MAX_USD = '0.75';
 const closed = await guardLabAnthropicSpendBeforeCall({

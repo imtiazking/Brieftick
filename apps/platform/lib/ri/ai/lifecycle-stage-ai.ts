@@ -198,6 +198,8 @@ export async function runLifecycleStageAnalysis(params: {
   sourceSections: LifecycleSourceSection[];
   organisationId: string;
   idempotencyKey: string;
+  /** Idempotency key of the FAILED request this call retries (run ledger retry accounting). */
+  retryOfIdempotencyKey?: string | null;
   advisoryContext?: Record<string, unknown> | null;
   /** Verified regulatory evidence carried from the originating obligation. Live claims are validated against it. */
   evidencePack?: Record<string, unknown> | null;
@@ -213,6 +215,7 @@ export async function runLifecycleStageAnalysis(params: {
     budgetContext: {
       organisationId: params.organisationId,
       idempotencyKey: params.idempotencyKey,
+      retryOfIdempotencyKey: params.retryOfIdempotencyKey ?? null,
     },
     context: {
       sourceSections: params.sourceSections,

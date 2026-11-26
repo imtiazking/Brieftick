@@ -60,6 +60,10 @@ export const STAGING_MIGRATION_STEPS = [
     name: '20261126120000_lab_ai_spend_usage_categories_and_recovery_v2',
     path: join(migrationsDir, '20261126120000_lab_ai_spend_usage_categories_and_recovery_v2.sql'),
   },
+  {
+    name: '20261126180000_ai_execution_run_ledger',
+    path: join(migrationsDir, '20261126180000_ai_execution_run_ledger.sql'),
+  },
 ];
 
 /** Legacy MCP names that may exist without full DDL — do not treat as complete. */

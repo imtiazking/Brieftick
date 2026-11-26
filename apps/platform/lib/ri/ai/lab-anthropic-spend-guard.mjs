@@ -12,7 +12,11 @@ import {
 } from '../reasoner/anthropic-eval-budget.mjs';
 import {
   providerWindowSeconds,
+  reserveAiExecutionRun,
   reserveSharedLabSpend,
+  resolveAiExecutionRunReference,
+  resolveLedgerMode,
+  settleAiExecutionRun,
   settleSharedLabSpend,
   sharedSpendScopeKey,
 } from './lab-shared-spend.mjs';
@@ -425,9 +429,30 @@ async function resolveSharedSpendQuery() {
   const { createClient } = await import('@supabase/supabase-js');
   const sb = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
   return async (sql, params) => {
-    const isReserve = sql.includes('reserve_lab_ai_spend');
     const json = (v) => (typeof v === 'string' ? JSON.parse(v) : v ?? null);
-    const { data, error } = await sb.rpc(isReserve ? 'reserve_lab_ai_spend' : 'settle_lab_ai_spend', isReserve
+    if (sql.includes('reserve_ai_execution_run')) {
+      const { data, error } = await sb.rpc('reserve_ai_execution_run', {
+        p_run_reference: params[0],
+        p_organisation_id: params[1],
+        p_reserve_usd: params[2],
+        p_use_case_id: params[3],
+        p_idempotency_key: params[4],
+        p_model: params[5],
+        p_pricing_version: params[6],
+        p_reserve_basis: json(params[7]),
+        p_provider_window_seconds: params[8],
+        p_retry_of: params[9],
+      });
+      if (error) {
+        const err = new Error(error.message || 'run_ledger_rpc_failed');
+        err.code = 'LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED';
+        throw err;
+      }
+      return { result: data };
+    }
+    const isRunSettle = sql.includes('settle_ai_execution_run');
+    const isReserve = sql.includes('reserve_lab_ai_spend');
+    const { data, error } = await sb.rpc(isReserve ? 'reserve_lab_ai_spend' : isRunSettle ? 'settle_ai_execution_run' : 'settle_lab_ai_spend', isReserve
       ? {
           p_scope_key: params[0],
           p_budget_usd: params[1],
@@ -472,6 +497,7 @@ async function guardWithSharedLedger({
   maxOutputTokens,
   inputTokensEstimate,
   timeoutMs,
+  retryOf,
 }) {
   let query;
   try {
@@ -493,6 +519,76 @@ async function guardWithSharedLedger({
       failClosed: true,
     };
   }
+  const reserveBasis = {
+    inputTokensEstimate: inputTokensEstimate ?? null,
+    maxOutputTokens,
+    charsPerToken: RESERVE_CHARS_PER_TOKEN,
+    inputSideRatePerMtok: maxInputSideRatePerMtok(config.model),
+    outputRatePerMtok: MODEL_PRICING_ESTIMATE[config.model].outputPerMtok,
+    retryReserveFactor: config.retryReserveFactor,
+  };
+
+  if (resolveLedgerMode() === 'run') {
+    // Run-scoped ledger: budget, request cap, tenant and window come from the authorised run row in the database.
+    const runReference = resolveAiExecutionRunReference();
+    if (!runReference) {
+      return {
+        ok: false,
+        code: 'AI_RUN_NOT_AUTHORISED',
+        message: 'No single authorised AI execution run reference is configured. Live execution is refused.',
+        failClosed: true,
+      };
+    }
+    try {
+      const reserved = await reserveAiExecutionRun(query, {
+        runReference,
+        organisationId,
+        reserveUsd,
+        useCaseId,
+        idempotencyKey: idempotencyKey || `${useCaseId}:missing-key`,
+        model: config.model,
+        pricingVersion: config.pricingVersion,
+        reserveBasis,
+        providerWindowSeconds: providerWindowSeconds(timeoutMs),
+        retryOf,
+      });
+      if (!reserved?.ok) return { ok: false, ...reserved, failClosed: true, query };
+      return {
+        ok: true,
+        config,
+        durable: true,
+        runScoped: true,
+        runReference,
+        query,
+        reservationId: reserved.reservationId,
+        slotKey: reserved.reservationId,
+        maxOutputTokens,
+        reserveUsd: Number(reserved.reserveUsd),
+        spendAudit: {
+          budgetUsd: reserved.budgetUsd ?? null,
+          model: config.model,
+          shared: true,
+          runScoped: true,
+          runReference,
+          settledUsd: reserved.settledUsd ?? null,
+          reservedUsd: reserved.reservedUsd ?? null,
+          requestCount: reserved.requestCount ?? null,
+          maxRequests: reserved.maxRequests ?? null,
+          retryOf: retryOf ?? null,
+          limitations: labBudgetEnforcementLimitations(),
+        },
+      };
+    } catch (err) {
+      return {
+        ok: false,
+        code: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED,
+        message: 'Run spend reservation could not be verified.',
+        failClosed: true,
+        detail: err?.message || 'reserve_failed',
+      };
+    }
+  }
+
   const maxRequests = Number(process.env.RI_LAB_ANTHROPIC_MAX_REQUESTS || 8);
   try {
     const reserved = await reserveSharedLabSpend(query, {
@@ -558,6 +654,7 @@ export async function guardLabAnthropicSpendBeforeCall({
   maxOutputTokensOverride,
   model,
   timeoutMs,
+  retryOf,
 }) {
   const exec = process.env.RI_AI_EXECUTION_ENABLED === 'true';
   const config = resolveLabAnthropicBudgetConfig(useCaseId, { executionEnabled: exec, model });
@@ -588,6 +685,7 @@ export async function guardLabAnthropicSpendBeforeCall({
       maxOutputTokens: reserve.maxOutputTokens,
       inputTokensEstimate: reserve.inputTokensEstimate,
       timeoutMs,
+      retryOf,
     });
   }
 
@@ -664,7 +762,8 @@ export async function finalizeLabSpendAfterCall(tracker, slotKey, apiResult, res
     const described = describeCallUsage(model, apiResult, reserveUsd);
     const usage = described.usage;
     try {
-      const settled = await settleSharedLabSpend(tracker.query, {
+      const settle = tracker.runScoped ? settleAiExecutionRun : settleSharedLabSpend;
+      const settled = await settle(tracker.query, {
         reservationId: tracker.reservationId,
         actualUsd: described.settledEstimatedUsd,
         inputTokens: usage.standardInputTokens ?? 0,

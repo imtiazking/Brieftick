@@ -408,6 +408,23 @@ export const QA_CATALOGUE = [
     ],
   },
   {
+    id: 'RI-RUN-SCOPED-LEDGER',
+    area: 'Regulatory Intelligence',
+    feature: 'Run-reference-scoped AI execution ledger: isolation from history, limits, immutability, retries, recovery',
+    type: 'acceptance',
+    criticality: 'critical',
+    gate: 'ci',
+    route: null,
+    apis: [],
+    entities: ['ai_execution_runs', 'ai_execution_limits', 'ai_execution_ledger_events', 'lab_ai_spend_reservations'],
+    command: 'node scripts/acceptance-ri-run-scoped-ledger.mjs',
+    paths: [
+      'apps/platform/lib/ri/ai/lab-anthropic-spend-guard.mjs',
+      'apps/platform/lib/ri/ai/lab-shared-spend.mjs',
+      'apps/platform/supabase/migrations/20261126180000_ai_execution_run_ledger.sql',
+    ],
+  },
+  {
     id: 'RI-SONNET-55-COMPAT',
     area: 'Regulatory Intelligence',
     feature: 'Claude Sonnet 5.5 Messages API compatibility, usage categories and pricing (mocked)',
