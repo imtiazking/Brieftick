@@ -10,6 +10,9 @@ import { canRi } from '@/lib/ri/permissions';
 import { getObligationDetail, updateObligation } from '@/lib/ri/services/obligations';
 import { mapObligationRowToLabView } from '@/lib/ri/lab-api/lab-work-view';
 
+/** Approval can run a live lifecycle AI call (provider timeout up to 180 s) before responding. */
+export const maxDuration = 300;
+
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ id: string }> },

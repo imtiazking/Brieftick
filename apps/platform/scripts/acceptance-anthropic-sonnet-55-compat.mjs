@@ -239,6 +239,35 @@ resetEnv();
   check('provider_request_cap', results[0].ok && results[1].ok && !results[2].ok && results[2].code === 'LAB_ANTHROPIC_BUDGET_EXCEEDED', JSON.stringify(results.map((r) => r.code ?? 'ok')));
 }
 
+// ------------------------------------------------------------------ unbudgeted use cases and posture
+{
+  process.env.RI_AI_EXECUTION_ENABLED = 'true';
+  process.env.RI_LAB_ANTHROPIC_MAX_USD = '0.75';
+  for (const uc of ['UC-RI-001', 'UC-RI-002', 'UC-RI-003', 'UC-RI-099']) {
+    const cfg = guard.resolveLabAnthropicBudgetConfig(uc, { executionEnabled: true });
+    check(`unbudgeted_${uc}_refused_when_live`, cfg.enforced === true && cfg.failClosed === true, JSON.stringify(cfg));
+  }
+  for (const uc of ['UC-RI-004', 'UC-RI-005', 'UC-RI-006', 'UC-RI-007', 'UC-RI-008']) {
+    const cfg = guard.resolveLabAnthropicBudgetConfig(uc, { executionEnabled: true });
+    check(`budgeted_${uc}_still_allowed`, cfg.enforced === true && cfg.failClosed === false && cfg.budgetUsd === 0.75, JSON.stringify(cfg));
+  }
+  check('unbudgeted_not_enforced_when_disabled', guard.resolveLabAnthropicBudgetConfig('UC-RI-001', { executionEnabled: false }).enforced === false);
+  resetEnv();
+
+  const { describeAiRuntimePosture } = await imp('ai-runtime-posture.mjs');
+  const off = describeAiRuntimePosture({ RI_AI_PROVIDER_MODE: 'ANTHROPIC', FORGENIQ_STAGE2_AI: 'FIXTURE', FORGENIQ_STAGE3_AI: 'FIXTURE', FORGENIQ_STAGE4_AI: 'FIXTURE', FORGENIQ_STAGE5_AI: 'FIXTURE' });
+  check('posture_disabled_state', off.executionEnabled === false && Object.values(off.stageModes).every((m) => m === 'fixture') && off.model === 'claude-sonnet-5-5' && off.modelPriced === true && off.anthropicKeyPresent === false, JSON.stringify(off));
+  const on = describeAiRuntimePosture({
+    RI_AI_EXECUTION_ENABLED: 'true', RI_AI_PROVIDER_MODE: 'ANTHROPIC', RI_ANTHROPIC_MODEL: 'claude-sonnet-5-5',
+    FORGENIQ_STAGE2_AI: 'ANTHROPIC', FORGENIQ_STAGE3_AI: 'ANTHROPIC', FORGENIQ_STAGE4_AI: 'ANTHROPIC', FORGENIQ_STAGE5_AI: 'ANTHROPIC',
+    RI_LAB_ANTHROPIC_MAX_USD: '0.75', RI_LAB_ANTHROPIC_MAX_REQUESTS: '8', RI_LAB_SPEND_SCOPE: 'forgeniq-lab-anthropic',
+    ANTHROPIC_API_KEY: 'sk-ant-secret-value', SUPABASE_SERVICE_ROLE_KEY: 'x', NEXT_PUBLIC_SUPABASE_URL: 'https://x.supabase.co',
+    RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX: 'pilot-a', RI_ANTHROPIC_TIMEOUT_MS: '180000\r\n',
+  });
+  check('posture_live_state', on.executionEnabled === true && Object.values(on.stageModes).every((m) => m === 'live') && on.budgetUsd === 0.75 && on.maxRequests === 8 && on.ledgerRoute === 'supabase_rpc' && on.authorisedRunReferences === 1 && on.timeoutMs === 180000 && on.anthropicKeyPresent === true, JSON.stringify(on));
+  check('posture_never_contains_secrets', !JSON.stringify(on).includes('sk-ant') && !JSON.stringify(on).includes('supabase.co'));
+}
+
 resetEnv();
 if (fail) {
   console.error(`\nacceptance-anthropic-sonnet-55-compat: FAIL (${fail})\n`);

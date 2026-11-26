@@ -6,6 +6,9 @@ import { parseLabRiskPatchBody } from '@/lib/ri/lab-api/lab-work-write';
 import { assertLabRiskWritesEnabled } from '@/lib/ri/lab-api/lab-connected-writes';
 import { getRiskDetail, updateRiskWithGovernance } from '@/lib/ri/services/risks';
 
+/** Approval can run a live lifecycle AI call (provider timeout up to 180 s) before responding. */
+export const maxDuration = 300;
+
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;

@@ -64,11 +64,17 @@ function parsePositiveFloat(raw, label) {
  * (UC-RI-005 and lifecycle UC-RI-004/006/007/008), RI_LAB_ANTHROPIC_MAX_USD is mandatory.
  */
 export function resolveLabAnthropicBudgetConfig(useCaseId, { executionEnabled, model: modelOverride } = {}) {
-  if (!BUDGETED_USE_CASES.has(useCaseId)) {
-    return { enforced: false, reason: 'use_case_not_budgeted' };
-  }
   if (executionEnabled !== true) {
     return { enforced: false, reason: 'execution_disabled' };
+  }
+  if (!BUDGETED_USE_CASES.has(useCaseId)) {
+    // A paid call for a use case outside the shared ledger would be unmetered, so it is refused outright.
+    return {
+      enforced: true,
+      failClosed: true,
+      code: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED,
+      message: `Live Anthropic execution is not authorised for use case "${useCaseId}": it is not covered by the shared spend ledger.`,
+    };
   }
 
   let budgetUsd;

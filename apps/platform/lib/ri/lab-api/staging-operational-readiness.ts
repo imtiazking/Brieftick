@@ -8,6 +8,8 @@ import { clerkKeyPairAligned, getAppEnvironment, isClerkConfigured } from '@/lib
 import { AI_PROVIDER_MODE } from '@/lib/ri/ai/enums';
 import { getRequestedProviderMode, resolveAiProviderMode } from '@/lib/ri/ai/provider-registry';
 import { isAnthropicConfigured } from '@/lib/ri/ai/anthropic-provider';
+import { describeAiRuntimePosture } from '@/lib/ri/ai/ai-runtime-posture.mjs';
+import { roleAtLeast, type PlatformRole } from '@/lib/roles';
 import { isOpenAiConfigured } from '@/lib/ri/ai/openai-provider';
 import { FORGENIQ_RI_STAGING_PROJECT_REF } from '@/lib/ri/ingestion/snapshot/staging-constants.mjs';
 import { extractProjectRefFromSupabaseUrl } from '@/lib/ri/ingestion/snapshot/supabase-config.mjs';
@@ -36,8 +38,10 @@ function stateFromFlags(opts: {
   return 'HEALTHY';
 }
 
-function resolveAiRuntimeState(): ReadinessComponent {
+function resolveAiRuntimeState(role: string): ReadinessComponent {
   const evidenceAt = new Date().toISOString();
+  // Non-secret posture (flags, limits, model id) for compliance managers and above only.
+  const posture = roleAtLeast(role as PlatformRole, 'COMPLIANCE_MANAGER') ? describeAiRuntimePosture() : undefined;
   const requested = getRequestedProviderMode();
   const mode = resolveAiProviderMode();
   const anthropic = isAnthropicConfigured();
@@ -74,6 +78,7 @@ function resolveAiRuntimeState(): ReadinessComponent {
       resolvedMode: mode,
       anthropicKeyPresent: anthropic,
       openaiKeyPresent: openai,
+      ...(posture ? { livePosture: posture } : {}),
     },
   };
 }
@@ -251,7 +256,7 @@ export async function buildStagingOperationalReadiness(options: {
 
   const schedulerComponent = resolveSchedulerState(audit);
 
-  const aiComponent = resolveAiRuntimeState();
+  const aiComponent = resolveAiRuntimeState(options.role);
 
   const notificationsComponent: ReadinessComponent = {
     id: 'tenant_notifications',
