@@ -5,14 +5,38 @@ import { parseLabRiskCreateBody } from '@/lib/ri/lab-api/lab-link-write';
 import { assertLabRiskWritesEnabled } from '@/lib/ri/lab-api/lab-connected-writes';
 import { createRisk, listRisks } from '@/lib/ri/services/risks';
 import { mapRiskRowToLabView } from '@/lib/ri/lab-api/lab-governance-view';
+import {
+  emptyLabScopeMeta,
+  mergeExcluded,
+  parseLabDataScope,
+  scopeRegister,
+} from '@/lib/ri/lab-api/lab-data-scope';
+import {
+  partitionRisksForLabScope,
+  riskLabProvenanceInputFromRow,
+} from '@/lib/ri/lab-api/risk-control-lab-provenance';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const ctx = await requireRiContext('risk:read');
-    const rows = await listRisks(ctx.supabase, ctx.organisationId);
+    const scope = parseLabDataScope(new URL(request.url));
+    const scopeMeta = emptyLabScopeMeta(scope);
+    const rowsRaw = await listRisks(ctx.supabase, ctx.organisationId);
+    const partition = partitionRisksForLabScope(rowsRaw, scope, (r) => riskLabProvenanceInputFromRow(r));
+    const scoped = scopeRegister(scope, rowsRaw, partition);
+    mergeExcluded(scopeMeta, 'risks', partition.excludedFromOperationalCount);
+    if (scope === 'operational' && scoped.authorisedUat.length > 0) {
+      mergeExcluded(scopeMeta, 'riskUatAuthorised', scoped.authorisedUat.length);
+    }
+    const toView = (r: (typeof rowsRaw)[number]) => mapRiskRowToLabView(r as Record<string, unknown>);
     return NextResponse.json({
       ok: true,
-      risks: rows.map((r) => mapRiskRowToLabView(r as Record<string, unknown>)),
+      total: scoped.primary.length,
+      tenantScope: true,
+      ...scopeMeta,
+      riskProvenance: scoped.provenance,
+      risks: scoped.primary.map(toView),
+      authorisedUatRisks: scoped.authorisedUat.map(toView),
     });
   } catch (err) {
     return labApiErrorResponse(err);

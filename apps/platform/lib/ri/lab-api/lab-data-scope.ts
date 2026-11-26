@@ -12,6 +12,7 @@ import {
   aiRunLabProvenanceInputFromRow,
   isSyntheticAiAnalysisFixture,
 } from '@/lib/ri/lab-api/ai-run-lab-provenance';
+import { primaryRowsForLabScope } from '@/lib/ri/uat-record-provenance';
 export {
   filterRowsByLabDataScope,
   parseLabDataScope,
@@ -31,6 +32,43 @@ export function emptyLabScopeMeta(scope: LabDataScope): LabScopeMeta {
 
 export function mergeExcluded(meta: LabScopeMeta, key: string, count: number) {
   if (count > 0) meta.excludedSyntheticUat[key] = count;
+}
+
+/** Shape shared by every provenance partition (changes, impacts, obligations, risks, controls). */
+export type LabRegisterPartition<T> = {
+  operational: T[];
+  authorisedUat: T[];
+  unverified: T[];
+  syntheticUat: T[];
+};
+
+/**
+ * The single scoping decision for a Lab register, used by every route so registers cannot disagree.
+ *  - scope=operational: `primary` is the operational partition only (authorised UAT, synthetic and unverified rows
+ *    are held back and reported as counts).
+ *  - scope=all: `primary` is EVERY row the caller's tenant-scoped query returned.
+ * `authorisedUat` is always a labelled subset view of the same rows, never an extra source of rows. This function
+ * never widens what the caller may read: `allRows` is whatever the tenant-scoped (RLS) query already returned.
+ */
+export function scopeRegister<T>(
+  scope: LabDataScope,
+  allRows: T[],
+  partition: LabRegisterPartition<T>,
+): {
+  primary: T[];
+  authorisedUat: T[];
+  provenance: { operational: number; uatAuthorised: number; unverified: number; syntheticUat: number };
+} {
+  return {
+    primary: primaryRowsForLabScope(scope, partition.operational, allRows),
+    authorisedUat: partition.authorisedUat,
+    provenance: {
+      operational: partition.operational.length,
+      uatAuthorised: partition.authorisedUat.length,
+      unverified: partition.unverified.length,
+      syntheticUat: partition.syntheticUat.length,
+    },
+  };
 }
 
 export function attachDataProvenance<T extends Record<string, unknown>>(

@@ -102,7 +102,8 @@ export async function GET(request: Request) {
     const changePartition = partitionChangesForLabScope(changeRowsRaw, scope, (r) =>
       changeLabProvenanceInputFromRow(r),
     );
-    const changeRows = changePartition.operational;
+    // Same scoping rule as every other register: scope=all returns every tenant-visible change.
+    const changeRows = primaryRowsForLabScope(scope, changePartition.operational, changeRowsRaw);
     const exChanges = changePartition.excludedFromOperationalCount;
 
     const impactPartition = partitionImpactsForLabScope(impactRowsRaw, scope, (r) =>

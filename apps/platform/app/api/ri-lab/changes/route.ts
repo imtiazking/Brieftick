@@ -6,10 +6,14 @@ import { assertLabChangeWritesEnabled } from '@/lib/ri/lab-api/lab-connected-wri
 import { assertChangeCreateModeAllowed } from '@/lib/ri/lab-api/change-create-provenance';
 import {
   emptyLabScopeMeta,
-  filterRowsByLabDataScope,
   mergeExcluded,
   parseLabDataScope,
+  scopeRegister,
 } from '@/lib/ri/lab-api/lab-data-scope';
+import {
+  changeLabProvenanceInputFromRow,
+  partitionChangesForLabScope,
+} from '@/lib/ri/lab-api/change-lab-provenance';
 import { listChanges, createRegulatoryChange } from '@/lib/ri/services/changes';
 import { mapChangeRowToLabWorkView } from '@/lib/ri/lab-api/lab-work-view';
 
@@ -19,12 +23,14 @@ export async function GET(request: Request) {
     const scope = parseLabDataScope(new URL(request.url));
     const scopeMeta = emptyLabScopeMeta(scope);
     const rowsRaw = await listChanges(ctx.supabase, ctx.organisationId);
-    const { rows, excludedSyntheticCount } = filterRowsByLabDataScope(rowsRaw, scope, (r) => ({
-      title: r.title,
-      description: r.description,
-      externalKey: r.external_key,
-    }));
-    mergeExcluded(scopeMeta, 'changes', excludedSyntheticCount);
+    // Persisted provenance, not statement text: the same classifier and scoping rule as tenant-work.
+    const partition = partitionChangesForLabScope(rowsRaw, scope, (r) => changeLabProvenanceInputFromRow(r));
+    const scoped = scopeRegister(scope, rowsRaw, partition);
+    const rows = scoped.primary;
+    mergeExcluded(scopeMeta, 'changes', partition.excludedFromOperationalCount);
+    if (scope === 'operational' && scoped.authorisedUat.length > 0) {
+      mergeExcluded(scopeMeta, 'changeUatAuthorised', scoped.authorisedUat.length);
+    }
     const pubIds = [
       ...new Set(
         rows
@@ -61,6 +67,7 @@ export async function GET(request: Request) {
       total: changes.length,
       tenantScope: true,
       ...scopeMeta,
+      changeProvenance: scoped.provenance,
       changes,
     });
   } catch (err) {
