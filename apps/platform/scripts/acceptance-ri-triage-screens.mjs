@@ -40,7 +40,11 @@ check('triage exposes verification counts', service.includes('verificationCounts
 check('non-obligation copy refuses approved obligations', triage.includes('No approved organisation obligations'));
 const loadBlock = triage.slice(triage.indexOf('export async function loadConnectedTriageScreen'));
 check('loadConnectedTriageScreen scopes segment locally', loadBlock.includes('const segment = LEGACY_TRIAGE_SEGMENT'));
-check('triage hydration does not reference resolvedSegment', !/\bresolvedSegment\b/.test(triage));
+// `resolvedSegment` is a local of renderTriageScreen (defined and used only there). The original ReferenceError came from the
+// loader/hydration code using it out of scope, so those functions are what must not reference it.
+check('triage hydration/loader does not reference resolvedSegment', !/\bresolvedSegment\b/.test(loadBlock));
+const renderBlock = triage.slice(triage.indexOf('export function renderTriageScreen'), triage.indexOf('function verificationBadge'));
+check('resolvedSegment is declared before use inside renderTriageScreen', renderBlock.indexOf('const resolvedSegment') !== -1 && renderBlock.indexOf('const resolvedSegment') < renderBlock.indexOf('resolvedSegment ===') );
 check('pagination controls in triage screen', triage.includes('data-triage-pagination'));
 
 const policy = {

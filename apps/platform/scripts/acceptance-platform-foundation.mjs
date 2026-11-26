@@ -63,7 +63,8 @@ const forbiddenImports = [
 const allowedDesignLabRef = (rel, line) => {
   if (!line.includes('design-lab/regulatory-intelligence')) return false;
   if (rel.includes('design-lab-bundle/regulatory-intelligence/')) return true;
-  if (rel === '/middleware.ts' || rel === '/lib/platform-routing.ts') return true;
+  // design-lab-static.ts only names the public URL path of the served bundle (cache-busting script tag); it imports nothing.
+  if (rel === '/middleware.ts' || rel === '/lib/platform-routing.ts' || rel === '/lib/design-lab-static.ts') return true;
   if (rel.includes('/app/design-lab/regulatory-intelligence/')) return true;
   if (rel.includes('/lib/ri/lab-api/')) return true;
   return false;

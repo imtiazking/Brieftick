@@ -93,11 +93,31 @@ const providerOn = providerMod.createAnthropicProvider({
     },
   }),
 });
-const okResult = await providerOn.execute({
+// Spend guard: a use case outside the shared ledger must be refused before any HTTP call, even when execution is enabled.
+const prevBudget = process.env.RI_LAB_ANTHROPIC_MAX_USD;
+delete process.env.RI_LAB_ANTHROPIC_MAX_USD;
+const refusedResult = await providerOn.execute({
   analysisType: 'Applicability Recommendation',
   useCaseId: 'UC-RI-003',
   context: { sourceSections: [{ sourceSectionId: 'SRCSEC-001', text: 'Duty text', citation: '§1' }] },
 });
+if (!refusedResult.ok && refusedResult.code === 'LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED' && refusedResult.failClosed === true) {
+  pass('use case outside the spend ledger is refused fail-closed');
+} else failMsg(`unledgered use case not refused ${JSON.stringify(refusedResult)}`);
+
+// Mocked success path uses a budgeted use case with a tiny budget; the HTTP layer is mocked, so nothing is billed.
+process.env.RI_LAB_ANTHROPIC_MAX_USD = '0.10';
+const prevGuardMode = process.env.RI_LAB_SPEND_GUARD_MODE;
+process.env.RI_LAB_SPEND_GUARD_MODE = 'memory'; // in-process ledger, as in the other budget suites; no database, no billing
+const okResult = await providerOn.execute({
+  analysisType: 'Applicability Recommendation',
+  useCaseId: 'UC-RI-004',
+  context: { sourceSections: [{ sourceSectionId: 'SRCSEC-001', text: 'Duty text', citation: '§1' }] },
+});
+if (prevGuardMode === undefined) delete process.env.RI_LAB_SPEND_GUARD_MODE;
+else process.env.RI_LAB_SPEND_GUARD_MODE = prevGuardMode;
+if (prevBudget === undefined) delete process.env.RI_LAB_ANTHROPIC_MAX_USD;
+else process.env.RI_LAB_ANTHROPIC_MAX_USD = prevBudget;
 if (okResult.ok && okResult.structured?.recommendation === 'Applicable') {
   pass('mocked successful Messages response');
 } else failMsg(`mock success ${JSON.stringify(okResult)}`);
@@ -130,10 +150,17 @@ const badJson = providerMod.createAnthropicProvider({
   apiKeyOverride: 'sk-ant-api03-test-key-abcdefghijklmnopqrstuvwxyz',
   fetchFn: mockFetch({ body: { id: 'x', content: [{ type: 'text', text: 'sorry not json' }] } }),
 });
+process.env.RI_LAB_ANTHROPIC_MAX_USD = '0.10';
+process.env.RI_LAB_SPEND_GUARD_MODE = 'memory';
 const badResult = await badJson.execute({
   analysisType: 'Applicability Recommendation',
+  useCaseId: 'UC-RI-004',
   context: { sourceSections: [{ sourceSectionId: 'SRCSEC-001', text: 't' }] },
 });
+if (prevGuardMode === undefined) delete process.env.RI_LAB_SPEND_GUARD_MODE;
+else process.env.RI_LAB_SPEND_GUARD_MODE = prevGuardMode;
+if (prevBudget === undefined) delete process.env.RI_LAB_ANTHROPIC_MAX_USD;
+else process.env.RI_LAB_ANTHROPIC_MAX_USD = prevBudget;
 if (badResult.code === 'AI_OUTPUT_SCHEMA_INVALID') pass('invalid JSON from provider');
 else failMsg('invalid JSON from provider');
 

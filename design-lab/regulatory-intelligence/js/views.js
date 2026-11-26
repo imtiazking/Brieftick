@@ -48,6 +48,7 @@ import {
   personName,
 } from './store.js';
 import { connectedCatalogueBanner, getConnectedCatalogue, getConnectedAssigneeLabel, isConnectedCatalogueReady } from './platform/connected-catalogue.js';
+import { renderConnectedCalendarShell } from './platform/connected-calendar.js';
 import { getConnectedDashboardMetrics } from './platform/connected-notifications.js';
 import { renderTriageBoard, renderTriageScreen } from './platform/connected-triage.js';
 import {
@@ -1928,13 +1929,10 @@ function libraryDataTable(headers, rows, empty) {
 function viewCalendar() {
   const s = getState();
   if (isConnectedBackendActive(s)) {
-    return renderConnectedUnavailableView(
-      'Regulatory Calendar',
-      'Connected read-only',
-      `<p class="ri-alert ri-alert--readonly">Tenant regulatory calendar events are not available on the connected lab API.</p>
-       <p class="ri-muted">Use Publications Library or Horizon for catalogue publication dates. Demo calendar seed data is hidden in Connected mode.</p>`,
-      '<p><a href="#/library">Publications Library</a> · <a href="#/horizon">Horizon</a></p>',
-    );
+    // Tenant deadlines come from GET /api/ri-lab/calendar; demo calendar seed data stays hidden in Connected mode.
+    return `${pageHeader('Regulatory Calendar', 'Connected tenant calendar')}
+      ${connectedCatalogueBanner(s)}
+      ${renderConnectedCalendarShell()}`;
   }
   const defaultWindow = 90;
   const events = [...filterCalendarEvents(s.calendarEvents)]

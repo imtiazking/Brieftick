@@ -148,8 +148,18 @@ const state = {
   },
 };
 
+// Stage C policy: a cited catalogue answer is capped at PARTIAL_ANSWER while regulatory human review is pending or the
+// source must not be presented as a binding obligation. A cited answer with neither condition must be a full ANSWERED.
+const stageCCompliant = (r) => {
+  if (r.stageC?.applied !== true) return false;
+  const limited =
+    r.execution?.mustNotPresentAsBindingObligation === true ||
+    (Boolean(r.execution?.humanReviewStatus) && r.execution.humanReviewStatus !== 'NOT_REQUIRED');
+  return r.status === 'PARTIAL_ANSWER' ? limited : r.status === 'ANSWERED' && !limited;
+};
+
 const htmlOnly = runAskRiDeterministic(state, HTML_ONLY_QUESTION);
-if (htmlOnly.status === 'ANSWERED' && htmlOnly.citations?.length >= 1) pass('pipeline HTML-only ANSWERED');
+if (stageCCompliant(htmlOnly) && htmlOnly.citations?.length >= 1) pass(`pipeline HTML-only cited answer (${htmlOnly.status}), Stage C applied`);
 else failMsg(`HTML-only pipeline ${htmlOnly.status} citations ${htmlOnly.citations?.length ?? 0}`);
 
 if (!String(htmlOnly.answer || '').includes('pdf_primary_v1 revision is indexed')) {
@@ -157,8 +167,8 @@ if (!String(htmlOnly.answer || '').includes('pdf_primary_v1 revision is indexed'
 } else failMsg('PDF-missing boilerplate leaked into HTML-only answer');
 
 const combined = runAskRiDeterministic(state, CONSUMER_DUTY_FAIR_VALUE_ASK_RI_QUESTION);
-if (combined.status === 'ANSWERED' && combined.citations?.length >= 1) {
-  pass('pipeline combined question keeps HTML ANSWERED without PDF');
+if (stageCCompliant(combined) && combined.citations?.length >= 1) {
+  pass(`pipeline combined question keeps HTML cited answer (${combined.status}) without PDF`);
 } else failMsg(`combined pipeline ${combined.status}`);
 
 const trace = buildAskRiEvidenceTrace(state, htmlOnly);

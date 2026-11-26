@@ -164,8 +164,18 @@ const htmlRun = runAskRiDeterministic(
 );
 if (htmlRun.execution?.evidenceSource === 'html_article_v2') pass('html-only run uses html_article_v2');
 else failMsg(`html-only evidence source ${htmlRun.execution?.evidenceSource}`);
-if (htmlRun.status === 'ANSWERED') pass('html-only ANSWERED without pdf_primary_v1');
-else failMsg(`html-only status ${htmlRun.status}`);
+// Stage C policy: a cited catalogue answer is capped at PARTIAL_ANSWER while regulatory human review is pending or the
+// source must not be presented as a binding obligation. A cited answer with neither condition must be a full ANSWERED.
+const stageCCompliant = (r) => {
+  if (r.stageC?.applied !== true) return false;
+  const limited =
+    r.execution?.mustNotPresentAsBindingObligation === true ||
+    (Boolean(r.execution?.humanReviewStatus) && r.execution.humanReviewStatus !== 'NOT_REQUIRED');
+  return r.status === 'PARTIAL_ANSWER' ? limited : r.status === 'ANSWERED' && !limited;
+};
+if (stageCCompliant(htmlRun) && (htmlRun.citations?.length || 0) >= 1) {
+  pass(`html-only cited answer (${htmlRun.status}) without pdf_primary_v1, Stage C applied`);
+} else failMsg(`html-only status ${htmlRun.status}`);
 
 const directAnswer = answerAskRiFromPublicationPdfEvidence(
   enrichedEvidence,
@@ -183,8 +193,8 @@ const answered = runAskRiDeterministic(
 if (answered.execution?.evidenceSource === 'pdf_primary_v1') pass('routed to pdf_primary_v1');
 else failMsg(`evidence source ${answered.execution?.evidenceSource}`);
 
-if (answered.status === 'ANSWERED' && (answered.citations?.length || 0) >= 1) {
-  pass(`ANSWERED with ${answered.citations.length} citations`);
+if (stageCCompliant(answered) && (answered.citations?.length || 0) >= 1) {
+  pass(`${answered.status} with ${answered.citations.length} citations, Stage C applied`);
 } else failMsg(`status ${answered.status} citations ${answered.citations?.length ?? 0}`);
 
 if (!String(answered.answer || '').includes('Record records')) pass('no misleading Record fallback copy');

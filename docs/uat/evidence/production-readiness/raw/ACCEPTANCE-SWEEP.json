@@ -1,0 +1,1314 @@
+{
+  "started": "2026-11-26T21:18:27.850Z",
+  "finished": "2026-11-26T21:45:43.960Z",
+  "timeoutMs": 240000,
+  "paidAiCredentialsInChildEnv": false,
+  "total": 186,
+  "completed": 186,
+  "passed": 174,
+  "failed": 11,
+  "timedOut": 1,
+  "results": [
+    {
+      "file": "acceptance-ai-providers.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 103,
+      "tail": "PASS: live provider fallback guard\nPASS: fixture health-check and operational run evidence\nPASS: Anthropic configured check\nPASS: AI Operations displays provider labels\n\nAI providers acceptance: PASS\n"
+    },
+    {
+      "file": "acceptance-anthropic-eval-reasoner.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 109,
+      "tail": "OK: retry after thinking exhaustion succeeds\nOK: retry usage counted toward spend\nOK: default eval token ceilings\nOK: partial json truncation kind\n{\"ok\":true,\"passed\":4}\n"
+    },
+    {
+      "file": "acceptance-anthropic-messages-v2.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 96,
+      "tail": "inking-only without max_tokens stays AI_EMPTY_RESPONSE_CONTENT\nOK: request includes max_tokens, adaptive thinking, output_config.effort\nOK: 404 maps with requestReachedProvider\n{\"ok\":true,\"passed\":6}\n"
+    },
+    {
+      "file": "acceptance-anthropic-provider.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "ms": 153,
+      "tail": "PASS: parseAnthropicJsonText\nPASS: map auth failure\nPASS: execution disabled blocks API\nFAIL: mock success {\"ok\":false,\"code\":\"LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED\",\"message\":\"Live Anthropic execution is not authorised for use case \\\"UC-RI-003\\\": it is not covered by the shared spend ledger.\",\"spendAudit\":null,\"failClosed\":true}\nFAIL: schema validation\nPASS: citation validation valid ids\nPASS: citation validation rejects missing section\nFAIL: invalid JSON from provider\nPASS: registry defines live fallback guard\n\nAnthropic provider acceptance: FAIL (3)\n"
+    },
+    {
+      "file": "acceptance-anthropic-sonnet-55-compat.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 145,
+      "tail": "-008_still_allowed\nPASS: unbudgeted_not_enforced_when_disabled\nPASS: posture_disabled_state\nPASS: posture_live_state\nPASS: posture_never_contains_secrets\n\nacceptance-anthropic-sonnet-55-compat: PASS\n\n"
+    },
+    {
+      "file": "acceptance-ask-ri-eval-harness.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1092,
+      "tail": "v2-2026-11-10.json\nOK: hash stable: C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\docs\\eval\\baseline\\deterministic-v2.1-2026-11-10.json\n{\"ok\":true,\"checks\":\"acceptance-ask-ri-eval-harness\"}\n"
+    },
+    {
+      "file": "acceptance-ask-ri-v2-reasoner.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 115,
+      "tail": "ble\nOK: empty reasoner schema\nOK: sample model output schema\nOK: verifier passes aligned excerpt\nOK: verifier rejects excerpt mismatch\nOK: canonicalize whitespace\n{\"ok\":true,\"allowed\":38,\"blocked\":7}\n"
+    },
+    {
+      "file": "acceptance-ask-ri-v2-reference-regression.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 69455,
+      "tail": "w)\nOK: EVAL-G-04 tenant-blocked before provider\nOK: SYSC handbook generic (not publication id)\nOK: structured output compat metadata for claude-haiku-5-5\n{\"ok\":true,\"defaultModel\":\"claude-haiku-5-5\"}\n"
+    },
+    {
+      "file": "acceptance-design-lab-dashboard-startup-smoke.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 6504,
+      "tail": " module console errors\nPASS: publications library view\nPASS: publication detail opens\nPASS: obligations register\nPASS: AI governance page\nacceptance-design-lab-dashboard-startup-smoke: 9 pass, 0 fail\n"
+    },
+    {
+      "file": "acceptance-design-lab-governance-patch-feedback.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 426,
+      "tail": " finding href on assurance detail\nPASS: detail_revalidate — catalogue hydrates findings and revalidates governance entities\nPASS: risk_action_binding — risk governance actions bound after renderShell\n"
+    },
+    {
+      "file": "acceptance-embedded-pg-registry.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 22778,
+      "tail": "tside PGDATA\nPASS: registry cites dataDir + runId\nPASS: resolveEmbeddedDataDirOwner matches\nPASS: stop removes data dir\nPASS: registry cleaned for stopped session\nPASS acceptance-embedded-pg-registry\n"
+    },
+    {
+      "file": "acceptance-eval-case-filter.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 55003,
+      "tail": "sd\":0,\"inputTokens\":0,\"outputTokens\":0,\"requestCount\":0,\"reservedUsd\":0.0126,\"stopped\":false,\"stopReason\":null,\"pendingReserveUsd\":0}}\nOK: dry-run executes filtered single case\n{\"ok\":true,\"passed\":5}\n"
+    },
+    {
+      "file": "acceptance-eval-runner-progress.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 625,
+      "tail": "reserve estimate in expected range\nOK: estimatedUsd reconciles after finalize\nOK: atomic checkpoint overwrite\nOK: progress event format\nOK: wall-clock timeout on slow body read\n{\"ok\":true,\"passed\":5}\n"
+    },
+    {
+      "file": "acceptance-evidence-coverage-integration.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 57787,
+      "tail": "orer=FAIL\n{\n  \"ok\": true,\n  \"out\": \"C:\\\\Users\\\\imtia\\\\AppData\\\\Local\\\\forgeniq-ri-classification\\\\docs\\\\eval\\\\EVIDENCE-COVERAGE-INTEGRATION-RESULTS.json\",\n  \"failures\": [],\n  \"programmePass\": false\n}\n"
+    },
+    {
+      "file": "acceptance-evidence-coverage-missing-provision.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 53319,
+      "tail": "IENT harness coverage=UNKNOWN\n{\n  \"ok\": true,\n  \"out\": \"C:\\\\Users\\\\imtia\\\\AppData\\\\Local\\\\forgeniq-ri-classification\\\\docs\\\\eval\\\\EVIDENCE-COVERAGE-MISSING-PROVISION-RESULTS.json\",\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-evidence-coverage-policy-unit.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 101,
+      "tail": "K: hybrid retrieval strength uses semanticSimilarity not RRF\nOK: weak semantic similarity stays UNKNOWN\nOK: COBS absent handbook — cross-refs do not establish KNOWN\n{\n  \"ok\": true,\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-evidence-grounded-reasoning.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 108821,
+      "tail": "FICIENT: coverage=KNOWN policy=ANSWERED scorer=PARTIAL_PASS\nPilot EVAL-C-02 SUFFICIENT: coverage=KNOWN policy=ANSWERED scorer=PARTIAL_PASS\n{\n  \"ok\": true,\n  \"programmePass\": false,\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-evidence-quality-metrics.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 97,
+      "tail": "ull,\n    \"correctAbstentionMissingSource\": 13,\n    \"correctPartialConfirmed\": 6,\n    \"note\": \"falseAbstentionRate requires SME-labelled gold set — independent acceptance only\"\n  },\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-experimental-ai-tenant-guard.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 92,
+      "tail": "lag on for AI Development only\nOK: AI Development org allowed for UC-RI-005\nOK: ai-analysis imports experimental tenant guard\nOK: ai-materialisation imports experimental tenant guard\n{\n  \"ok\": true\n}\n"
+    },
+    {
+      "file": "acceptance-genuine-partial-evidence.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 50871,
+      "tail": ": unresolved aspects disclosed in answer\n{\n  \"ok\": true,\n  \"out\": \"C:\\\\Users\\\\imtia\\\\AppData\\\\Local\\\\forgeniq-ri-classification\\\\docs\\\\eval\\\\GENUINE-PARTIAL-EVIDENCE-RESULTS.json\",\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-governance-workflow-events.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 90,
+      "tail": "ernance service uses occurred_at\nPASS: governance service has no created_at\nPASS: governance page uses occurred_at\nPASS: governance page has no created_at\n\nGovernance workflow_events acceptance: PASS\n"
+    },
+    {
+      "file": "acceptance-impact-draft-save.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 10498,
+      "tail": "ct owner\nPASS: business area dimensions persisted\nPASS: save draft does not duplicate impact assessment\nPASS: COMPLIANCE_MANAGER in same org can read impact (RLS)\n\nImpact draft save acceptance: PASS\n\n"
+    },
+    {
+      "file": "acceptance-impact-governance-transitions.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 89,
+      "tail": "ded after successful status update\nPASS: optimistic status guard on workflow update\nPASS: UI hides approve/reject unless IN_REVIEW\nPASS: SoD unchanged on approve\n\nImpact governance transitions: PASS\n\n"
+    },
+    {
+      "file": "acceptance-independent-regulatory-gated.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 84,
+      "tail": "{\n  \"ok\": true,\n  \"gated\": true,\n  \"executed\": false,\n  \"out\": \"C:\\\\Users\\\\imtia\\\\AppData\\\\Local\\\\forgeniq-ri-classification\\\\docs\\\\eval\\\\INDEPENDENT-REGULATORY-ACCEPTANCE-RESULT.json\"\n}\n"
+    },
+    {
+      "file": "acceptance-lab-org-selection-browser.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 10748,
+      "tail": ": #/library shows selection gate, not cached tenant views\nPASS: no tenant data served for non-member organisation\nPASS: no uncaught page errors\nacceptance-lab-org-selection-browser: PASS (0 failures)\n"
+    },
+    {
+      "file": "acceptance-lab-org-selection-gate.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 91,
+      "tail": "ty gate distinguishes org selection\nPASS: lab connectivity sets org_selection_required mode\nPASS: invalid cookie with multiple memberships requires selection\n\nacceptance-lab-org-selection-gate: PASS\n\n"
+    },
+    {
+      "file": "acceptance-pdf-grounded-uc-005.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "ms": 544,
+      "tail": "FAIL: supabase admin credentials missing\n"
+    },
+    {
+      "file": "acceptance-phase-2-platform.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 98,
+      "tail": " exists\nPASS: lib/roles.ts exists\nPASS: tenancy documentation\nPASS: no Supabase Auth in env contract\nPASS: phase 2 platform structure\nPASS: frozen RI untouched path\n\nPhase 2 platform acceptance: PASS\n"
+    },
+    {
+      "file": "acceptance-phase-2-tenant-isolation.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 101,
+      "tail": "ASS: user Supabase path avoids service role\nPASS: /ri avoids Design Lab / Ask RI imports\nPASS: 53 migration file(s)\nPASS: regulatory-source baseline present\n\nPhase 2 tenant isolation acceptance: PASS\n"
+    },
+    {
+      "file": "acceptance-phase-2b2-bm25-hybrid.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 102,
+      "tail": "{\"ok\":true,\"tests\":[\"tokenize\",\"bm25_rank\"]}\n"
+    },
+    {
+      "file": "acceptance-phase-2b2-evidence-provenance.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 94,
+      "tail": "PASS: synthetic fixture pack rejected\nPASS: catalogue abstract rejected\nPASS: verified extraction pack accepted\nPASS: unverified pack fails closed\nPASS: fixture classified as SYNTHETIC_FIXTURE\n"
+    },
+    {
+      "file": "acceptance-phase-2b2-html-chunk-coverage.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 518,
+      "tail": "within index max\nPASS: no silent text loss on split\nPASS: indexed chunks produced\nPASS: zero excluded sections\nPASS: all indexed chunks <= 450\n{\"ok\":true,\"acceptance\":\"phase-2b2-html-chunk-coverage\"}\n"
+    },
+    {
+      "file": "acceptance-phase-2b2-semantic-authority-gate.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 108,
+      "tail": "FDA question blocks semantic\nPASS: Basel-as-authority blocks without FCA\nPASS: FCA + Basel discussion allowed\nPASS: FCA fair value allowed\n{\"ok\":true,\"acceptance\":\"phase-2b2-semantic-authority-gate\"}\n"
+    },
+    {
+      "file": "acceptance-phase-3-ri-schema.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 166,
+      "tail": "Phase 3 static schema acceptance (live DB: test:acceptance:phase3a)\n\nPhase 3 RI schema acceptance: PASS\nLOCAL DB MIGRATION TEST: NOT CONFIGURED (run npm run test:acceptance:phase3a for live local DB)\n"
+    },
+    {
+      "file": "acceptance-phase-3a-local-db.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 27282,
+      "tail": "ists\nPASS: Clean migration run #2 completed\nPASS: Clean migration run #1\nPASS: Clean migration run #2\nPASS: DATABASE REPRODUCIBILITY\n\nPhase 3A local DB acceptance: PASS\nDATABASE REPRODUCIBILITY: PASS\n"
+    },
+    {
+      "file": "acceptance-phase-4-ri-workflow.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 10343,
+      "tail": " see ORG-A changes (DB)\nPASS: local DB: workflow events recorded\nPASS: local DB: traceability Publication → Change → Obligation\nPASS: frozen design-lab untouched\n\nPhase 4 RI workflow acceptance: PASS\n"
+    },
+    {
+      "file": "acceptance-phase-5-ri-downstream.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 18425,
+      "tail": " in trace service\nPASS: derived overdue documented\nPASS: no Ask RI in downstream lifecycle code (Ask RI module isolated)\nPASS: subnav /ri/policies\nPASS: subnav /ri/controls\nPASS: subnav /ri/assurance\n"
+    },
+    {
+      "file": "acceptance-phase-6-ri-ingestion.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 11893,
+      "tail": "tor without an active classification policy (PSR) refused (fail closed)\nPASS: local DB: downstream workflow regression: manual Publication → Change → Obligation\n\nPhase 6 RI ingestion acceptance: PASS\n"
+    },
+    {
+      "file": "acceptance-phase-7-ri-ingestion-ops.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 10697,
+      "tail": "events recorded\nPASS: local DB: no downstream auto-create\nPASS: local DB: production sources remain NOT_ENABLED\nPASS: local DB: source operations configured\n\nPhase 7 RI ingestion ops acceptance: PASS\n"
+    },
+    {
+      "file": "acceptance-phase-7b-ri-experience-parity.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 202,
+      "tail": " connector SRC-TPR-DOCUMENT-LIBRARY\nPASS: connector SRC-BASEL-FRAMEWORK\nPASS: no ENABLED in catalogue defaults\nPASS: npm script test:acceptance:phase7b\n\nPhase 7B RI experience parity acceptance: PASS\n"
+    },
+    {
+      "file": "acceptance-phase-7b2-design-lab-migration.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 163,
+      "tail": "ue\nPASS: 41 sources in shared catalogue\nPASS: zero production-enabled catalogue sources\nPASS: FCA status layers\nPASS: parity doc MIGRATE_NOW taxonomy\n\nPhase 7B.2 Design Lab migration acceptance: PASS\n"
+    },
+    {
+      "file": "acceptance-phase-7c1-golden-master.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 329,
+      "tail": "d.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "file": "acceptance-phase-7c2-golden-master.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 371,
+      "tail": "d.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "file": "acceptance-phase-7c3-golden-master.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 351,
+      "tail": "d.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "file": "acceptance-phase-7c4-golden-master.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 344,
+      "tail": "d.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "file": "acceptance-phase-7c5-golden-master.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 379,
+      "tail": "d.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "file": "acceptance-phase-7c6-golden-master.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 221,
+      "tail": "ule syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n"
+    },
+    {
+      "file": "acceptance-phase-7c6a-golden-master.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 10600,
+      "tail": "ueue state\nPASS: local DB: I: ORG-B-only user cannot read pilot AI run\nPASS: local DB: D: partial acceptance indexes\nPASS: local DB: autonomy guard present\n\nPhase 7C.6A golden master acceptance: PASS\n"
+    },
+    {
+      "file": "acceptance-phase-7c7-ask-ri-golden-master.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 11349,
+      "tail": "nsupported regulator blocked safely\nPASS: local DB: F: zero/unresolved not false answer\nPASS: local DB: J: ORG-B cannot read ORG-A obligation via RLS\n\nPhase 7C.7 Ask RI golden master acceptance: PASS\n"
+    },
+    {
+      "file": "acceptance-phase-8-bus-uat-018-ask-ri-lab-html.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 243,
+      "tail": "e this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "file": "acceptance-phase-8-bus-uat-018-ask-ri-pipeline.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "ms": 342,
+      "tail": "(node:56068) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/lib/ri/ask-ri/port/ai/ri-retrieval.js is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\nPASS: HTML-only question does not request PDF supplement\nPASS: combined question requests PDF supplement\nFAIL: HTML-only pipeline PARTIAL_ANSWER citations 1\nPASS: HTML-only answer not replaced by PDF-missing boilerplate\nFAIL: combined pipeline PARTIAL_ANSWER\nPASS: trace reports loaded html evidence\nPASS: attach resolves fair value publication id\n"
+    },
+    {
+      "file": "acceptance-phase-8-bus-uat-018-ask-ri-publication-title.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "ms": 256,
+      "tail": "x was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\nPASS: Consumer Duty question detected as publication-scoped\nPASS: tenant-only question not publication-scoped\nPASS: Fair value evidence match score 83\nPASS: Best evidence selects Fair value publication\nPASS: html_article_v2 direct answer with 4 citation(s)\nPASS: html citation includes canonical webpage URL\nPASS: html-only run uses html_article_v2\nFAIL: html-only status PARTIAL_ANSWER\nPASS: direct PDF answer with 1 citation(s)\nPASS: routed to pdf_primary_v1\nFAIL: status PARTIAL_ANSWER citations 1\nPASS: no misleading Record fallback copy\nPASS: empty catalogue stays on publication evidence plan\nPASS: empty PDF avoids Record message\n"
+    },
+    {
+      "file": "acceptance-phase-8-bus-uat-018-citation-labels.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 105,
+      "tail": "xed\nPASS: citation medium counts\nPASS: citation types override stale pdf_primary_v1 execution metadata\nPASS: HTML heading-derived section blocks\n\nacceptance-phase-8-bus-uat-018-citation-labels: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-bus-uat-018-fg22-html-exclusion.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 120,
+      "tail": "PASS: staging partial FG22 html revision excluded from substantive Ask RI HTML path\nALL PASS\n"
+    },
+    {
+      "file": "acceptance-phase-8-bus-uat-018-fg22-ingest.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 121,
+      "tail": " Fair value publication id\nPASS: external_document_id FG22/5\nPASS: canonical publication identity is official FG22/5 PDF URL\nPASS: version source_hash anchors to verified primary PDF SHA-256\nALL PASS\n"
+    },
+    {
+      "file": "acceptance-phase-8-bus-uat-018-mixed-answer.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 291,
+      "tail": "ers merged result.answer for mixed evidence\nPASS: mapper merges mixed key findings\nPASS: runner attaches mixed answer and key findings on execution\n\nacceptance-phase-8-bus-uat-018-mixed-answer: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-bus-uat-018-pdf-ranking.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 119,
+      "tail": "SS: pdf path answers with multiple citations\nPASS: answered citations include chapter 7 physical pages\nPASS: citation carries FCA PDF page deep link\n\nacceptance-phase-8-bus-uat-018-pdf-ranking: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-design-lab-adapter-contract.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 3150,
+      "tail": "ule syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n"
+    },
+    {
+      "file": "acceptance-phase-8-design-lab-views-imports.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 3489,
+      "tail": "sign-lab: checked 202 named imports in views.js\nPASS: design-lab-bundle: checked 202 named imports in views.js\nPASS: bundle governance-views exports renderDashboardGovernanceSummaryConnected\nALL PASS\n"
+    },
+    {
+      "file": "acceptance-phase-8-fg22-append-only-recovery.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 144,
+      "tail": "ASS: partial ingest recovery targets pdf_primary_v1 continuation\nPASS: recovery preserves html revision and inserts pdf only\nPASS: recovery documents forbidden UPDATE on extraction revisions\nALL PASS\n"
+    },
+    {
+      "file": "acceptance-phase-8-ri-ux-002-notif-001.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 365,
+      "tail": "ype keyword\nPASS: ri_notif_case — case-insensitive title match\nPASS: ri_notif_combined — combined filters\nPASS: ri_notif_clear — default query shows all\n\nacceptance-phase-8-ri-ux-002-notif-001: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-security-rls.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 277,
+      "tail": "n text\n\nSKIP: embedded DB tests (run with --local-db)\n\n\nPhase 8 security RLS acceptance: PASS\nNOTE: After migration on lhgzdicffkhaaykzthep, run bootstrap-platform-operator.mjs for RI admin Clerk id.\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-81b-lab-connectivity.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 375,
+      "tail": " fetch without service role\nPASS: design-lab api adapter implements connected bootstrap\nPASS: createApiPlatformAdapter exposes bootstrap and probe\n\nacceptance-phase-8-step-81b-lab-connectivity: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-81d-ask-ri-pdf-routing.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 361,
+      "tail": "ge\nPASS: tenant question uses tenant_ri_records path\nPASS: tenant question not forced to pdf plan\nPASS: unsupported question uses tenant planner\n\nacceptance-phase-8-step-81d-ask-ri-pdf-routing: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-83a-connected-route-integrity.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 105,
+      "tail": "wareness\nPASS: tpr-views.js connected awareness\nPASS: basel-views.js connected awareness\nPASS: ai-governance-views.js connected awareness\n\nacceptance-phase-8-step-83a-connected-route-integrity: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-83f1-board-pdf.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 96,
+      "tail": "S: operational scope in PDF\nPASS: no question-mark mojibake in title\nPASS: activity-in-period figures in PDF\nPASS: no cross-tenant id injected in fixture\nPASS: no invented compliance score disclaimer\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-83f1-evidence-upload-safety.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "ms": 167,
+      "tail": "nal/modules/cjs/loader:1503\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\scripts\\acceptance-phase-8-step-83f1-evidence-upload-safety.run.mjs'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1500:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1116:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1285:25)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.16.0\r\nFAIL: tsx runtime upload safety checks\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-action-compliance.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 106,
+      "tail": "eateIdempotencyKey replay\nPASS: workflow_entity — entity audit after action create\nPASS: provenance — UAT actions excluded from operational scope\n\nacceptance-phase-8-step-85w-action-compliance: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-action-form-hydration.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 95,
+      "tail": "chFields\nPASS: status_helper — normalizeActionStatusCode\nPASS: norm_display — In progress → IN_PROGRESS\nPASS: norm_db — IN_PROGRESS preserved\n\nacceptance-phase-8-step-85w-action-form-hydration: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-action-idempotency.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 104,
+      "tail": "e\nPASS: entity_refresh — entity audit refresh wrapped\nPASS: client_key — panel-scoped idempotency key\nPASS: toast_id — Action created shows UUID\n\nacceptance-phase-8-step-85w-action-idempotency: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-action-patch-audit.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 99,
+      "tail": "lan\nPASS: both_changed — audit plan\nPASS: noop_save — audit plan\nPASS: helpers — action-update-audit.ts\nPASS: frontend — dirty-only action PATCH\n\nacceptance-phase-8-step-85w-action-patch-audit: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-assurance-uat.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 111,
+      "tail": " hydration\nPASS: app_wiring — app handlers wired\nPASS: register_ui — operational vs UAT registers\nPASS: migration — assurance_reviews.metadata column\n\nacceptance-phase-8-step-85w-assurance-uat: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-bootstrap-architecture.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 271,
+      "tail": "re_fn — canRestore fresh session\nPASS: apply_restore — applyPersistedConnectedRestore sets backendReady\nPASS: watchdog_ms — watchdog 25000ms\n\nacceptance-phase-8-step-85w-bootstrap-architecture: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-control-save-persist.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 86,
+      "tail": "rface to toast\nPASS: workflow_panel — CONTROL_CREATED visible via entity workflow fetch\nPASS: delegation — Save survives Design Lab re-renders\n\nacceptance-phase-8-step-85w-control-save-persist: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-design-lab-prebuild-sync.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 2984,
+      "tail": "otstrap — survives prebuild\nPASS: bundle_api_adapter_probe — survives prebuild\nPASS: bundle_lab_connectivity_bootstrap — survives prebuild\n\nacceptance-phase-8-step-85w-design-lab-prebuild-sync: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-evidence-file-access.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 92,
+      "tail": "s — audit event types registered\nPASS: ui_actions — per-version preview/download actions\nPASS: client_api — connected preview/download helpers\n\nacceptance-phase-8-step-85w-evidence-file-access: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-evidence-uat.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 99,
+      "tail": "rols_api — linkedControls on detail API\nPASS: migrate_stale — stale evidence cache purge on load\nPASS: file_access — historical version download route\n\nacceptance-phase-8-step-85w-evidence-uat: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-finding-detail-render-loop.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 91,
+      "tail": "oader wired\nPASS: finding_render_loop — finding schedules omit renderShell on fulfilled\nPASS: view_boundary — viewFinding error boundary\n\nacceptance-phase-8-step-85w-finding-detail-render-loop: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-findings-schedule-promise.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 93,
+      "tail": "e\nPASS: app_finding_safe — runScheduledTask wraps finding workflow + detail\nPASS: persist_inflight — inflight stripped before persistence\n\nacceptance-phase-8-step-85w-findings-schedule-promise: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-findings-uat.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 105,
+      "tail": "only sessions see risk/control linkage\nPASS: detail_relationships — connected detail includes relationships\nPASS: migration — findings.metadata column\n\nacceptance-phase-8-step-85w-findings-uat: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-risk-control-link-ui.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 91,
+      "tail": "trol uses control UUID target\nPASS: refresh — Linked controls refresh after risk_control\nPASS: api — Backend risk_control link type registered\n\nacceptance-phase-8-step-85w-risk-control-link-ui: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8-step-85w-startup-bootstrap.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 86,
+      "tail": "it_nonblocking — catalogue ensure runs after bootstrap without blocking UI\nPASS: migrate_interrupted — interrupted connect state migrates on load\n\nacceptance-phase-8-step-85w-startup-bootstrap: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8b-fca-ingestion.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 10568,
+      "tail": "ganisation_publications auto-created\nPASS: no obligations auto-created\nPASS: no impact assessments auto-created\nPASS: ingestion_items audit rows\n\nacceptance-phase-8b-fca-ingestion: PASS (live=false)\n\n"
+    },
+    {
+      "file": "acceptance-phase-8c-step-80d-ask-ri-production.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "ms": 86,
+      "tail": "esolution (node:internal/modules/esm/resolve:271:11)\r\n    at moduleResolve (node:internal/modules/esm/resolve:865:10)\r\n    at defaultResolve (node:internal/modules/esm/resolve:992:11)\r\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:691:20)\r\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:708:38)\r\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:740:52)\r\n    at #resolve (node:internal/modules/esm/loader:673:17)\r\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:593:35)\r\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33)\r\n    at ModuleJob.link (node:internal/modules/esm/module_job:253:17) {\r\n  code: 'ERR_MODULE_NOT_FOUND',\r\n  url: 'file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/integrations/regulatory-sources/fixtures/cp26-38-minimal-pdf.mjs'\r\n}\r\n\r\nNode.js v24.16.0\r\n"
+    },
+    {
+      "file": "acceptance-phase-8c1-snapshot-runtime.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 192,
+      "tail": " no in-memory fallback in staging\nPASS: local uses memory storage by default\nPASS: explicit test override skips remote init\nPASS: missing bucket rejected\n\nacceptance-phase-8c1-snapshot-runtime: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8c1-snapshot-storage-contract.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 102,
+      "tail": "PASS: content-addressed stable paths\nPASS: four objects uploaded\nPASS: integrity on conflicting re-upload\n\nacceptance-phase-8c1-snapshot-storage-contract: PASS\n\n"
+    },
+    {
+      "file": "acceptance-phase-8c1-source-snapshots.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 10999,
+      "tail": "without evidenceCapture fails and leaves publication unchanged\nPASS: invalid source fingerprint fails closed\nPASS: existing-object hash mismatch rejected\n\nacceptance-phase-8c1-source-snapshots: PASS\n\n"
+    },
+    {
+      "file": "acceptance-platform-foundation.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "ms": 1391,
+      "tail": "PASS: no hard-coded secrets in platform sources\nFAIL: forbidden import reference design-lab/regulatory-intelligence in C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\lib\\design-lab-static.ts\nPASS: no design lab / production MI shell / connector imports (ingestion adapter exempt)\nPASS: service role not referenced from client paths\nPASS: / route file exists\nPASS: /ri route file exists\nPASS: /health route file exists\nPASS: /sign-up route file exists\nPASS: /sign-up is a public route in middleware\nPASS: frozen RI path present\nFAIL: unexpected frozen RI working tree changes beyond verification artefacts\nPASS: production build output present\n\nPlatform foundation acceptance: FAIL (2)\n"
+    },
+    {
+      "file": "acceptance-production-coverage-unseen-questions.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 66548,
+      "tail": "UNKNOWN policy=INSUFFICIENT_EVIDENCE\n{\n  \"ok\": true,\n  \"out\": \"C:\\\\Users\\\\imtia\\\\AppData\\\\Local\\\\forgeniq-ri-classification\\\\docs\\\\eval\\\\PRODUCTION-COVERAGE-UNSEEN-QUESTIONS.json\",\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-provider-diagnostics-safety.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 92,
+      "tail": "Message\nOK: sanitised failure diag passes assert\nOK: per-attempt summaries retained\nOK: forbidden extra keys stripped\nOK: attempt diag passes assert\nOK: blank requestId omitted\n{\"ok\":true,\"passed\":5}\n"
+    },
+    {
+      "file": "acceptance-ps26-1-extraction-controlled.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 7842,
+      "tail": "ng human (expected pre-ingest)\n{\n  \"ok\": true,\n  \"out\": \"C:\\\\Users\\\\imtia\\\\AppData\\\\Local\\\\forgeniq-ri-classification\\\\docs\\\\eval\\\\FCA-PS26-1-EXTRACTION-ACCEPTANCE-READINESS.json\",\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-ps26-1-lab-anthropic-budget-guard.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 113,
+      "tail": ": invalid RI_LAB_ANTHROPIC_MAX_USD rejected\nOK: trial idempotency suffix accepted\nOK: wrong idempotency suffix rejected\nOK: tracker settle path exercised\n{\n  \"programmePass\": true,\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-ps26-1-output-tracing.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 93,
+      "tail": "traced: lib/ri/ingestion/snapshot/create-primary-pdf-extraction-revision.mjs\nOK: traced: integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf\n{\n  \"programmePass\": true,\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-ps26-1-pdf-runtime-smoke-local.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1093,
+      "tail": "ected\": 3\n  },\n  \"guards\": {\n    \"aiExecutionEnabled\": false,\n    \"anthropicConfigured\": false,\n    \"note\": \"No Anthropic execution performed; configuration flag reported only.\"\n  },\n  \"errors\": []\n}\n"
+    },
+    {
+      "file": "acceptance-ps26-1-persist-controlled-dry-run.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1017,
+      "tail": "Warning: TT: undefined function: 21\n{\n  \"ok\": true,\n  \"out\": \"C:\\\\Users\\\\imtia\\\\AppData\\\\Local\\\\forgeniq-ri-classification\\\\docs\\\\eval\\\\PS26-1-PERSIST-CONTROLLED-DRY-RUN.json\",\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-ps26-1-persist-controlled-offline.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1510,
+      "tail": "erator flag\nOK: rejects wrong PDF bytes\n{\n  \"ok\": true,\n  \"out\": \"C:\\\\Users\\\\imtia\\\\AppData\\\\Local\\\\forgeniq-ri-classification\\\\docs\\\\eval\\\\PS26-1-PERSIST-CONTROLLED-OFFLINE.json\",\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-ps26-1-runtime-deps.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1122,
+      "tail": "bytes\nWarning: TT: undefined function: 21\nOK: pdf extract 108 pages\nOK: create-primary-pdf-extraction-revision exports\nOK: regulatory-pdf-analysis export\n{\n  \"programmePass\": true,\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-ps26-1-uc-ri-005-execution-controls.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 110,
+      "tail": "euses in-flight slot (same process idempotency)\nOK: concurrent second org rejected (single in-process trial slot)\nOK: multi-instance concurrency handling documented\n{\n  \"ok\": true,\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-publication-obligation-tenant-isolation.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 97,
+      "tail": "tenant publication lookup\nOK: analysis runs scoped by organisation_id\nOK: Partner UAT cannot start UC-RI-005\nOK: no autonomous obligation materialisation\n{\n  \"programmePass\": true,\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-publication-source-verification.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 133,
+      "tail": "ers\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\nacceptance-publication-source-verification: PASS\n"
+    },
+    {
+      "file": "acceptance-ri-ai-finding-review-local-db.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 14164,
+      "tail": "materialised obligations stay DRAFT\nPASS: no manual obligations were created or altered by the function\nPASS: rollback script refuses to drop existing per-finding review evidence\n\n52 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-ai-finding-review-service.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 18533,
+      "tail": "gation_after_human_review/DRAFT/user_gmail_requester → segregation_of_duties\nPASS: draft guard materialise_draft_obligation_after_human_review/DRAFT/user_yahoo_reviewer → allowed\n\n32 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-ai-review-maker-checker.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 134,
+      "tail": "ard_ai_assisted_obligation_insert\nOK: migration defines ri_guard_ai_assisted_change_insert\nOK: migration defines ri_guard_ai_review_sod\nOK: migration pins pilot to AI Development org\n{\n  \"ok\": true\n}\n"
+    },
+    {
+      "file": "acceptance-ri-ai-run-finalisation.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "ms": 373,
+      "tail": "w of a RUNNING run refused (analysis_not_completed)\nPASS: no review row written\nPASS: ACCEPTED of a completed UC-RI-005 run refused\nPASS: PARTIALLY_ACCEPTED of a completed UC-RI-005 run refused\nPASS: no review or obligation written for refused acceptance\nPASS: direct materialisation refused by the autonomous-action guard; no obligation written\nPASS: live UC-RI-005 RUNNING run shown in the authorised UAT history\nPASS: live UC-RI-005 FAILED run shown in the authorised UAT history\nPASS: live UC-RI-005 VALIDATION_FAILED run shown in the authorised UAT history\nPASS: fixture FAILED run not shown as authorised UAT\nPASS: live run without a UC-RI key stays unclassified\nFAIL: success returns request ID, stop reason and token usage\nFAIL: metadata carries text length only, not the text\nFAIL: spend audit settled with actual tokens\nFAIL: provider error returns HTTP status and request ID\n\n4 failure(s)\n"
+    },
+    {
+      "file": "acceptance-ri-ai-run-retention-local-db.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 10808,
+      "tail": "PASS: rollback restores the delete policy, drops trigger and index, modifies no rows\nPASS: re-apply after rollback succeeds with data unchanged\n\nAI run retention local DB acceptance: PASS — 12 passed\n"
+    },
+    {
+      "file": "acceptance-ri-applicability-guards.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 288,
+      "tail": "e this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "file": "acceptance-ri-applicability-workflow-browser.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 26838,
+      "tail": "PASS: recovery: B approves the same record with rationale intact\nPASS: exactly one assessment overall (1)\nPASS: no uncaught page errors\nacceptance-ri-applicability-workflow-browser: PASS (0 failures)\n"
+    },
+    {
+      "file": "acceptance-ri-assurance-governance-security.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 25083,
+      "tail": "ter reopen\nPASS: reopen then re-close emits second obligation close event\nPASS: cross-tenant evidence access denied (RLS)\nPASS: concurrent/stale closure rejected\n\nAssurance governance security: PASS\n\n"
+    },
+    {
+      "file": "acceptance-ri-assurance-lifecycle-gaps.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 25582,
+      "tail": "re blocked while open findings present\nPASS: formal finding exception accepted\nPASS: lifecycle closed after remediation and retest\nPASS: single lifecycle closed event\n\nAssurance lifecycle gaps: PASS\n\n"
+    },
+    {
+      "file": "acceptance-ri-classification-corpus.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 182,
+      "tail": "51 checks)\nPASS: anchor_cases_named_provisions (8 checks)\nPASS: js_vocabulary_equals_database_function (22 checks)\n\nclassification corpus: 5264 checks, 0 failed\nPASS: regulatory classification corpus\n"
+    },
+    {
+      "file": "acceptance-ri-classification-policy-admin-local-db.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 12037,
+      "tail": " a trimmed reason\nPASS: screen: a proposal built by the screen passes the shared legal validation\nPASS: shared validation refuses Guidance conversion and a policy without UNKNOWN\n\n23 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-classification-policy-core.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 111,
+      "tail": "SS: manual evidential provision without a binding link refused\nPASS: manual evidential provision with a binding link accepted\nPASS: binding link refused on a non-evidential code\n\n118 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-classification-triage-local-db.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 18459,
+      "tail": "SS: operators can read the v2 audit history\nPASS: decisions made under v1 keep their policy reference after v2 activation\nPASS: rollback refuses to discard classification history\n\n99 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-compliance-lifecycle-e2e.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 20798,
+      "tail": "ence\nPASS: Stage 5 independent human assurance closure\nPASS: lifecycle closed on obligation\nPASS: AI cannot re-approve completed impact\nPASS: cross-tenant risk denied\n\nCompliance lifecycle E2E: PASS\n\n"
+    },
+    {
+      "file": "acceptance-ri-connectors-offline.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1110,
+      "tail": "and_allowlisted\nPASS: connector_retrieval_method_declared\nNOTE: catalogue sources without a connector: SRC-OFAC-SDN-LISTS\nPASS: connector_coverage_within_known_gap\n\nPASS: regulator connector contract\n"
+    },
+    {
+      "file": "acceptance-ri-design-lab-audit-history-race.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 619,
+      "tail": "to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\nDesign Lab audit-history race: 18 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-design-lab-release-gate.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 123,
+      "tail": "acceptance-ri-design-lab-release-gate: PASS { missingNamed: true, duplicateDeclaration: true }\n"
+    },
+    {
+      "file": "acceptance-ri-design-lab-terminal.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 361,
+      "tail": "o \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\nDesign Lab terminal acceptance: 55 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-extraction-batch-plan-ps22-gate.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1705,
+      "tail": "p\":16}\nPASS batch 17 output within safety margin {\"est\":1036,\"cap\":6717.44,\"provisions\":6}\nPASS batch 17 input estimate bounded {\"inputEst\":1397}\n\nacceptance-ri-extraction-batch-plan-ps22-gate: PASS\n\n"
+    },
+    {
+      "file": "acceptance-ri-extraction-batch-plan-ps22.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1723,
+      "tail": "Indexes\":[]}\nPASS batch 0 avoids historical 69-provision overshoot {\"count\":16}\nPASS batch 0 under historical failure token estimate {\"estimate\":2820}\n\nacceptance-ri-extraction-batch-plan-ps22: PASS\n\n"
+    },
+    {
+      "file": "acceptance-ri-extraction-batch-plan.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 247,
+      "tail": " coverage ledger tracks outstanding provisions when not complete\nPASS: dedupe key stable\nPASS: final batch reports coverage state consistently\n\nacceptance-ri-extraction-batch-plan: 5 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-extraction-continuation-batch-index.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1171,
+      "tail": "defined function: 21\nPASS continuation plan batch resolves {\"planBatchIndex\":0,\"batches\":5,\"outstanding\":24}\nPASS outstanding provisions remain \nPASS acceptance-ri-extraction-continuation-batch-index\n"
+    },
+    {
+      "file": "acceptance-ri-extraction-output-preflight.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 90,
+      "tail": "large batch fails preflight\nPASS small batch passes preflight\nPASS scaled output cap bounded\nPASS default provision cap is 16\nPASS 22 provisions blocked\nPASS acceptance-ri-extraction-output-preflight\n"
+    },
+    {
+      "file": "acceptance-ri-fca-eval-002-prep.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1521,
+      "tail": "rt escalations present\nWarning: TT: undefined function: 21\nPASS: prep package written\nPASS: run reference and budget documented\nPASS: acceptance criteria complete\nPASS acceptance-ri-fca-eval-002-prep\n"
+    },
+    {
+      "file": "acceptance-ri-finding-reassessment.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 96,
+      "tail": "gReassessment exported\nPASS triage exposes presentation counts\nPASS UI blocks reassess when obligation approved\nPASS presentation counts awaiting first review\nacceptance-ri-finding-reassessment: PASS\n"
+    },
+    {
+      "file": "acceptance-ri-full-publication-simulated-p3.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 2532,
+      "tail": "d) {\"unresolved\":0}\nPASS PS22/9 dedupe recorded \nPASS PS22/9 spend cap respected \nWrote C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\docs\\eval\\FULL-PUBLICATION-SIMULATED-P3-2026-11-22.json\n"
+    },
+    {
+      "file": "acceptance-ri-governance-risk-sod.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 14962,
+      "tail": "pact] notification_fan_out_unrecoverable {\n  impactId: '51c4f32b-969b-4fba-86d5-6df95304dd82',\n  reason: 'fixture_test'\n}\nPASS risk_owner_self_approve — segregation enforced, status remains IN_REVIEW\n"
+    },
+    {
+      "file": "acceptance-ri-guards-and-scheduler-local-db.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 13553,
+      "tail": "t)\nPASS: allowSource filter: only allowlisted sources executed\nPASS: rollback after use: guard objects and submitter column removed, obligation rows untouched\n\nguards + scheduler (local DB): ALL PASS\n"
+    },
+    {
+      "file": "acceptance-ri-lab-ai-analysis-post-guard.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 91,
+      "tail": "ite + ai:request gate\nOK: tenant publication lookup\nOK: delegates to server analysis service\nOK: assertExperimentalAiTenant in requestPublicationAnalysis\n{\n  \"programmePass\": true,\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-ri-lab-scope-registers.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 12453,
+      "tail": "?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\nLab register scoping: 92 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-lifecycle-live-ai.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 278,
+      "tail": "e this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "file": "acceptance-ri-master-proc-liveness.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 176,
+      "tail": ""
+    },
+    {
+      "file": "acceptance-ri-master-runner.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 173,
+      "tail": ""
+    },
+    {
+      "file": "acceptance-ri-master-triple.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "ms": 2215,
+      "tail": "cation ...` to show where the warning was created)\n\n> @forgeniq/platform@0.1.0 test:acceptance\n> node ./scripts/acceptance-platform-foundation.mjs\n\nPASS: no hard-coded secrets in platform sources\nPASS: no design lab / production MI shell / connector imports (ingestion adapter exempt)\nPASS: service role not referenced from client paths\nPASS: / route file exists\nPASS: /ri route file exists\nPASS: /health route file exists\nPASS: /sign-up route file exists\nPASS: /sign-up is a public route in middleware\nPASS: frozen RI path present\nFAIL: unexpected frozen RI working tree changes beyond verification artefacts\nPASS: production build output present\n\nPlatform foundation acceptance: FAIL (1)\n\n[diag] step done Platform foundation (Phase 1) exit=1 signal=null initiator=child 1.6s\n\n\nFAILED: Platform foundation (Phase 1) (1)\n\n\nRI master acceptance: FAIL (1 step(s)) — 1.6s\n\nRI master run 1/3 FAILED (1)\n"
+    },
+    {
+      "file": "acceptance-ri-master.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "ms": 1847,
+      "tail": "ted.\n(Use `node --trace-deprecation ...` to show where the warning was created)\n\n> @forgeniq/platform@0.1.0 test:acceptance\n> node ./scripts/acceptance-platform-foundation.mjs\n\nPASS: no hard-coded secrets in platform sources\nPASS: no design lab / production MI shell / connector imports (ingestion adapter exempt)\nPASS: service role not referenced from client paths\nPASS: / route file exists\nPASS: /ri route file exists\nPASS: /health route file exists\nPASS: /sign-up route file exists\nPASS: /sign-up is a public route in middleware\nPASS: frozen RI path present\nFAIL: unexpected frozen RI working tree changes beyond verification artefacts\nPASS: production build output present\n\nPlatform foundation acceptance: FAIL (1)\n\n[diag] step done Platform foundation (Phase 1) exit=1 signal=null initiator=child 1.7s\n\n\nFAILED: Platform foundation (Phase 1) (1)\n\n\nRI master acceptance: FAIL (1 step(s)) — 1.7s\n\n"
+    },
+    {
+      "file": "acceptance-ri-my-tasks.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 94,
+      "tail": "PASS  API route uses buildMyTasks\nPASS  Design Lab My Tasks screen\nPASS  Design Lab does not load full triage inventory in browser\nPASS  Nav renamed My Tasks\n\nacceptance-ri-my-tasks: PASS (11 checks)\n"
+    },
+    {
+      "file": "acceptance-ri-normalize-obligation-output.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 105,
+      "tail": "{\"ok\":true,\"test\":\"acceptance-ri-normalize-obligation-output\"}\n"
+    },
+    {
+      "file": "acceptance-ri-obligation-open-atomic.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 21750,
+      "tail": "sers\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\nAtomic obligation approval: 72 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-obligation-reviewer-approval.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 433,
+      "tail": "e this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\apps\\platform\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "file": "acceptance-ri-pilot-accuracy-hardening.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 2108,
+      "tail": "dentified\nPASS: evaluation: assurance truncation at 1500 identified in the saved record\nPASS: evaluation also records correct findings (no one-sided audit)\nPASS acceptance-ri-pilot-accuracy-hardening\n"
+    },
+    {
+      "file": "acceptance-ri-provision-assessment-completeness.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 125,
+      "tail": "{\"ok\":true,\"test\":\"acceptance-ri-provision-assessment-completeness\"}\n"
+    },
+    {
+      "file": "acceptance-ri-provision-eligibility-local-db.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 13357,
+      "tail": "ges are not; 18 sections\nPASS: selection summary records strategy, partial scope and instrument provisions supplied\nPASS: without an instrument the keyword selection is unchanged\n\n47 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-provision-inventory-reconcile.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1132,
+      "tail": ",\"TP 13.4R\",\"TP 13.5G\"],\"summary\":{\"exception\":32,\"no_obligation_identified\":15}}\nPASS PS26/1 seven justified exception cores preserved {\"missing\":[]}\nPASS acceptance-ri-provision-inventory-reconcile\n"
+    },
+    {
+      "file": "acceptance-ri-provision-inventory.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 261,
+      "tail": ".1R spans pages 94-95\nPASS reconcile marks finding for 7.20.1R\nPASS 3.20.3R unresolved when never supplied\nPASS orchestration carries provision inventory\nacceptance-ri-provision-inventory: all passed\n"
+    },
+    {
+      "file": "acceptance-ri-provision-source-verification-ps22.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 2068,
+      "tail": "PASS physical p126 contains 2A.4.35E \nPASS index lists 2A.4.35E on p.126 {\"pages\":[126]}\nPASS 35E quotation verifiable on p.126 {\"ok\":true,\"quotationPage\":126}\n"
+    },
+    {
+      "file": "acceptance-ri-provision-source-verification-ps26.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1619,
+      "tail": "absent from PDF \nPASS instrument quotation verifiable on p94–95 {\"ok\":true,\"quotationPage\":95}\nPASS provision index lists 7.20.1R on pp.94 and 95 [94,95]\nPASS inventory marks 7.20.1R NEW_TEXT on p94 \n"
+    },
+    {
+      "file": "acceptance-ri-ps22-batch5-historical.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 104,
+      "tail": "}\nPASS truncated output yields explicit omissions {\"omissions\":22}\nPASS 15.7.24R flagged for exception review \nPASS every supplied core has assessment row \n\nPASS acceptance-ri-ps22-batch5-historical\n\n"
+    },
+    {
+      "file": "acceptance-ri-ps22-final-reconcile.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 2138,
+      "tail": "    \"noneMatch22ProvisionFailureShape\": true\n  },\n  \"paidAttemptDiscrepancyResolution\": {\n    \"paidAttempts\": 6,\n    \"paidSucceeded\": 5,\n    \"paidFailed\": 1,\n    \"provisionsLedgerPreserved\": 65\n  }\n}\n"
+    },
+    {
+      "file": "acceptance-ri-ps22-plan-reconcile.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 2279,
+      "tail": "ptanceChecks\": {\n    \"preserve65\": true,\n    \"noFailedBatch5MarkedSuccessful\": true,\n    \"noDuplicateCoreInContinuation\": true,\n    \"failedBatch5CoresScheduled\": true,\n    \"preflightPass\": true\n  }\n}\n"
+    },
+    {
+      "file": "acceptance-ri-ps22-publication-dates.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 92,
+      "tail": "ication date is 2022-07-27\nPASS open-product commencement 2023-07-31\nPASS closed-product commencement 2024-07-31\nPASS 29 July recorded as incorrect inference\nPASS acceptance-ri-ps22-publication-dates\n"
+    },
+    {
+      "file": "acceptance-ri-ps26-five-operative-historical.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1047,
+      "tail": "ome\":\"omitted\"}\nPASS run 6f05a9eb explicit assessment row for supplied 4.2A.7R \nPASS 4.2A.7R historical: completeness flags gap {\"outcome\":\"omitted\"}\nPASS acceptance-ri-ps26-five-operative-historical\n"
+    },
+    {
+      "file": "acceptance-ri-ps26-seventeen-operative-omissions.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 95,
+      "tail": "17}\nPASS none counted as live structured recall \nPASS deterministic signal is separate from live recall \nPASS summary does not claim live recall \nPASS acceptance-ri-ps26-seventeen-operative-omissions\n"
+    },
+    {
+      "file": "acceptance-ri-publication-extraction-e2e.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 240,
+      "tail": "ASS: coverage reconciliation recorded\nPASS: spend batches attempted\nPASS: completion status accurate\nPASS: human review lists every batch\n\nacceptance-ri-publication-extraction-e2e: 8 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-publication-extraction-engine.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 239,
+      "tail": "PASS: consolidated findings count\nPASS: dedupe key stable\nPASS: automatic run produces consolidated review\nPASS: human review summary\n\nacceptance-ri-publication-extraction-engine: 13 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-publication-extraction-orchestrator.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 246,
+      "tail": "edupe recorded consolidated count\nPASS: reconciliation object present\nPASS: never claims complete with failed or pending batches\n\nacceptance-ri-publication-extraction-orchestrator: 7 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-publication-extraction-resumable.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 2052,
+      "tail": "ession extended batch ledger {\"initial\":1,\"final\":16,\"sessions\":16,\"sawExtension\":true}\nPASS full coverage after resume \nPASS inventory reconciled \nPASS acceptance-ri-publication-extraction-resumable\n"
+    },
+    {
+      "file": "acceptance-ri-publication-to-obligation-chain.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 100,
+      "tail": "AI IN_REVIEW → OPEN by independent reviewer allowed\nPASS: AI IN_REVIEW → DRAFT (return) allowed\nPASS: AI OPEN → IN_PROGRESS uses existing register lifecycle\n\npublication-to-obligation chain: ALL PASS\n"
+    },
+    {
+      "file": "acceptance-ri-regulatory-pdf-analysis-ps22.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1231,
+      "tail": "licy_statement\nPASS consultationPreserved is false\nPASS publishedFinalRules\nPASS phase final_policy_statement\nPASS mustNotTreatProposalsAsBinding false\nPASS acceptance-ri-regulatory-pdf-analysis-ps22\n"
+    },
+    {
+      "file": "acceptance-ri-resource-optimisations.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 159,
+      "tail": "e\": \"parallel_spend_reconcile\",\n      \"ok\": true,\n      \"detail\": {}\n    },\n    {\n      \"name\": \"candidate_deployment_isolation_gate\",\n      \"ok\": true,\n      \"detail\": {}\n    }\n  ],\n  \"pass\": true\n}\n"
+    },
+    {
+      "file": "acceptance-ri-role-aware-rls-local-db.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 36307,
+      "tail": "evious (membership-only) behaviour returns\nPASS: re-apply after rollback restores the role-aware policy set\nPASS: re-apply modifies no table data\n\nRole-aware RLS local DB acceptance: PASS — 68 passed\n"
+    },
+    {
+      "file": "acceptance-ri-rpc-migration-canonical.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 10017,
+      "tail": ": live function excludes placeholder raise exception 'migration_apply_incomplete'\nPASS: anon cannot execute\nPASS: authenticated can execute\n\nacceptance-ri-rpc-migration-canonical: 13 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-run-scoped-ledger.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 16252,
+      "tail": "PASS: static_grants\n"
+    },
+    {
+      "file": "acceptance-ri-security-db-local-db.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 10269,
+      "tail": "01 COMPLIANCE_MANAGER may close finding\nPASS: SEC-DB-002 manual record creator must match actor\nPASS: SEC-DB-003 workflow_events delete blocked\n\nacceptance-ri-security-db-local-db: 5 passed, 0 failed\n"
+    },
+    {
+      "file": "acceptance-ri-shared-spend-guard.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 10135,
+      "tail": "ted\nPASS: recovery_verified_usage\nPASS: recovery_default_is_safe\nPASS: recovery_revoked_operator\nPASS: forced_rls\nPASS: execute_withheld_and_single_signatures\n\nacceptance-ri-shared-spend-guard: PASS\n\n"
+    },
+    {
+      "file": "acceptance-ri-six-queue-workflow.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 93,
+      "tail": "t workflow ALL\nPASS API accepts workflow queue\nPASS service derives workflowQueue\nPASS dashboard seven cards\nPASS five decision buttons\nPASS isWorkflowQueue ALL\nacceptance-ri-six-queue-workflow: PASS\n"
+    },
+    {
+      "file": "acceptance-ri-stage2-obligation-to-impact.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 13489,
+      "tail": "N_REVIEW with obligation owner\nPASS: Stage 3 handoff contract event emitted once on human approve\nPASS: AI cannot re-approve approved assessment (invalid transition)\n\nStage 2 obligation→impact: PASS\n\n"
+    },
+    {
+      "file": "acceptance-ri-stage4-recovery.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 9769,
+      "tail": "t_charged_at_full_reserve\nPASS: request_cap_blocks_provider\nPASS: capped_run_is_exhausted\nPASS: historical_account_untouched\nPASS: run_events_recorded\n\nPASS: stage 4 recovery and workflow reliability\n"
+    },
+    {
+      "file": "acceptance-ri-triage-pagination.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 92,
+      "tail": " 1 length\nPASS page 2 length\nPASS no duplicate across pages\nPASS allowed page sizes\nPASS stable sort is deterministic\nPASS search filter\nPASS verification filter\nacceptance-ri-triage-pagination: PASS\n"
+    },
+    {
+      "file": "acceptance-ri-triage-screens.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "ms": 88,
+      "tail": "PASS router knows triage\nPASS views render triage screens\nPASS dashboard mounts live triage board\nPASS dashboard avoids zero headline before catalogue ready\nPASS catalogue loader stores summary total\nPASS navigation exposes six workflow queues\nPASS cards do not hardcode a count\nPASS triage read is tenant scoped\nPASS triage does not approve obligations\nPASS triage exposes verification counts\nPASS non-obligation copy refuses approved obligations\nPASS loadConnectedTriageScreen scopes segment locally\nFAIL triage hydration does not reference resolvedSegment\nPASS pagination controls in triage screen\nPASS verified binding label routes to obligation triage\nPASS guidance routes to non-obligation triage and cannot convert\nPASS unverified binding label stays in exception triage\nacceptance-ri-triage-screens: FAIL (1)\n"
+    },
+    {
+      "file": "acceptance-ri-triage-verification-status.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 100,
+      "tail": "ges labelled\nPASS view verification dialog\nPASS manual five decision actions\nPASS UAT provenance filter\nPASS verify does not infer from obligation alone\nacceptance-ri-triage-verification-status: PASS\n"
+    },
+    {
+      "file": "acceptance-ri-uc-ri-005-extraction-button-browser.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 27862,
+      "tail": "l still offers the review form\nPASS: UC-RI-005 review offers Reject only, with the suspension notice\nPASS: no uncaught page errors\nacceptance-ri-uc-ri-005-extraction-button-browser: PASS (0 failures)\n"
+    },
+    {
+      "file": "acceptance-ri-uc-ri-005-finding-review-browser.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 9542,
+      "tail": "n with obligation link, skip reason and approval reminder\nPASS: no review form once the run is reviewed\nPASS: no uncaught page errors\nacceptance-ri-uc-ri-005-finding-review-browser: PASS (0 failures)\n"
+    },
+    {
+      "file": "acceptance-ri-uc-ri-005-preflight-regression.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 78,
+      "tail": "truncation not generic schema\nPASS: thinking-only max_tokens classified\nPASS: retuned cap blocks PS22-class batch that caused 7380-token invalid JSON\nPASS acceptance-ri-uc-ri-005-preflight-regression\n"
+    },
+    {
+      "file": "acceptance-ri-uc-ri-005-run-idempotency.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 410,
+      "tail": "5_run_reference_not_authorised\nPASS: no authorised reference configured → uc_ri_005_run_reference_not_configured\nPASS: AI_ANALYSIS_REQUESTED events = runs created (2)\n\nUC-RI-005 run idempotency: PASS\n"
+    },
+    {
+      "file": "acceptance-stage-a-e2e-persistence.mjs",
+      "status": "TIMEOUT",
+      "ms": 240020,
+      "tail": "on.\n(Use `node --trace-warnings ...` to show where the warning was created)\nOK: provider failure reached case result\nOK: checkpoint resume fingerprint persisted\nOK: resume refused outputEffort fields=outputEffort\nOK: checkpoint/partial preserved on refused resume\nOK: resume recovery no duplicate\nOK: budget A: interrupted with spend requestCount=2\nOK: budget B/E: resume retained requestCount=2\nOK: budget B/C: same budget ceiling on resume\nOK: budget: accumulated calculatedUsd preserved on resume\n"
+    },
+    {
+      "file": "acceptance-stage-b-secure-eval-evidence.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 1193,
+      "tail": "ceptance-provider-diagnostics-safety.mjs\",\n      \"code\": 0,\n      \"stderr\": \"\"\n    }\n  ],\n  \"programmeNote\": \"Stage B PASS requires signed evidence artefact + SME checklist — not script exit alone\"\n}\n"
+    },
+    {
+      "file": "acceptance-stage-c-d-mocked-reasoning-themes.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 48662,
+      "tail": "ok\": true,\n  \"programmePass\": false,\n  \"themeCount\": 10,\n  \"smeCases\": 10,\n  \"structuralMismatches\": 10,\n  \"output\": \"docs/eval/runs/stage-c-d-mocked-reasoning-themes-latest.json\",\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-stage-c-d-reasoning-acceptance.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 49569,
+      "tail": "\"sufficiency\": null,\n      \"smePendingDimensions\": [\n        \"D05\",\n        \"D06\",\n        \"D07\"\n      ],\n      \"dryRunOnly\": true,\n      \"regulatoryAccuracyPass\": false\n    }\n  ],\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-stage-c-evidence-matrix.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 94,
+      "tail": " \"INSUFFICIENT_EVIDENCE\"\n  },\n  \"v2Render\": {\n    \"direct\": \"ANSWERED\",\n    \"insufficient\": \"INSUFFICIENT_EVIDENCE\"\n  },\n  \"note\": \"Matrix is policy-level; live Anthropic accuracy not proven here.\"\n}\n"
+    },
+    {
+      "file": "acceptance-stage-c-evidence-sufficiency-policy.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 86,
+      "tail": "OK: partial unknown coverage holds review\nOK: unknown coverage fail-closed\nOK: related only insufficient\nOK: required handbook absent fail-closed\n{\"ok\":true,\"stage\":\"C-policy-offline\",\"passed\":5}\n"
+    },
+    {
+      "file": "acceptance-stage-c-production-path.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 261,
+      "tail": "lt\nOK: Stage C metadata on catalogue answer\nOK: tenant retrieval path includes Stage C\n{\n  \"ok\": true,\n  \"programmePass\": false,\n  \"note\": \"V2 Anthropic path uses render-verified-answer separately\"\n}\n"
+    },
+    {
+      "file": "acceptance-stage-c-v2-integration.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 98525,
+      "tail": "ion V2 branch returns stageC metadata\nOK: production entry records V2 engine\n{\n  \"ok\": true,\n  \"programmePass\": false,\n  \"mockProvider\": true,\n  \"liveStatus\": \"ANSWERED\",\n  \"prodStatus\": \"ANSWERED\"\n}\n"
+    },
+    {
+      "file": "acceptance-stage-d-expanded-regression.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 49797,
+      "tail": "Path\": \"C:\\\\Users\\\\imtia\\\\AppData\\\\Local\\\\forgeniq-ri-classification\\\\docs\\\\eval\\\\runs\\\\stage-d-regression-summary-2026-11-26T21-44-06-245Z.json\",\n  \"deviations\": 0,\n  \"acceptanceCriteriaMet\": true\n}\n"
+    },
+    {
+      "file": "acceptance-stage-d-scoring-reconstruction.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 47830,
+      "tail": "ENT_EVIDENCE\",\n      \"note\": \"Mock offline path — not regulatory accuracy\"\n    }\n  ],\n  \"manifestPath\": \"docs/eval/scoring-evidence/baselines/stage-d-themes-mock-v1-manifest.json\",\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-stage-e-budget-ceiling-offline.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 81,
+      "tail": "trol\": \"options.budgetUsd → EvalSpendTracker (default V2_EVAL_BUDGET_USD=10)\",\n  \"envNote\": \"No env var override for budget; per-run options take precedence over default constant\",\n  \"failures\": []\n}\n"
+    },
+    {
+      "file": "acceptance-staging-candidate-isolation-regression.mjs",
+      "status": "PASS",
+      "code": 0,
+      "ms": 89,
+      "tail": "{\"ok\":true,\"check\":\"candidate_deployment_isolation_regression\"}\n"
+    }
+  ]
+}

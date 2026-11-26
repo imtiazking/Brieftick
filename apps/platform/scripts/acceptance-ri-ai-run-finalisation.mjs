@@ -39,6 +39,8 @@ register(`data:text/javascript,${encodeURIComponent(hook)}`, import.meta.url);
 process.env.RI_AI_EXECUTION_ENABLED = 'true';
 process.env.RI_AI_PROVIDER_MODE = 'FIXTURE';
 process.env.RI_LAB_ANTHROPIC_MAX_USD = '1.00';
+// The provider refuses live execution without a shared spend ledger; use the in-process ledger (mocked HTTP, nothing billed).
+process.env.RI_LAB_SPEND_GUARD_MODE = 'memory';
 
 const logs = [];
 for (const level of ['info', 'error']) {

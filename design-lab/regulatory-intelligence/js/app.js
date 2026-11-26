@@ -118,6 +118,7 @@ import {
 } from './platform/connected-ai-governance-panels.js';
 import { hydrateConnectedTriage } from './platform/connected-triage.js';
 import { hydrateConnectedMyTasks } from './platform/connected-my-tasks.js';
+import { hydrateConnectedCalendar } from './platform/connected-calendar.js';
 import {
   bindClassificationPolicyAdmin,
   fetchClassificationPolicyAdmin,
@@ -892,6 +893,7 @@ function bindViewHandlers() {
   const route = getRoute();
   hydrateConnectedTriage(document);
   hydrateConnectedMyTasks(document);
+  hydrateConnectedCalendar(document);
   if (getRoute().startsWith('/admin/qa')) {
     import('./platform/qa-dashboard.js').then((mod) => mod.hydrateQaDashboard(document));
   }

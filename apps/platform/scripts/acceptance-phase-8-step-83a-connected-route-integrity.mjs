@@ -48,7 +48,7 @@ if (views.includes('getViewPublications()') && views.includes('function viewFeed
 if (views.includes('function viewHorizon') && views.includes('getViewPublications()')) pass('horizon connected');
 else failMsg('horizon connected');
 
-if (views.includes('function viewCalendar') && views.includes('Regulatory Calendar')) pass('calendar connected unavailable');
+if (views.includes('function viewCalendar') && views.includes('Regulatory Calendar') && views.includes('renderConnectedCalendarShell()')) pass('calendar connected (tenant API shell)');
 else failMsg('calendar');
 
 if (landscape.includes('publicationsForSector') && landscape.includes('sectorIdsForFw')) pass('framework detail connected mapping');
