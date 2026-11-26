@@ -46,6 +46,10 @@ One end-to-end path: **approved human-verified obligation** (from FCA-EVAL-001) 
 - Provenance: all child rows carry `sourceRegulatoryObligationId` / parent locks.  
 - Draft-only: no auto-approve actions.
 
+## Open reservation recovery
+
+A terminated process can leave a `RESERVED` row. Nothing expires it, and nothing retries the provider. An operator with the service role releases one row by calling `release_abandoned_lab_ai_reservation` with the reservation id, an actor name, a reason of at least 20 characters, and a minimum age of at least 180 seconds. The dollar hold returns to the shared ceiling. The request still counts toward the 8-request cap. The call writes `lab_ai_spend_recoveries` with the actor, reason, released amount, and whether provider usage was supplied. A second call on the same row is rejected. Pass `p_actual_usd` only when the provider usage report was actually observed.
+
 ## Rollback
 
 - Set `RI_AI_EXECUTION_ENABLED=false` and stage flags back to `FIXTURE`.  

@@ -11,10 +11,11 @@ import { resetAndStartEmbedded, stopEmbedded } from './local-db/harness.mjs';
 import { reserveSharedLabSpend, settleSharedLabSpend } from '../lib/ri/ai/lab-shared-spend.mjs';
 import { guardLabAnthropicSpendBeforeCall } from '../lib/ri/ai/lab-anthropic-spend-guard.mjs';
 
-const sql = readFileSync(
-  join(dirname(fileURLToPath(import.meta.url)), '..', 'supabase', 'migrations', '20261126013000_lab_ai_shared_spend_guard.sql'),
-  'utf8',
-);
+const migrationsDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'supabase', 'migrations');
+const sql = [
+  '20261126013000_lab_ai_shared_spend_guard.sql',
+  '20261126020000_lab_ai_spend_reservation_recovery.sql',
+].map((name) => readFileSync(join(migrationsDir, name), 'utf8')).join('\n');
 if (
   !sql.includes('from anon') ||
   !sql.includes('from authenticated') ||
@@ -145,6 +146,49 @@ try {
   if (!capped?.ok || capped2?.ok || capped2?.code !== 'LAB_ANTHROPIC_BUDGET_EXCEEDED') {
     failTest('shared_request_cap', JSON.stringify({ capped, capped2 }));
   } else pass('shared_request_cap');
+
+  const held = await reserveSharedLabSpend(clientQuery(a), {
+    scopeKey: 'recovery-probe',
+    budgetUsd: 0.2,
+    maxRequests: 4,
+    reserveUsd: 0.05,
+    useCaseId: 'UC-RI-005',
+    idempotencyKey: 'crashed-call',
+    organisationId: 'org-a',
+  });
+  const tooSoon = await clientQuery(b)(
+    `select public.release_abandoned_lab_ai_reservation($1, $2, $3, $4) as result`,
+    [held.reservationId, 'uat-operator', 'Process terminated before settle. No provider usage was observed.', 180],
+  );
+  if (tooSoon?.result?.code !== 'LAB_SPEND_RECOVERY_TOO_RECENT') {
+    failTest('recovery_inflight', JSON.stringify(tooSoon));
+  } else pass('recovery_inflight');
+
+  await clientQuery(a)(`update public.lab_ai_spend_reservations set created_at = now() - interval '10 minutes' where id = $1`, [
+    held.reservationId,
+  ]);
+  const released = await clientQuery(b)(
+    `select public.release_abandoned_lab_ai_reservation($1, $2, $3, $4) as result`,
+    [held.reservationId, 'uat-operator', 'Process terminated before settle. No provider usage was observed.', 180],
+  );
+  const secondRelease = await clientQuery(a)(
+    `select public.release_abandoned_lab_ai_reservation($1, $2, $3, $4) as result`,
+    [held.reservationId, 'uat-operator', 'Process terminated before settle. No provider usage was observed.', 180],
+  );
+  const audit = await clientQuery(a)(
+    `select count(*)::int as n from public.lab_ai_spend_recoveries where reservation_id = $1`,
+    [held.reservationId],
+  );
+  const account = await clientQuery(b)(
+    `select reserved_usd, request_count from public.lab_ai_spend_accounts where scope_key = 'recovery-probe'`,
+  );
+  if (!released?.result?.ok || Number(released.result.requestCount) !== 1 || Number(released.result.reservedUsd) !== 0) {
+    failTest('recovery_releases_hold', JSON.stringify(released));
+  } else if (secondRelease?.result?.code !== 'LAB_SPEND_RECOVERY_NOT_OPEN' || Number(audit?.n) !== 1) {
+    failTest('recovery_audit_once', JSON.stringify({ secondRelease, audit }));
+  } else if (Number(account?.request_count) !== 1 || Number(account?.reserved_usd) !== 0) {
+    failTest('recovery_keeps_request', JSON.stringify(account));
+  } else pass('recovery_audited');
 } finally {
   await a.end();
   await b.end();

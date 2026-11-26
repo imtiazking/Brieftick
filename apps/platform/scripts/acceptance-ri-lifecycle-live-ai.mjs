@@ -145,7 +145,34 @@ const liveOk = await runLifecycleStageAnalysis({
 });
 if (!liveOk.ok || liveOk.executionMode !== 'live' || liveOk.model !== 'mock-live-provider') {
   failTest('mock_live', JSON.stringify(liveOk));
+} else if (!liveOk.citations?.some((row) => row.sourceSectionIds.includes('CTRL-1'))) {
+  failTest('mock_live_citations', JSON.stringify(liveOk.citations));
 } else pass('mock_live_stage5');
+
+const uncited = await runLifecycleStageAnalysis({
+  stage: 4,
+  organisationId: 'org-test',
+  idempotencyKey: 'stage4:uncited',
+  sourceSections: [{ sourceSectionId: 'RISK-1', citation: 'risk', text: 'Conduct risk.' }],
+  providerOverride: {
+    id: 'mock-live',
+    async execute() {
+      return {
+        ok: true,
+        structured: {
+          confidence: 60,
+          controlProposals: [{ name: 'Ungrounded control', control_type: 'Preventive' }],
+        },
+        latencyMs: 8,
+        inputTokenEstimate: 20,
+        outputTokenEstimate: 8,
+      };
+    },
+  },
+});
+if (uncited.ok || uncited.code !== 'AI_OUTPUT_CITATION_MISSING' || !uncited.failClosed) {
+  failTest('citation_required', JSON.stringify(uncited));
+} else pass('citation_required');
 
 const prompt = buildAnthropicPrompts({
   useCaseId: 'UC-RI-006',

@@ -52,6 +52,10 @@ export const STAGING_MIGRATION_STEPS = [
     name: '20261126014500_lab_ai_shared_spend_revoke_client_execute',
     path: join(migrationsDir, '20261126014500_lab_ai_shared_spend_revoke_client_execute.sql'),
   },
+  {
+    name: '20261126020000_lab_ai_spend_reservation_recovery',
+    path: join(migrationsDir, '20261126020000_lab_ai_spend_reservation_recovery.sql'),
+  },
 ];
 
 /** Legacy MCP names that may exist without full DDL — do not treat as complete. */

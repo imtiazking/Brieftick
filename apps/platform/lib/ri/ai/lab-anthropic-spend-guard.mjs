@@ -298,7 +298,7 @@ export function labBudgetEnforcementLimitations() {
   return [
     'HARD_INVOICE_CAP_NOT_GUARANTEED: the shared ledger reserves the maximum estimated cost and later reconciles reported tokens. It is not an Anthropic invoice or workspace cap.',
     'Pricing uses static MODEL_PRICING_ESTIMATE — actual Anthropic invoice may differ by model snapshot, cache tokens, or taxes.',
-    'A crashed instance can leave a RESERVED row. That hold stays against the ceiling until settle_lab_ai_spend runs. There is no automatic retry.',
+    'A crashed instance can leave a RESERVED row. Release it only with release_abandoned_lab_ai_reservation, an actor, and a written reason, after the row is at least 180 seconds old. Nothing releases it automatically, and there is no automatic retry.',
     'Failed provider calls still consume one request. Reported tokens are settled; a call that reports no tokens settles at zero and releases the unused reserve.',
     'RI_LAB_SPEND_GUARD_MODE=memory is for offline tests only. Live execution without a shared database fails closed.',
     'A request that passes pre-flight may still consume thinking tokens inside max_tokens before text appears; partial responses may still incur billed input tokens.',

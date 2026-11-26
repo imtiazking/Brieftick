@@ -55,6 +55,14 @@ export type LifecycleSourceSection = {
   text?: string;
 };
 
+export type LifecycleCitation = {
+  text: string | null;
+  sourceSectionIds: string[];
+  citation: string | null;
+  sourceQuotation: string | null;
+  provisionReference: string | null;
+};
+
 export type LifecycleAiOutcome =
   | {
       ok: true;
@@ -62,6 +70,7 @@ export type LifecycleAiOutcome =
       providerId: string;
       model: string;
       structured: Record<string, unknown> | null;
+      citations: LifecycleCitation[];
       latencyMs: number | null;
       inputTokens: number | null;
       outputTokens: number | null;
@@ -76,6 +85,35 @@ export type LifecycleAiOutcome =
       providerId: string | null;
       model: string | null;
     };
+
+function asText(value: unknown): string | null {
+  return typeof value === 'string' && value.trim() ? value.trim() : null;
+}
+
+/** Claims that name a supplied source. Live drafts are refused without one. */
+export function liveGroundedCitations(structured: Record<string, unknown> | null | undefined): LifecycleCitation[] {
+  const claims = Array.isArray(structured?.claims) ? structured.claims : [];
+  const citations: LifecycleCitation[] = [];
+  for (const claim of claims) {
+    if (!claim || typeof claim !== 'object') continue;
+    const row = claim as Record<string, unknown>;
+    const sourceSectionIds = Array.isArray(row.sourceSectionIds)
+      ? row.sourceSectionIds.map((id) => String(id).trim()).filter(Boolean)
+      : [];
+    const citation = asText(row.citation);
+    const sourceQuotation = asText(row.sourceQuotation);
+    const provisionReference = asText(row.provisionReference);
+    if (!sourceSectionIds.length && !citation && !sourceQuotation && !provisionReference) continue;
+    citations.push({
+      text: asText(row.text),
+      sourceSectionIds,
+      citation,
+      sourceQuotation,
+      provisionReference,
+    });
+  }
+  return citations;
+}
 
 /** Fixture unless the stage (or global mode) explicitly requests a live provider. */
 export function resolveLifecycleExecutionMode(stage: 2 | 3 | 4 | 5): 'fixture' | 'live' {
@@ -125,6 +163,7 @@ export async function runLifecycleStageAnalysis(params: {
         providerId: provider.id || FIXTURE_PROVIDER_ID,
         model: 'fixture-ri',
         structured: null,
+        citations: [],
         latencyMs: typeof result.latencyMs === 'number' ? result.latencyMs : null,
         inputTokens: null,
         outputTokens: null,
@@ -139,6 +178,7 @@ export async function runLifecycleStageAnalysis(params: {
       providerId: String(provider.id || FIXTURE_PROVIDER_ID),
       model: 'fixture-ri',
       structured: valid.ok ? (result.structured as Record<string, unknown>) : null,
+      citations: valid.ok ? liveGroundedCitations(result.structured as Record<string, unknown>) : [],
       latencyMs: typeof result.latencyMs === 'number' ? result.latencyMs : null,
       inputTokens: null,
       outputTokens: null,
@@ -215,6 +255,18 @@ export async function runLifecycleStageAnalysis(params: {
       model,
     };
   }
+  const citations = liveGroundedCitations(result.structured as Record<string, unknown>);
+  if (!citations.length) {
+    return {
+      ok: false,
+      failClosed: true,
+      executionMode: 'live',
+      code: 'AI_OUTPUT_CITATION_MISSING',
+      message: 'Live output has no claim grounded to a source section or citation.',
+      providerId: provider.id,
+      model,
+    };
+  }
 
   const spend =
     result.spendAudit && typeof result.spendAudit === 'object'
@@ -226,6 +278,7 @@ export async function runLifecycleStageAnalysis(params: {
     providerId: provider.id,
     model,
     structured: result.structured as Record<string, unknown>,
+    citations,
     latencyMs: typeof result.latencyMs === 'number' ? result.latencyMs : null,
     inputTokens: typeof result.inputTokenEstimate === 'number' ? result.inputTokenEstimate : null,
     outputTokens: typeof result.outputTokenEstimate === 'number' ? result.outputTokenEstimate : null,
@@ -239,6 +292,7 @@ export function lifecycleAiAudit(outcome: Extract<LifecycleAiOutcome, { ok: true
     aiProvider: outcome.providerId,
     model: outcome.model,
     fixtureMode: outcome.executionMode === 'fixture',
+    citations: outcome.citations,
     latencyMs: outcome.latencyMs,
     inputTokens: outcome.inputTokens,
     outputTokens: outcome.outputTokens,

@@ -2,6 +2,12 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-26 — Pilot preflight guards
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 01:55 | Require a grounded citation before a live stage 2–5 draft is returned, and add `release_abandoned_lab_ai_reservation` | A schema-valid model reply could be stored without a source, and a dead process could leave a RESERVED hold with no operator trail | Recovery function applied on forgeniq-ri-staging. Execute limited to `postgres` and `service_role`. Ledger still empty. Local acceptance PASS. No paid calls. |
+
 ## 2026-11-26 — Shared spend ledger on staging, CI unblock
 
 | Time (UTC) | Decision | Reason | Outcome |
