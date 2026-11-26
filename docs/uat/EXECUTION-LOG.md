@@ -6,7 +6,7 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 
 | Time (UTC) | Decision | Reason | Outcome |
 |---|---|---|---|
-| — | Route UC-RI-004/006/007/008 through `runLifecycleStageAnalysis` and the existing provider registry | Stages 2–5 only called the fixture provider | Fixture remains the default. Live mode fail-closes with no draft insert and no fixture fallback. Spend guard covers those use cases plus a process cumulative USD ledger. Mocked acceptance PASS. No paid calls. |
+| — | Route UC-RI-004/006/007/008 through `runLifecycleStageAnalysis` and the existing provider registry | Stages 2–5 only called the fixture provider | Fixture remains the default. Live mode fail-closes with no draft insert and no fixture fallback. Spend guard covers those use cases plus a process cumulative USD ledger. Mocked acceptance PASS. Staging `dpl_BNifu9UxyuQW7SDPQHaq1EUwZMvu` (`3d8de4e`). No paid calls. |
 | — | Fresh IN_REVIEW risk browser check | Recycled closed lifecycle was not a valid negative test | Risk `4637fbc4-a0bf-40e5-a810-5a04a425274b`: maker segregation toast, status stayed In Review, checker approved. Assurance finding link PASS. |
 
 ## 2026-11-26 — UAT governance feedback + live AI prep (no paid AI)

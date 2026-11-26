@@ -41,7 +41,7 @@ This commit is local until the branch is pushed. The last recorded remote Action
 
 ## 5. Staging
 
-Candidate-first promote follows this commit. Official alias before this tranche: `dpl_5VRiovc31XtAxzocj36wR3jJhoCb`.
+Official staging: `dpl_BNifu9UxyuQW7SDPQHaq1EUwZMvu` (`3d8de4e`). Candidate-first promote passed authenticated smoke. An earlier promote attempt failed the User A findings-button check (0 buttons); the retry passed with 50 buttons. `RI_AI_EXECUTION_ENABLED` was not turned on.
 
 ## 6. Cost safeguards
 
