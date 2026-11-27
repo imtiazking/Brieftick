@@ -757,6 +757,15 @@ export function describeCallUsage(model, apiResult, reserveUsd) {
 }
 
 export async function finalizeLabSpendAfterCall(tracker, slotKey, apiResult, reserveUsd) {
+  if (tracker?.durable && (!tracker.query || !tracker.reservationId)) {
+    return {
+      ok: false,
+      code: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED,
+      message: 'Durable spend tracker is missing reservation context.',
+      failClosed: true,
+      detail: tracker?.code || 'durable_tracker_incomplete',
+    };
+  }
   if (tracker?.durable && tracker.query && tracker.reservationId) {
     const model = tracker.config.model;
     const described = describeCallUsage(model, apiResult, reserveUsd);
@@ -806,6 +815,15 @@ export async function finalizeLabSpendAfterCall(tracker, slotKey, apiResult, res
         detail: err?.message || 'settle_failed',
       };
     }
+  }
+  if (typeof tracker?.settleAttempt !== 'function') {
+    return {
+      ok: false,
+      code: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED,
+      message: 'Spend tracker cannot be finalized (no in-memory settle method).',
+      failClosed: true,
+      detail: tracker?.code || 'invalid_tracker',
+    };
   }
   try {
     const inputTokens = apiResult?.inputTokens ?? 0;

@@ -353,6 +353,9 @@ try {
   } else pass('unknown_outcome_charges_reserve');
 
   // ---------------------------------------------------------------- spend guard end to end (ledger-backed)
+  process.env.RI_LAB_SPEND_LEDGER_MODE = 'legacy';
+  delete process.env.RI_AI_EXECUTION_RUN_REFERENCE;
+  process.env.RI_LAB_TRIAL_IDEMPOTENCY_SUFFIXES = 'closed-shared-spend-guard';
   globalThis.__forgeniqLabSpendQuery = clientQuery(a);
   process.env.RI_LAB_SPEND_SCOPE = 'guard-e2e';
   process.env.RI_LAB_ANTHROPIC_MAX_REQUESTS = '8';

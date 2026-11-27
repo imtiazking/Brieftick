@@ -1,0 +1,289 @@
+[
+  {
+    "source_key": "SRC-BASEL-FRAMEWORK",
+    "last_success_at": "2026-11-27 00:14:12.775615+00",
+    "consecutive_failures": 0,
+    "publications": 3,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-CBUAE-DIGITAL-RULEBOOK",
+    "last_success_at": null,
+    "consecutive_failures": null,
+    "publications": 0,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-CFPB-REGULATORY-UPDATES",
+    "last_success_at": "2026-11-27 00:14:17.45031+00",
+    "consecutive_failures": 0,
+    "publications": 6,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-CFPB-RULES",
+    "last_success_at": "2026-11-27 00:14:23.547586+00",
+    "consecutive_failures": 0,
+    "publications": 3,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-CFTC-PUBLICATIONS",
+    "last_success_at": "2026-11-27 00:14:30.164885+00",
+    "consecutive_failures": 0,
+    "publications": 14,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-CFTC-RULEMAKING",
+    "last_success_at": "2026-11-27 00:14:34.969903+00",
+    "consecutive_failures": 0,
+    "publications": 1,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-CMA-SA-RULES",
+    "last_success_at": "2026-11-27 00:14:39.901452+00",
+    "consecutive_failures": 0,
+    "publications": 3,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-CMA-UK-ENFORCEMENT",
+    "last_success_at": "2026-11-27 00:14:44.631978+00",
+    "consecutive_failures": 0,
+    "publications": 23,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-DFSA-RULEBOOK",
+    "last_success_at": "2026-11-27 00:14:49.423769+00",
+    "consecutive_failures": 0,
+    "publications": 3,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-FCA-PUBLICATIONS-RSS",
+    "last_success_at": "2026-11-27 00:14:59.981308+00",
+    "consecutive_failures": 0,
+    "publications": 28,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-FDIC-GUIDANCE",
+    "last_success_at": "2026-11-27 00:15:06.463158+00",
+    "consecutive_failures": 0,
+    "publications": 12,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-FINRA-RULEBOOK",
+    "last_success_at": "2026-11-27 00:15:11.215001+00",
+    "consecutive_failures": 0,
+    "publications": 5,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-FRB-SUPERVISION",
+    "last_success_at": "2026-11-27 00:15:15.911086+00",
+    "consecutive_failures": 0,
+    "publications": 12,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-FRC-PUBLICATIONS",
+    "last_success_at": "2026-11-27 00:15:22.170308+00",
+    "consecutive_failures": 0,
+    "publications": 14,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-FSRA-RULEBOOK",
+    "last_success_at": "2026-11-27 00:13:24.290003+00",
+    "consecutive_failures": 0,
+    "publications": 9,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-HMT-PUBLICATIONS",
+    "last_success_at": "2026-11-27 00:13:00.480717+00",
+    "consecutive_failures": 0,
+    "publications": 24,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-IA-SA-REGULATIONS",
+    "last_success_at": "2026-11-27 00:15:26.974986+00",
+    "consecutive_failures": 0,
+    "publications": 2,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-ICO-GUIDANCE",
+    "last_success_at": "2026-11-27 00:15:31.912636+00",
+    "consecutive_failures": 0,
+    "publications": 24,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-MOCI-SA-COMPANIES-LAW",
+    "last_success_at": "2026-10-30 09:22:24.770776+00",
+    "consecutive_failures": 12,
+    "publications": 3,
+    "health_status": "FAILING"
+  },
+  {
+    "source_key": "SRC-NCA-SA-FRAMEWORKS",
+    "last_success_at": "2026-11-27 00:13:19.416394+00",
+    "consecutive_failures": 0,
+    "publications": 3,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-NFA-RULEBOOK",
+    "last_success_at": "2026-11-27 00:13:43.33792+00",
+    "consecutive_failures": 0,
+    "publications": 3,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-OCC-BULLETINS",
+    "last_success_at": "2026-11-27 00:15:34.154547+00",
+    "consecutive_failures": 0,
+    "publications": 2,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-OFAC-REGULATORY-UPDATES",
+    "last_success_at": "2026-11-27 00:16:11.677063+00",
+    "consecutive_failures": 0,
+    "publications": 11,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-OFAC-SDN-LISTS",
+    "last_success_at": null,
+    "consecutive_failures": null,
+    "publications": 0,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-OFSI-SANCTIONS-GUIDANCE",
+    "last_success_at": "2026-11-27 00:16:16.431931+00",
+    "consecutive_failures": 0,
+    "publications": 5,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-PRA-PUBLICATIONS",
+    "last_success_at": "2026-11-27 00:12:11.533145+00",
+    "consecutive_failures": 0,
+    "publications": 16,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-PSR-UK-RULES",
+    "last_success_at": "2026-11-27 00:12:19.485091+00",
+    "consecutive_failures": 0,
+    "publications": 4,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-SA-LEGISLATION-GAZETTE",
+    "last_success_at": "2026-11-27 00:13:45.338739+00",
+    "consecutive_failures": 0,
+    "publications": 18,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-SAMA-RULEBOOK",
+    "last_success_at": "2026-11-27 00:12:23.689967+00",
+    "consecutive_failures": 0,
+    "publications": 1,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-SCA-UAE-REGULATIONS",
+    "last_success_at": "2026-11-27 00:14:05.111138+00",
+    "consecutive_failures": 0,
+    "publications": 2,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-SDAIA-PDPL",
+    "last_success_at": "2026-11-27 00:13:58.53519+00",
+    "consecutive_failures": 0,
+    "publications": 3,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-SEC-FEDERAL-REGISTER",
+    "last_success_at": "2026-11-27 00:13:31.321391+00",
+    "consecutive_failures": 0,
+    "publications": 1,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-SEC-RULEMAKING",
+    "last_success_at": "2026-11-27 00:12:29.029158+00",
+    "consecutive_failures": 0,
+    "publications": 3,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-SEC-RULES-PUBLICATIONS",
+    "last_success_at": "2026-11-27 00:12:34.621856+00",
+    "consecutive_failures": 0,
+    "publications": 10,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-TADAWUL-RULEBOOK",
+    "last_success_at": "2026-11-27 00:13:14.598663+00",
+    "consecutive_failures": 0,
+    "publications": 3,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-TPR-DOCUMENT-LIBRARY",
+    "last_success_at": "2026-11-27 00:12:39.39493+00",
+    "consecutive_failures": 0,
+    "publications": 12,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-UAE-FIU-GUIDANCE",
+    "last_success_at": "2026-11-27 00:12:40.063477+00",
+    "consecutive_failures": 0,
+    "publications": 3,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-UK-LEGISLATION-ATOM",
+    "last_success_at": "2026-11-27 00:12:44.952648+00",
+    "consecutive_failures": 0,
+    "publications": 28,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-VARA-REGULATORY-UPDATES",
+    "last_success_at": "2026-11-27 00:12:51.309294+00",
+    "consecutive_failures": 0,
+    "publications": 3,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-VARA-RULEBOOK",
+    "last_success_at": "2026-11-27 00:12:55.76454+00",
+    "consecutive_failures": 0,
+    "publications": 1,
+    "health_status": "OK"
+  },
+  {
+    "source_key": "SRC-ZATCA-EINVOICING",
+    "last_success_at": "2026-11-27 00:13:26.46419+00",
+    "consecutive_failures": 0,
+    "publications": 1,
+    "health_status": "OK"
+  }
+]

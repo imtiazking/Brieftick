@@ -10,6 +10,10 @@
     { "path": "/api/internal/ri-ingestion/scheduler-tick", "schedule": "0 20 * * *" }
   ],
   "functions": {
+    "app/api/internal/ri-ingestion/scheduler-tick/route.ts": {
+      "maxDuration": 300,
+      "includeFiles": "../../integrations/regulatory-sources/certs/**,../../integrations/regulatory-sources/core/**,../../integrations/regulatory-sources/connectors/**"
+    },
     "app/api/ri-lab/ai-analysis-runs/route.ts": {
       "maxDuration": 300
     },
