@@ -15,8 +15,14 @@ const cooldownMs = Number(process.env.TRANCHE_G_CORPUS_COOLDOWN_MS || 30_000);
 const tickLimit = ticks > 0 ? ticks : maxTicks;
 const outDir = join(REPO_ROOT, 'docs', 'uat', 'evidence', 'regulatory-knowledge-foundation-2026-11-27');
 mkdirSync(outDir, { recursive: true });
+const evidenceName = process.env.TRANCHE_G_CORPUS_EVIDENCE?.trim() || 'CORPUS-BACKFILL-LOOP.json';
+const evidencePath = join(outDir, evidenceName);
 
 const report = { generatedAt: new Date().toISOString(), tickLimit, results: [] };
+if (process.env.TRANCHE_G_CORPUS_RESUME === 'true') {
+  report.resumeReason = 'prior_loop_exited_on_terminal_leq_remaining_bug_fixed_2026-11-27';
+  report.priorEvidence = 'CORPUS-BACKFILL-LOOP.json';
+}
 
 for (let i = 0; i < tickLimit; i++) {
   const run = spawnSync('node', ['./scripts/staging/hosted-corpus-snapshot-tick.mjs'], {
@@ -34,10 +40,9 @@ for (let i = 0; i < tickLimit; i++) {
     parsed = { ok: false, parseError: true, stdout: run.stdout?.slice(0, 500), stderr: run.stderr?.slice(0, 500) };
   }
   report.results.push({ index: i + 1, exitCode: run.status, ...parsed });
-  writeFileSync(join(outDir, 'CORPUS-BACKFILL-LOOP.json'), JSON.stringify(report, null, 2));
+  writeFileSync(evidencePath, JSON.stringify(report, null, 2));
   console.log(`tick ${i + 1}/${tickLimit} ok=${parsed.ok} remaining=${parsed.remainingWithoutSnapshot ?? '?'}`);
   if (parsed.remainingWithoutSnapshot === 0) break;
-  if (parsed.terminal_excluded && parsed.remainingWithoutSnapshot <= parsed.terminal_excluded) break;
   if (run.status !== 0 && parsed.status === 404) {
     console.error('corpus-snapshot-tick route not deployed yet');
     break;

@@ -50,7 +50,7 @@ export async function backfillPrimaryPdfForSnapshot(client, row) {
       snapshotId: row.snapshot_id,
       ok: false,
       code: 'PDF_EXTRACT_FAILED',
-      detail: extracted.reason,
+      detail: extracted.message || extracted.reason || extracted.code,
     };
     await recordCorpusBackfillOutcome(client, row.publication_id, result);
     return result;

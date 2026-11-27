@@ -100,7 +100,12 @@ export async function selectSnapshotsNeedingPdfPrimary(client, limit = 2) {
        where r.source_snapshot_id = s.id and r.extraction_profile = 'pdf_primary_v1'
      )
        and coalesce(p.provenance->'corpusBackfill'->>'terminal', 'false') <> 'true'
-     order by s.retrieved_at asc nulls first
+     order by
+       (select case when jsonb_array_length(coalesce(h.pdf_attachments, '[]'::jsonb)) > 0 then 0 else 1 end
+        from regulatory_source_extraction_revisions h
+        where h.source_snapshot_id = s.id and h.extraction_profile = 'html_article_v2'
+        limit 1),
+       s.retrieved_at asc nulls first
      limit $1`,
     [limit],
   );
