@@ -1,7 +1,8 @@
 # Ask RI development programme — engineering handover
 
 **Date:** 2026-11-27  
-**Official staging:** `staging-app.forgeniq.com` · **`dpl_EgqBYMQYmJVMZpKY8er81NzCNDgx`** · git **`67bcb17`** (Tranche E)  
+**Official staging (pre–Tranche F deploy):** `staging-app.forgeniq.com` · **`dpl_EgqBYMQYmJVMZpKY8er81NzCNDgx`** · git **`67bcb17`** (Tranche E)  
+**Tranche F implementation commit:** **`21594bd`** (watchlists/consultations completion, Ask RI baseline harnesses, PDF inventory artefact) — promote after candidate verification.  
 **Rollback:** `dpl_644WDsZPXcMXKPB9Q2WzS3GuuGsg` (`8c58e2e`, Tranche D)
 
 ## Regulatory data architecture (verified)
@@ -41,6 +42,14 @@
 ## External / programme blockers (not engineering)
 
 Regulatory expert sign-off · cross-tenant harness (org B / users D–E) · classification policy approvals · paid AI · production deploy · pen-test procurement · business UAT sign-off · billing/onboarding.
+
+## Hosted Ask RI baseline (Tranche F)
+
+- Harness: `apps/platform/scripts/uat/hosted-ask-ri-browser-baseline.mjs` (Persona A, no paid AI).
+- Evidence: `docs/uat/evidence/ask-ri-browser-baseline-2026-11-27/RESULT.json`.
+- Verified: HTTP 200 + deterministic statuses (`ANSWERED`, `PARTIAL_ANSWER`, `INSUFFICIENT_EVIDENCE`, `UNRESOLVED`, `UNSUPPORTED`); publication-titled PS26/1 probe; tenant vs catalogue probes.
+- **Not verified as full LLM coverage:** most matrix questions hit planner limits on staging without paid execution.
+- PDF answers: only where `pdf_primary_v1` + `webpageExtraction.status=complete` (staging inventory: **6** publications — see `pdf-index-coverage-2026-11-27/INVENTORY.json`).
 
 ## Retrieval & Ask RI limitations
 

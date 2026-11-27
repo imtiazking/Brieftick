@@ -2,6 +2,12 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-27 — Tranche F: Watchlists/consultations completion + Ask RI baseline
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 09:35 | Complete watchlist CRUD, match history, evaluate API, consultation POST UI, hosted harnesses | User instruction to continue from Tranche E without PS26/1 rework | Commit `21594bd`; migration dedup index on staging; PDF inventory artefact (322 pubs, 6 indexed PDF); push to origin; staging deploy initiated; promote gate 55/56 (local `RI-BROWSER-SMOKE` demo fallback fail). Consolidated report: `TRANCHE-F-COMPLETION-REPORT.md`. |
+
 ## 2026-11-27 — Tranche E: RI foundation (grounding, watchlists, consultations, citations)
 
 | Time (UTC) | Decision | Reason | Outcome |
