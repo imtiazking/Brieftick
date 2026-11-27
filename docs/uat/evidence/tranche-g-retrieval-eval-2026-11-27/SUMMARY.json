@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T14:25:08.172Z",
+  "generatedAt": "2026-11-27T21:27:53.701Z",
   "engine": "deterministic",
   "suite": "ask-ri-v2-eval-suite-v2.1.json",
   "gitSha": null,
@@ -10,10 +10,10 @@
     "fail": 41,
     "correctInsufficientEvidence": 4,
     "passWithRefutation": 0,
-    "engineInsufficientEvidence": 7,
+    "engineInsufficientEvidence": 21,
     "engineUnresolved": 22,
-    "substantiveAnswered": 16,
-    "citationNonZero": 16
+    "substantiveAnswered": 2,
+    "citationNonZero": 2
   },
   "note": "INSUFFICIENT_EVIDENCE outcomes are scored as correct abstention, not substantive regulatory answers.",
   "inventoryBaseline": "regulatory-knowledge-foundation-2026-11-27/SUMMARY.json"

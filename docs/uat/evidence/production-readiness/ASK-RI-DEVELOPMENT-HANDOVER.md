@@ -1,8 +1,9 @@
 # Ask RI development programme — engineering handover
 
-**Date:** 2026-11-27  
-**Official staging (Tranche G2):** `staging-app.forgeniq.com` · **`dpl_HcTt3tGRUYVcpmmhZo5Kt39KPUaZ`** · git **`cf18e08`**  
-**Corpus backfill (G2):** 259 missing snapshots · 55 searchable HTML · 200-tick loop **in progress** (~12/200 at 2026-11-27T19:25Z).
+**Date:** 2026-11-27 (Fable handover refresh)  
+**Official staging:** `staging-app.forgeniq.com` · connector tranche **`fe027e8`** / **`dpl_7q6UCoGHTmncvgUw7TgL96Yh6kG5`** · G2 corpus tranche **`4dfe3d5`** (deploy in flight)  
+**Corpus backfill (G2):** **119** eligible without snapshot (after tick 85) · **203** with snapshots · **203/322** · resume loop **`CORPUS-BACKFILL-LOOP-RESUME.json`** (single session, no duplicate).  
+**Loop RCA:** `TRANCHE-G2-LOOP-EXIT-RCA.md` (bogus `remaining <= terminal_excluded` stop — fixed).
 
 ## Tranche G2 — corpus population (in progress)
 
@@ -16,8 +17,8 @@
 | Batch | `tranche-g-corpus-backfill-loop.mjs` · evidence `CORPUS-BACKFILL-LOOP.json` |
 | APIs/MCP | `REGULATORY-API-MCP-STATUS.md` + `EXTERNAL-REGULATORY-KNOWLEDGE-INTEGRATION-MATRIX.json`; `~/.cursor/mcp.json` for four commercial URLs (OAuth for RegAlert/Ansvar); **`CONNECTOR-OPERATIONAL-VERIFICATION-MATRIX.json`** |
 
-**Report:** `regulatory-knowledge-foundation-2026-11-27/TRANCHE-G2-COMPLETION-REPORT.md`  
-**Not complete:** full corpus backfill (~244 eligible remaining); `pdf_primary_v1` still **6** (see report); retrieval eval unchanged until evidence packs re-exported from staging; OPEN-001 unattended due tick.
+**Reports:** `TRANCHE-G2-COMPLETION-REPORT.md`, `CONNECTOR-ACTIVATION-COMPLETION-REPORT.md`, **`TRANCHE-G2-POST-ACCEPTANCE-COMPLETION-REPORT.md`**  
+**Not complete:** corpus resume until `remainingWithoutSnapshot=0` or terminal; live eval-pack re-export needs `SUPABASE_SERVICE_ROLE_KEY` in platform `.env.local` (agent shell missing); OPEN-001 awaits **2026-11-28 04:00 UTC** cron capture (`capture-open-001-vercel-cron.mjs` running); eCFR first ingest pending scheduler.
 
 ## Tranche G — regulatory knowledge foundation (Fable)
 

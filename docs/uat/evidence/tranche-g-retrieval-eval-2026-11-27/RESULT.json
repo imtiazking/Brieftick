@@ -1,49 +1,53 @@
 {
   "evaluationSuiteVersion": "ask-ri-v2-eval-suite-v2.1",
   "engine": "deterministic_v1",
-  "engineCommitSha": "9f8da4170177685e71b5789de56b3ef2247773fc",
+  "engineCommitSha": "4dfe3d51eed33855b75653e4eb2bf0573d673a3b",
   "suiteSourcePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\docs\\eval\\ask-ri-v2-eval-suite-v2.1.json",
   "suiteIsRepoDefault": false,
   "evidencePackHashes": {
-    "manifest": "35cf6899d4b5d2e739117f59be051aa3f08eed4e16356d74e18d542a22e2db82",
-    "cp26-38-html-article-v1.json": "0772f0e4abce600e3e78c8a5780c00f97d4b78fd015842e61336b90c52363bef",
-    "cp26-38-primary-pdf-v1.json": "33e07ac9d91ca0b083ae1db4bff3139ccbc0ee44a73ede985692edbc85a25113",
-    "fair-value-consumer-finance-v1.json": "ff269527f349b62edd40b6addbaf51e262622d8c2f2681b591b9566f040c4779",
-    "fg22-5-primary-pdf-v1.json": "97709e9c5f3e8fa905e3a5198567257b6f1eb6b5dbd8e2141630c1d0666da94a"
+    "manifest": "c6d1b757fc73c2b424f3aa230a37e890f0cf467e02bab8097947ca6844ffa9f2",
+    "cp26-38-html-article-v1.json": "7ae0f3b36eca48d31774e6b8e2e0a03da416b8b29b66249a5ddf9d911fb2b3d1",
+    "cp26-38-primary-pdf-v1.json": "ec7f5b606b38cf6ae4d8b4b30c5c84cad259ab2de5668c55220a97672e363f94",
+    "fair-value-consumer-finance-v1.json": "ed08012321a617833f3f3c35c914c35452d287fbc96bf5035191ba3715c7bf58",
+    "fg22-5-primary-pdf-v1.json": "b3811b9cd054e99ea6cb02bf85cd163f7e8ea4379785f4301108c87e71ffe583"
   },
   "evidenceManifest": {
     "manifestVersion": 1,
-    "createdAt": "2026-11-10T13:11:32.832Z",
-    "exportSource": "staging_readonly",
+    "createdAt": "2026-11-27T21:17:09.539Z",
+    "exportSource": "offline_fixture_subset",
     "packs": [
       {
         "file": "fair-value-consumer-finance-v1.json",
         "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
         "profile": "html_article_v2",
-        "exportSource": "staging_readonly"
+        "exportSource": "offline_fixture_subset"
       },
       {
         "file": "fg22-5-primary-pdf-v1.json",
         "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
         "profile": "pdf_primary_v1",
-        "exportSource": "staging_readonly"
+        "exportSource": "offline_fixture_subset"
       },
       {
         "file": "cp26-38-primary-pdf-v1.json",
         "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
         "profile": "pdf_primary_v1",
-        "exportSource": "staging_readonly"
+        "exportSource": "offline_fixture_subset"
       },
       {
         "file": "cp26-38-html-article-v1.json",
         "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
         "profile": "html_article_v2",
-        "exportSource": "staging_readonly"
+        "exportSource": "offline_fixture_subset"
       }
     ],
-    "errors": []
+    "errors": [
+      {
+        "code": "missing_supabase_credentials"
+      }
+    ]
   },
-  "executedAt": "2026-11-27T14:25:08.116Z",
+  "executedAt": "2026-11-27T21:27:53.657Z",
   "caseCount": 45,
   "heldOutExcluded": 0,
   "results": [
@@ -314,37 +318,33 @@
     {
       "testId": "EVAL-A-05",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "ANSWERED",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "ANSWERED",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
-      "executionEvidenceSources": [
-        "html_article_v2"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "Financial Crime Guide updates",
           "consultation proposals"
         ],
-        "themesAddressed": [
+        "themesAddressed": [],
+        "themesMissing": [
           "Financial Crime Guide updates",
           "consultation proposals"
         ],
-        "themesMissing": [],
-        "themeCoverageScore": 1,
-        "themeCoverageRatio": 1,
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1029
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -353,10 +353,10 @@
         "fusionSatisfied": null,
         "details": []
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 3,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -369,7 +369,7 @@
       },
       "criticalFailures": [],
       "notes": [
-        "engine_not_answered"
+        "expected_response_state_contradiction"
       ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
@@ -630,40 +630,35 @@
     {
       "testId": "EVAL-C-01",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "ANSWERED",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "PARTIAL_PASS",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
-      "executionEvidenceSources": [
-        "html_article_v2"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "consultation proposals only",
           "business function applicability",
           "control impact narrative"
         ],
-        "themesAddressed": [
-          "consultation proposals only",
-          "business function applicability"
-        ],
+        "themesAddressed": [],
         "themesMissing": [
+          "consultation proposals only",
+          "business function applicability",
           "control impact narrative"
         ],
-        "themeCoverageScore": 0.667,
-        "themeCoverageRatio": 0.6666666666666666,
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1034
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -672,10 +667,10 @@
         "fusionSatisfied": null,
         "details": []
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 3,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -688,7 +683,7 @@
       },
       "criticalFailures": [],
       "notes": [
-        "engine_not_answered"
+        "expected_response_state_contradiction"
       ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
@@ -701,38 +696,33 @@
     {
       "testId": "EVAL-C-02",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "ANSWERED",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "ANSWERED",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
-      "executionEvidenceSources": [
-        "html_article_v2"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "consultation",
           "not binding requirements"
         ],
-        "themesAddressed": [
-          "consultation"
-        ],
+        "themesAddressed": [],
         "themesMissing": [
+          "consultation",
           "not binding requirements"
         ],
-        "themeCoverageScore": 0.5,
-        "themeCoverageRatio": 0.5,
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1103
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -741,10 +731,10 @@
         "fusionSatisfied": null,
         "details": []
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 3,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -757,7 +747,7 @@
       },
       "criticalFailures": [],
       "notes": [
-        "engine_not_answered"
+        "expected_response_state_contradiction"
       ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
@@ -832,37 +822,33 @@
     {
       "testId": "EVAL-C-04",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "ANSWERED",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
-      "executionEvidenceSources": [
-        "html_article_v2"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "consultation comments due by 24 December 2026",
           "consultation response deadline distinct from implementation or compliance dates"
         ],
-        "themesAddressed": [
+        "themesAddressed": [],
+        "themesMissing": [
           "consultation comments due by 24 December 2026",
           "consultation response deadline distinct from implementation or compliance dates"
         ],
-        "themesMissing": [],
-        "themeCoverageScore": 1,
-        "themeCoverageRatio": 1,
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1103
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -871,10 +857,10 @@
         "fusionSatisfied": null,
         "details": []
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 3,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -887,7 +873,7 @@
       },
       "criticalFailures": [],
       "notes": [
-        "engine_not_answered"
+        "expected_response_state_contradiction"
       ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
@@ -970,12 +956,12 @@
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "ANSWERED",
       "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSource": "pdf_primary_v1",
       "executionEvidenceSources": [
-        "html_article_v2"
+        "pdf_primary_v1"
       ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
+      "interpretedAs": "primary PDF (pdf_primary_v1) with physical page citations where indexed. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 1,
       "citedPublicationIds": [
         "4d05b49b-a4a4-4101-8c87-7d3983315f25"
       ],
@@ -983,14 +969,14 @@
         "requiredThemes": [
           "fraud prevention proposals"
         ],
-        "themesAddressed": [],
-        "themesMissing": [
+        "themesAddressed": [
           "fraud prevention proposals"
         ],
-        "themeCoverageScore": 0,
-        "themeCoverageRatio": 0,
+        "themesMissing": [],
+        "themeCoverageScore": 1,
+        "themeCoverageRatio": 1,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1029
+        "textAssessedChars": 538
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -1028,23 +1014,19 @@
     {
       "testId": "EVAL-D-02",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "ANSWERED",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "PARTIAL_PASS",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
-      "executionEvidenceSources": [
-        "html_article_v2"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "AML or monitoring proposals if evidenced"
@@ -1056,7 +1038,7 @@
         "themeCoverageScore": 0,
         "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1029
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -1065,10 +1047,10 @@
         "fusionSatisfied": null,
         "details": []
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 3,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -1081,7 +1063,7 @@
       },
       "criticalFailures": [],
       "notes": [
-        "engine_not_answered"
+        "expected_response_state_contradiction"
       ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
@@ -1094,35 +1076,31 @@
     {
       "testId": "EVAL-D-03",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "ANSWERED",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "PARTIAL_PASS",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
-      "executionEvidenceSources": [
-        "html_article_v2"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "sanctions screening impact"
         ],
-        "themesAddressed": [
+        "themesAddressed": [],
+        "themesMissing": [
           "sanctions screening impact"
         ],
-        "themesMissing": [],
-        "themeCoverageScore": 1,
-        "themeCoverageRatio": 1,
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1027
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -1131,10 +1109,10 @@
         "fusionSatisfied": null,
         "details": []
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 3,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -1147,7 +1125,7 @@
       },
       "criticalFailures": [],
       "notes": [
-        "engine_not_answered"
+        "expected_response_state_contradiction"
       ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
@@ -1160,35 +1138,31 @@
     {
       "testId": "EVAL-D-04",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "ANSWERED",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "PARTIAL_PASS",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
-      "executionEvidenceSources": [
-        "html_article_v2"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "proliferation financing if in document"
         ],
-        "themesAddressed": [
+        "themesAddressed": [],
+        "themesMissing": [
           "proliferation financing if in document"
         ],
-        "themesMissing": [],
-        "themeCoverageScore": 1,
-        "themeCoverageRatio": 1,
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1081
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -1197,10 +1171,10 @@
         "fusionSatisfied": null,
         "details": []
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 3,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -1213,7 +1187,7 @@
       },
       "criticalFailures": [],
       "notes": [
-        "engine_not_answered"
+        "expected_response_state_contradiction"
       ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
@@ -1226,23 +1200,19 @@
     {
       "testId": "EVAL-D-05",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "ANSWERED",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "PARTIAL_PASS",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
-      "executionEvidenceSources": [
-        "html_article_v2"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "governance proposals"
@@ -1254,7 +1224,7 @@
         "themeCoverageScore": 0,
         "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1029
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -1263,10 +1233,10 @@
         "fusionSatisfied": null,
         "details": []
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 3,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -1279,7 +1249,7 @@
       },
       "criticalFailures": [],
       "notes": [
-        "engine_not_answered"
+        "expected_response_state_contradiction"
       ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
@@ -1292,23 +1262,19 @@
     {
       "testId": "EVAL-E-01",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "ANSWERED",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "PARTIAL_PASS",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
-      "executionEvidenceSources": [
-        "html_article_v2"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "business function labels from evidence"
@@ -1320,7 +1286,7 @@
         "themeCoverageScore": 0,
         "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1029
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -1329,10 +1295,10 @@
         "fusionSatisfied": null,
         "details": []
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 3,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -1345,7 +1311,7 @@
       },
       "criticalFailures": [],
       "notes": [
-        "engine_not_answered"
+        "expected_response_state_contradiction"
       ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
@@ -1358,23 +1324,19 @@
     {
       "testId": "EVAL-E-02",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "ANSWERED",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "PARTIAL_PASS",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
-      "executionEvidenceSources": [
-        "html_article_v2"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "operational change as reasoned implication"
@@ -1386,7 +1348,7 @@
         "themeCoverageScore": 0,
         "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1029
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -1395,10 +1357,10 @@
         "fusionSatisfied": null,
         "details": []
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 3,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -1411,7 +1373,7 @@
       },
       "criticalFailures": [],
       "notes": [
-        "engine_not_answered"
+        "expected_response_state_contradiction"
       ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
@@ -1988,36 +1950,31 @@
     {
       "testId": "EVAL-G-03",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "ANSWERED",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "PARTIAL_PASS",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "mixed_catalogue_evidence",
-      "executionEvidenceSources": [
-        "html_article_v2",
-        "pdf_primary_v1"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations; primary PDF (pdf_primary_v1) with physical page citations where indexed. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 12,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "status distinction consultation vs finalised guidance"
         ],
-        "themesAddressed": [
+        "themesAddressed": [],
+        "themesMissing": [
           "status distinction consultation vs finalised guidance"
         ],
-        "themesMissing": [],
-        "themeCoverageScore": 1,
-        "themeCoverageRatio": 1,
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 3048
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -2026,10 +1983,10 @@
         "fusionSatisfied": null,
         "details": []
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 2,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -2042,7 +1999,7 @@
       },
       "criticalFailures": [],
       "notes": [
-        "engine_not_answered"
+        "expected_response_state_contradiction"
       ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
@@ -2055,42 +2012,37 @@
     {
       "testId": "EVAL-G-04",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "ANSWERED",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "PARTIAL_PASS",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
-      "executionEvidenceSources": [
-        "html_article_v2"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "tenant obligation records",
           "CP26 citations"
         ],
-        "themesAddressed": [
+        "themesAddressed": [],
+        "themesMissing": [
+          "tenant obligation records",
           "CP26 citations"
         ],
-        "themesMissing": [
-          "tenant obligation records"
-        ],
-        "themeCoverageScore": 0.5,
-        "themeCoverageRatio": 0.5,
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1029
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": true,
-        "catalogueEvidencePresent": true,
+        "catalogueEvidencePresent": false,
         "tenantEvidencePresent": false,
         "fusionSatisfied": false,
         "fixtureReference": {
@@ -2103,14 +2055,14 @@
           ]
         },
         "details": [
-          "citedPublicationIds:4d05b49b-a4a4-4101-8c87-7d3983315f25",
-          "executionEvidenceSource:html_article_v2"
+          "citedPublicationIds:none",
+          "executionEvidenceSource:catalogue_publication_evidence_v1"
         ]
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 3,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -2123,7 +2075,7 @@
       },
       "criticalFailures": [],
       "notes": [
-        "engine_not_answered"
+        "expected_response_state_contradiction"
       ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
@@ -2502,40 +2454,35 @@
     {
       "testId": "EVAL-I-02",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "PASS_WITH_REFUTATION",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
-      "executionEvidenceSources": [
-        "html_article_v2"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "CP26/38 is a consultation paper not in-force binding law",
           "refute premise that CP26/38 alone imposes a legal compliance deadline",
           "distinguish existing MLR/FSMA obligations from proposed guide updates"
         ],
-        "themesAddressed": [
-          "CP26/38 is a consultation paper not in-force binding law",
-          "refute premise that CP26/38 alone imposes a legal compliance deadline"
-        ],
+        "themesAddressed": [],
         "themesMissing": [
+          "CP26/38 is a consultation paper not in-force binding law",
+          "refute premise that CP26/38 alone imposes a legal compliance deadline",
           "distinguish existing MLR/FSMA obligations from proposed guide updates"
         ],
-        "themeCoverageScore": 0.667,
-        "themeCoverageRatio": 0.6666666666666666,
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1029
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -2544,10 +2491,10 @@
         "fusionSatisfied": null,
         "details": []
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 3,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -2559,7 +2506,9 @@
         "D11": "NOT_MEASURED"
       },
       "criticalFailures": [],
-      "notes": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
       "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
@@ -2753,35 +2702,31 @@
     {
       "testId": "EVAL-J-02",
       "outcome": "FAIL",
-      "productionResponseState": "PARTIAL_ANSWER",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
       "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
       "answerQualityPendingReview": true,
       "idealResponseState": "ANSWERED",
       "idealScoringClassification": "PASS_WITH_REFUTATION",
       "idealOutcomeClassification": "ANSWERED",
       "v1ExpectedResultClassification": "PASS_WITH_REFUTATION",
-      "engineStatus": "PARTIAL_ANSWER",
-      "executionEvidenceSource": "html_article_v2",
-      "executionEvidenceSources": [
-        "html_article_v2"
-      ],
-      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 8,
-      "citedPublicationIds": [
-        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-      ],
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "catalogue_publication_evidence_v1",
+      "executionEvidenceSources": [],
+      "interpretedAs": ". Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
       "themeCoverage": {
         "requiredThemes": [
           "consultation not binding"
         ],
-        "themesAddressed": [
+        "themesAddressed": [],
+        "themesMissing": [
           "consultation not binding"
         ],
-        "themesMissing": [],
-        "themeCoverageScore": 1,
-        "themeCoverageRatio": 1,
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1029
+        "textAssessedChars": 110
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -2790,10 +2735,10 @@
         "fusionSatisfied": null,
         "details": []
       },
-      "expectedResponseStateContradiction": false,
+      "expectedResponseStateContradiction": true,
       "dimensions": {
         "D01": 3,
-        "D02": 3,
+        "D02": 0,
         "D03": 0,
         "D04": "AWAITING_SME_REVIEW",
         "D05": "AWAITING_SME_REVIEW",
@@ -2805,7 +2750,9 @@
         "D11": "NOT_MEASURED"
       },
       "criticalFailures": [],
-      "notes": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
       "prohibitedClaimAutomatable": true,
       "hallucinationDetection": "NOT_AUTOMATABLE",
       "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
@@ -2830,7 +2777,7 @@
         "pdf_primary_v1"
       ],
       "interpretedAs": "primary PDF (pdf_primary_v1) with physical page citations where indexed. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
-      "citationCount": 5,
+      "citationCount": 4,
       "citedPublicationIds": [
         "a761cacc-8742-493d-b200-eb5d9a3ab884"
       ],
@@ -2845,7 +2792,7 @@
         "themeCoverageScore": 0,
         "themeCoverageRatio": 0,
         "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
-        "textAssessedChars": 1436
+        "textAssessedChars": 844
       },
       "catalogueTenantFusion": {
         "fusionRequired": false,
@@ -3040,7 +2987,7 @@
         "notMeasured": 0
       },
       "D02": {
-        "automatableMean": 1.5777777777777777,
+        "automatableMean": 0.6666666666666666,
         "automatableSamples": 45,
         "awaitingSmeReview": 0,
         "notMeasured": 0
