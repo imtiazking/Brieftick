@@ -15,7 +15,10 @@ const isRiLabJsonApiRoute = createRouteMatcher(['/api/ri-lab(.*)', '/api/organis
 const isSignOutAppSessionRoute = createRouteMatcher(['/api/sign-out/app-session']);
 
 /** Hosted ingestion cron — CRON_SECRET auth inside route; must bypass Clerk. */
-const isHostedSchedulerRoute = createRouteMatcher(['/api/internal/ri-ingestion/scheduler-tick']);
+const isHostedSchedulerRoute = createRouteMatcher([
+  '/api/internal/ri-ingestion/scheduler-tick',
+  '/api/internal/ri-ingestion/corpus-snapshot-tick',
+]);
 
 const clerkEnabled =
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.startsWith('pk_') &&

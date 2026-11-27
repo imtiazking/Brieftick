@@ -87,6 +87,9 @@ await check('route is public to Clerk middleware but guarded by its own bearer a
   if (!mw.includes('/api/internal/ri-ingestion/scheduler-tick')) {
     throw new Error('middleware does not exempt scheduler-tick (cron has no Clerk session)');
   }
+  if (!mw.includes('/api/internal/ri-ingestion/corpus-snapshot-tick')) {
+    throw new Error('middleware does not exempt corpus-snapshot-tick');
+  }
 });
 
 await check('vercel.json registers four UTC scheduler crons (execution still gated by FORGENIQ_RI_SCHEDULER_CRON_ENABLED)', () => {
