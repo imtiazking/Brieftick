@@ -24,7 +24,10 @@ for (let i = 0; i < ticks; i++) {
   });
   let parsed = {};
   try {
-    parsed = JSON.parse((run.stdout || '').trim().split('\n').pop() || '{}');
+    const trimmed = (run.stdout || '').trim();
+    const jsonStart = trimmed.indexOf('{');
+    const jsonText = jsonStart >= 0 ? trimmed.slice(jsonStart) : trimmed;
+    parsed = JSON.parse(jsonText || '{}');
   } catch {
     parsed = { ok: false, parseError: true, stdout: run.stdout?.slice(0, 500), stderr: run.stderr?.slice(0, 500) };
   }

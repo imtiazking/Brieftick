@@ -21,6 +21,20 @@
     "provisionGradeSuitableIndexed": 8,
     "metadataOnlyOrNoExtraction": 307
   },
+  "afterHostedCorpusBackfill2026_11_27": {
+    "totalPublications": 322,
+    "withSourceSnapshots": 44,
+    "missingSnapshots": 278,
+    "htmlArticleV2Publications": 44,
+    "pdfPrimaryV1Publications": 6,
+    "stagingGitDeployed": "646e5bd",
+    "method": "hosted corpus-snapshot-tick (+15-tick loop)",
+    "deltaFromTrancheGBaseline": {
+      "snapshotsPlus17": true,
+      "missingSnapshotsMinus17": true,
+      "htmlV2Plus29": true
+    }
+  },
   "extractionProfiles": {
     "html_article_v2": { "publications": 15, "webpageComplete": 15 },
     "pdf_primary_v1": { "publications": 6, "webpageComplete": 6 }

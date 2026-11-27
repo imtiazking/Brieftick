@@ -1,0 +1,126 @@
+{
+  "generatedAt": "2026-11-27T18:17:11.420Z",
+  "ticks": 15,
+  "results": [
+    {
+      "index": 1,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"9900a031-da89-4efd-97e3-3278667593a3\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 292,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 30,\n    \"snapshots\": 47,\n    \"pubs_html_v2\": 19\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"5f4c6f09-9a6d-4312-a154-eba76579d156\",\n      \"snapshotId\": \"cd06cc1d-6f53-4524-a7ab-8a0d7",
+      "stderr": ""
+    },
+    {
+      "index": 2,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"fa33dc7b-89b7-4f9c-a98f-79d996ee1ae6\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 291,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 31,\n    \"snapshots\": 48,\n    \"pubs_html_v2\": 20\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"5f4c6f09-9a6d-4312-a154-eba76579d156\",\n      \"snapshotId\": \"07f5eef1-e24a-499f-b527-c6dbe",
+      "stderr": ""
+    },
+    {
+      "index": 3,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"a6015b62-9086-4af3-910d-e90d23634274\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 290,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 32,\n    \"snapshots\": 49,\n    \"pubs_html_v2\": 21\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"5f4c6f09-9a6d-4312-a154-eba76579d156\",\n      \"snapshotId\": \"4e6fd058-98b7-48ca-a2a0-54426",
+      "stderr": ""
+    },
+    {
+      "index": 4,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"a97e1b21-9c36-4bce-bb63-39ce569c02d8\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 289,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 33,\n    \"snapshots\": 50,\n    \"pubs_html_v2\": 23\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"56b0beca-d8c3-4267-a794-9079009af661\",\n      \"snapshotId\": \"8b1c83a6-9d99-4fa5-939b-d8955",
+      "stderr": ""
+    },
+    {
+      "index": 5,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"06ef8051-4891-4ce9-a123-d3472d58b00e\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 288,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 34,\n    \"snapshots\": 51,\n    \"pubs_html_v2\": 26\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"5aefae6a-fccf-4d1c-9f75-da126ef7b04d\",\n      \"snapshotId\": \"0dad0fa8-015e-47f5-bf3f-5ecab",
+      "stderr": ""
+    },
+    {
+      "index": 6,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"75bd58bc-fb35-4a8d-822f-b3d28c0dc36b\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 287,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 35,\n    \"snapshots\": 52,\n    \"pubs_html_v2\": 28\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"bfe50351-7d13-4ea7-bbf1-2c244d07081a\",\n      \"snapshotId\": \"469a51cf-da79-4dbf-b502-972df",
+      "stderr": ""
+    },
+    {
+      "index": 7,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"1bf8202c-3a12-45e0-bd2b-b877802c063d\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 286,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 36,\n    \"snapshots\": 53,\n    \"pubs_html_v2\": 29\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"bfe50351-7d13-4ea7-bbf1-2c244d07081a\",\n      \"snapshotId\": \"7137fa36-3a2a-43bd-b794-b0de5",
+      "stderr": ""
+    },
+    {
+      "index": 8,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"828dc396-08d4-48ff-aaaf-05419fff3ad7\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 285,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 37,\n    \"snapshots\": 54,\n    \"pubs_html_v2\": 32\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"b6577b8a-de8d-4110-bd62-dc7e552320f7\",\n      \"snapshotId\": \"360ba16a-1aa9-487a-b22e-bded4",
+      "stderr": ""
+    },
+    {
+      "index": 9,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"9fb9f7ea-fee3-4c60-a18f-bbd67acc8c9e\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 284,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 38,\n    \"snapshots\": 55,\n    \"pubs_html_v2\": 34\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"614dc032-5619-4a33-9ec6-77fbde72142a\",\n      \"snapshotId\": \"9b0f824d-c963-4d9e-a30d-14e4d",
+      "stderr": ""
+    },
+    {
+      "index": 10,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"1fe82275-9e23-42f7-943b-d52d2028b487\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 283,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 39,\n    \"snapshots\": 56,\n    \"pubs_html_v2\": 35\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"b6577b8a-de8d-4110-bd62-dc7e552320f7\",\n      \"snapshotId\": \"c1832c4c-caee-41eb-b835-870dd",
+      "stderr": ""
+    },
+    {
+      "index": 11,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"0ac52dcd-0c73-472d-a020-e09a45619caa\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 282,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 40,\n    \"snapshots\": 57,\n    \"pubs_html_v2\": 36\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"b6577b8a-de8d-4110-bd62-dc7e552320f7\",\n      \"snapshotId\": \"30036784-2814-43d0-bfb8-e58b0",
+      "stderr": ""
+    },
+    {
+      "index": 12,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"59afe745-476b-4802-86e5-8f448e2fb632\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 281,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 41,\n    \"snapshots\": 58,\n    \"pubs_html_v2\": 37\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"b6577b8a-de8d-4110-bd62-dc7e552320f7\",\n      \"snapshotId\": \"96ebe813-aa7c-4149-aee0-0b1ba",
+      "stderr": ""
+    },
+    {
+      "index": 13,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"8790a8ad-6d8d-4935-8feb-a40b137f50d4\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 280,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 42,\n    \"snapshots\": 59,\n    \"pubs_html_v2\": 39\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"3062e71f-bbcf-40e8-9e6d-ff892ffb031a\",\n      \"snapshotId\": \"1d67564a-1a38-4493-b840-57a57",
+      "stderr": ""
+    },
+    {
+      "index": 14,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"b01bc48f-20ce-4bfe-8244-1e226004f10e\",\n  \"attempted\": 4,\n  \"remainingWithoutSnapshot\": 279,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 43,\n    \"snapshots\": 60,\n    \"pubs_html_v2\": 42\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"15746421-55c4-48ad-a246-a32e33a4c954\",\n      \"snapshotId\": \"e078dc20-0440-4079-b336-d2ee4",
+      "stderr": ""
+    },
+    {
+      "index": 15,
+      "exitCode": 0,
+      "ok": false,
+      "parseError": true,
+      "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"base\": \"staging-app.forgeniq.com\",\n  \"invocationKind\": \"MANUAL_HOSTED\",\n  \"invocationId\": \"31e98319-cdc2-4f8d-ac01-e36f210c29be\",\n  \"attempted\": 3,\n  \"remainingWithoutSnapshot\": 278,\n  \"coverage\": {\n    \"publications\": 322,\n    \"pubs_with_snapshot\": 44,\n    \"snapshots\": 61,\n    \"pubs_html_v2\": 44\n  },\n  \"outcomes\": [\n    {\n      \"mode\": \"rederive\",\n      \"publicationId\": \"fb0b47c1-c88b-4a5a-9c3a-6b19d6e75cc9\",\n      \"snapshotId\": \"42a9c46d-7f39-45e8-a93a-01860",
+      "stderr": ""
+    }
+  ]
+}
