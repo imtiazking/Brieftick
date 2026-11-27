@@ -1,8 +1,8 @@
 # Ask RI development programme — engineering handover
 
 **Date:** 2026-11-27  
-**Official staging:** `staging-app.forgeniq.com` · **`dpl_644WDsZPXcMXKPB9Q2WzS3GuuGsg`** · git **`8c58e2e`**  
-**Rollback:** `dpl_95TSoASLLpqQSwpkb1r8sJZy97xk` (prior official)
+**Official staging:** `staging-app.forgeniq.com` · **`dpl_EgqBYMQYmJVMZpKY8er81NzCNDgx`** · git **`67bcb17`** (Tranche E)  
+**Rollback:** `dpl_644WDsZPXcMXKPB9Q2WzS3GuuGsg` (`8c58e2e`, Tranche D)
 
 ## Regulatory data architecture (verified)
 
@@ -54,4 +54,4 @@ Regulatory expert sign-off · cross-tenant harness (org B / users D–E) · clas
 - Lineage: `regulatory-lineage-2026-11-27/RESULT.json`
 - Cron: `vercel-cron-2026-11-27/RESULT.json`
 - Ops: `operational-readiness-2026-11-27/RESULT.json`, `load-baseline-2026-11-27/`
-- Promote gate: 52/52 on `8c58e2e` deploy path
+- Tranche E deploy: auth smoke 19/19 candidate + official (`67bcb17`); pre-promote gate on prior tranche 52/52 at `8c58e2e`

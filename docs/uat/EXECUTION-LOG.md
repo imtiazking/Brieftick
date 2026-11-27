@@ -2,6 +2,18 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-27 — Tranche E: RI foundation (grounding, watchlists, consultations, citations)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 09:30 | Ship defence-in-depth PS26/1 grounding + Design Lab watchlists/consultations without paid AI | User Tranche E instruction from `8c58e2e` baseline | Commit `67bcb17`; migration `20261127130000_ri_watchlists_consultations` on `forgeniq-ri-staging`; CI suites `acceptance-ri-pilot-accuracy-hardening`, `RI-WATCHLISTS-CONSULTATIONS`, `RI-REGULATORY-CITATION`, `RI-REPORTS-OPEN-010` PASS. Staging deploy follows candidate-first policy. |
+
+## 2026-11-27 — Tranche D post-closure: evidence-based RI current-state assessment (no new code)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 08:30 | Produce five assessment deliverables from staging baseline `8c58e2e` only | User instruction: comprehensive assessment after Tranche D; no architecture changes, no paid AI, no new readiness programme | Written: `RI-CURRENT-STATE-ASSESSMENT.md`, `ASK-RI-GAP-ASSESSMENT.md`, `RI-OUTSTANDING-FIXES.md`, `ASK-RI-DEVELOPMENT-BACKLOG.md`, `RI-GO-LIVE-REMAINING-WORK.md` under `docs/uat/evidence/production-readiness/`. |
+
 ## 2026-11-26 — Production Readiness Programme: atomic obligation approval (hosted-UAT defect) and Phase 12 Design Lab terminal UI
 
 | Time (UTC) | Decision | Reason | Outcome |
