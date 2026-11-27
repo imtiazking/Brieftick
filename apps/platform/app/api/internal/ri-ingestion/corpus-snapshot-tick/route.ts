@@ -45,6 +45,7 @@ async function handleCorpusRequest(request: Request) {
         invocationId: result.invocationId,
         attempted: result.attempted,
         remainingWithoutSnapshot: result.remainingWithoutSnapshot,
+        terminal_excluded: result.coverage?.terminal_excluded,
         coverage: result.coverage,
         outcomes: result.outcomes,
       },

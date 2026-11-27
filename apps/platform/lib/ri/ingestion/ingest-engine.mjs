@@ -10,6 +10,7 @@ import { validateSnapshotEvidence } from './snapshot/evidence-validate.mjs';
 import { ensureSnapshotStorageReady, getSnapshotStorage } from './snapshot/runtime.mjs';
 import { uploadSnapshotEvidence } from './snapshot/upload.mjs';
 import { insertRegulatorySourceSnapshotRow } from './snapshot/persist-db.mjs';
+import { queueCorpusBackfillIfNeeded } from './corpus/queue-after-ingest.mjs';
 
 const RAW_META_DIR = join(process.cwd(), '.local-ingestion-raw');
 
@@ -357,6 +358,9 @@ async function processDocument(client, ctx) {
     publicationId,
   });
   if (useTxn) await client.query('COMMIT');
+  if (!snapshotRequired) {
+    await queueCorpusBackfillIfNeeded(client, publicationId);
+  }
   return { metric: 'new' };
   } catch (e) {
     if (useTxn) await client.query('ROLLBACK');

@@ -10,8 +10,13 @@ import { createExtractionRevision } from '../snapshot/create-extraction-revision
 import { resolveAllowedHostsForPublication } from './resolve-allowed-hosts.mjs';
 import {
   selectCorpusBackfillCandidates,
+  selectCorpusPdfCanonicalCandidates,
   selectSnapshotsNeedingHtmlExtraction,
+  selectSnapshotsNeedingPdfPrimary,
 } from './select-backfill-candidates.mjs';
+import { recordCorpusBackfillOutcome } from './corpus-failure-tracking.mjs';
+import { backfillPrimaryPdfForSnapshot } from './pdf-primary-backfill.mjs';
+import { backfillPdfCanonicalPublication } from './pdf-canonical-backfill.mjs';
 
 const CONNECTOR_ID = 'CONN-CORPUS-BACKFILL';
 
@@ -42,33 +47,37 @@ export async function backfillPublicationSnapshot(client, pub) {
     sourceExternalKey: pub.source_key,
   });
   if (!allowedHosts.length) {
-    return { publicationId: pub.id, ok: false, code: 'ALLOWED_HOSTS_EMPTY' };
+    const result = { publicationId: pub.id, ok: false, code: 'ALLOWED_HOSTS_EMPTY' };
+    await recordCorpusBackfillOutcome(client, pub.id, result);
+    return result;
   }
   const gate = assertUrlAllowed(pub.canonical_url, allowedHosts);
   if (!gate.ok) {
-    return { publicationId: pub.id, ok: false, code: gate.code || 'URL_NOT_ALLOWED' };
-  }
-
-  if (pub.canonical_is_pdf) {
-    return { publicationId: pub.id, ok: false, code: 'PDF_CANONICAL_DEFERRED' };
+    const result = { publicationId: pub.id, ok: false, code: gate.code || 'URL_NOT_ALLOWED' };
+    await recordCorpusBackfillOutcome(client, pub.id, result);
+    return result;
   }
 
   await throttleHost(gate.url.hostname);
   await sleep(800);
   const res = await httpGet(pub.canonical_url, { allowedHosts });
   if (!res.ok) {
-    return {
+    const result = {
       publicationId: pub.id,
       ok: false,
       code: res.code || 'FETCH_FAILED',
       httpStatus: res.httpStatus ?? null,
       detail: res.message,
     };
+    await recordCorpusBackfillOutcome(client, pub.id, result);
+    return result;
   }
 
   const contentType = String(res.contentType || '').toLowerCase();
   if (contentType && !contentType.includes('html') && !contentType.includes('xml')) {
-    return { publicationId: pub.id, ok: false, code: 'NON_HTML_CONTENT', contentType };
+    const result = { publicationId: pub.id, ok: false, code: 'NON_HTML_CONTENT', contentType };
+    await recordCorpusBackfillOutcome(client, pub.id, result);
+    return result;
   }
 
   const fp = await fingerprintContent(res.body, { contentType: res.contentType });
@@ -79,7 +88,9 @@ export async function backfillPublicationSnapshot(client, pub) {
     connectorId: CONNECTOR_ID,
   });
   if (!evidenceCapture?.rawBody?.length) {
-    return { publicationId: pub.id, ok: false, code: 'EVIDENCE_EMPTY' };
+    const result = { publicationId: pub.id, ok: false, code: 'EVIDENCE_EMPTY' };
+    await recordCorpusBackfillOutcome(client, pub.id, result);
+    return result;
   }
 
   const runId = await createBackfillRun(client, pub.source_id);
@@ -180,7 +191,7 @@ export async function backfillPublicationSnapshot(client, pub) {
       environment: 'staging',
     });
 
-    return {
+    const success = {
       publicationId: pub.id,
       ok: true,
       snapshotId,
@@ -188,14 +199,18 @@ export async function backfillPublicationSnapshot(client, pub) {
       hashUpdated: row.source_hash !== fp.hash,
       extractionCreated: revision.created,
     };
+    await recordCorpusBackfillOutcome(client, pub.id, { ok: true });
+    return success;
   } catch (e) {
     await client.query('ROLLBACK');
-    return {
+    const result = {
       publicationId: pub.id,
       ok: false,
       code: 'BACKFILL_TX_FAILED',
       detail: String(e.message || e).slice(0, 240),
     };
+    await recordCorpusBackfillOutcome(client, pub.id, result);
+    return result;
   }
 }
 
@@ -240,6 +255,9 @@ export async function runCorpusSnapshotBackfillBatch(client, options = {}) {
     }
   }
 
+  const pdfCanonMax = Math.min(1, maxPubs);
+  const pdfPrimaryMax = Math.min(2, options.maxPdfPrimary ?? 2);
+
   const candidates = await selectCorpusBackfillCandidates(client, maxPubs);
   for (const pub of candidates) {
     const result = await backfillPublicationSnapshot(client, pub);
@@ -247,19 +265,37 @@ export async function runCorpusSnapshotBackfillBatch(client, options = {}) {
     await sleep(1200);
   }
 
+  const pdfCanon = await selectCorpusPdfCanonicalCandidates(client, pdfCanonMax);
+  for (const pub of pdfCanon) {
+    const result = await backfillPdfCanonicalPublication(client, pub);
+    outcomes.push({ mode: 'pdf_canonical', ...result });
+    await sleep(1500);
+  }
+
+  const pdfQueue = await selectSnapshotsNeedingPdfPrimary(client, pdfPrimaryMax);
+  for (const row of pdfQueue) {
+    const result = await backfillPrimaryPdfForSnapshot(client, row);
+    outcomes.push({ mode: 'pdf_primary', ...result });
+    await sleep(1500);
+  }
+
   const counts = await client.query(
     `select
       (select count(*)::int from regulatory_publications) as publications,
       (select count(distinct publication_id)::int from regulatory_source_snapshots) as pubs_with_snapshot,
-      (select count(*)::int from regulatory_source_snapshots) as snapshots,
-      (select count(distinct publication_id)::int from regulatory_source_extraction_revisions where extraction_profile = 'html_article_v2') as pubs_html_v2`,
+      (select count(*)::int from regulatory_publications p
+        where not exists (select 1 from regulatory_source_snapshots s where s.publication_id = p.id)
+      ) as missing_snapshots,
+      (select count(distinct publication_id)::int from regulatory_source_extraction_revisions where extraction_profile = 'html_article_v2') as pubs_html_v2,
+      (select count(distinct publication_id)::int from regulatory_source_extraction_revisions where extraction_profile = 'pdf_primary_v1') as pubs_pdf_v1,
+      (select count(*)::int from regulatory_publications p
+        where coalesce(p.provenance->'corpusBackfill'->>'terminal','false') = 'true') as terminal_excluded`,
   );
 
   return {
     attempted: outcomes.length,
     outcomes,
     coverage: counts.rows[0],
-    remainingWithoutSnapshot:
-      (counts.rows[0]?.publications ?? 0) - (counts.rows[0]?.pubs_with_snapshot ?? 0),
+    remainingWithoutSnapshot: counts.rows[0]?.missing_snapshots ?? null,
   };
 }

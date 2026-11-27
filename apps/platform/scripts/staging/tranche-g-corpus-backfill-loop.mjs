@@ -9,14 +9,16 @@ import { fileURLToPath } from 'node:url';
 import { REPO_ROOT } from '../../lib/ri/eval/eval-paths.mjs';
 
 const platformRoot = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const ticks = Number(process.env.TRANCHE_G_CORPUS_TICKS || 20);
-const cooldownMs = Number(process.env.TRANCHE_G_CORPUS_COOLDOWN_MS || 45_000);
+const ticks = Number(process.env.TRANCHE_G_CORPUS_TICKS || 0);
+const maxTicks = Number(process.env.TRANCHE_G_CORPUS_MAX_TICKS || 300);
+const cooldownMs = Number(process.env.TRANCHE_G_CORPUS_COOLDOWN_MS || 30_000);
+const tickLimit = ticks > 0 ? ticks : maxTicks;
 const outDir = join(REPO_ROOT, 'docs', 'uat', 'evidence', 'regulatory-knowledge-foundation-2026-11-27');
 mkdirSync(outDir, { recursive: true });
 
-const report = { generatedAt: new Date().toISOString(), ticks, results: [] };
+const report = { generatedAt: new Date().toISOString(), tickLimit, results: [] };
 
-for (let i = 0; i < ticks; i++) {
+for (let i = 0; i < tickLimit; i++) {
   const run = spawnSync('node', ['./scripts/staging/hosted-corpus-snapshot-tick.mjs'], {
     cwd: platformRoot,
     encoding: 'utf8',
@@ -33,15 +35,18 @@ for (let i = 0; i < ticks; i++) {
   }
   report.results.push({ index: i + 1, exitCode: run.status, ...parsed });
   writeFileSync(join(outDir, 'CORPUS-BACKFILL-LOOP.json'), JSON.stringify(report, null, 2));
-  console.log(`tick ${i + 1}/${ticks} ok=${parsed.ok} remaining=${parsed.remainingWithoutSnapshot ?? '?'}`);
+  console.log(`tick ${i + 1}/${tickLimit} ok=${parsed.ok} remaining=${parsed.remainingWithoutSnapshot ?? '?'}`);
   if (parsed.remainingWithoutSnapshot === 0) break;
+  if (parsed.terminal_excluded && parsed.remainingWithoutSnapshot <= parsed.terminal_excluded) break;
   if (run.status !== 0 && parsed.status === 404) {
     console.error('corpus-snapshot-tick route not deployed yet');
     break;
   }
-  if (i + 1 < ticks) {
+  if (i + 1 < tickLimit) {
     await new Promise((r) => setTimeout(r, cooldownMs));
   }
 }
 
-process.exit(report.results.some((r) => r.ok === false) ? 1 : 0);
+const last = report.results[report.results.length - 1];
+const stalled = report.results.length >= 5 && report.results.slice(-5).every((r) => r.remainingWithoutSnapshot === last?.remainingWithoutSnapshot);
+process.exit(last?.ok === true && !stalled ? 0 : stalled ? 2 : 1);
