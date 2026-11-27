@@ -40,4 +40,6 @@ for (const origin of targets) {
     }
   }
 }
+// Brief drain avoids Windows Node UV_HANDLE_CLOSING on immediate process.exit after fetch.
+await new Promise((resolve) => setTimeout(resolve, 100));
 process.exit(failed ? 2 : 0);

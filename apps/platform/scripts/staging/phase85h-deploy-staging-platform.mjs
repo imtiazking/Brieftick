@@ -144,10 +144,12 @@ run('assert vercel staging target', 'node', ['./scripts/staging/assert-vercel-st
 
 const officialHost = new URL(OFFICIAL_STAGING_ORIGIN).hostname;
 
+// Linked `.vercel/project.json` at repo root selects forgeniq-platform-staging.
+// Omit `--project` so older pinned CLIs (e.g. 41.x in root devDependencies) still deploy.
 const out = run(
   'vercel production deploy',
   'vercel',
-  ['deploy', '--archive=tgz', '--yes', '--prod', `--scope=${SCOPE}`, `--project=${PROJECT_NAME}`],
+  ['deploy', '--archive=tgz', '--yes', '--prod', `--scope=${SCOPE}`],
   repoRoot,
   {},
 );

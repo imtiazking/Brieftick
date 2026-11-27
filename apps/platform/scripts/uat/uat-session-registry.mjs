@@ -106,11 +106,10 @@ export function discoverStoredProfiles() {
 /** Server-side Clerk env check — not a user session problem. */
 export async function probeClerkOnHost(origin) {
   const base = origin.replace(/\/$/, '');
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15_000);
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 15_000);
     const res = await fetch(`${base}/sign-in`, { signal: controller.signal, redirect: 'follow', headers: { accept: 'text/html' } });
-    clearTimeout(timer);
     const text = await res.text();
     if (/Clerk is not configured/i.test(text)) {
       return { ok: false, code: 'CLERK_NOT_CONFIGURED', httpStatus: res.status, origin: base };
@@ -119,6 +118,8 @@ export async function probeClerkOnHost(origin) {
     return { ok: true, code: 'CLERK_READY', httpStatus: res.status, origin: base };
   } catch (err) {
     return { ok: false, code: 'UNREACHABLE', origin: base, detail: String(err.message || err) };
+  } finally {
+    clearTimeout(timer);
   }
 }
 
