@@ -228,6 +228,11 @@ import {
 } from './shell-nav-preferences.js';
 import { renderCalendarRailShell } from './platform/connected-calendar.js';
 import {
+  calendarRailShouldShow,
+  calendarRailToggleAllowed,
+  writeCalendarRailUserOpen,
+} from './calendar-rail-policy.js';
+import {
   applyPersistedConnectedRestore,
   canRestorePersistedConnectedSession,
   connectivityDiagSnapshot,
@@ -512,7 +517,20 @@ function renderShell() {
   const routeSeg = routeKey.split('/')[0] || 'dashboard';
   document.title = routeSeg === 'dashboard' ? DOCUMENT_TITLE_RI : `${DOCUMENT_TITLE_RI} · ${routeSeg}`;
   bindViewHandlers();
+  applyCalendarRailVisibility(routeKey);
   scrollToSourceHighlight();
+}
+
+function applyCalendarRailVisibility(routeKey) {
+  const rail = document.getElementById('ri-calendar-rail');
+  const reopen = document.getElementById('ri-calendar-rail-reopen');
+  const workspace = document.querySelector('.ri-layout__workspace');
+  if (!rail) return;
+  const show = calendarRailShouldShow(routeKey);
+  const allowed = calendarRailToggleAllowed(routeKey);
+  rail.hidden = !show;
+  if (reopen) reopen.hidden = !allowed || show;
+  workspace?.classList.toggle('ri-layout__workspace--rail-open', show);
 }
 
 function scrollToSourceHighlight() {
@@ -593,6 +611,7 @@ function renderChrome() {
       <div class="ri-layout__workspace">
         <main class="ri-main" id="ri-main"></main>
         ${renderCalendarRailShell()}
+        <button type="button" class="ri-calendar-rail-reopen" id="ri-calendar-rail-reopen" hidden aria-label="Show Regulatory Calendar">Calendar</button>
       </div>
     </div>
     <div class="ri-toast" id="ri-toast" hidden role="status"></div>
@@ -679,6 +698,14 @@ function bindChromeHandlers() {
   document.getElementById('chrome-ask-ri')?.addEventListener('click', () => {
     closeTopNavMenus();
     closeAccountChromeMenu();
+  });
+  document.querySelector('[data-calendar-rail-collapse]')?.addEventListener('click', () => {
+    writeCalendarRailUserOpen(false);
+    applyCalendarRailVisibility(getRoute().replace(/^\//, '') || 'dashboard');
+  });
+  document.getElementById('ri-calendar-rail-reopen')?.addEventListener('click', () => {
+    writeCalendarRailUserOpen(true);
+    applyCalendarRailVisibility(getRoute().replace(/^\//, '') || 'dashboard');
   });
 }
 

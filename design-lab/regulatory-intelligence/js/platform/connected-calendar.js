@@ -102,7 +102,10 @@ export function renderCalendarRailShell() {
   return `<aside class="ri-calendar-rail" id="ri-calendar-rail" aria-label="Regulatory Calendar">
     <header class="ri-calendar-rail__head">
       <h2 class="ri-calendar-rail__title">Regulatory Calendar</h2>
-      <a class="ri-calendar-rail__link" href="#/calendar">Full view</a>
+      <div class="ri-calendar-rail__actions">
+        <a class="ri-calendar-rail__link" href="#/calendar">Full view</a>
+        <button type="button" class="ri-calendar-rail__collapse" data-calendar-rail-collapse aria-label="Hide calendar panel">Hide</button>
+      </div>
     </header>
     <section class="ri-calendar-rail__body" data-connected-calendar data-connected-calendar-window="${DEFAULT_WINDOW}" data-calendar-rail="1">
       <label class="ri-calendar-rail__window">Window

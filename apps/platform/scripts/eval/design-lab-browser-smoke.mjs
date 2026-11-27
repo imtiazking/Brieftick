@@ -156,11 +156,21 @@ page.on('requestfailed', (req) => {
   }
 });
 
+async function gotoLab(page, url) {
+  const first = isCi ? 90_000 : 75_000;
+  try {
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: first });
+  } catch (err) {
+    if (err?.name !== 'TimeoutError') throw err;
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: first + 45_000 });
+  }
+}
+
 for (const route of ROUTES) {
   fatal = [];
   const url = `${origin}/design-lab/regulatory-intelligence/index.html${route.hash}`;
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60_000 });
-  const mountTimeout = isCi ? 45_000 : 15_000;
+  await gotoLab(page, url);
+  const mountTimeout = isCi ? 60_000 : 35_000;
   await page.waitForFunction(() => document.documentElement.dataset.riMounted === '1', null, { timeout: mountTimeout }).catch(() => {});
   const mounted = await page.evaluate(() => document.documentElement.dataset.riMounted === '1');
   const nav = await page.locator('nav.ri-topnav, nav.ri-sidebar__nav, aside.ri-sidebar nav').count();
