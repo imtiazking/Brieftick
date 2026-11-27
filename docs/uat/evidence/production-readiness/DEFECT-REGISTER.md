@@ -41,7 +41,7 @@ DEF-007 detail (none of these was a product regression):
 
 | ID | Sev | Item | Needed |
 |---|---|---|---|
-| OPEN-001 | **High, release blocker (narrowed)** | Connectors **39/41 current** on staging (2026-11-27); scheduler **enabled** on `33d0912`. **Residual:** no **VERCEL_CRON** audit on **2026-11-27** yet (ENG-CRON-001); OFAC-SDN disabled; CBUAE no connector | capture 04:00 UTC unattended tick; policy for CBUAE/OFAC |
+| OPEN-001 | Medium (narrowed) | Connectors **39/41 current**; **VERCEL_CRON** evidenced **2026-11-27T04:00:24Z** (ENG-CRON-001 resolved). **Residual:** due-source ingest tick not captured; OFAC-SDN disabled; CBUAE no connector | capture cron with `dueCount > 0`; policy for CBUAE/OFAC |
 | OPEN-002 | **High, release blocker (external)** | Regulatory accuracy NOT_ASSESSED; no regulatory-expert review | professional review; no approval is claimed |
 | OPEN-003 | High, BLOCKED | Hosted cross-tenant denial unproven (`SEC-CROSS-TENANT`) | second tenant plus user access (approval required) |
 | OPEN-004 | Medium | **8** OPEN obligations remain DISCONNECTED after tranche C: **7** legacy MANUAL in FORGENIQ main org + **1** partner org; **10** AI-dev pilot rows repaired to LINKED (`repair-disconnected-2026-11-27`) | owner decision for 7 legacy; partner row unchanged. Not bulk-backfilled |
@@ -50,7 +50,7 @@ DEF-007 detail (none of these was a product regression):
 | OPEN-007 | Medium — **RESOLVED staging** | Reviewer RPC Stage 2 content smuggling | Migration `20261127083000_reviewer_stage2_approval_pin`; promote gate `RI-OBLIGATION-OPEN-ATOMIC` |
 | OPEN-008 | Medium (process) | Acceptance suites rewrite committed `docs/eval/*` evidence when run (restored after each sweep) | write suite output to an untracked directory |
 | OPEN-009 | Medium | DEF-011 below | investigate |
-| OPEN-010 | Low | Reports: exports, scheduled reports and board packs not verified | verify |
+| OPEN-010 | Low — **PARTIAL** | Reports: executive/board API routes verified offline (`RI-REPORTS-OPEN-010`); **scheduled** reports and board-pack export **not** implemented/verified | hosted export UAT when scheduled product scoped |
 | OPEN-011 | Info, not a defect | No billing or onboarding routes (Phase 18); live billing must stay off | design and approval |
 | OPEN-012 | Low | Effective hosted AI model is a Secret value and cannot be read back | confirm on first authorised run |
 

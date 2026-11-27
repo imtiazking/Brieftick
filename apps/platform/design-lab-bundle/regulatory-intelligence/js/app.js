@@ -119,6 +119,8 @@ import {
 import { hydrateConnectedTriage } from './platform/connected-triage.js';
 import { hydrateConnectedMyTasks } from './platform/connected-my-tasks.js';
 import { hydrateConnectedCalendar } from './platform/connected-calendar.js';
+import { hydrateConnectedWatchlists } from './platform/connected-watchlists.js';
+import { hydrateConnectedConsultations } from './platform/connected-consultations.js';
 import {
   bindClassificationPolicyAdmin,
   fetchClassificationPolicyAdmin,
@@ -905,6 +907,8 @@ function bindViewHandlers() {
   hydrateConnectedTriage(document);
   hydrateConnectedMyTasks(document);
   hydrateConnectedCalendar(document);
+  hydrateConnectedWatchlists(document);
+  hydrateConnectedConsultations(document);
   if (getRoute().startsWith('/admin/qa')) {
     import('./platform/qa-dashboard.js').then((mod) => mod.hydrateQaDashboard(document));
   }

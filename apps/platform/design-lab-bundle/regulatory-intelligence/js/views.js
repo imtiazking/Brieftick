@@ -49,6 +49,8 @@ import {
 } from './store.js';
 import { connectedCatalogueBanner, getConnectedCatalogue, getConnectedAssigneeLabel, isConnectedCatalogueReady } from './platform/connected-catalogue.js';
 import { renderConnectedCalendarShell } from './platform/connected-calendar.js';
+import { renderConnectedWatchlistsShell } from './platform/connected-watchlists.js';
+import { renderConnectedConsultationsShell } from './platform/connected-consultations.js';
 import { getConnectedDashboardMetrics } from './platform/connected-notifications.js';
 import { renderTriageBoard, renderTriageScreen } from './platform/connected-triage.js';
 import {
@@ -277,6 +279,8 @@ export function renderView(route) {
     case 'feed':
       return viewFeed();
     case 'horizon':
+      if (rest[0] === 'watchlists') return viewWatchlists();
+      if (rest[0] === 'consultations') return viewConsultationTracker();
       return viewHorizon();
     case 'library':
       return viewLibrary();
@@ -1841,6 +1845,39 @@ function pubMatchesHorizonWindow(pub, windowDays) {
   return horizonEventDates(pub).some((d) => isWithinForwardDateWindow(d, windowDays));
 }
 
+function horizonTopicCounts(publications) {
+  const counts = new Map();
+  for (const p of publications) {
+    const topic = String(p.topic || p.publicationType || 'Uncategorised').trim();
+    counts.set(topic, (counts.get(topic) || 0) + 1);
+  }
+  return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8);
+}
+
+function viewWatchlists() {
+  const s = getState();
+  if (!isConnectedBackendActive(s)) {
+    return `${pageHeader('Watchlists', 'DEMO')}${emptyState('Connect to staging to manage watchlists.')}`;
+  }
+  const ready = assertConnectedCatalogueReady(s);
+  if (!ready.ok) return ready.html;
+  return `${pageHeader('Watchlists', 'Horizon Scanning · connected')}
+    ${connectedCatalogueBanner(s)}
+    ${renderConnectedWatchlistsShell()}`;
+}
+
+function viewConsultationTracker() {
+  const s = getState();
+  if (!isConnectedBackendActive(s)) {
+    return `${pageHeader('Consultation Tracker', 'DEMO')}${emptyState('Connect to staging for consultation tracking.')}`;
+  }
+  const ready = assertConnectedCatalogueReady(s);
+  if (!ready.ok) return ready.html;
+  return `${pageHeader('Consultation Tracker', 'Horizon Scanning · connected')}
+    ${connectedCatalogueBanner(s)}
+    ${renderConnectedConsultationsShell()}`;
+}
+
 function viewHorizon() {
   const s = getState();
   if (isConnectedBackendActive(s)) {
@@ -1848,9 +1885,16 @@ function viewHorizon() {
     if (!ready.ok) return ready.html;
     const defaultWindow = 90;
     const upcoming = getViewPublications().filter((p) => pubMatchesHorizonWindow(p, defaultWindow));
-    return `${pageHeader('Horizon Scanning', 'Catalogue dates · connected read-only')}
+    const topics = horizonTopicCounts(getViewPublications());
+    const topicsHtml = topics.length
+      ? `<section class="ri-panel"><h2>Emerging themes (deterministic)</h2>
+          <p class="ri-muted">Topic labels from catalogue records — not AI trend analysis.</p>
+          <ul class="ri-list-compact">${topics.map(([t, n]) => `<li>${esc(t)} · ${n} publication(s)</li>`).join('')}</ul></section>`
+      : '';
+    return `${pageHeader('Horizon Overview', 'Horizon Scanning · connected read-only')}
       ${connectedCatalogueBanner(s)}
       <p class="ri-muted">Shows publication consultation and effective dates from the staging catalogue. FORGENIQ Outlook narrative and demo confidence scores are not shown in Connected mode.</p>
+      ${topicsHtml}
       <p class="ri-muted" id="horizon-window-count">${upcoming.length} publication(s) with dates in the next ${defaultWindow} days</p>
       <ul class="ri-list-compact" id="horizon-event-list">
         ${

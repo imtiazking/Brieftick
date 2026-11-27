@@ -132,6 +132,12 @@ const regAnalysis = {
 };
 const pubCtx = guardMod.resolvePublicationRegulatoryContext(regAnalysis);
 check('publication context: legal instrument text, binding allowed', pubCtx.legalInstrumentText === true && pubCtx.mustNotPresentAsIndependentBinding === false && pubCtx.documentType === 'legal_instrument', JSON.stringify(pubCtx.documentType));
+const staleCtx = guardMod.resolvePublicationRegulatoryContext({ ...regAnalysis, consultationPreserved: true });
+check(
+  'stale consultationPreserved is overridden for final made instrument',
+  staleCtx.consultationPreserved === false && staleCtx.mustNotPresentAsIndependentBinding === false,
+  JSON.stringify(staleCtx),
+);
 const catalog = [{ sourceSectionId: 'S1', inLegalInstrument: true, provisionsSetOut: ['7.20.1R'], provisionTextStatus: { '7.20.1R': 'NEW_TEXT' }, transitionalProvisions: false }];
 const applicabilityOnly = {
   statement: 'CONC 7.20.1R applies where a borrower misses a payment.',

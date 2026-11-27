@@ -66,11 +66,24 @@ export async function fanOutStagingIntakeNotifications(client, params) {
     if (ins.rowCount) tenantNotifications += 1;
   }
 
+  const publicationIds = pubs.rows.map((r) => r.publication_id);
+  let watchlistMatches = 0;
+  if (publicationIds.length) {
+    const { matchIngestedPublicationsWatchlists } = await import('./watchlist-ingest-match.mjs');
+    const wl = await matchIngestedPublicationsWatchlists(client, {
+      organisationId,
+      publicationIds,
+      environment,
+    });
+    if (!wl.skipped) watchlistMatches = wl.matches ?? 0;
+  }
+
   return {
     skipped: false,
     organisationId,
     newPublications: pubs.rowCount,
     tenantNotifications,
     intakeRows,
+    watchlistMatches,
   };
 }

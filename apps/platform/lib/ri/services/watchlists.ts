@@ -1,0 +1,188 @@
+import 'server-only';
+
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { createSupabaseAdminClient } from '@/lib/supabase/admin';
+import { createTenantNotification } from '@/lib/ri/services/tenant-notifications';
+
+export type WatchlistScope = 'personal' | 'organisation';
+
+export type WatchlistFilters = {
+  regulatorKeys?: string[];
+  jurisdictionCodes?: string[];
+  topicLabels?: string[];
+  publicationTypes?: string[];
+  publicationIds?: string[];
+  keywords?: string[];
+};
+
+export type WatchlistRow = {
+  id: string;
+  organisation_id: string;
+  scope: WatchlistScope;
+  name: string;
+  description: string | null;
+  enabled: boolean;
+  owner_user_id: string | null;
+  filters: WatchlistFilters;
+  created_at: string;
+  updated_at: string;
+};
+
+function parseFilters(raw: unknown): WatchlistFilters {
+  if (!raw || typeof raw !== 'object') return {};
+  const f = raw as Record<string, unknown>;
+  const arr = (k: string) => (Array.isArray(f[k]) ? f[k].map((x) => String(x).trim()).filter(Boolean) : undefined);
+  return {
+    regulatorKeys: arr('regulatorKeys'),
+    jurisdictionCodes: arr('jurisdictionCodes'),
+    topicLabels: arr('topicLabels'),
+    publicationTypes: arr('publicationTypes'),
+    publicationIds: arr('publicationIds'),
+    keywords: arr('keywords'),
+  };
+}
+
+export async function listWatchlists(
+  supabase: SupabaseClient,
+  organisationId: string,
+  userId: string,
+): Promise<WatchlistRow[]> {
+  const { data, error } = await supabase
+    .from('ri_watchlists')
+    .select('*')
+    .eq('organisation_id', organisationId)
+    .eq('enabled', true);
+  if (error) throw new Error(error.message);
+  return (data || []).map((row) => ({ ...row, filters: parseFilters(row.filters) })) as WatchlistRow[];
+}
+
+export async function upsertWatchlist(
+  supabase: SupabaseClient,
+  params: {
+    organisationId: string;
+    userId: string;
+    id?: string;
+    scope: WatchlistScope;
+    name: string;
+    description?: string | null;
+    enabled?: boolean;
+    filters?: WatchlistFilters;
+  },
+): Promise<WatchlistRow> {
+  const payload = {
+    organisation_id: params.organisationId,
+    scope: params.scope,
+    name: params.name.trim(),
+    description: params.description?.trim() || null,
+    enabled: params.enabled !== false,
+    owner_user_id: params.scope === 'personal' ? params.userId : null,
+    filters: params.filters ?? {},
+    created_by_user_id: params.userId,
+    updated_by_user_id: params.userId,
+  };
+  const q = params.id
+    ? supabase.from('ri_watchlists').update(payload).eq('id', params.id).eq('organisation_id', params.organisationId)
+    : supabase.from('ri_watchlists').insert(payload);
+  const { data, error } = await q.select().single();
+  if (error) throw new Error(error.message);
+  return { ...(data as WatchlistRow), filters: parseFilters(data.filters) };
+}
+
+export type PublicationMatchInput = {
+  id: string;
+  title: string;
+  publication_type: string;
+  regulator?: { external_key?: string } | null;
+  canonical_url?: string;
+};
+
+export function publicationMatchesWatchlist(pub: PublicationMatchInput, filters: WatchlistFilters): string | null {
+  if (filters.publicationIds?.length && !filters.publicationIds.includes(pub.id)) return null;
+  const regKey = pub.regulator?.external_key;
+  if (filters.regulatorKeys?.length && (!regKey || !filters.regulatorKeys.includes(regKey))) return null;
+  if (filters.publicationTypes?.length && !filters.publicationTypes.some((t) => pub.publication_type?.toLowerCase().includes(t.toLowerCase()))) {
+    return null;
+  }
+  const blob = `${pub.title} ${pub.publication_type} ${pub.canonical_url || ''}`.toLowerCase();
+  if (filters.keywords?.length && !filters.keywords.some((k) => blob.includes(k.toLowerCase()))) return null;
+  if (filters.topicLabels?.length && !filters.topicLabels.some((t) => blob.includes(t.toLowerCase()))) return null;
+  return filters.regulatorKeys?.length
+    ? `Regulator watch: ${regKey}`
+    : filters.keywords?.length
+      ? `Keyword watch: ${filters.keywords.find((k) => blob.includes(k.toLowerCase()))}`
+      : 'Publication matched watchlist filters';
+}
+
+export async function recordWatchlistMatch(params: {
+  organisationId: string;
+  watchlistId: string;
+  watchlistName: string;
+  publicationId: string;
+  publicationTitle: string;
+  matchReason: string;
+  recipientUserId?: string | null;
+  createdByUserId?: string;
+}): Promise<{ notificationId: string | null; matchId: string | null }> {
+  const admin = createSupabaseAdminClient();
+  if (!admin) return { notificationId: null, matchId: null };
+
+  const notification = await createTenantNotification(admin, {
+    organisationId: params.organisationId,
+    createdByUserId: params.createdByUserId ?? 'system:watchlist',
+    recipientUserId: params.recipientUserId ?? null,
+    notificationType: 'WATCHLIST',
+    severity: 'MEDIUM',
+    title: `Watchlist — ${params.watchlistName}`,
+    message: `${params.publicationTitle} (${params.matchReason})`,
+    entityType: 'publication',
+    entityId: params.publicationId,
+    linkPath: `#/publication/${params.publicationId}`,
+    payload: { watchlistId: params.watchlistId, matchReason: params.matchReason },
+  });
+
+  const { data, error } = await admin
+    .from('ri_watchlist_matches')
+    .insert({
+      organisation_id: params.organisationId,
+      watchlist_id: params.watchlistId,
+      publication_id: params.publicationId,
+      match_reason: params.matchReason,
+      notification_id: notification.id,
+      payload: { watchlistId: params.watchlistId },
+    })
+    .select('id')
+    .single();
+  if (error) {
+    console.error('[watchlist] match_persist_failed', error.message);
+    return { notificationId: notification.id, matchId: null };
+  }
+  return { notificationId: notification.id, matchId: data.id as string };
+}
+
+export async function matchIngestedPublicationsToWatchlists(
+  supabase: SupabaseClient,
+  organisationId: string,
+  publications: PublicationMatchInput[],
+  userIdForPersonal?: string,
+): Promise<{ matches: number }> {
+  const watchlists = await listWatchlists(supabase, organisationId, userIdForPersonal || 'system:watchlist');
+  let matches = 0;
+  for (const pub of publications) {
+    for (const wl of watchlists) {
+      if (!wl.enabled) continue;
+      const reason = publicationMatchesWatchlist(pub, wl.filters);
+      if (!reason) continue;
+      await recordWatchlistMatch({
+        organisationId,
+        watchlistId: wl.id,
+        watchlistName: wl.name,
+        publicationId: pub.id,
+        publicationTitle: pub.title,
+        matchReason: reason,
+        recipientUserId: wl.scope === 'personal' ? wl.owner_user_id : null,
+      });
+      matches += 1;
+    }
+  }
+  return { matches };
+}

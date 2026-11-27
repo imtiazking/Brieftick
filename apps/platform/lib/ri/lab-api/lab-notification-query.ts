@@ -24,6 +24,7 @@ const TYPE_ALIASES: Record<string, TenantNotificationType | 'AI_REVIEW' | null> 
   triage: 'TRIAGE',
   workflow: 'WORKFLOW',
   operational: 'OPERATIONAL',
+  watchlist: 'WATCHLIST',
   ai_review: 'AI_REVIEW',
 };
 

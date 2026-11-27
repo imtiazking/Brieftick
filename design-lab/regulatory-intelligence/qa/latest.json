@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-11-27T03:35:47.998Z",
+  "generatedAt": "2026-11-27T03:49:53.963Z",
   "mode": "post-deploy",
   "qaContext": "post-deploy",
   "offlineTests": "NOT RUN",
   "candidateRelease": "NOT RUN",
-  "gitHead": "166e423581808f84ea98beb446ac24c724e868de",
+  "gitHead": "8c58e2efe1ebe715b145f2e0b97085f25f5f354d",
   "latestKnownDeployment": {
-    "id": "dpl_9z7z4Q5aNA4UVBwyxxN2GjgvKHHK",
+    "id": "dpl_95TSoASLLpqQSwpkb1r8sJZy97xk",
     "url": "https://staging-app.forgeniq.com",
     "alias": "https://staging-app.forgeniq.com",
-    "previewDeploymentId": "dpl_9z7z4Q5aNA4UVBwyxxN2GjgvKHHK",
-    "previewUrl": "https://forgeniq-platform-staging-2b1r99iis-imis-projects-8e15dca0.vercel.app",
+    "previewDeploymentId": "dpl_95TSoASLLpqQSwpkb1r8sJZy97xk",
+    "previewUrl": "https://forgeniq-platform-staging-pin35c8wv-imis-projects-8e15dca0.vercel.app",
     "candidateAlias": "https://candidate-staging.forgeniq.com",
     "candidateHost": "https://candidate-staging.forgeniq.com",
-    "protectedOfficialDeploymentId": "dpl_ESgsqUkZBdEexaqDE664DK9CSrgN",
+    "protectedOfficialDeploymentId": "dpl_9z7z4Q5aNA4UVBwyxxN2GjgvKHHK",
     "prePromotionAuth": {
       "mode": "candidate-first",
       "host": "https://candidate-staging.forgeniq.com",
@@ -25,7 +25,7 @@
       "exitCode": 0,
       "status": "PASS"
     },
-    "capturedAt": "2026-11-27T02:04:25.070Z"
+    "capturedAt": "2026-11-27T03:35:51.425Z"
   },
   "technicalTests": "NOT RUN",
   "authenticatedStaging": "NOT RUN",
@@ -34,17 +34,10 @@
   "businessUatApproved": false,
   "productionReleaseAuthorised": false,
   "changedFiles": [
-    "apps/platform/app/api/ri-lab/publications/[id]/route.ts",
-    "apps/platform/design-lab-bundle/regulatory-intelligence/js/platform/connected-catalogue.js",
-    "apps/platform/design-lab-bundle/regulatory-intelligence/js/publication-views.js",
-    "apps/platform/design-lab-bundle/regulatory-intelligence/js/views.js",
     "apps/platform/design-lab-bundle/regulatory-intelligence/qa/latest.json",
-    "apps/platform/design-lab-bundle/regulatory-intelligence/scripts/acceptance-accessibility.mjs",
-    "design-lab/regulatory-intelligence/js/platform/connected-catalogue.js",
-    "design-lab/regulatory-intelligence/js/publication-views.js",
-    "design-lab/regulatory-intelligence/js/views.js",
+    "apps/platform/scripts/qa/catalogue.mjs",
     "design-lab/regulatory-intelligence/qa/latest.json",
-    "design-lab/regulatory-intelligence/scripts/acceptance-accessibility.mjs",
+    "docs/eval/STAGING-P3-PROVISION-ENGINE-DEPLOY-2026-11-22.json",
     "docs/uat/evidence/authenticated-qa-2026-11-25/RESULT.json",
     "docs/uat/evidence/candidate-host-2026-11-25/CANDIDATE-DEPLOYMENT-VERIFY.json",
     "docs/uat/evidence/fca-eval-002-prep/PREP-PACKAGE.json",
@@ -52,7 +45,7 @@
     "docs/uat/evidence/production-readiness/raw/staging-source-operations.json",
     "docs/uat/qa/latest.json"
   ],
-  "catalogueSize": 60,
+  "catalogueSize": 61,
   "coverageGaps": [
     {
       "id": "GAP-PAID-AI",

@@ -64,6 +64,7 @@ export type LifecycleCitation = {
   citation: string | null;
   sourceQuotation: string | null;
   provisionReference: string | null;
+  effectiveDate?: string | null;
 };
 
 /** Provider-reported billing categories and call metadata. Never contains prompt or completion text. */
@@ -155,7 +156,10 @@ function asText(value: unknown): string | null {
 }
 
 /** Claims that name a supplied source. Live drafts are refused without one. */
-export function liveGroundedCitations(structured: Record<string, unknown> | null | undefined): LifecycleCitation[] {
+export function liveGroundedCitations(
+  structured: Record<string, unknown> | null | undefined,
+  ctx?: { evidencePack?: Record<string, unknown> | null; publication?: Record<string, unknown> | null },
+): LifecycleCitation[] {
   const claims = Array.isArray(structured?.claims) ? structured.claims : [];
   const citations: LifecycleCitation[] = [];
   for (const claim of claims) {
@@ -177,7 +181,20 @@ export function liveGroundedCitations(structured: Record<string, unknown> | null
       provisionReference,
     });
   }
-  return citations;
+  if (!ctx?.evidencePack) return citations;
+  return citations.map((c) => {
+    const pack = ctx.evidencePack as Record<string, unknown>;
+    const quotation = (pack?.quotation as Record<string, unknown> | undefined) ?? {};
+    const provision = (pack?.provision as Record<string, unknown> | undefined) ?? {};
+    const effective = (pack?.effective as Record<string, unknown> | undefined) ?? {};
+  return {
+      ...c,
+      sourceQuotation: c.sourceQuotation ?? asText(quotation.text),
+      provisionReference: c.provisionReference ?? asText(provision.reference),
+      citation: c.citation ?? (Number.isInteger(quotation.page) ? `PDF p.${quotation.page}` : c.citation),
+      effectiveDate: asText(effective.date as string | undefined) ?? undefined,
+    };
+  });
 }
 
 /** Fixture unless the stage (or global mode) explicitly requests a live provider. */
@@ -357,7 +374,7 @@ export async function runLifecycleStageAnalysis(params: {
       _citationValidation: { ...evidence.summary, rejected: evidence.rejected },
     };
   }
-  const citations = liveGroundedCitations(liveStructured);
+  const citations = liveGroundedCitations(liveStructured, { evidencePack: params.evidencePack ?? null });
   if (!citations.length) {
     return {
       ok: false,

@@ -17,6 +17,17 @@ import {
 
 export { STEP80_ASK_RI_SAMPLE_QUESTION };
 
+/** Citation phase label — never treat a made instrument as consultation-only. */
+function regulatoryCitationPhase(analysis) {
+  if (analysis.documentLegalStatus === 'final_made_instrument' || analysis.instrumentLegalStatus?.status === 'made') {
+    return 'binding_instrument';
+  }
+  if (analysis.consultationPreserved === true) return 'proposed';
+  if (analysis.isFinalisedGuidance === true) return 'finalised_guidance';
+  if (analysis.publicationClassification?.primaryClass === 'policy_statement') return 'policy_statement';
+  return 'regulatory_publication';
+}
+
 /**
  * @param {object} publicationEvidence
  * @param {string} question
@@ -73,13 +84,22 @@ export function answerAskRiFromPublicationPdfEvidence(publicationEvidence, quest
     };
   }
 
-  const analysis =
-    publicationEvidenceCtx.analysis ||
-    analyzeRegulatoryPdfDocument({
-      structured: publicationEvidenceCtx.structured,
-      publicationMetadata: publicationEvidenceCtx.publicationMetadata,
-      canonicalUrl: publicationEvidenceCtx.canonicalUrl,
-    });
+  const analyzeCtx = {
+    structured: publicationEvidenceCtx.structured,
+    publicationMetadata: publicationEvidenceCtx.publicationMetadata,
+    canonicalUrl: publicationEvidenceCtx.canonicalUrl,
+  };
+  let analysis =
+    publicationEvidenceCtx.analysis || analyzeRegulatoryPdfDocument(analyzeCtx);
+  if (analysis.consultationPreserved === true) {
+    const fresh = analyzeRegulatoryPdfDocument(analyzeCtx);
+    if (
+      fresh.documentLegalStatus === 'final_made_instrument' ||
+      fresh.instrumentLegalStatus?.status === 'made'
+    ) {
+      analysis = fresh;
+    }
+  }
 
   const findingsResult = buildEvidenceGroundedRegulatoryFindings({
     publicationId: publicationEvidenceCtx.publicationId,
@@ -135,7 +155,7 @@ export function answerAskRiFromPublicationPdfEvidence(publicationEvidence, quest
       supportingPageNumber: r.block.pageNumber,
       supportingExcerpt: r.block.extractedText,
       sectionReference: r.block.sectionReference,
-      regulatoryStatus: analysis.consultationPreserved === true ? 'proposed' : 'finalised_guidance',
+      regulatoryStatus: regulatoryCitationPhase(analysis),
     }),
   );
 
@@ -173,7 +193,7 @@ export function answerAskRiFromPublicationPdfEvidence(publicationEvidence, quest
         providerUsed: false,
         evidenceSource: 'pdf_primary_v1',
         humanReviewStatus: 'pending_review',
-        mustNotPresentAsBindingObligation: analysis.consultationPreserved === true,
+        mustNotPresentAsBindingObligation: regulatoryCitationPhase(analysis) === 'proposed',
         matchScore,
         publicationReference: publicationEvidenceCtx.publicationReference,
       },

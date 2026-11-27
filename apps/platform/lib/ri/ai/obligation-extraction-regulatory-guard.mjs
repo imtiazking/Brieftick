@@ -18,8 +18,14 @@ const NON_BINDING_NATURES = new Set(['guidance', 'explanatory_commentary', 'cons
  * @param {{ publicationClassification?: string, regulatoryStatus?: string, consultationPreserved?: boolean, isFinalisedGuidance?: boolean } | null | undefined} regulatoryAnalysis
  */
 export function resolvePublicationRegulatoryContext(regulatoryAnalysis) {
-  const consultationPreserved = regulatoryAnalysis?.consultationPreserved === true;
+  let consultationPreserved = regulatoryAnalysis?.consultationPreserved === true;
   const isFinalisedGuidance = regulatoryAnalysis?.isFinalisedGuidance === true;
+  const documentLegalStatus = regulatoryAnalysis?.documentLegalStatus ?? null;
+  const instrumentStatus = regulatoryAnalysis?.instrumentLegalStatus?.status ?? null;
+  // Mixed PDFs (policy statement + made instrument): do not treat the whole publication as consultation-only.
+  if (documentLegalStatus === 'final_made_instrument' || instrumentStatus === 'made') {
+    consultationPreserved = false;
+  }
   // In pdf_primary_v1 grounding these are objects ({ phase } and { primaryClass }), not strings.
   const rs = regulatoryAnalysis?.regulatoryStatus;
   const pc = regulatoryAnalysis?.publicationClassification;

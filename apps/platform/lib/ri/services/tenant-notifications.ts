@@ -10,7 +10,8 @@ export type TenantNotificationType =
   | 'TRIAGE'
   | 'WORKFLOW'
   | 'OPERATIONAL'
-  | 'AI_REVIEW';
+  | 'AI_REVIEW'
+  | 'WATCHLIST';
 
 export type TenantNotificationSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 
