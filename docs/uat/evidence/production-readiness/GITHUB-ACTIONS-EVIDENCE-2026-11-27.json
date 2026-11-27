@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-11-27T02:20:00Z",
+  "repository": "https://github.com/imtiazking/Brieftick",
+  "branch": "feature/ri-classification-triage",
+  "workflow": "forgeniq-qa",
+  "requiredCommits": {
+    "cbd5bfe": { "conclusion": "success", "runUrl": "https://github.com/imtiazking/Brieftick/actions/runs/45926324280" },
+    "33d0912": { "conclusion": "success", "runUrl": "https://github.com/imtiazking/Brieftick/actions/runs/45925226588" },
+    "4a4a44a": { "conclusion": "success", "runUrl": "https://github.com/imtiazking/Brieftick/actions/runs/45923611941" },
+    "a4dd45f": { "conclusion": "success", "runUrl": "https://github.com/imtiazking/Brieftick/actions/runs/45921272569" }
+  },
+  "note": "Public GitHub API; all listed Tranche C/D evidence commits green as of capture time."
+}

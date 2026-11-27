@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T00:36:47.812Z",
+  "generatedAt": "2026-11-27T02:14:53.235Z",
   "method": "Static code + catalogue join with read-only staging queries. No live regulator fetch was performed by this report.",
   "staleAfterHours": 72,
   "totals": {
@@ -8,9 +8,9 @@
     "codeConnectors": 40,
     "sourcesWithConnector": 40,
     "sourcesWithPublicationsOnStaging": 39,
-    "sourcesCurrent": 38,
+    "sourcesCurrent": 39,
     "sourcesStale": 0,
-    "sourcesFailing": 1,
+    "sourcesFailing": 0,
     "sourcesDisabled": 1,
     "sourcesWithoutConnector": 1,
     "regulatorsWithApprovedClassificationPolicy": 1,
@@ -49,7 +49,7 @@
             "lastSuccessAt": "2026-11-27 00:14:59.981308+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED||2026-11-18 20:06:05.658986+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -89,7 +89,7 @@
             "lastSuccessAt": "2026-11-27 00:12:11.533145+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:11.359765+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -142,7 +142,7 @@
             "lastSuccessAt": "2026-11-27 00:13:00.480717+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:57.83378+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -184,7 +184,7 @@
             "lastSuccessAt": "2026-11-27 00:12:39.39493+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:37.255421+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -224,7 +224,7 @@
             "lastSuccessAt": "2026-11-27 00:12:44.952648+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:42.373036+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -264,7 +264,7 @@
             "lastSuccessAt": "2026-11-27 00:14:12.775615+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:19.353588+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -304,7 +304,7 @@
             "lastSuccessAt": "2026-11-27 00:16:16.431931+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:58:41.122083+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -343,7 +343,7 @@
             "lastSuccessAt": "2026-11-27 00:15:31.912636+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:56.227688+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -383,7 +383,7 @@
             "lastSuccessAt": "2026-11-27 00:15:22.170308+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:46.057721+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -423,7 +423,7 @@
             "lastSuccessAt": "2026-11-27 00:12:19.485091+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:16.523761+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -463,7 +463,7 @@
             "lastSuccessAt": "2026-11-27 00:14:44.631978+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:11.061917+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -502,7 +502,7 @@
             "lastSuccessAt": "2026-11-27 00:12:23.689967+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:22.971494+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -543,7 +543,7 @@
             "lastSuccessAt": "2026-11-27 00:14:39.901452+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:48.700012+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -583,7 +583,7 @@
             "lastSuccessAt": "2026-11-27 00:15:26.974986+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:52.547152+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -625,7 +625,7 @@
             "lastSuccessAt": "2026-11-27 00:13:14.598663+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:58:02.613432+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -664,7 +664,7 @@
             "lastSuccessAt": "2026-11-27 00:13:58.53519+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:54:59.398832+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -704,7 +704,7 @@
             "lastSuccessAt": "2026-11-27 00:13:26.46419+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 12:52:28.306169+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -736,20 +736,20 @@
           },
           "staging": {
             "enabled": true,
-            "healthStatus": "FAILING",
+            "healthStatus": "OK",
             "verificationStatus": "RETRIEVAL_FAILED",
             "productionStatus": "NOT_ENABLED",
-            "runsTotal": 16,
+            "runsTotal": 17,
             "publications": 3,
-            "lastSuccessAt": "2026-10-30 09:22:24.770776+00",
-            "lastFailureAt": "2026-11-17 00:54:38.48608+00",
-            "lastRun": "FAILED|UNKNOWN|2026-11-17 00:54:38.118164+00",
-            "hoursSinceLastSuccess": 663
+            "lastSuccessAt": "2026-11-27 02:05:03.668253+00",
+            "lastFailureAt": "2026-11-27 01:47:25.740884+00",
+            "lastRun": "COMPLETED|UNKNOWN|2026-11-27 02:05:03.66112+00",
+            "hoursSinceLastSuccess": 0
           },
-          "status": "FAILING"
+          "status": "INGESTED_CURRENT"
         }
       ],
-      "status": "FAILING",
+      "status": "INGESTED_CURRENT",
       "classificationPolicy": {
         "verified": false,
         "approved": false,
@@ -785,7 +785,7 @@
             "lastSuccessAt": "2026-11-27 00:13:19.416394+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 12:52:17.389893+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -825,7 +825,7 @@
             "lastSuccessAt": "2026-11-27 00:13:45.338739+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:54:54.319994+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -864,7 +864,7 @@
             "lastSuccessAt": "2026-11-27 00:14:49.423769+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:15.964249+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -945,7 +945,7 @@
             "lastSuccessAt": "2026-11-27 00:12:55.76454+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:53.349803+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         },
@@ -971,7 +971,7 @@
             "lastSuccessAt": "2026-11-27 00:12:51.309294+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:47.034256+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -1011,7 +1011,7 @@
             "lastSuccessAt": "2026-11-27 00:14:05.111138+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:14.039637+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -1051,7 +1051,7 @@
             "lastSuccessAt": "2026-11-27 00:13:24.290003+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 12:52:22.611986+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -1091,7 +1091,7 @@
             "lastSuccessAt": "2026-11-27 00:12:40.063477+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:41.976658+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -1131,7 +1131,7 @@
             "lastSuccessAt": "2026-11-27 00:12:34.621856+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:31.200088+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         },
@@ -1157,7 +1157,7 @@
             "lastSuccessAt": "2026-11-27 00:12:29.029158+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-16 04:57:26.437092+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         },
@@ -1183,7 +1183,7 @@
             "lastSuccessAt": "2026-11-27 00:13:31.321391+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:54:38.551268+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -1223,7 +1223,7 @@
             "lastSuccessAt": "2026-11-27 00:14:30.164885+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:37.756046+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         },
@@ -1249,7 +1249,7 @@
             "lastSuccessAt": "2026-11-27 00:14:34.969903+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:43.916296+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -1289,7 +1289,7 @@
             "lastSuccessAt": "2026-11-27 00:15:11.215001+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:36.675325+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -1329,7 +1329,7 @@
             "lastSuccessAt": "2026-11-27 00:15:15.911086+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:41.4175+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -1369,7 +1369,7 @@
             "lastSuccessAt": "2026-11-27 00:15:06.463158+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:57:30.162391+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -1409,7 +1409,7 @@
             "lastSuccessAt": "2026-11-27 00:15:34.154547+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:58:00.868636+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -1449,7 +1449,7 @@
             "lastSuccessAt": "2026-11-27 00:14:23.547586+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:31.639065+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         },
@@ -1475,7 +1475,7 @@
             "lastSuccessAt": "2026-11-27 00:14:17.45031+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:55:27.024664+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -1533,7 +1533,7 @@
             "lastSuccessAt": "2026-11-27 00:16:11.677063+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 04:58:02.56357+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }
@@ -1573,7 +1573,7 @@
             "lastSuccessAt": "2026-11-27 00:13:43.33792+00",
             "lastFailureAt": null,
             "lastRun": "COMPLETED|UNKNOWN|2026-11-17 00:54:43.441299+00",
-            "hoursSinceLastSuccess": 0
+            "hoursSinceLastSuccess": 2
           },
           "status": "INGESTED_CURRENT"
         }

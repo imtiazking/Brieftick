@@ -1,0 +1,127 @@
+{
+  "generatedAt": "2026-11-27T02:16:28.827Z",
+  "results": [
+    {
+      "name": "concurrent authenticated users (A/B/C dashboard)",
+      "ok": true,
+      "detail": [
+        {
+          "persona": "A",
+          "role": "COMPLIANCE_MANAGER",
+          "dashMs": 953,
+          "dashStatus": 200,
+          "sessionOk": true
+        },
+        {
+          "persona": "B",
+          "role": "REVIEWER",
+          "dashMs": 751,
+          "dashStatus": 200,
+          "sessionOk": true
+        },
+        {
+          "persona": "C",
+          "role": "COMPLIANCE_MANAGER",
+          "dashMs": 686,
+          "dashStatus": 200,
+          "sessionOk": true
+        }
+      ]
+    },
+    {
+      "name": "performance: authenticated dashboard latency (sequential A/B/C)",
+      "ok": true,
+      "detail": {
+        "maxDashMs": 953,
+        "perPersona": [
+          {
+            "persona": "A",
+            "dashMs": 953
+          },
+          {
+            "persona": "B",
+            "dashMs": 751
+          },
+          {
+            "persona": "C",
+            "dashMs": 686
+          }
+        ]
+      }
+    },
+    {
+      "name": "database performance: publications list API",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "pubMs": 603,
+        "total": 321
+      }
+    },
+    {
+      "name": "readiness API",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "schedulerState": "HEALTHY"
+      }
+    },
+    {
+      "name": "monitoring: scheduler component present",
+      "ok": true,
+      "detail": {
+        "state": "HEALTHY",
+        "summary": "Autonomous VERCEL_CRON executions recorded in operational audit.",
+        "diagnostics": {
+          "vercelCronCompletedAudits": 96,
+          "manualHostedCompletedAudits": 142,
+          "lastManualHostedAt": "2026-11-27T02:05:03.744451+00:00",
+          "cronSlotsUtc": [
+            "00:00",
+            "04:00",
+            "12:00",
+            "20:00"
+          ],
+          "hobbyNote": "Hobby retains ~1h runtime logs; correlate scheduled slot with Vercel dashboard."
+        }
+      }
+    },
+    {
+      "name": "scheduler concurrency/recovery (offline phase8d4)",
+      "ok": true,
+      "detail": {
+        "exit": 0,
+        "tail": [
+          "PASS: tick: weak server secret fails closed",
+          "",
+          "phase8d4 hosted scheduler readiness: ALL PASS",
+          ""
+        ]
+      }
+    },
+    {
+      "name": "accessibility (Design Lab static acceptance)",
+      "ok": false,
+      "detail": {
+        "exit": 1,
+        "knownFailure": "status not colour-only (badge title): FAIL",
+        "note": "ENG-A11Y-001 badge status colour-only — tracked in REMAINING-ENGINEERING-DEFECTS.md"
+      }
+    },
+    {
+      "name": "backup configuration (read-only snapshot)",
+      "ok": true,
+      "detail": {
+        "pitr": "managed_by_supabase",
+        "restoreDrill": "NOT_RUN"
+      }
+    },
+    {
+      "name": "browser compatibility (Chromium smoke on staging)",
+      "ok": true,
+      "detail": {
+        "exit": 0
+      }
+    }
+  ]
+}

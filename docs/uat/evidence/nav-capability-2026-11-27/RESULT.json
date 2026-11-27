@@ -1,0 +1,393 @@
+{
+  "generatedAt": "2026-11-27T02:13:21.667Z",
+  "routes": 30,
+  "failed": 0,
+  "results": [
+    {
+      "name": "Dashboard",
+      "href": "#/dashboard",
+      "ok": true,
+      "ui": {
+        "h1": "Connecting…",
+        "appLen": 1039,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Horizon Scanning — Horizon Overview",
+      "href": "#/horizon",
+      "ok": true,
+      "ui": {
+        "h1": "Connecting…",
+        "appLen": 1039,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Horizon Scanning — Regulatory Feed",
+      "href": "#/feed",
+      "ok": true,
+      "ui": {
+        "h1": "Regulatory Feed",
+        "appLen": 97573,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Horizon Scanning — Regulatory Calendar",
+      "href": "#/calendar",
+      "ok": true,
+      "ui": {
+        "h1": "Regulatory Calendar",
+        "appLen": 1187,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Horizon Scanning — Consultation Tracker",
+      "href": "#/horizon/consultations",
+      "ok": true,
+      "ui": {
+        "h1": "Horizon Scanning",
+        "appLen": 1426,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Horizon Scanning — Watchlists",
+      "href": "#/horizon/watchlists",
+      "ok": true,
+      "ui": {
+        "h1": "Horizon Scanning",
+        "appLen": 1426,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Horizon Scanning — Regulatory Landscape",
+      "href": "#/landscape",
+      "ok": true,
+      "ui": {
+        "h1": "Sector regulatory landscape",
+        "appLen": 6174,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Regulatory Intelligence — Publications",
+      "href": "#/library",
+      "ok": true,
+      "ui": {
+        "h1": "Regulatory Library",
+        "appLen": 74740,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Regulatory Intelligence — Regulatory Changes",
+      "href": "#/changes",
+      "ok": true,
+      "ui": {
+        "h1": "Regulatory Changes",
+        "appLen": 7858,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Regulatory Intelligence — Findings & Triage",
+      "href": "#/triage/all",
+      "ok": true,
+      "ui": {
+        "h1": "All Findings",
+        "appLen": 871,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Regulatory Intelligence — Obligations",
+      "href": "#/obligations",
+      "ok": true,
+      "ui": {
+        "h1": "Obligations",
+        "appLen": 6560,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Regulatory Intelligence — Impact Assessments",
+      "href": "#/assessments",
+      "ok": true,
+      "ui": {
+        "h1": "Impact Assessments",
+        "appLen": 5804,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Risk & Controls — Risks",
+      "href": "#/risks",
+      "ok": true,
+      "ui": {
+        "h1": "Risks",
+        "appLen": 3108,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Risk & Controls — Controls",
+      "href": "#/controls",
+      "ok": true,
+      "ui": {
+        "h1": "Controls",
+        "appLen": 2955,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Risk & Controls — Policies",
+      "href": "#/policies",
+      "ok": true,
+      "ui": {
+        "h1": "Policies",
+        "appLen": 1456,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Risk & Controls — Assurance",
+      "href": "#/assurance",
+      "ok": true,
+      "ui": {
+        "h1": "Assurance",
+        "appLen": 4721,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Risk & Controls — Issues & Remediation",
+      "href": "#/issues",
+      "ok": true,
+      "ui": {
+        "h1": "Issues & Actions",
+        "appLen": 2944,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Risk & Controls — Evidence",
+      "href": "#/evidence",
+      "ok": true,
+      "ui": {
+        "h1": "Evidence",
+        "appLen": 4305,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Work — My Tasks",
+      "href": "#/my-tasks",
+      "ok": true,
+      "ui": {
+        "h1": "My Tasks",
+        "appLen": 1955,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Work — Reviews & Approvals",
+      "href": "#/approval",
+      "ok": true,
+      "ui": {
+        "h1": "Approval",
+        "appLen": 929,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Work — Attention Centre",
+      "href": "#/notifications",
+      "ok": true,
+      "ui": {
+        "h1": "Exceptions, escalations and deadlines",
+        "appLen": 8690,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Work — Notifications",
+      "href": "#/notifications/inbox",
+      "ok": true,
+      "ui": {
+        "h1": "Exceptions, escalations and deadlines",
+        "appLen": 8690,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Reports",
+      "href": "#/reports",
+      "ok": true,
+      "ui": {
+        "h1": "Reports & Audit",
+        "appLen": 1946,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Administration — Administration",
+      "href": "#/admin",
+      "ok": true,
+      "ui": {
+        "h1": "Administration",
+        "appLen": 2114,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Administration — Organisation",
+      "href": "#/admin/organisation",
+      "ok": true,
+      "ui": {
+        "h1": "Organisation profile",
+        "appLen": 1293,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Administration — Regulatory Sources",
+      "href": "#/admin/sources",
+      "ok": true,
+      "ui": {
+        "h1": "Regulatory sources & connectors",
+        "appLen": 9782,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Administration — Classification Policy",
+      "href": "#/admin/classification-policy",
+      "ok": true,
+      "ui": {
+        "h1": "Regulatory classification policy",
+        "appLen": 924,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Administration — Health",
+      "href": "#/admin/health",
+      "ok": true,
+      "ui": {
+        "h1": "Platform health",
+        "appLen": 2514,
+        "notFound": false
+      },
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
+    },
+    {
+      "name": "Administration — Quality Assurance",
+      "href": "#/admin/qa",
+      "ok": true,
+      "ui": {
+        "h1": "Quality assurance",
+        "appLen": 893,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Administration — Readiness",
+      "href": "#/admin/readiness",
+      "ok": true,
+      "ui": {
+        "h1": "Readiness dashboard",
+        "appLen": 2779,
+        "notFound": false
+      },
+      "api": null
+    }
+  ]
+}

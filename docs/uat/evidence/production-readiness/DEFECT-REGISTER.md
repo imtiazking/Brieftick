@@ -41,7 +41,7 @@ DEF-007 detail (none of these was a product regression):
 
 | ID | Sev | Item | Needed |
 |---|---|---|---|
-| OPEN-001 | **High, release blocker** | Horizon scanning is not live: 0 of 41 sources current (38 stale over 72 h, 1 failing, 1 disabled, 1 with no connector); no Vercel cron; `hosted_scheduler` DISABLED; 0 polling-enabled sources | enable scheduler and run connectors (needs authorisation for external fetch volume and cron) |
+| OPEN-001 | **High, release blocker (narrowed)** | Connectors **39/41 current** on staging (2026-11-27); scheduler **enabled** on `33d0912`. **Residual:** no **VERCEL_CRON** audit on **2026-11-27** yet (ENG-CRON-001); OFAC-SDN disabled; CBUAE no connector | capture 04:00 UTC unattended tick; policy for CBUAE/OFAC |
 | OPEN-002 | **High, release blocker (external)** | Regulatory accuracy NOT_ASSESSED; no regulatory-expert review | professional review; no approval is claimed |
 | OPEN-003 | High, BLOCKED | Hosted cross-tenant denial unproven (`SEC-CROSS-TENANT`) | second tenant plus user access (approval required) |
 | OPEN-004 | Medium | **8** OPEN obligations remain DISCONNECTED after tranche C: **7** legacy MANUAL in FORGENIQ main org + **1** partner org; **10** AI-dev pilot rows repaired to LINKED (`repair-disconnected-2026-11-27`) | owner decision for 7 legacy; partner row unchanged. Not bulk-backfilled |

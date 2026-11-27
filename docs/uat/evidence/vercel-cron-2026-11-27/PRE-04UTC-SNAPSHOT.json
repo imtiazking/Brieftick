@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-11-27T02:17:00Z",
+  "officialStagingDeployment": "dpl_9z7z4Q5aNA4UVBwyxxN2GjgvKHHK",
+  "gitCommit": "33d0912",
+  "evidenceCommit": "cbd5bfe",
+  "checkSince": "2026-11-27T00:00:00Z",
+  "method": "Supabase read-only SQL (ingestion_operational_events)",
+  "invocationKindsSinceMidnightUtc": {
+    "VERCEL_CRON": 0,
+    "MANUAL_HOSTED": "see operational audit; latest manual completion 2026-11-27T02:05:03Z (MOCI-SA)"
+  },
+  "historicalNote": "96 lifetime VERCEL_CRON audits; last unattended tick 2026-11-17T04:58:45Z — predates Tranche C re-enable on 33d0912.",
+  "nextCronSlotUtc": "04:00",
+  "policy": "Do not substitute MANUAL_HOSTED ticks for unattended VERCEL_CRON proof.",
+  "awaiting": "First VERCEL_CRON on or after 2026-11-27T04:00:00Z on deployment 33d0912",
+  "localWaiter": "scripts/staging/wait-vercel-cron-evidence.mjs requires STAGING_DATABASE_URL or SUPABASE_SERVICE_ROLE_KEY in operator env"
+}

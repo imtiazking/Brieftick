@@ -1046,3 +1046,18 @@ pm run qa (ci) **29/29 PASS** including RI-SONNET-55-COMPAT, RI-SHARED-SPEND, RI
 | Stage 2 hosted security | Smuggle refused; concurrent approval stale; Stage 2 linked (`hosted-stage2-security-2026-11-27`). |
 | MOCI cert | Platform `certs/mc-gov-sa-trust-chain.pem` + connector fallback; Vercel `includeFiles` depth fix — **deploy + ingestion success pending** on next tick. |
 | VERCEL_CRON | **0** unattended rows as of `01:50 UTC`; **8** `MANUAL_HOSTED` since scheduler enable; await **04:00 UTC** cron for separate evidence. |
+
+## 2026-11-27 — Tranche D (handoff to Ask RI; official `33d0912`)
+
+| Item | Outcome |
+|---|---|
+| Official staging | `dpl_9z7z4Q5aNA4UVBwyxxN2GjgvKHHK` @ `33d0912`; evidence tip `cbd5bfe`. |
+| MOCI-SA | COMPLETED ingest `4cac5a4c…` at `02:05:03Z` on official deployment. |
+| Connectors | `build-connector-status.mjs` → **39/41 INGESTED_CURRENT**, 0 stale; matrix/docs refreshed. |
+| Lineage | `hosted-regulatory-lineage-verify.mjs` PASS; `linked:false` on changes API logged as ENG-LINEAGE-001. |
+| Nav capabilities | `hosted-nav-capability-sweep.mjs` **30/30** PASS. |
+| Operational readiness | A/B/C concurrent, latency, DB API, monitoring, offline scheduler, Chromium PASS; a11y FAIL (ENG-A11Y-001); DR restore not run. |
+| Cross-tenant harness | Prepared; `BLOCKED_AWAITING_AUTH` (no D/E). |
+| CI | GitHub `forgeniq-qa` success on `cbd5bfe`, `33d0912`, `4a4a44a`, `a4dd45f`. |
+| VERCEL_CRON (2026-11-27) | **0** since `00:00 UTC` as of `02:17 UTC`; `PRE-04UTC-SNAPSHOT.json`; unattended proof pending **04:00 UTC** slot (ENG-CRON-001). |
+| Deliverables | `CONSOLIDATED-REPORT-2026-11-27-D.md`, `REMAINING-ENGINEERING-DEFECTS.md`, `DISCONNECTED-OBLIGATION-RECONCILIATION.md`. |

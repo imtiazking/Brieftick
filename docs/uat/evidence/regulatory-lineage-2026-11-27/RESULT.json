@@ -1,0 +1,81 @@
+{
+  "generatedAt": "2026-11-27T02:15:05.178Z",
+  "origin": "https://staging-app.forgeniq.com",
+  "results": [
+    {
+      "name": "publications API lists catalogue (MOCI when present)",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "total": 321,
+        "mociPublicationId": "0a88c11f-f0fe-4f15-bce0-9ff3a06b2486",
+        "mociTitle": ".Companies Law (ea0fc797)"
+      }
+    },
+    {
+      "name": "MOCI-SA ingestion represented in catalogue",
+      "ok": true,
+      "detail": {
+        "publicationId": "0a88c11f-f0fe-4f15-bce0-9ff3a06b2486"
+      }
+    },
+    {
+      "name": "landscape / horizon data API",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "keys": [
+          "ok",
+          "catalogueScope",
+          "regulatorCount",
+          "sourceCount",
+          "publicationCount",
+          "changeCount",
+          "regulators",
+          "sources"
+        ]
+      }
+    },
+    {
+      "name": "regulatory changes includes publication-backed change",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "total": 27,
+        "linked": false,
+        "publicationId": "0a88c11f-f0fe-4f15-bce0-9ff3a06b2486"
+      }
+    },
+    {
+      "name": "findings triage API",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "total": 212
+      }
+    },
+    {
+      "name": "regulatory feed UI (catalogue-backed)",
+      "ok": true,
+      "detail": {
+        "heading": "Regulatory Feed",
+        "feedItems": 321
+      }
+    },
+    {
+      "name": "horizon scanning UI",
+      "ok": true,
+      "detail": "Horizon Scanning"
+    },
+    {
+      "name": "publication detail route",
+      "ok": true,
+      "detail": ".Companies Law (ea0fc797)"
+    },
+    {
+      "name": "sourceUnderTest",
+      "ok": true,
+      "detail": "SRC-MOCI-SA-COMPANIES-LAW"
+    }
+  ]
+}
