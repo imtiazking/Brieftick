@@ -26,6 +26,16 @@ await runAs('A', async ({ page }) => {
   await page.goto(`${LAB}#/dashboard`, { waitUntil: 'domcontentloaded', timeout: 90_000 });
   await page.waitForFunction(() => document.documentElement.dataset.riMounted === '1', null, { timeout: 45_000 });
 
+  const hasNavV2 = await page.locator('#ri-nav-menu-toggle').count();
+  record('nav-v2-bundle-present', hasNavV2 > 0, { note: hasNavV2 ? 'current' : 'awaiting staging deploy' });
+  if (!hasNavV2) {
+    writeFileSync(
+      join(OUT, 'RESULT.json'),
+      JSON.stringify({ generatedAt: new Date().toISOString(), staging: STAGING_ORIGIN, skipped: 'legacy_bundle', failed: 1, results }, null, 2),
+    );
+    process.exit(2);
+  }
+
   for (const hash of ROUTES) {
     await page.goto(`${LAB}${hash}`, { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(600);

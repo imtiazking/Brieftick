@@ -2,6 +2,12 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-27 — Design Lab navigation (Ask RI, sidebar modes, calendar rail)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 10:40 | Sidebar Ask RI + header gold CTA; expanded/collapsed/hidden modes with localStorage persistence; calendar rail; hosted nav UAT script | User Tranche F navigation scope | Commit `0827a87`; bundle sync 223 modules; platform build PASS; hosted `hosted-design-lab-nav-modes.mjs` blocks on pre-nav bundle (exit 2) until staging deploy promotes commit. |
+
 ## 2026-11-27 — Tranche F: Watchlists/consultations completion + Ask RI baseline
 
 | Time (UTC) | Decision | Reason | Outcome |
