@@ -23,12 +23,48 @@ const PROJECT_NAME = 'forgeniq-platform-staging';
 const CANDIDATE_HOST = new URL(CANDIDATE_STAGING_ORIGIN).hostname;
 const PREAUTH_MODE = process.env.FORGENIQ_RELEASE_PREAUTH?.trim() || 'candidate-first';
 
+function vercelCli() {
+  if (process.env.FORGENIQ_VERCEL_BIN?.trim()) {
+    return { cmd: process.env.FORGENIQ_VERCEL_BIN.trim(), env: {} };
+  }
+  const localBin = join(
+    repoRoot,
+    'node_modules',
+    '.bin',
+    process.platform === 'win32' ? 'vercel.cmd' : 'vercel',
+  );
+  const cmd = existsSync(localBin) ? localBin : 'vercel';
+  const env = { ...process.env };
+  if (cmd === 'vercel' && process.platform === 'win32' && process.env.APPDATA) {
+    env.PATH = `${join(process.env.APPDATA, 'npm')};${env.PATH || ''}`;
+  }
+  const probe = spawnSync(cmd, ['--version'], {
+    encoding: 'utf8',
+    env,
+    shell: process.platform === 'win32',
+  });
+  const text = `${probe.stdout || ''}${probe.stderr || ''}`;
+  const major = Number(text.match(/(\d+)\./)?.[1] ?? 0);
+  if (major < 47) {
+    console.error('Vercel CLI must be >= 47 for archive deploy. Run `npm install` at the repo root.');
+    process.exit(1);
+  }
+  return { cmd, env: cmd === 'vercel' ? env : {} };
+}
+
+const VERCEL = vercelCli();
+const VERCEL_BIN = VERCEL.cmd;
+
+function vercelEnv(extra = {}) {
+  return { ...process.env, ...VERCEL.env, ...extra };
+}
+
 function run(label, cmd, args, cwd, env = {}, inherit = false) {
   const r = spawnSync(cmd, args, {
     cwd,
     stdio: inherit ? 'inherit' : 'pipe',
     encoding: 'utf8',
-    env: { ...process.env, ...env },
+    env: vercelEnv(env),
     shell: process.platform === 'win32',
   });
   if (r.status !== 0) {
@@ -39,9 +75,10 @@ function run(label, cmd, args, cwd, env = {}, inherit = false) {
 }
 
 function captureProtectedOfficialDeployment() {
-  const out = spawnSync('vercel', ['inspect', OFFICIAL_STAGING_ORIGIN, `--scope=${SCOPE}`], {
+  const out = spawnSync(VERCEL_BIN, ['inspect', OFFICIAL_STAGING_ORIGIN, `--scope=${SCOPE}`], {
     cwd: repoRoot,
     encoding: 'utf8',
+    env: vercelEnv(),
     shell: process.platform === 'win32',
   });
   const id = `${out.stdout || ''}${out.stderr || ''}`.match(/dpl_[A-Za-z0-9]+/)?.[0] ?? null;
@@ -56,13 +93,13 @@ function runUnauthPreviewSmoke(deploymentUrl) {
           '/c',
           `set FORGENIQ_SMOKE_BASE=${deploymentUrl}&& vercel env run --scope ${SCOPE} -- node ./scripts/eval/design-lab-browser-smoke.mjs`,
         ],
-        { cwd: platformRoot, stdio: 'inherit', encoding: 'utf8' },
+        { cwd: platformRoot, stdio: 'inherit', encoding: 'utf8', env: vercelEnv() },
       )
-    : spawnSync('vercel', ['env', 'run', '--scope', SCOPE, '--', 'node', './scripts/eval/design-lab-browser-smoke.mjs'], {
+    : spawnSync(VERCEL_BIN, ['env', 'run', '--scope', SCOPE, '--', 'node', './scripts/eval/design-lab-browser-smoke.mjs'], {
         cwd: platformRoot,
         stdio: 'inherit',
         encoding: 'utf8',
-        env: { ...process.env, FORGENIQ_SMOKE_BASE: deploymentUrl },
+        env: vercelEnv({ FORGENIQ_SMOKE_BASE: deploymentUrl }),
       });
 }
 
@@ -87,10 +124,11 @@ function rollbackOfficial(protectedDeploymentId) {
     return { status: 1 };
   }
   console.log(`Rolling back official staging to ${protectedDeploymentId}`);
-  return spawnSync('vercel', ['rollback', protectedDeploymentId, '--yes', `--scope=${SCOPE}`], {
+  return spawnSync(VERCEL_BIN, ['rollback', protectedDeploymentId, '--yes', `--scope=${SCOPE}`], {
     cwd: repoRoot,
     stdio: 'inherit',
     encoding: 'utf8',
+    env: vercelEnv(),
     shell: process.platform === 'win32',
   });
 }
@@ -148,7 +186,7 @@ const officialHost = new URL(OFFICIAL_STAGING_ORIGIN).hostname;
 // Omit `--project` so older pinned CLIs (e.g. 41.x in root devDependencies) still deploy.
 const out = run(
   'vercel production deploy',
-  'vercel',
+  VERCEL_BIN,
   ['deploy', '--archive=tgz', '--yes', '--prod', `--scope=${SCOPE}`],
   repoRoot,
   {},
@@ -167,7 +205,7 @@ if (!deploymentUrl) {
 if (protectedOfficial.id) {
   run(
     'restore official staging alias',
-    'vercel',
+    VERCEL_BIN,
     ['alias', protectedOfficial.id, officialHost, `--scope=${SCOPE}`],
     repoRoot,
   );
@@ -178,7 +216,7 @@ const candidateResolvable = await candidateHostResolves();
 const candidateReady = candidateResolvable && (await candidateHttpsReachable());
 
 if (candidateReady) {
-  run('assign candidate alias', 'vercel', ['alias', deploymentUrl, CANDIDATE_HOST, `--scope=${SCOPE}`], repoRoot);
+  run('assign candidate alias', VERCEL_BIN, ['alias', deploymentUrl, CANDIDATE_HOST, `--scope=${SCOPE}`], repoRoot);
   const previewSmoke = runUnauthPreviewSmoke(CANDIDATE_STAGING_ORIGIN);
   if (previewSmoke.status !== 0) {
     writeEvidence({
@@ -192,7 +230,7 @@ if (candidateReady) {
       aliasUntouched: OFFICIAL_STAGING_ORIGIN,
       note: 'Unauthenticated smoke on candidate host failed. Official staging alias was not changed.',
     });
-    run('restore official candidate on protected deployment', 'vercel', ['alias', protectedOfficial.id, CANDIDATE_HOST, `--scope=${SCOPE}`], repoRoot);
+    run('restore official candidate on protected deployment', VERCEL_BIN, ['alias', protectedOfficial.id, CANDIDATE_HOST, `--scope=${SCOPE}`], repoRoot);
     process.exit(previewSmoke.status ?? 1);
   }
 
@@ -314,7 +352,7 @@ if (candidateReady) {
   process.exit(2);
 }
 
-run('assign official staging alias', 'vercel', ['alias', deploymentUrl, officialHost, `--scope=${SCOPE}`], repoRoot);
+run('assign official staging alias', VERCEL_BIN, ['alias', deploymentUrl, officialHost, `--scope=${SCOPE}`], repoRoot);
 
 const postAuth = runAuthenticatedSmoke(OFFICIAL_STAGING_ORIGIN);
 const postPromotionAuth = {
@@ -346,9 +384,10 @@ if (postAuth.status !== 0) {
 
 run('post-deploy qa', 'node', ['./scripts/qa/orchestrator.mjs', '--mode=post-deploy'], platformRoot);
 
-const promotedInspect = spawnSync('vercel', ['inspect', OFFICIAL_STAGING_ORIGIN, `--scope=${SCOPE}`], {
+const promotedInspect = spawnSync(VERCEL_BIN, ['inspect', OFFICIAL_STAGING_ORIGIN, `--scope=${SCOPE}`], {
   cwd: repoRoot,
   encoding: 'utf8',
+  env: vercelEnv(),
   shell: process.platform === 'win32',
 });
 const liveId = `${promotedInspect.stdout || ''}${promotedInspect.stderr || ''}`.match(/dpl_[A-Za-z0-9]+/)?.[0] ?? deploymentId;
