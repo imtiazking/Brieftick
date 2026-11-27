@@ -204,6 +204,7 @@ export async function backfillPublicationSnapshot(client, pub) {
  * @param {{ maxPublications?: number, maxReDerives?: number }} [options]
  */
 export async function runCorpusSnapshotBackfillBatch(client, options = {}) {
+  await ensureSnapshotStorageReady({ environment: 'staging' });
   const maxPubs = Math.min(Math.max(options.maxPublications ?? 2, 0), 5);
   const maxRe = Math.min(Math.max(options.maxReDerives ?? 2, 0), 5);
   const outcomes = [];
