@@ -664,7 +664,7 @@ function viewDashboard() {
             .map(
               (p) => `
             <li><a href="#/publication/${p.id}"><strong>${esc(p.regulator)}</strong> — ${esc(p.title)}</a>
-              <span>${connected ? `${esc(p.display?.reference || '—')} · ${esc(p.display?.classification || 'Unassessed')}` : `${badge(p.priority)} ${badge(p.applicabilityRecommendation)} ${badge(p.workflowStatus)}`}</span></li>`
+              <span>${connected ? `${esc(p.display?.reference || '—')} · ${badge(p.display?.classification || 'Unassessed')}` : `${badge(p.priority)} ${badge(p.applicabilityRecommendation)} ${badge(p.workflowStatus)}`}</span></li>`
             )
             .join('')}
         </ul>

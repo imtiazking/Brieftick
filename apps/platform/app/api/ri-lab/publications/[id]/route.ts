@@ -7,6 +7,7 @@ import { parseLabApplicabilityPatchBody } from '@/lib/ri/lab-api/lab-link-write'
 import { assertLabConnectedWrite } from '@/lib/ri/lab-api/lab-connected-writes';
 import { sanitizeLabRecord } from '@/lib/ri/lab-api/sanitize';
 import { mapPublicationDetailToLabView } from '@/lib/ri/lab-api/lab-publication-view';
+import { buildRegulatoryTraceability } from '@/lib/ri/lab-api/regulatory-traceability';
 import { RiNotFoundError } from '@/lib/ri/errors';
 
 type Params = { params: Promise<{ id: string }> };
@@ -17,11 +18,13 @@ export async function GET(_request: Request, { params }: Params) {
     const ctx = await requireRiContext('ri:read');
     const detail = await getPublicationDetail(ctx.supabase, ctx.organisationId, id);
     const labPublication = mapPublicationDetailToLabView(detail);
+    const regulatoryTrace = await buildRegulatoryTraceability(ctx.supabase, ctx.organisationId, detail);
     const sanitizedDetail = sanitizeLabRecord(detail as Record<string, unknown>);
     return NextResponse.json({
       ok: true,
       labPublication,
       display: labPublication.display,
+      regulatoryTrace,
       detail: sanitizedDetail,
       /** @deprecated use labPublication + detail */
       publication: sanitizedDetail,

@@ -1178,6 +1178,10 @@ export async function fetchConnectedPublicationDetail(state, publicationId) {
   }
   const rawDetail = body.detail ?? body.publication;
   cat.detailsById[publicationId] = rawDetail;
+  if (body.regulatoryTrace) {
+    if (!cat.regulatoryTraceById) cat.regulatoryTraceById = {};
+    cat.regulatoryTraceById[publicationId] = body.regulatoryTrace;
+  }
   if (body.labPublication) {
     upsertConnectedLabPublication(cat, body.labPublication);
   }

@@ -40,10 +40,26 @@ import { canGenerateAiSummary, canMutateAiReviewState, isAuditorReadOnly } from 
 import { isConnectedBackendActive, isConnectedAiRequestEnabled } from './platform/connected-mode.js';
 import { renderConnectedPublicationAiTab } from './platform/connected-publication-ai-panels.js';
 import { renderConnectedPublicationApplicabilityTab } from './platform/connected-applicability-panels.js';
-import { connectedCatalogueBanner, getConnectedAssigneeLabel } from './platform/connected-catalogue.js';
+import { connectedCatalogueBanner, getConnectedAssigneeLabel, getConnectedCatalogue } from './platform/connected-catalogue.js';
 import { getViewAiAnalysisRunsForPublication } from './store.js';
 
 const PUB_TABS = ['Overview', 'Source', 'Changes', 'AI Analysis', 'Applicability', 'Related Records', 'Audit History'];
+
+function renderRegulatoryTraceProvenance(publicationId, state) {
+  const trace = getConnectedCatalogue(state).regulatoryTraceById?.[publicationId];
+  if (!trace) return '';
+  const runLink = trace.ingestionRunId
+    ? `<a href="#/ingestion/run/${esc(trace.ingestionRunId)}">${esc(trace.ingestionRunId.slice(0, 8))}…</a>`
+    : '—';
+  const changeLabel =
+    trace.regulatoryChange?.linkage === 'TENANT_CHANGE'
+      ? `<a href="#/change/${esc(trace.regulatoryChange.primaryChangeId)}">Tenant regulatory change</a>`
+      : '<span class="ri-muted">No tenant regulatory change (catalogue-only ingest — expected until assessed)</span>';
+  return `
+        <dt>Regulatory source</dt><dd>${esc(trace.sourceExternalKey || '—')}</dd>
+        <dt>Last ingestion run</dt><dd>${runLink}</dd>
+        <dt>Regulatory change link</dt><dd>${changeLabel}</dd>`;
+}
 
 export function viewPublication(routeParts) {
   const id = routeParts[0];
@@ -153,6 +169,7 @@ function renderOverview(p, related) {
         <dt>Triage</dt><dd>${esc(d.triage)}</dd>
         <dt>Catalogue kind</dt><dd>${esc(d.catalogueKind)} · ${esc(d.dataOriginLabel)}</dd>
         <dt>Ingestion versions</dt><dd>${esc(d.libraryStatus)} · ${esc(d.libraryVersion)} <span class="ri-muted">(${esc(d.libraryVersionSource)}; not extraction revisions)</span></dd>
+        ${renderRegulatoryTraceProvenance(p.id, s)}
         <dt>Consultation deadline</dt><dd>${
           p.consultationDeadline || d.consultationDeadlineStructured
             ? formatDate(p.consultationDeadline || d.consultationDeadlineStructured)
