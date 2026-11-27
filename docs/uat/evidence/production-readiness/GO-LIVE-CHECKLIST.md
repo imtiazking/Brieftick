@@ -5,13 +5,13 @@ Legend: MET (evidenced), NOT MET, BLOCKED (needs external action; exact requirem
 | # | Gate | Status | Evidence or exact requirement |
 |---|---|---|---|
 | 1 | Local gates (build, regressions, migrations, security checks) | MET | promote gate 52/52; CI success for `782d55c` |
-| 2 | Staging deployed candidate-first and promoted | MET | `dpl_71M4sVFpmG4WtXiJ7uBBkUS3wnqx` |
+| 2 | Staging deployed candidate-first and promoted | MET | `dpl_Fom4o2RmJHMnALQ4Fp3o1owwnxJS` (`b6cf181`); rollback `dpl_71M4sVFpmG4WtXiJ7uBBkUS3wnqx` |
 | 3 | Hosted A/B/C lifecycle and browser UAT | MET | 38/38 (1 BLOCKED check) and 34/34 |
 | 4 | Maker-checker and SoD enforced | MET (hosted) | S1 to S5 checks; browser SoD |
 | 5 | Atomic approval and Stage 2 hand-off | MET | RPC; `B-UI-ATOMIC-STAGE2-HANDOFF` |
 | 6 | Paid AI disabled; ledger unchanged | MET | `executionEnabled=false`; 10 SETTLED, `$0.224872` |
 | 7 | Production untouched | MET | no change to `platform`, `brieftick`, `www.forgeniq.com` |
-| 8 | Horizon scanning live on a schedule | **NOT MET** | enable scheduler (Vercel cron) and run connectors until sources are current; needs authorisation for the recurring external fetch |
+| 8 | Horizon scanning live on a schedule | **PARTIAL** | Scheduler enabled; hosted dry-run + 7 manual ticks 2026-11-27; 38/41 catalogue sources current in 72 h; MOCI-SA failing; CBUAE no connector; OFAC-SDN not ingested. Vercel crons on four UTC schedules. |
 | 9 | Regulatory accuracy reviewed by an expert | **BLOCKED** | a regulatory professional must label a sample and sign off; no approval is claimed |
 | 10 | Approved classification policy for each in-scope regulator | **BLOCKED** | approval needed (material classification-policy change); only REG-FCA has one |
 | 11 | Hosted cross-tenant isolation | **BLOCKED** | second organisation and test users (new access: needs approval); offline RLS proof exists |

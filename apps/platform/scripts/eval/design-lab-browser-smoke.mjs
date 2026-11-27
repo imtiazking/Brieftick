@@ -163,7 +163,7 @@ for (const route of ROUTES) {
   const mountTimeout = isCi ? 45_000 : 15_000;
   await page.waitForFunction(() => document.documentElement.dataset.riMounted === '1', null, { timeout: mountTimeout }).catch(() => {});
   const mounted = await page.evaluate(() => document.documentElement.dataset.riMounted === '1');
-  const nav = await page.locator('nav.ri-topnav').count();
+  const nav = await page.locator('nav.ri-topnav, nav.ri-sidebar__nav, aside.ri-sidebar nav').count();
   let heading = await page.locator('h1').first().innerText().catch(() => '');
   for (let i = 0; i < 8 && /connecting/i.test(heading); i += 1) {
     await page.waitForTimeout(1000);

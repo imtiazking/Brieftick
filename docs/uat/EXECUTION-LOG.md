@@ -1021,3 +1021,16 @@ pm run qa (ci) **29/29 PASS** including RI-SONNET-55-COMPAT, RI-SHARED-SPEND, RI
 | P6 Engineering | Master triple → `docs/uat/qa/transient/`; audit history loading timeout. |
 | P7 Design Lab | Collapsible left sidebar + Ask RI in header; bundle synced. |
 | Evidence | `REMEDIATION-REPORT-2026-11-27.md`, scheduler activation, classification draft proposals, cross-tenant harness. |
+
+## 2026-11-27 — Authorised staging execution (migration, deploy, scheduler, connectors)
+
+| Item | Outcome |
+|---|---|
+| Migration | `20261127083000_reviewer_stage2_approval_pin` applied to staging (`lhgzdicffkhaaykzthep`); RPC comment verified. |
+| Promote gate | 52/52 PASS after sidebar-aware browser smoke fix (`nav.ri-sidebar__nav`). |
+| Deploy | Official `dpl_Fom4o2RmJHMnALQ4Fp3o1owwnxJS` @ `staging-app.forgeniq.com` from `b6cf181`; rollback retained `dpl_71M4sVFpmG4WtXiJ7uBBkUS3wnqx`. Candidate-first auth smoke 19/19 (candidate + official). |
+| Scheduler | `FORGENIQ_RI_SCHEDULER_CRON_ENABLED=true`, `FORGENIQ_INGEST_ENV=staging`, `RI_AI_EXECUTION_ENABLED=false`; CRON_SECRET rotated (not logged). Hosted dry-run 200 (`schedulerEnabled: true`, 12 due / 12 wouldRun). Seven manual POST ticks; 39 `ingestion_runs` in ~2 h. |
+| Connectors | 38/39 ops rows fresh within 72 h after ticks. **Failing:** `SRC-MOCI-SA-COMPANIES-LAW` (12 consecutive failures; last success 2026-10-30). **No connector ops:** `SRC-CBUAE-DIGITAL-RULEBOOK` (0 publications). **Not ingested:** `SRC-OFAC-SDN-LISTS` (disabled / no runs in ops; OFAC regulatory updates source current). |
+| Hosted UAT | `hosted-design-lab-browser-abc.mjs` 34/34 on official staging (calendar API scope included). |
+| Data integrity | 18 `DISCONNECTED` obligations remain (11 synthetic UAT + 7 legacy); repair workflow not executed in this tranche. |
+| Blockers unchanged | Regulatory expert sign-off; hosted cross-tenant (second tenant); 11 obligation repairs; notifications; paid AI off by policy. |

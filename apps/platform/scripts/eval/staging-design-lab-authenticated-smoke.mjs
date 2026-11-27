@@ -89,7 +89,7 @@ async function openRoute(page, route) {
     mounted: document.documentElement.dataset.riMounted === '1',
     text: document.getElementById('ri-app')?.innerText?.length || 0,
     reviewButtons: document.querySelectorAll('[data-triage-five-decisions]').length,
-    nav: document.querySelectorAll('nav.ri-topnav').length,
+    nav: document.querySelectorAll('nav.ri-topnav, nav.ri-sidebar__nav, aside.ri-sidebar nav').length,
   }));
   page.off('pageerror', onError);
   const signIn = /sign in required|backend unavailable|log in to vercel/i.test(heading);
