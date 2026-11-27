@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-27T02:13:21.667Z",
-  "routes": 30,
+  "generatedAt": "2026-11-27T11:57:31.492Z",
+  "routes": 31,
   "failed": 0,
   "results": [
     {
@@ -8,8 +8,8 @@
       "href": "#/dashboard",
       "ok": true,
       "ui": {
-        "h1": "Connecting…",
-        "appLen": 1039,
+        "h1": "322 publications in staging catalogue",
+        "appLen": 7044,
         "notFound": false
       },
       "api": {
@@ -19,12 +19,23 @@
       }
     },
     {
+      "name": "Ask RI",
+      "href": "#/ask-ri",
+      "ok": true,
+      "ui": {
+        "h1": "Ask RI",
+        "appLen": 1796,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
       "name": "Horizon Scanning — Horizon Overview",
       "href": "#/horizon",
       "ok": true,
       "ui": {
-        "h1": "Connecting…",
-        "appLen": 1039,
+        "h1": "Horizon Overview",
+        "appLen": 2048,
         "notFound": false
       },
       "api": {
@@ -39,7 +50,7 @@
       "ok": true,
       "ui": {
         "h1": "Regulatory Feed",
-        "appLen": 97573,
+        "appLen": 97671,
         "notFound": false
       },
       "api": {
@@ -54,7 +65,7 @@
       "ok": true,
       "ui": {
         "h1": "Regulatory Calendar",
-        "appLen": 1187,
+        "appLen": 1197,
         "notFound": false
       },
       "api": null
@@ -64,22 +75,30 @@
       "href": "#/horizon/consultations",
       "ok": true,
       "ui": {
-        "h1": "Horizon Scanning",
-        "appLen": 1426,
+        "h1": "Consultation Tracker",
+        "appLen": 1345,
         "notFound": false
       },
-      "api": null
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
     },
     {
       "name": "Horizon Scanning — Watchlists",
       "href": "#/horizon/watchlists",
       "ok": true,
       "ui": {
-        "h1": "Horizon Scanning",
-        "appLen": 1426,
+        "h1": "Watchlists",
+        "appLen": 1315,
         "notFound": false
       },
-      "api": null
+      "api": {
+        "status": 200,
+        "ok": true,
+        "object": true
+      }
     },
     {
       "name": "Horizon Scanning — Regulatory Landscape",
@@ -87,7 +106,7 @@
       "ok": true,
       "ui": {
         "h1": "Sector regulatory landscape",
-        "appLen": 6174,
+        "appLen": 6184,
         "notFound": false
       },
       "api": null
@@ -98,7 +117,7 @@
       "ok": true,
       "ui": {
         "h1": "Regulatory Library",
-        "appLen": 74740,
+        "appLen": 74987,
         "notFound": false
       },
       "api": {
@@ -113,7 +132,7 @@
       "ok": true,
       "ui": {
         "h1": "Regulatory Changes",
-        "appLen": 7858,
+        "appLen": 7878,
         "notFound": false
       },
       "api": {
@@ -128,7 +147,7 @@
       "ok": true,
       "ui": {
         "h1": "All Findings",
-        "appLen": 871,
+        "appLen": 881,
         "notFound": false
       },
       "api": {
@@ -143,7 +162,7 @@
       "ok": true,
       "ui": {
         "h1": "Obligations",
-        "appLen": 6560,
+        "appLen": 6807,
         "notFound": false
       },
       "api": {
@@ -158,7 +177,7 @@
       "ok": true,
       "ui": {
         "h1": "Impact Assessments",
-        "appLen": 5804,
+        "appLen": 5814,
         "notFound": false
       },
       "api": {
@@ -173,7 +192,7 @@
       "ok": true,
       "ui": {
         "h1": "Risks",
-        "appLen": 3108,
+        "appLen": 3118,
         "notFound": false
       },
       "api": {
@@ -188,7 +207,7 @@
       "ok": true,
       "ui": {
         "h1": "Controls",
-        "appLen": 2955,
+        "appLen": 2965,
         "notFound": false
       },
       "api": {
@@ -203,7 +222,7 @@
       "ok": true,
       "ui": {
         "h1": "Policies",
-        "appLen": 1456,
+        "appLen": 1466,
         "notFound": false
       },
       "api": null
@@ -214,7 +233,7 @@
       "ok": true,
       "ui": {
         "h1": "Assurance",
-        "appLen": 4721,
+        "appLen": 4731,
         "notFound": false
       },
       "api": null
@@ -225,7 +244,7 @@
       "ok": true,
       "ui": {
         "h1": "Issues & Actions",
-        "appLen": 2944,
+        "appLen": 2954,
         "notFound": false
       },
       "api": null
@@ -236,7 +255,7 @@
       "ok": true,
       "ui": {
         "h1": "Evidence",
-        "appLen": 4305,
+        "appLen": 4315,
         "notFound": false
       },
       "api": null
@@ -247,7 +266,7 @@
       "ok": true,
       "ui": {
         "h1": "My Tasks",
-        "appLen": 1955,
+        "appLen": 1965,
         "notFound": false
       },
       "api": {
@@ -262,7 +281,7 @@
       "ok": true,
       "ui": {
         "h1": "Approval",
-        "appLen": 929,
+        "appLen": 939,
         "notFound": false
       },
       "api": null
@@ -273,7 +292,7 @@
       "ok": true,
       "ui": {
         "h1": "Exceptions, escalations and deadlines",
-        "appLen": 8690,
+        "appLen": 8700,
         "notFound": false
       },
       "api": {
@@ -288,7 +307,7 @@
       "ok": true,
       "ui": {
         "h1": "Exceptions, escalations and deadlines",
-        "appLen": 8690,
+        "appLen": 8700,
         "notFound": false
       },
       "api": {
@@ -303,18 +322,7 @@
       "ok": true,
       "ui": {
         "h1": "Reports & Audit",
-        "appLen": 1946,
-        "notFound": false
-      },
-      "api": null
-    },
-    {
-      "name": "Administration — Administration",
-      "href": "#/admin",
-      "ok": true,
-      "ui": {
-        "h1": "Administration",
-        "appLen": 2114,
+        "appLen": 1956,
         "notFound": false
       },
       "api": null
@@ -325,7 +333,7 @@
       "ok": true,
       "ui": {
         "h1": "Organisation profile",
-        "appLen": 1293,
+        "appLen": 1303,
         "notFound": false
       },
       "api": null
@@ -336,7 +344,7 @@
       "ok": true,
       "ui": {
         "h1": "Regulatory sources & connectors",
-        "appLen": 9782,
+        "appLen": 9792,
         "notFound": false
       },
       "api": null
@@ -347,7 +355,7 @@
       "ok": true,
       "ui": {
         "h1": "Regulatory classification policy",
-        "appLen": 924,
+        "appLen": 934,
         "notFound": false
       },
       "api": null
@@ -358,7 +366,7 @@
       "ok": true,
       "ui": {
         "h1": "Platform health",
-        "appLen": 2514,
+        "appLen": 2524,
         "notFound": false
       },
       "api": {
@@ -373,7 +381,7 @@
       "ok": true,
       "ui": {
         "h1": "Quality assurance",
-        "appLen": 893,
+        "appLen": 903,
         "notFound": false
       },
       "api": null
@@ -384,7 +392,18 @@
       "ok": true,
       "ui": {
         "h1": "Readiness dashboard",
-        "appLen": 2779,
+        "appLen": 2790,
+        "notFound": false
+      },
+      "api": null
+    },
+    {
+      "name": "Administration — Platform overview",
+      "href": "#/admin",
+      "ok": true,
+      "ui": {
+        "h1": "Administration",
+        "appLen": 2124,
         "notFound": false
       },
       "api": null

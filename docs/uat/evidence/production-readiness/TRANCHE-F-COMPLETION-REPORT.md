@@ -1,7 +1,7 @@
 # Tranche F — core RI engineering completion report
 
 **Date:** 2026-11-27  
-**Handover anchor:** `931d637` (docs) · **Implementation:** `21594bd` (Tranche F) · prior official staging **`67bcb17`** / `dpl_EgqBYMQYmJVMZpKY8er81NzCNDgx`  
+**Handover anchor:** `931d637` (docs) · **Implementation:** `21594bd` (Tranche F) · **Official staging (navigation + evaluate fix):** **`c0e9296`** / **`dpl_HjTUAygvRMvgYJ5yQUB6QCNnidSW`** @ `https://staging-app.forgeniq.com`  
 **Branch:** `feature/ri-classification-triage` (pushed to origin)
 
 ## Executive summary
@@ -22,10 +22,10 @@ PS26/1 grounding was **not reworked** (no new regression evidence).
 | Match history | `GET /api/ri-lab/watchlists/matches` |
 | In-app alerts | `WATCHLIST` tenant notifications + `ri_watchlist_matches` |
 | Duplicate prevention | Pre-insert check + unique index `ri_watchlist_matches_watchlist_publication_uidx` (staging applied) |
-| Staging evaluate (no ingest) | `POST /api/ri-lab/watchlists/evaluate` (blocked on production) |
+| Staging evaluate (no ingest) | `POST /api/ri-lab/watchlists/evaluate` (allowed on approved RI staging; refused on customer production) |
 | Hosted E2E script | `hosted-watchlist-consultation-uat.mjs` |
 
-**Hosted note:** E2E create/evaluate **failed on pre-deploy `67bcb17`** (API/UI not yet live); inbox navigation to publication **passed** using prior alerts.
+**Hosted note (official `c0e9296`):** Create, evaluate, duplicate prevention, notification → publication — **7/7 PASS** (`watchlist-consultation-uat-2026-11-27/RESULT.json`).
 
 ---
 
@@ -108,10 +108,10 @@ Script (fixed): `pdf-index-coverage-inventory.mjs` (no longer references non-exi
 
 | Gate | Result |
 |---|---|
-| `orchestrator.mjs --mode=promote` | **55 PASS / 1 FAIL** — `RI-BROWSER-SMOKE` local demo fallback (pre-existing; not Watchlist-specific) |
-| Change gate (post-edit) | 5/5 PASS |
-| Git push | `931d637` + `21594bd` on `origin/feature/ri-classification-triage` |
-| Staging deploy Tranche F | **In progress** at report time (`phase85h-deploy-staging-platform.mjs`) — re-run hosted UAT after promote |
+| `orchestrator.mjs --mode=promote` | **56/56 PASS** on `c0e9296` (browser smoke hydration fix in `37d03fd`) |
+| Staging deploy | **Promoted** `dpl_HjTUAygvRMvgYJ5yQUB6QCNnidSW` @ `c0e9296`; candidate-first + post-promote auth smoke **19/19** each |
+| Hosted UAT | Nav modes, nav sweep **32/32**, Ask RI baseline, watchlist/consultation — all **PASS** on official host |
+| Evidence | `docs/eval/STAGING-P3-PROVISION-ENGINE-DEPLOY-2026-11-22.json`, `docs/uat/evidence/design-lab-nav-modes-2026-11-27/` |
 
 ---
 

@@ -1098,3 +1098,16 @@ pm run qa (ci) **29/29 PASS** including RI-SONNET-55-COMPAT, RI-SHARED-SPEND, RI
 | OPEN-007 | Reviewer Stage 2 pin on staging RPC |
 | Gates | Promote **52/52**; auth smoke **19/19**; ops readiness **PASS**; GitHub Actions **success** on `8c58e2e` |
 | Handover | `ASK-RI-DEVELOPMENT-HANDOVER.md`; evidence commit **`2c46b7c`** |
+
+## 2026-11-27 — Tranche F + navigation closure (official `c0e9296`)
+
+| Item | Outcome |
+|---|---|
+| Navigation | Expanded / collapsed / hidden sidebar + header menu toggle; Ask RI sidebar + gold header CTA; nav v2 bundle; preferences in `localStorage`. |
+| Calendar rail | Independently collapsible; route defaults (open: dashboard, horizon, feed, library, obligations; optional: changes/consultations; hidden: risks, controls, assurance, evidence, reports, ask-ri, admin); preference `forgeniq-ri-calendar-rail`. |
+| Smoke reliability | `design-lab-browser-smoke.mjs`: boot fallback fails only when **visible** (fixes false timeout on candidate alias during deploy). |
+| Watchlist evaluate | Root cause: `VERCEL_ENV=production` on staging blocked `/watchlists/evaluate`; guard now allows approved RI staging Supabase project / `FORGENIQ_ENV=staging`. |
+| Promote gate | **56/56 PASS** (`37d03fd`, then **56/56** on `c0e9296`). |
+| Staging deploy | **Official** `dpl_HjTUAygvRMvgYJ5yQUB6QCNnidSW` @ **`c0e92966db55bb1e2bb523476cdca91c3883e982`** → `https://staging-app.forgeniq.com`; rollback prior official `dpl_45mJuxtufAUYHxnCu3ybmuHMJZEu` (`37d03fd`). Candidate-first auth smoke **19/19** + post-promote **19/19**. |
+| Hosted UAT | Nav modes **PASS** (screenshots `design-lab-nav-modes-2026-11-27/`); nav capability **32/32**; Ask RI baseline **16/16**; watchlist/consultation **7/7**; auth smoke **19/19**. |
+| Constraints | No paid AI; no production deploy; 7 legacy + 1 partner **DISCONNECTED** obligations preserved. |

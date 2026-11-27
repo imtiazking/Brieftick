@@ -1,0 +1,124 @@
+{
+  "generatedAt": "2026-11-27T11:56:58.994Z",
+  "staging": "https://staging-app.forgeniq.com",
+  "failed": 0,
+  "results": [
+    {
+      "id": "ask-ri-ui-visible",
+      "ok": true
+    },
+    {
+      "id": "ask-publications",
+      "ok": true,
+      "question": "What FCA publications mention BNPL in the title?",
+      "responseStatus": "UNRESOLVED",
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "fixtureBacked": false
+    },
+    {
+      "id": "ask-regulatory-changes",
+      "ok": true,
+      "question": "List open regulatory changes for our organisation",
+      "responseStatus": "UNRESOLVED",
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "fixtureBacked": false
+    },
+    {
+      "id": "ask-obligations",
+      "ok": true,
+      "question": "How many operational obligations are in scope?",
+      "responseStatus": "INSUFFICIENT_EVIDENCE",
+      "interpretedAs": "Named entity or domain is not present in verified RI catalogue data.",
+      "fixtureBacked": false
+    },
+    {
+      "id": "ask-impact-assessments",
+      "ok": true,
+      "question": "Summarise impact assessments in progress",
+      "responseStatus": "INSUFFICIENT_EVIDENCE",
+      "interpretedAs": "Named entity or domain is not present in verified RI catalogue data.",
+      "fixtureBacked": false
+    },
+    {
+      "id": "ask-risks",
+      "ok": true,
+      "question": "What regulatory risks are tracked?",
+      "responseStatus": "UNRESOLVED",
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "fixtureBacked": false
+    },
+    {
+      "id": "ask-controls",
+      "ok": true,
+      "question": "What controls cover consumer credit obligations?",
+      "responseStatus": "UNRESOLVED",
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "fixtureBacked": false
+    },
+    {
+      "id": "ask-assurance",
+      "ok": true,
+      "question": "What assurance activities are overdue?",
+      "responseStatus": "UNRESOLVED",
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "fixtureBacked": false
+    },
+    {
+      "id": "ask-remediation",
+      "ok": true,
+      "question": "What remediation tasks are open?",
+      "responseStatus": "UNRESOLVED",
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "fixtureBacked": false
+    },
+    {
+      "id": "ask-evidence",
+      "ok": true,
+      "question": "Where is evidence stored for obligation reviews?",
+      "responseStatus": "UNRESOLVED",
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "fixtureBacked": false
+    },
+    {
+      "id": "ask-deadlines",
+      "ok": true,
+      "question": "What regulatory deadlines are upcoming?",
+      "responseStatus": "UNRESOLVED",
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "fixtureBacked": false
+    },
+    {
+      "id": "ask-horizon",
+      "ok": true,
+      "question": "What is on the regulatory horizon this quarter?",
+      "responseStatus": "UNRESOLVED",
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "fixtureBacked": false
+    },
+    {
+      "id": "ask-unsupported",
+      "ok": true,
+      "question": "What will interest rates be next year?",
+      "responseStatus": "UNRESOLVED",
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "fixtureBacked": false
+    },
+    {
+      "id": "ask-publication-pdf",
+      "ok": true,
+      "question": "PS26/1 FCA buy now pay later policy statement",
+      "responseStatus": "UNRESOLVED",
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "fixtureBacked": false,
+      "note": "May require pdf_primary_v1 index"
+    },
+    {
+      "id": "tenant-specific-retrieval",
+      "ok": true
+    },
+    {
+      "id": "public-regulatory-retrieval",
+      "ok": true
+    }
+  ]
+}

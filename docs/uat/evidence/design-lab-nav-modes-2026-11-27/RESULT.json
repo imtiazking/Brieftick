@@ -1,0 +1,107 @@
+{
+  "generatedAt": "2026-11-27T11:55:57.083Z",
+  "staging": "https://staging-app.forgeniq.com",
+  "failed": 0,
+  "results": [
+    {
+      "id": "nav-v2-bundle-present",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "ask-ri-access-dashboard",
+      "ok": true,
+      "detail": {
+        "hash": "#/dashboard"
+      }
+    },
+    {
+      "id": "ask-ri-header-nav-dashboard",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "ask-ri-access-library",
+      "ok": true,
+      "detail": {
+        "hash": "#/library"
+      }
+    },
+    {
+      "id": "ask-ri-header-nav-library",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "ask-ri-access-obligations",
+      "ok": true,
+      "detail": {
+        "hash": "#/obligations"
+      }
+    },
+    {
+      "id": "ask-ri-header-nav-obligations",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "ask-ri-access-horizon-watchlists",
+      "ok": true,
+      "detail": {
+        "hash": "#/horizon/watchlists"
+      }
+    },
+    {
+      "id": "ask-ri-header-nav-horizon-watchlists",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "ask-ri-interface-screenshot",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "sidebar-expanded",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "sidebar-collapsed",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "sidebar-hidden",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "sidebar-reopen-from-hidden",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "calendar-panel-expanded",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "calendar-panel-hidden",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "calendar-hidden-on-risks",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "workspace-no-horizontal-overflow",
+      "ok": true,
+      "detail": {
+        "overflow": 0
+      }
+    }
+  ]
+}

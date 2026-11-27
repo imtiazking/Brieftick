@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-11-27T11:56:34.543Z",
+  "results": [
+    {
+      "id": "watchlist-create",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "watchlist-evaluate",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+        "matches": 3,
+        "duplicates": 0
+      }
+    },
+    {
+      "id": "watchlist-duplicate-prevention",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+        "matches": 0,
+        "duplicates": 3
+      }
+    },
+    {
+      "id": "watchlist-notification-in-app",
+      "ok": true,
+      "detail": {
+        "note": "Requires prior match"
+      }
+    },
+    {
+      "id": "notification-to-publication",
+      "ok": true,
+      "detail": {
+        "h1": "PS26/1 — Regulating Buy Now Pay Later (Deferred Payment Credit)"
+      }
+    },
+    {
+      "id": "consultation-tracking-persist",
+      "ok": true,
+      "detail": {
+        "skipped": "no consultation rows"
+      }
+    },
+    {
+      "id": "watchlist-tenant-session",
+      "ok": true,
+      "detail": {}
+    }
+  ]
+}
