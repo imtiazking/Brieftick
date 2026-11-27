@@ -33,6 +33,11 @@ await runAs('A', async ({ page }) => {
     process.exit(2);
   }
 
+  await page.evaluate(() => {
+    localStorage.setItem('forgeniq-ri-sidebar-mode', 'expanded');
+    localStorage.removeItem('forgeniq-ri-calendar-rail');
+  });
+
   for (const hash of ROUTES) {
     await page.goto(`${LAB}${hash}`, { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(500);

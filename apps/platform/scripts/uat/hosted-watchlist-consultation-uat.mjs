@@ -35,9 +35,19 @@ await runAs('A', async ({ page }) => {
   await dialog.locator('[name="regulatorKeys"]').fill('REG-FCA');
   await dialog.locator('[name="keywords"]').fill('buy now pay later');
   await dialog.locator('button[type="submit"]').click();
-  await page.waitForTimeout(800);
-  const listText = await page.locator('[data-wl-list]').innerText();
-  record('watchlist-create', listText.includes(unique));
+  let createOk = false;
+  try {
+    await page.waitForFunction(
+      (name) => (document.querySelector('[data-wl-list]')?.textContent || '').includes(name),
+      unique,
+      { timeout: 20_000 },
+    );
+    createOk = true;
+  } catch {
+    const listText = await page.locator('[data-wl-list]').innerText().catch(() => '');
+    createOk = listText.includes(unique);
+  }
+  record('watchlist-create', createOk, createOk ? {} : { note: 'create_not_visible_in_list' });
 
   const evalRes = await page.evaluate(
     async ({ publicationId }) => {

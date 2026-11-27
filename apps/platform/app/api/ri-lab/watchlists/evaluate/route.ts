@@ -1,15 +1,27 @@
 import { NextResponse } from 'next/server';
 import { requireRiContext } from '@/lib/ri/context';
+import {
+  FORGENIQ_RI_STAGING_SUPABASE_PROJECT_REF,
+  getAppEnvironment,
+  getSupabaseProjectRef,
+} from '@/lib/env';
 import { labApiErrorResponse } from '@/lib/ri/lab-api/errors';
 import { assertCanRi } from '@/lib/ri/permissions';
 import { evaluatePublicationAgainstWatchlists } from '@/lib/ri/services/watchlists';
+
+/** Allowed on approved RI staging (hosted staging uses Vercel production target). */
+function watchlistEvaluateAllowed(): boolean {
+  if (getAppEnvironment() === 'staging') return true;
+  if (getSupabaseProjectRef() === FORGENIQ_RI_STAGING_SUPABASE_PROJECT_REF) return true;
+  return process.env.VERCEL_ENV !== 'production' && process.env.NODE_ENV !== 'production';
+}
 
 /** Staging-only: evaluate an existing catalogue publication against watchlists (no ingest). */
 export async function POST(request: Request) {
   try {
     const ctx = await requireRiContext('triage:write');
     assertCanRi(ctx.role, 'triage:write');
-    if (process.env.VERCEL_ENV === 'production') {
+    if (!watchlistEvaluateAllowed()) {
       return NextResponse.json({ ok: false, error: 'evaluate_not_allowed' }, { status: 403 });
     }
     const body = await request.json().catch(() => ({}));
