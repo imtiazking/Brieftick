@@ -4,14 +4,14 @@ Legend: MET (evidenced), NOT MET, BLOCKED (needs external action; exact requirem
 
 | # | Gate | Status | Evidence or exact requirement |
 |---|---|---|---|
-| 1 | Local gates (build, regressions, migrations, security checks) | MET | promote gate **52/52** on `a4dd45f`; navigation tranche commits `a4dd45f` / `4a4a44a` |
+| 1 | Local gates (build, regressions, migrations, security checks) | MET | promote gate **56/56** 2026-11-27 (eCFR + catalogue 42); prior `a4dd45f` navigation tranche |
 | 2 | Staging deployed candidate-first and promoted | MET | Official **`dpl_644WDsZPXcMXKPB9Q2WzS3GuuGsg`** git **`8c58e2e`**; Tranche E candidate pending promote after this commit |
 | 3 | Hosted A/B/C lifecycle and browser UAT | MET | 38/38 (1 BLOCKED check) and 34/34 |
 | 4 | Maker-checker and SoD enforced | MET (hosted) | S1 to S5 checks; browser SoD |
 | 5 | Atomic approval and Stage 2 hand-off | MET | RPC; `B-UI-ATOMIC-STAGE2-HANDOFF` |
 | 6 | Paid AI disabled; ledger unchanged | MET | `executionEnabled=false`; 10 SETTLED, `$0.224872` |
 | 7 | Production untouched | MET | no change to `platform`, `brieftick`, `www.forgeniq.com` |
-| 8 | Horizon scanning live on a schedule | **PARTIAL** | Connectors **39/41 current**; unattended **`VERCEL_CRON` 2026-11-27T04:00:24Z** (`vercel-cron-2026-11-27/RESULT.json`); watchlists/consultations implemented Tranche E; due-source ingest tick still to capture |
+| 8 | Horizon scanning live on a schedule | **PARTIAL** | **40/42** enabled, **39** with successful ingest; **`VERCEL_CRON`** 2026-11-27 **due=0**; staging **`due=1`** eCFR after seed; expect mass due **2026-11-28 04:00Z**; G2 corpus loop in progress; **unattended due>0+success OPEN-001** |
 | 9 | Regulatory accuracy reviewed by an expert | **BLOCKED** | a regulatory professional must label a sample and sign off; no approval is claimed |
 | 10 | Approved classification policy for each in-scope regulator | **BLOCKED** | approval needed (material classification-policy change); only REG-FCA has one |
 | 11 | Hosted cross-tenant isolation | **BLOCKED** | second organisation and test users (new access: needs approval); offline RLS proof exists |

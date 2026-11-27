@@ -422,6 +422,18 @@ export const REGULATORY_SOURCES = [
     status: 'PLANNED',
     priority: 'P1',
   }),
+  source('REG-FRB', {
+    sourceId: 'SRC-ECFR-TITLE-12',
+    sourceType: 'Code of Federal Regulations Title 12 (versioner API)',
+    integrationMethod: 'official_ecfr_versioner_api',
+    apiAvailability: 'yes',
+    authenticationRequirement: 'none',
+    updateFrequencyExpectation: 'Daily',
+    productRelevance: { ri: 'secondary', fc: 'none', mi: 'none', or: 'none' },
+    status: 'PLANNED',
+    priority: 'P2',
+    notes: 'Structured title index via eCFR API; provision HTML via existing snapshot pipeline.',
+  }),
   source('REG-FDIC', {
     sourceId: 'SRC-FDIC-GUIDANCE',
     sourceType: 'Supervisory guidance and publications',

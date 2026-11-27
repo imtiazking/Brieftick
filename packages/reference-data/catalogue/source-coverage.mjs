@@ -264,6 +264,15 @@ export const SOURCE_COVERAGE_BY_ID = {
       'Supervision feed is all press releases — includes enforcement terminations but also monetary policy and surveys; weak as dedicated prudential guidance corpus.',
     missingEndpointHint: 'SR letters, supervision manuals, or regulatory reform releases feed.',
   },
+  'SRC-ECFR-TITLE-12': {
+    coverageVerificationStatus: 'PARTIALLY_VERIFIED',
+    contentClasses: ['RULEBOOK', 'REGULATORY_NOTICE', 'OTHER'],
+    riUseCases: ['HORIZON_SCANNING', 'RULE_OBLIGATION_SOURCE', 'REFERENCE_ONLY'],
+    catalogueRecommendation: 'KEEP',
+    coverageNotes:
+      'Title-level versioner API discovers Title 12 structure; section HTML resolved via ecfr.gov canonical URLs and corpus snapshot path.',
+    missingEndpointHint: 'Part/section bulk export if versioner adds structured delta feeds.',
+  },
   'SRC-FDIC-GUIDANCE': {
     coverageVerificationStatus: 'COVERAGE_VERIFIED',
     contentClasses: ['SUPERVISORY_GUIDANCE', 'REGULATORY_NOTICE'],

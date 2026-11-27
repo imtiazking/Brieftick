@@ -3,6 +3,7 @@ import { BATCH_2_CONNECTORS } from '../../../../../integrations/regulatory-sourc
 import { CORE_LEGACY_CONNECTORS } from '../../../../../integrations/regulatory-sources/connectors/core-legacy-connectors.mjs';
 import { SEMANTIC_REMEDIATION_CONNECTORS } from '../../../../../integrations/regulatory-sources/connectors/semantic-remediation-connectors.mjs';
 import { FEDERAL_REGISTER_API_CONNECTORS } from '../../../../../integrations/regulatory-sources/connectors/federal-register-connectors.mjs';
+import { ECFR_API_CONNECTORS } from '../../../../../integrations/regulatory-sources/connectors/ecfr-connectors.mjs';
 
 /** @type {import('../../../../integrations/regulatory-sources/core/rss-connector.mjs').*} */
 export const ALL_INGESTION_CONNECTORS = [
@@ -11,6 +12,7 @@ export const ALL_INGESTION_CONNECTORS = [
   ...CORE_LEGACY_CONNECTORS,
   ...SEMANTIC_REMEDIATION_CONNECTORS,
   ...FEDERAL_REGISTER_API_CONNECTORS,
+  ...ECFR_API_CONNECTORS,
 ];
 
 export function getConnectorForSource(sourceId) {

@@ -47,8 +47,8 @@ if (testedIds.length !== Object.keys(SOURCE_COVERAGE_BY_ID).length) {
   failMsg('tested integration count must match coverage audit count');
 } else pass('tested sources have coverage records');
 
-if (REGULATORY_SOURCES.length !== 41) failMsg('catalogue must have 41 sources after semantic remediation');
-else pass('catalogue has 41 sources');
+if (REGULATORY_SOURCES.length !== 42) failMsg('catalogue must have 42 sources after semantic remediation');
+else pass('catalogue has 42 sources');
 
 for (const sourceId of testedIds) {
   const cov = SOURCE_COVERAGE_BY_ID[sourceId];

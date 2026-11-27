@@ -83,7 +83,7 @@ else failMsg(`publication relationships mismatches: ${rel.mismatches.join(', ')}
 
 if (refMod.REGULATORS.length === 36) pass('global catalogue 36 regulators');
 else failMsg(`regulator count ${refMod.REGULATORS.length} (expected 36)`);
-if (refMod.REGULATORY_SOURCES.length === 41) pass('global catalogue 41 sources');
+if (refMod.REGULATORY_SOURCES.length === 42) pass('global catalogue 42 sources');
 else failMsg(`source count ${refMod.REGULATORY_SOURCES.length} (expected 41)`);
 
 const horizonPage = readFileSync(join(platformRoot, 'app', 'ri', 'horizon', 'page.tsx'), 'utf8');

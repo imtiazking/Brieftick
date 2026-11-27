@@ -41,7 +41,7 @@ DEF-007 detail (none of these was a product regression):
 
 | ID | Sev | Item | Needed |
 |---|---|---|---|
-| OPEN-001 | Medium (narrowed) | Connectors **39/41 current**; **VERCEL_CRON** evidenced **2026-11-27T04:00:24Z** (ENG-CRON-001 resolved). **Residual:** due-source ingest tick not captured; OFAC-SDN disabled; CBUAE no connector | capture cron with `dueCount > 0`; policy for CBUAE/OFAC |
+| OPEN-001 | Medium (narrowed) | **VERCEL_CRON** 04:00/12:00 UTC **due=0** on 2026-11-27; manual hosted **due≥1** **COMPLETED** (MOCI). Post-eCFR seed staging **`due=1`** (`SRC-ECFR-TITLE-12`). **Residual:** unattended VERCEL_CRON with `due>0` **and** successful batch in one artefact (target **2026-11-28 04:00Z** post-deploy) | `open-001-scheduler-tranche-g2.json`, `CONNECTOR-ACTIVATION-COMPLETION-REPORT.md` |
 | OPEN-002 | **High, release blocker (external)** | Regulatory accuracy NOT_ASSESSED; no regulatory-expert review | professional review; no approval is claimed |
 | OPEN-003 | High, BLOCKED | Hosted cross-tenant denial unproven (`SEC-CROSS-TENANT`) | second tenant plus user access (approval required) |
 | OPEN-004 | Medium | **8** OPEN obligations remain DISCONNECTED after tranche C: **7** legacy MANUAL in FORGENIQ main org + **1** partner org; **10** AI-dev pilot rows repaired to LINKED (`repair-disconnected-2026-11-27`) | owner decision for 7 legacy; partner row unchanged. Not bulk-backfilled |

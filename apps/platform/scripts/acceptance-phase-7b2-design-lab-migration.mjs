@@ -79,7 +79,7 @@ pass('no design-lab runtime imports under app/ri');
 const refMod = await import(pathToFileURL(join(repoRoot, 'packages/reference-data/index.mjs')).href);
 if (refMod.REGULATORS.length === 36) pass('36 regulators in shared catalogue');
 else failMsg(`regulator count ${refMod.REGULATORS.length}`);
-if (refMod.REGULATORY_SOURCES.length === 41) pass('41 sources in shared catalogue');
+if (refMod.REGULATORY_SOURCES.length === 42) pass('42 sources in shared catalogue');
 else failMsg(`source count ${refMod.REGULATORY_SOURCES.length}`);
 const enabled = refMod.REGULATORY_SOURCES.filter((s) => s.integration?.productionStatus === 'ENABLED');
 if (enabled.length === 0) pass('zero production-enabled catalogue sources');

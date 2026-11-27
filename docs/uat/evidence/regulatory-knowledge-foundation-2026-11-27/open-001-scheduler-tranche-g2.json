@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-11-27T19:25:00.000Z",
+  "stagingGit": "cf18e08",
+  "deploymentId": "dpl_HcTt3tGRUYVcpmmhZo5Kt39KPUaZ",
+  "dryRun": {
+    "schedulerEnabled": true,
+    "dueCount": 0,
+    "wouldRun": 0
+  },
+  "stagingDueAfterEcfrSeed": {
+    "at": "2026-11-27T19:45:00Z",
+    "dueCount": 1,
+    "dueSources": ["SRC-ECFR-TITLE-12"],
+    "note": "eCFR ops next_run_at in past; hosted connector code requires this deploy tranche before VERCEL_CRON can complete ingest."
+  },
+  "vercelCronToday": [
+    { "at": "2026-11-27T04:00:24Z", "invocationKind": "VERCEL_CRON", "dueCount": 0 },
+    { "at": "2026-11-27T12:00:35Z", "invocationKind": "VERCEL_CRON", "dueCount": 0 }
+  ],
+  "manualHostedDueGte1": [
+    {
+      "at": "2026-11-27T02:05:03Z",
+      "dueCount": 1,
+      "outcomes": [
+        {
+          "source": "SRC-MOCI-SA-COMPANIES-LAW",
+          "status": "COMPLETED",
+          "metrics": { "updated": 3, "discovered": 3 }
+        }
+      ]
+    }
+  ],
+  "open001Status": "OPEN",
+  "note": "Unattended VERCEL_CRON with dueCount>0 and successful connector batch in one artefact not yet observed."
+}

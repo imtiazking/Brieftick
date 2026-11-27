@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-27  
 **Official staging (Tranche G2):** `staging-app.forgeniq.com` · **`dpl_HcTt3tGRUYVcpmmhZo5Kt39KPUaZ`** · git **`cf18e08`**  
-**Corpus backfill start (G2 deploy):** 278 missing snapshots · 44 `html_article_v2` pubs · 200-tick loop in progress.
+**Corpus backfill (G2):** 259 missing snapshots · 55 searchable HTML · 200-tick loop **in progress** (~12/200 at 2026-11-27T19:25Z).
 
 ## Tranche G2 — corpus population (in progress)
 
@@ -14,9 +14,10 @@
 | Failure policy | `provenance.corpusBackfill` terminal after restricted access or 3 transient failures |
 | Post-ingest | `queueCorpusBackfillIfNeeded` marks new catalogue rows for hosted priority |
 | Batch | `tranche-g-corpus-backfill-loop.mjs` · evidence `CORPUS-BACKFILL-LOOP.json` |
-| APIs/MCP | `REGULATORY-API-MCP-STATUS.md` (commercial MCPs research-only) |
+| APIs/MCP | `REGULATORY-API-MCP-STATUS.md` + `EXTERNAL-REGULATORY-KNOWLEDGE-INTEGRATION-MATRIX.json`; `~/.cursor/mcp.json` for four commercial URLs (OAuth for RegAlert/Ansvar); **`CONNECTOR-OPERATIONAL-VERIFICATION-MATRIX.json`** |
 
-**Not complete:** retrieval re-eval and provision-grade inventory refresh run after backfill loop finishes.
+**Report:** `regulatory-knowledge-foundation-2026-11-27/TRANCHE-G2-COMPLETION-REPORT.md`  
+**Not complete:** full corpus backfill (~244 eligible remaining); `pdf_primary_v1` still **6** (see report); retrieval eval unchanged until evidence packs re-exported from staging; OPEN-001 unattended due tick.
 
 ## Tranche G — regulatory knowledge foundation (Fable)
 
@@ -61,7 +62,7 @@ PS26/1 · PS22/9 · FG22/5 · FG24/6 · Fair value vulnerable customers · CP26/
 
 ### OPEN-001 residual
 
-Unattended 04:00 UTC scheduler: `dueCount=0`. Manual hosted ticks: `dueCount=1` recorded — still no single unattended tick with due>0 **and** successful connector batch in same artefact.
+Unattended 04:00 UTC scheduler 2026-11-27: `dueCount=0`. Staging post-eCFR seed: `due=1` (eCFR). Target: **2026-11-28 04:00Z** mass due after nightly rollover + this deploy. Manual hosted MOCI ingest does not close OPEN-001.
 
 ### Remaining architectural weaknesses for Fable
 
@@ -79,7 +80,7 @@ Unattended 04:00 UTC scheduler: `dueCount=0`. Manual hosted ticks: `dueCount=1` 
 
 | Layer | Store / API | Scope |
 |---|---|---|
-| Sources | `regulatory_sources` + connector registry | 41 catalogue sources; 39 current ingest |
+| Sources | `regulatory_sources` + connector registry | **42** catalogue sources; **40** enabled; **39** with successful ingest |
 | Ingestion | `ingestion_runs`, `ingestion_operational_events` | Global; provenance on `regulatory_publications.provenance` |
 | Catalogue | `regulatory_publications`, versions | Global read via `/api/ri-lab/publications` |
 | Horizon / feed | Same catalogue + Design Lab views | UI: `#/feed`, `#/horizon`, `#/library` |

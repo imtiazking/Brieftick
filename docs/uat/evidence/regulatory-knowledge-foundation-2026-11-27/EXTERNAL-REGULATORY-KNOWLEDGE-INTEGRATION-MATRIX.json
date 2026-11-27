@@ -1,0 +1,211 @@
+{
+  "generatedAt": "2026-11-27T19:45:00.000Z",
+  "programme": "External Regulatory Knowledge Integration",
+  "forgeniqStagingGit": "cf18e08",
+  "corpusBackfill": "unchanged — 200-tick loop not interrupted",
+  "cursorMcpCatalogueObserved": [
+    "plugin-supabase-supabase",
+    "plugin-vercel-vercel",
+    "plugin-clerk-clerk",
+    "plugin-stripe-stripe",
+    "plugin-zapier-zapier",
+    "cursor-ide-browser",
+    "cursor-origin",
+    "cursor-computer-use"
+  ],
+  "readOnlyHttpProbes2026_11_27": {
+    "federalregister_api": { "url": "https://www.federalregister.gov/api/v1/documents.json?per_page=1", "httpStatus": 200 },
+    "legislation_gov_uk_atom": { "url": "https://www.legislation.gov.uk/new/data.feed", "httpStatus": 200 },
+    "ecfr_versioner_titles": { "url": "https://www.ecfr.gov/api/versioner/v1/titles.json", "httpStatus": 200 },
+    "fca_handbook_site": { "url": "https://www.handbook.fca.org.uk/", "httpStatus": 200, "note": "HTML handbook UI; not a separate JSON Handbook API in FORGENIQ" }
+  },
+  "acceptanceEvidence": {
+    "batch_1_offline": "integrations/regulatory-sources/scripts/acceptance-batch-1.mjs — PASS (2026-11-27)",
+    "ecfr_live": "integrations/regulatory-sources/scripts/acceptance-ecfr-api-connector.mjs — LIVE_VERIFIED (2026-11-27)",
+    "edgar_policy": "acceptance-batch-1.mjs — deliberate exclusion of SEC EDGAR bulk ingestion"
+  },
+  "sources": [
+    {
+      "id": "MCP-REGALERT",
+      "name": "RegAlert MCP",
+      "type": "commercial_mcp",
+      "configuredInCursor": false,
+      "connectedToCursor": false,
+      "connectedToForgeniq": false,
+      "authenticationVerified": false,
+      "readOnlyRetrievalTested": false,
+      "licensingVerified": false,
+      "stagingEnabled": false,
+      "horizonScanningIntegrated": false,
+      "askRiIntegrated": false,
+      "commercialApprovalRequired": true,
+      "outstandingActions": [
+        "Obtain RegAlert MCP endpoint URL and credentials from vendor",
+        "Add server entry in Cursor Settings → Tools & MCP (no ~/.cursor/mcp.json present)",
+        "Material commercial approval before FORGENIQ runtime use"
+      ]
+    },
+    {
+      "id": "MCP-UK-GOV-LEX",
+      "name": "UK Government Lex MCP",
+      "type": "commercial_mcp",
+      "configuredInCursor": false,
+      "connectedToCursor": false,
+      "connectedToForgeniq": false,
+      "authenticationVerified": false,
+      "readOnlyRetrievalTested": false,
+      "licensingVerified": false,
+      "stagingEnabled": false,
+      "horizonScanningIntegrated": false,
+      "askRiIntegrated": false,
+      "commercialApprovalRequired": true,
+      "outstandingActions": [
+        "Confirm product (Lex vs legislation.gov.uk official API)",
+        "If Lex MCP: vendor auth + Cursor MCP config",
+        "Official free path already in FORGENIQ: SRC-UK-LEGISLATION-ATOM"
+      ]
+    },
+    {
+      "id": "MCP-OPENLAW",
+      "name": "OpenLaw MCP",
+      "type": "commercial_mcp",
+      "configuredInCursor": false,
+      "connectedToCursor": false,
+      "connectedToForgeniq": false,
+      "authenticationVerified": false,
+      "readOnlyRetrievalTested": false,
+      "licensingVerified": false,
+      "stagingEnabled": false,
+      "horizonScanningIntegrated": false,
+      "askRiIntegrated": false,
+      "commercialApprovalRequired": true,
+      "outstandingActions": ["Commercial licence + Cursor MCP server configuration"]
+    },
+    {
+      "id": "MCP-ANSVAR",
+      "name": "Ansvar MCP",
+      "type": "commercial_mcp",
+      "configuredInCursor": false,
+      "connectedToCursor": false,
+      "connectedToForgeniq": false,
+      "authenticationVerified": false,
+      "readOnlyRetrievalTested": false,
+      "licensingVerified": false,
+      "stagingEnabled": false,
+      "horizonScanningIntegrated": false,
+      "askRiIntegrated": false,
+      "commercialApprovalRequired": true,
+      "outstandingActions": ["Commercial licence + Cursor MCP server configuration"]
+    },
+    {
+      "id": "API-FCA-HANDBOOK",
+      "name": "FCA Handbook",
+      "type": "official_site_html",
+      "forgeniqSourceIds": ["SRC-FCA-PUBLICATIONS-RSS"],
+      "connectorIds": ["CONN-LEGACY-FCA"],
+      "configuredInCursor": "n/a",
+      "connectedToCursor": false,
+      "connectedToForgeniq": true,
+      "authenticationVerified": true,
+      "readOnlyRetrievalTested": true,
+      "licensingVerified": true,
+      "stagingEnabled": true,
+      "horizonScanningIntegrated": true,
+      "askRiIntegrated": "partial",
+      "commercialApprovalRequired": false,
+      "outstandingActions": [
+        "Handbook rule text via handbook.fca.org.uk HTML (UAT citations); no dedicated Handbook JSON client",
+        "Provision-level Handbook corpus via snapshot pipeline when URLs are catalogue-backed"
+      ]
+    },
+    {
+      "id": "API-UK-LEGISLATION",
+      "name": "UK legislation.gov.uk (Atom)",
+      "type": "official_api",
+      "forgeniqSourceIds": ["SRC-UK-LEGISLATION-ATOM"],
+      "connectorIds": ["CONN-LEGACY-UK-LEG"],
+      "connectedToForgeniq": true,
+      "authenticationVerified": true,
+      "readOnlyRetrievalTested": true,
+      "licensingVerified": true,
+      "stagingEnabled": false,
+      "horizonScanningIntegrated": "connector_ready_not_enabled",
+      "askRiIntegrated": false,
+      "commercialApprovalRequired": false,
+      "outstandingActions": ["Enable source on staging scheduler when due; corpus backfill for catalogue rows"]
+    },
+    {
+      "id": "API-FEDERAL-REGISTER",
+      "name": "Federal Register API",
+      "type": "official_api",
+      "forgeniqSourceIds": ["SRC-SEC-FEDERAL-REGISTER", "SRC-CFTC-RULEMAKING"],
+      "connectorIds": ["CONN-FR-SEC", "CONN-FR-CFTC-RULEMAKING"],
+      "connectedToForgeniq": true,
+      "authenticationVerified": true,
+      "readOnlyRetrievalTested": true,
+      "licensingVerified": true,
+      "stagingEnabled": false,
+      "horizonScanningIntegrated": "connector_ready_not_enabled",
+      "askRiIntegrated": false,
+      "commercialApprovalRequired": false,
+      "outstandingActions": ["Enable staged sources; ingest via existing scheduler (no new engine)"]
+    },
+    {
+      "id": "API-ECFR",
+      "name": "eCFR versioner API",
+      "type": "official_api",
+      "forgeniqSourceIds": ["SRC-ECFR-TITLE-12"],
+      "connectorIds": ["CONN-ECFR-TITLE-12"],
+      "connectedToForgeniq": true,
+      "authenticationVerified": true,
+      "readOnlyRetrievalTested": true,
+      "licensingVerified": true,
+      "stagingEnabled": false,
+      "horizonScanningIntegrated": "added_2026_11_27_not_deployed",
+      "askRiIntegrated": false,
+      "commercialApprovalRequired": false,
+      "outstandingActions": [
+        "Bundle with next staging tranche (cf18e08+); seed SRC-ECFR-TITLE-12 in staging DB",
+        "Section HTML via ecfr.gov + corpus snapshot (reuse html_article_v2)"
+      ],
+      "implementationNote": "ecfr-api-connector.mjs reuses http-client + ingestion contract; no duplicate PDF/HTML parsers"
+    },
+    {
+      "id": "API-EUR-LEX",
+      "name": "EUR-Lex / CELLAR",
+      "type": "official_api",
+      "connectedToForgeniq": false,
+      "authenticationVerified": false,
+      "readOnlyRetrievalTested": false,
+      "licensingVerified": "EU open data terms — research only",
+      "stagingEnabled": false,
+      "horizonScanningIntegrated": false,
+      "askRiIntegrated": false,
+      "commercialApprovalRequired": false,
+      "outstandingActions": ["Design SPARQL/CELLAR connector following federal-register pattern; rate limits"]
+    },
+    {
+      "id": "API-SEC-EDGAR",
+      "name": "SEC EDGAR API",
+      "type": "official_api",
+      "connectedToForgeniq": false,
+      "authenticationVerified": "n/a",
+      "readOnlyRetrievalTested": false,
+      "licensingVerified": true,
+      "stagingEnabled": false,
+      "horizonScanningIntegrated": false,
+      "askRiIntegrated": false,
+      "commercialApprovalRequired": false,
+      "outstandingActions": [
+        "Policy: acceptance-batch-1 forbids bulk EDGAR ingestion",
+        "SEC rulemaking covered via SRC-SEC-RULEMAKING HTML + Federal Register API"
+      ]
+    }
+  ],
+  "userAuthenticationRequired": [
+    {
+      "item": "Commercial MCPs (RegAlert, UK Gov Lex, OpenLaw, Ansvar)",
+      "action": "In Cursor: Settings → Tools & MCP → Add MCP server for each vendor (URL, OAuth or API key per provider docs). No project-level mcp.json found; existing plugin MCPs (Supabase, Vercel, Clerk, Stripe, Zapier) must remain enabled."
+    }
+  ]
+}

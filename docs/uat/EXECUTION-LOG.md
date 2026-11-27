@@ -2,6 +2,30 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-27 — Connector activation + operational verification tranche
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 20:15 | Activate eligible connectors; eCFR seed+migration; MCP merge; matrix; promote **56/56**; staging deploy tranche | User connector programme | **40/42** enabled (OFAC-SDN, CBUAE disabled documented). **UK Atom + FR** operational. **eCFR** DB + ops on staging; code in deploy. **`~/.cursor/mcp.json`** (RegAlert/Ansvar need auth). **`CONNECTOR-OPERATIONAL-VERIFICATION-MATRIX.json`**. OPEN-001: `due=1` eCFR post-seed; mass due **2026-11-28 04:00Z**. Corpus loop **442518** untouched. |
+
+## 2026-11-27 — External Regulatory Knowledge Integration programme
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 19:45 | Verify MCP + official APIs; matrix; minimal eCFR connector (no corpus interrupt) | User programme completion | **4 commercial MCPs:** not in Cursor catalog — user must add in Settings → Tools & MCP + commercial approval. **Official:** FCA RSS/handbook HTML, UK legislation Atom, Federal Register API verified; **eCFR** `CONN-ECFR-TITLE-12` + acceptance LIVE_VERIFIED (local, not on cf18e08). **EUR-Lex** backlog; **EDGAR** policy excluded. Evidence: `EXTERNAL-REGULATORY-KNOWLEDGE-INTEGRATION-MATRIX.json`, updated `REGULATORY-API-MCP-STATUS.md`. |
+
+## 2026-11-27 — Tranche G2: defect reconciliation (pre-remediation)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 19:30 | Reconcile G2 symptoms vs register, commits, acceptance, PDF path audit | User: no rebuild; prove regression | **`TRANCHE-G2-DEFECT-RECONCILIATION.md`**: corpus uses same `extractRegulatoryPdfContent` + `createPrimaryPdfExtractionRevision`; **no CONFIRMED_REGRESSION**; **`pdf_primary_v1`@6** = incomplete bulk + allowlist; issues mostly **INCOMPLETE_EXECUTION** / **EXPECTED_SECURITY_RESTRICTION**; one **NEW_DEFECT** (terminal detail field). Loop continues. |
+
+## 2026-11-27 — Tranche G2: corpus loop monitoring + completion report
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 19:25 | Monitor **200-tick** loop (do not duplicate); SQL inventory via Supabase; retrieval re-eval; PDF/terminal investigation; refresh handover/matrix | User G2 completion checklist | **63** snapshots, **55** searchable HTML, **6** pdf_v1, **30** terminal, **244** eligible missing. Loop **12/200**. Eval **0 PASS / 41 FAIL / 4** correct insufficient (frozen packs). OPEN-001 still open; manual due≥1 ingest logged. Local fixes: PDF detail, terminal codes, PDF queue order (await next deploy). **`TRANCHE-G2-COMPLETION-REPORT.md`**. |
+
 ## 2026-11-27 — Tranche G2: hosted corpus population (deploy + batch loop)
 
 | Time (UTC) | Decision | Reason | Outcome |

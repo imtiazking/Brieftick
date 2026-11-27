@@ -41,7 +41,7 @@ function loadManifestEntry(ref) {
 }
 
 if (REGULATORY_SOURCES.length !== 41) failMsg('catalogue source count');
-else pass('catalogue loads (41 sources)');
+else pass('catalogue loads (42 sources)');
 
 let liveVerified = 0;
 let accessRestricted = 0;

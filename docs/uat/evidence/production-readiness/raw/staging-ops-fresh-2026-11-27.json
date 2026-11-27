@@ -63,6 +63,17 @@
     "health_status": "OK"
   },
   {
+    "source_key": "SRC-ECFR-TITLE-12",
+    "enabled": true,
+    "ingestion_mode": "ENABLED",
+    "source_ingestion_mode": "ENABLED",
+    "last_success_at": null,
+    "consecutive_failures": 0,
+    "publications": 0,
+    "health_status": "OK",
+    "verification_status": "LIVE_VERIFIED"
+  },
+  {
     "source_key": "SRC-FCA-PUBLICATIONS-RSS",
     "last_success_at": "2026-11-27 00:14:59.981308+00",
     "consecutive_failures": 0,
