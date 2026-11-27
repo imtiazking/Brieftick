@@ -72,7 +72,7 @@ export async function POST(request: Request) {
       entityId: row.id,
       eventType: 'CONSULTATION_TRACKING_UPDATED',
       actorUserId: ctx.userId,
-      payload: {
+      metadata: {
         publicationId,
         status: row.status,
         ownerUserId: row.owner_user_id,
