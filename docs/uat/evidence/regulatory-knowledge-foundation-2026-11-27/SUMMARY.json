@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-11-27T14:30:00.000Z",
+  "stagingProjectRef": "lhgzdicffkhaaykzthep",
+  "officialStagingGitBaseline": "bf2511f",
+  "method": "read-only SQL via approved staging Supabase (Tranche G inventory)",
+  "beforeTrancheF": {
+    "totalPublications": 322,
+    "pdfPrimaryComplete": 6,
+    "note": "pdf-index-coverage-2026-11-27/INVENTORY.json"
+  },
+  "afterInventory2026_11_27": {
+    "totalPublications": 322,
+    "withSourceSnapshots": 27,
+    "noSnapshotMetadataOnlyPath": 295,
+    "htmlArticleV2Revisions": 15,
+    "htmlArticleV2Complete": 15,
+    "pdfPrimaryV1Revisions": 6,
+    "pdfPrimaryV1Complete": 6,
+    "searchableWithStoredText": 15,
+    "provisionGradeSuitableIndexed": 8,
+    "metadataOnlyOrNoExtraction": 307
+  },
+  "extractionProfiles": {
+    "html_article_v2": { "publications": 15, "webpageComplete": 15 },
+    "pdf_primary_v1": { "publications": 6, "webpageComplete": 6 }
+  },
+  "searchablePdfPrimaryPublications": [
+    {
+      "id": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "title": "PS26/1 — Regulating Buy Now Pay Later (Deferred Payment Credit)"
+    },
+    {
+      "id": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+      "title": "PS22/9: A new Consumer Duty"
+    },
+    {
+      "id": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+      "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty"
+    },
+    {
+      "id": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+      "title": "FG24/6: Guidance for firms that enables a risk-based approach to payments"
+    },
+    {
+      "id": "a784dcfc-d443-4295-99f9-d0f23a5fadd6",
+      "title": "Guidance for firms on the fair treatment of vulnerable customers"
+    },
+    {
+      "id": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+      "title": "CP26/38: Financial Crime Guide updates"
+    }
+  ],
+  "askRiImplication": "Substantive quotation retrieval is limited to publications with complete html_article_v2 or pdf_primary_v1 extractions and stored normalised text. INSUFFICIENT_EVIDENCE and UNRESOLVED remain correct for the other 307 catalogue rows.",
+  "horizonPipelineGap": "Ingest discovers publication metadata broadly; deterministic snapshot + extraction is not yet automatic for all 322 rows — only 27 have source snapshots on staging."
+}

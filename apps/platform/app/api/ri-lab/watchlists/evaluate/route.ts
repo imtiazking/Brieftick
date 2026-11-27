@@ -7,7 +7,11 @@ import {
 } from '@/lib/env';
 import { labApiErrorResponse } from '@/lib/ri/lab-api/errors';
 import { assertCanRi } from '@/lib/ri/permissions';
-import { evaluatePublicationAgainstWatchlists } from '@/lib/ri/services/watchlists';
+import {
+  evaluateObligationAgainstWatchlists,
+  evaluatePublicationAgainstWatchlists,
+  evaluateRegulatoryChangeAgainstWatchlists,
+} from '@/lib/ri/services/watchlists';
 
 /** Allowed on approved RI staging (hosted staging uses Vercel production target). */
 function watchlistEvaluateAllowed(): boolean {
@@ -26,8 +30,48 @@ export async function POST(request: Request) {
     }
     const body = await request.json().catch(() => ({}));
     const publicationId = String(body.publicationId || '').trim();
+    const obligationId = String(body.obligationId || '').trim();
+    const regulatoryChangeId = String(body.regulatoryChangeId || '').trim();
+
+    if (obligationId) {
+      const { data: ob, error } = await ctx.supabase
+        .from('regulatory_obligations')
+        .select('id, external_key, obligation_statement')
+        .eq('organisation_id', ctx.organisationId)
+        .eq('id', obligationId)
+        .maybeSingle();
+      if (error || !ob) {
+        return NextResponse.json({ ok: false, error: 'obligation_not_found' }, { status: 404 });
+      }
+      const result = await evaluateObligationAgainstWatchlists(ctx.supabase, ctx.organisationId, {
+        id: ob.id,
+        title: ob.external_key,
+        statement: ob.obligation_statement,
+      });
+      return NextResponse.json({ ok: true, obligationId, ...result });
+    }
+
+    if (regulatoryChangeId) {
+      const { data: ch, error } = await ctx.supabase
+        .from('regulatory_changes')
+        .select('id, title, description, publication_id')
+        .eq('organisation_id', ctx.organisationId)
+        .eq('id', regulatoryChangeId)
+        .maybeSingle();
+      if (error || !ch) {
+        return NextResponse.json({ ok: false, error: 'regulatory_change_not_found' }, { status: 404 });
+      }
+      const result = await evaluateRegulatoryChangeAgainstWatchlists(ctx.supabase, ctx.organisationId, {
+        id: ch.id,
+        title: ch.title,
+        summary: ch.description,
+        publicationId: ch.publication_id,
+      });
+      return NextResponse.json({ ok: true, regulatoryChangeId, ...result });
+    }
+
     if (!publicationId) {
-      return NextResponse.json({ ok: false, error: 'publication_id_required' }, { status: 400 });
+      return NextResponse.json({ ok: false, error: 'entity_id_required' }, { status: 400 });
     }
     const { data: pub, error } = await ctx.supabase
       .from('regulatory_publications')

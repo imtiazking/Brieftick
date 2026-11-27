@@ -1,9 +1,65 @@
 # Ask RI development programme — engineering handover
 
 **Date:** 2026-11-27  
-**Official staging (pre–Tranche F deploy):** `staging-app.forgeniq.com` · **`dpl_EgqBYMQYmJVMZpKY8er81NzCNDgx`** · git **`67bcb17`** (Tranche E)  
-**Tranche F implementation commit:** **`21594bd`** (watchlists/consultations completion, Ask RI baseline harnesses, PDF inventory artefact) — promote after candidate verification.  
-**Rollback:** `dpl_644WDsZPXcMXKPB9Q2WzS3GuuGsg` (`8c58e2e`, Tranche D)
+**Official staging (navigation + Tranche F):** `staging-app.forgeniq.com` · **`dpl_3BpCCT8nB4bUeqQPjxVFjtxR3Vsp`** · git **`bf2511f`**  
+**Tranche G (in progress):** Regulatory knowledge foundation — inventory, pipeline audit, watchlist entity evaluate, deterministic retrieval eval (see below).
+
+## Tranche G — regulatory knowledge foundation (Fable)
+
+### Catalogue coverage (staging SQL 2026-11-27)
+
+| Metric | Value |
+|--------|------:|
+| Total catalogue publications | **322** |
+| With `regulatory_source_snapshots` | **27** |
+| No snapshot (metadata path) | **295** |
+| `html_article_v2` complete | **15** |
+| `pdf_primary_v1` complete | **6** |
+| Searchable (normalised text stored) | **15** |
+| Provision-grade (`obligationGradeSuitable`) | **8** |
+| Metadata-only for Ask RI substance | **~307** |
+
+**Before (Tranche F inventory):** 322 pubs; **6** PDF primary complete.  
+**After:** HTML indexed cohort **+15**; searchable total **15** (overlap HTML/PDF on some FCA rows).
+
+### Searchable PDF-primary catalogue (quotation path)
+
+PS26/1 · PS22/9 · FG22/5 · FG24/6 · Fair value vulnerable customers · CP26/38 — IDs in `docs/uat/evidence/regulatory-knowledge-foundation-2026-11-27/SUMMARY.json`.
+
+### Extraction & indexing
+
+- Deterministic: `html_article_v2`, `pdf_primary_v1`, storage-backed normalised text, evidence-pack full-text helpers (`evidence-pack-full-text.mjs`).
+- **Not yet universal:** ingest creates catalogue rows for ~322 pubs; only **27** have snapshots; automatic post-ingest extraction queue still partial (`PIPELINE-AUDIT.json`).
+
+### Ask RI retrieval evaluation
+
+- Offline: `tranche-g-ask-ri-retrieval-eval.mjs` → `docs/uat/evidence/tranche-g-retrieval-eval-2026-11-27/`.
+- **Do not treat `INSUFFICIENT_EVIDENCE` as successful regulatory answers** — correct abstention when index missing.
+- Deterministic v2.1 suite mostly **FAIL vs ideal ANSWERED** until corpus-wide indexing catches up (expected).
+
+### Horizon pipeline
+
+`Source → ingest → publication → [snapshot gap] → extraction → evidence pack → Ask RI` — bottleneck is **snapshot + deterministic extract** on ~295 rows.
+
+### Watchlists (Tranche G)
+
+`POST /api/ri-lab/watchlists/evaluate` accepts `obligationId` or `regulatoryChangeId` for filtered watchlists (not only publications).
+
+### OPEN-001 residual
+
+Unattended 04:00 UTC scheduler: `dueCount=0`. Manual hosted ticks: `dueCount=1` recorded — still no single unattended tick with due>0 **and** successful connector batch in same artefact.
+
+### Remaining architectural weaknesses for Fable
+
+1. **Corpus gap:** 95% of catalogue is metadata-only for full-text Ask RI.  
+2. **No paid embeddings/LLM** on staging — deterministic planner + indexed blocks only.  
+3. **Tenant vs catalogue fusion** limited to fixtures + live DB reads.  
+4. **Automatic extraction** after RSS ingest not end-to-end for all regulators.  
+5. **Citation completeness** scales only with indexed publication count.
+
+### Evidence
+
+`regulatory-knowledge-foundation-2026-11-27/` · `TRANCHE-G-REGULATORY-KNOWLEDGE-FOUNDATION.md` · `tranche-g-retrieval-eval-2026-11-27/`
 
 ## Regulatory data architecture (verified)
 

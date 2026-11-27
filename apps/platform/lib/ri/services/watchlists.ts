@@ -127,7 +127,35 @@ export type PublicationMatchInput = {
   canonical_url?: string;
 };
 
+export function obligationMatchesWatchlist(
+  obligation: { id: string; title?: string | null; statement?: string | null },
+  filters: WatchlistFilters,
+): string | null {
+  if (!filters.obligationIds?.length) return null;
+  if (!filters.obligationIds.includes(obligation.id)) return null;
+  const blob = `${obligation.title || ''} ${obligation.statement || ''}`.toLowerCase();
+  if (filters.keywords?.length && !filters.keywords.some((k) => blob.includes(k.toLowerCase()))) return null;
+  return `Obligation watch: ${obligation.id.slice(0, 8)}`;
+}
+
+export function regulatoryChangeMatchesWatchlist(
+  change: { id: string; title?: string | null; summary?: string | null },
+  filters: WatchlistFilters,
+): string | null {
+  if (!filters.regulatoryChangeIds?.length) return null;
+  if (!filters.regulatoryChangeIds.includes(change.id)) return null;
+  const blob = `${change.title || ''} ${change.summary || ''}`.toLowerCase();
+  if (filters.keywords?.length && !filters.keywords.some((k) => blob.includes(k.toLowerCase()))) return null;
+  return `Regulatory change watch: ${change.id.slice(0, 8)}`;
+}
+
 export function publicationMatchesWatchlist(pub: PublicationMatchInput, filters: WatchlistFilters): string | null {
+  if (filters.obligationIds?.length && !filters.publicationIds?.length && !filters.regulatoryChangeIds?.length) {
+    return null;
+  }
+  if (filters.regulatoryChangeIds?.length && !filters.publicationIds?.length && !filters.obligationIds?.length) {
+    return null;
+  }
   if (filters.publicationIds?.length && !filters.publicationIds.includes(pub.id)) return null;
   const regKey = pub.regulator?.external_key;
   if (filters.regulatorKeys?.length && (!regKey || !filters.regulatorKeys.includes(regKey))) return null;
@@ -229,6 +257,96 @@ export async function evaluatePublicationAgainstWatchlists(
     else if (r.matchId || r.notificationId) matches += 1;
   }
   return { matches, duplicates };
+}
+
+export async function evaluateObligationAgainstWatchlists(
+  supabase: SupabaseClient,
+  organisationId: string,
+  obligation: { id: string; title?: string | null; statement?: string | null },
+): Promise<{ matches: number }> {
+  const watchlists = await listWatchlists(supabase, organisationId, 'system');
+  let matches = 0;
+  for (const wl of watchlists) {
+    if (!wl.enabled) continue;
+    const reason = obligationMatchesWatchlist(obligation, wl.filters);
+    if (!reason) continue;
+    const admin = createSupabaseAdminClient();
+    if (!admin) continue;
+    const { data: existing } = await admin
+      .from('ri_watchlist_matches')
+      .select('id')
+      .eq('watchlist_id', wl.id)
+      .eq('obligation_id', obligation.id)
+      .maybeSingle();
+    if (existing?.id) continue;
+    const notification = await createTenantNotification(admin, {
+      organisationId,
+      createdByUserId: 'system:watchlist',
+      notificationType: 'WATCHLIST',
+      severity: 'MEDIUM',
+      title: `Watchlist — ${wl.name}`,
+      message: `${obligation.title || 'Obligation'} (${reason})`,
+      entityType: 'obligation',
+      entityId: obligation.id,
+      linkPath: `#/obligations/${obligation.id}`,
+    });
+    await admin.from('ri_watchlist_matches').insert({
+      organisation_id: organisationId,
+      watchlist_id: wl.id,
+      obligation_id: obligation.id,
+      match_reason: reason,
+      notification_id: notification.id,
+      payload: { watchlistId: wl.id },
+    });
+    matches += 1;
+  }
+  return { matches };
+}
+
+export async function evaluateRegulatoryChangeAgainstWatchlists(
+  supabase: SupabaseClient,
+  organisationId: string,
+  change: { id: string; title?: string | null; summary?: string | null; publicationId?: string | null },
+): Promise<{ matches: number }> {
+  const watchlists = await listWatchlists(supabase, organisationId, 'system');
+  let matches = 0;
+  for (const wl of watchlists) {
+    if (!wl.enabled) continue;
+    const reason = regulatoryChangeMatchesWatchlist(change, wl.filters);
+    if (!reason) continue;
+    const admin = createSupabaseAdminClient();
+    if (!admin) continue;
+    const { data: existing } = await admin
+      .from('ri_watchlist_matches')
+      .select('id')
+      .eq('watchlist_id', wl.id)
+      .eq('regulatory_change_id', change.id)
+      .maybeSingle();
+    if (existing?.id) continue;
+    const link = change.publicationId ? `#/publication/${change.publicationId}` : `#/changes/${change.id}`;
+    const notification = await createTenantNotification(admin, {
+      organisationId,
+      createdByUserId: 'system:watchlist',
+      notificationType: 'WATCHLIST',
+      severity: 'MEDIUM',
+      title: `Watchlist — ${wl.name}`,
+      message: `${change.title || 'Regulatory change'} (${reason})`,
+      entityType: 'regulatory_change',
+      entityId: change.id,
+      linkPath: link,
+    });
+    await admin.from('ri_watchlist_matches').insert({
+      organisation_id: organisationId,
+      watchlist_id: wl.id,
+      regulatory_change_id: change.id,
+      publication_id: change.publicationId ?? null,
+      match_reason: reason,
+      notification_id: notification.id,
+      payload: { watchlistId: wl.id },
+    });
+    matches += 1;
+  }
+  return { matches };
 }
 
 export async function matchIngestedPublicationsToWatchlists(

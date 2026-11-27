@@ -1,7 +1,16 @@
 #!/usr/bin/env node
 /** Watchlist matcher + consultation type helpers (deterministic). */
 
+function obligationMatchesWatchlist(obligation, filters) {
+  if (!filters.obligationIds?.length) return null;
+  if (!filters.obligationIds.includes(obligation.id)) return null;
+  return 'obligation';
+}
+
 function publicationMatchesWatchlist(pub, filters) {
+  if (filters.obligationIds?.length && !filters.publicationIds?.length && !filters.regulatoryChangeIds?.length) {
+    return null;
+  }
   if (filters.publicationIds?.length && !filters.publicationIds.includes(pub.id)) return null;
   const regKey = pub.regulator?.external_key;
   if (filters.regulatorKeys?.length && (!regKey || !filters.regulatorKeys.includes(regKey))) return null;
@@ -41,5 +50,10 @@ check('regulator filter rejects', publicationMatchesWatchlist(pub, { regulatorKe
 check('keyword filter matches', publicationMatchesWatchlist(pub, { keywords: ['bnpl'] }) !== null);
 check('consultation type', isConsultationPublication('consultation_paper'));
 check('policy statement not consultation', !isConsultationPublication('policy_statement_with_instrument'));
+check(
+  'obligation-only filter skips publication',
+  publicationMatchesWatchlist(pub, { obligationIds: ['ob-1'] }) === null,
+);
+check('obligation filter matches id', obligationMatchesWatchlist({ id: 'ob-1' }, { obligationIds: ['ob-1'] }) === 'obligation');
 
 process.exit(fail ? 1 : 0);

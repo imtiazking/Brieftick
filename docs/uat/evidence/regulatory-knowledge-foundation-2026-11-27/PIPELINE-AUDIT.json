@@ -1,0 +1,50 @@
+{
+  "generatedAt": "2026-11-27T14:23:14.331Z",
+  "checks": [
+    {
+      "id": "ingest_watchlist_hook",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "html_article_v2_derive",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "extraction_revision_api",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "pdf_primary_v1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "ask_ri_pdf_loader",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "deterministic_ask_ri",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "full_text_index_helpers",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "knowledge_inventory_script",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "gap": [
+    "Catalogue ingest currently creates publication metadata for most connectors without mandatory regulatory_source_snapshots.",
+    "Deterministic html_article_v2 and pdf_primary_v1 run on controlled ingest paths (e.g. batch B2), not on every RSS row.",
+    "Automatic post-ingest extraction queue is not yet universal — see tranche-g-rederive-from-snapshots.mjs for resumable re-derive."
+  ]
+}
