@@ -179,7 +179,7 @@ for (const route of ROUTES) {
     await page.waitForTimeout(1000);
     heading = await page.locator('h1').first().innerText().catch(() => heading);
   }
-  const fallback = await page.locator('#ri-boot-fallback:not([hidden])').count();
+  const fallback = (await page.locator('#ri-boot-fallback').isVisible().catch(() => false)) ? 1 : 0;
   const appLen = await page.evaluate(() => document.getElementById('ri-app')?.innerText?.length || 0);
   const triage = route.hash.startsWith('#/triage/');
   const table = triage ? await page.locator('[data-triage-screen], table, .ri-panel').count() : 1;
