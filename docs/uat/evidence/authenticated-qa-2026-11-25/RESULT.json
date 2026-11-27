@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T03:51:18.339Z",
+  "generatedAt": "2026-11-27T03:49:52.329Z",
   "origin": "https://staging-app.forgeniq.com",
   "identities": [
     {
@@ -25,7 +25,7 @@
       "persona": "C",
       "name": "Dashboard",
       "ok": true,
-      "detail": "275 publications in staging catalogue api 200 count -",
+      "detail": "322 publications in staging catalogue api 200 count -",
       "apiStatus": 200,
       "count": null
     },
@@ -41,9 +41,9 @@
       "persona": "C",
       "name": "Verified Obligations",
       "ok": true,
-      "detail": "Verified Obligations api 200 count 12",
+      "detail": "Verified Obligations api 200 count 14",
       "apiStatus": 200,
-      "count": 12
+      "count": 14
     },
     {
       "persona": "C",
@@ -57,9 +57,9 @@
       "persona": "C",
       "name": "Rejected Findings",
       "ok": true,
-      "detail": "Rejected Findings api 200 count 57",
+      "detail": "Rejected Findings api 200 count 59",
       "apiStatus": 200,
-      "count": 57
+      "count": 59
     },
     {
       "persona": "C",
@@ -81,9 +81,9 @@
       "persona": "C",
       "name": "All Findings",
       "ok": true,
-      "detail": "All Findings api 200 count 208",
+      "detail": "All Findings api 200 count 212",
       "apiStatus": 200,
-      "count": 208
+      "count": 212
     },
     {
       "persona": "C",
@@ -121,25 +121,25 @@
       "persona": "C",
       "name": "Risks",
       "ok": true,
-      "detail": "Risks api 200 count 6",
+      "detail": "Risks api 200 count 2",
       "apiStatus": 200,
-      "count": 6
+      "count": 2
     },
     {
       "persona": "C",
       "name": "Controls",
       "ok": true,
-      "detail": "Controls api 200 count 6",
+      "detail": "Controls api 200 count 2",
       "apiStatus": 200,
-      "count": 6
+      "count": 2
     },
     {
       "persona": "C",
       "name": "Assurance",
       "ok": true,
-      "detail": "Assurance api 200 count 2",
+      "detail": "Assurance api 200 count 0",
       "apiStatus": 200,
-      "count": 2
+      "count": 0
     },
     {
       "persona": "C",

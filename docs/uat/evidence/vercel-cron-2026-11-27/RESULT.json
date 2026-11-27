@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "capturedAt": "2026-11-27T04:12:00Z",
+  "method": "Supabase read-only SQL on ingestion_operational_events",
+  "checkSince": "2026-11-27T00:00:00Z",
+  "officialStagingDeployment": "dpl_644WDsZPXcMXKPB9Q2WzS3GuuGsg",
+  "gitCommit": "8c58e2e",
+  "rollbackDeployment": "dpl_95TSoASLLpqQSwpkb1r8sJZy97xk",
+  "unattendedTick": {
+    "invocationKind": "VERCEL_CRON",
+    "invocationAt": "2026-11-27T04:00:24.704874Z",
+    "completedAt": "2026-11-27T04:00:24.885043Z",
+    "platformSignals": {
+      "userAgent": "vercel-cron/1.0",
+      "vercelCronSchedule": "0 4 * * *",
+      "platformCronDetected": true
+    },
+    "dueCount": 0,
+    "processed": 0,
+    "outcomes": [],
+    "note": "Authenticated via Vercel CRON_SECRET Bearer (not manual tick). Zero due sources at slot — tick still proves unattended invocation."
+  },
+  "policy": "MANUAL_HOSTED ticks on 2026-11-27 are excluded from this evidence artifact."
+}

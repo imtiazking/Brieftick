@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-11-26T03:49:14.523Z",
+  "generatedAt": "2026-11-27T03:48:03.889Z",
   "releasePhase": "pre-promote",
   "official": {
-    "id": "dpl_CABPEw5cx3y96MnMMMtR2o4gSRhF",
-    "url": "https://forgeniq-platform-staging-oof4qqrf6-imis-projects-8e15dca0.vercel.app",
+    "id": "dpl_95TSoASLLpqQSwpkb1r8sJZy97xk",
+    "url": "https://forgeniq-platform-staging-pin35c8wv-imis-projects-8e15dca0.vercel.app",
     "exitCode": 0
   },
   "candidate": {
-    "id": "dpl_AGLgjMw6uZCtqtm193MeKGuGdpuh",
-    "url": "https://forgeniq-platform-staging-g2mivcd5y-imis-projects-8e15dca0.vercel.app",
+    "id": "dpl_644WDsZPXcMXKPB9Q2WzS3GuuGsg",
+    "url": "https://forgeniq-platform-staging-bzlzulgnf-imis-projects-8e15dca0.vercel.app",
     "exitCode": 0
   },
   "sameDeployment": false,
-  "expectedPreviewId": "dpl_CABPEw5cx3y96MnMMMtR2o4gSRhF",
+  "expectedPreviewId": "dpl_95TSoASLLpqQSwpkb1r8sJZy97xk",
   "candidateMatchesExpected": false,
   "officialMatchesExpected": true,
   "candidateDistinctFromOfficialDuringValidation": true,

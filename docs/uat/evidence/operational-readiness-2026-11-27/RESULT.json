@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T02:16:28.827Z",
+  "generatedAt": "2026-11-27T04:03:30.666Z",
   "results": [
     {
       "name": "concurrent authenticated users (A/B/C dashboard)",
@@ -8,21 +8,21 @@
         {
           "persona": "A",
           "role": "COMPLIANCE_MANAGER",
-          "dashMs": 953,
+          "dashMs": 1016,
           "dashStatus": 200,
           "sessionOk": true
         },
         {
           "persona": "B",
           "role": "REVIEWER",
-          "dashMs": 751,
+          "dashMs": 827,
           "dashStatus": 200,
           "sessionOk": true
         },
         {
           "persona": "C",
           "role": "COMPLIANCE_MANAGER",
-          "dashMs": 686,
+          "dashMs": 766,
           "dashStatus": 200,
           "sessionOk": true
         }
@@ -32,19 +32,19 @@
       "name": "performance: authenticated dashboard latency (sequential A/B/C)",
       "ok": true,
       "detail": {
-        "maxDashMs": 953,
+        "maxDashMs": 1016,
         "perPersona": [
           {
             "persona": "A",
-            "dashMs": 953
+            "dashMs": 1016
           },
           {
             "persona": "B",
-            "dashMs": 751
+            "dashMs": 827
           },
           {
             "persona": "C",
-            "dashMs": 686
+            "dashMs": 766
           }
         ]
       }
@@ -54,7 +54,7 @@
       "ok": true,
       "detail": {
         "status": 200,
-        "pubMs": 603,
+        "pubMs": 708,
         "total": 321
       }
     },
@@ -73,7 +73,7 @@
         "state": "HEALTHY",
         "summary": "Autonomous VERCEL_CRON executions recorded in operational audit.",
         "diagnostics": {
-          "vercelCronCompletedAudits": 96,
+          "vercelCronCompletedAudits": 98,
           "manualHostedCompletedAudits": 142,
           "lastManualHostedAt": "2026-11-27T02:05:03.744451+00:00",
           "cronSlotsUtc": [
@@ -101,11 +101,11 @@
     },
     {
       "name": "accessibility (Design Lab static acceptance)",
-      "ok": false,
+      "ok": true,
       "detail": {
-        "exit": 1,
-        "knownFailure": "status not colour-only (badge title): FAIL",
-        "note": "ENG-A11Y-001 badge status colour-only — tracked in REMAINING-ENGINEERING-DEFECTS.md"
+        "exit": 0,
+        "knownFailure": null,
+        "note": null
       }
     },
     {

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T02:16:25.977Z",
+  "generatedAt": "2026-11-27T04:03:26.251Z",
   "stagingSupabaseProjectRef": "lhgzdicffkhaaykzthep",
   "region": "eu-west-2",
   "backupConfiguration": "Supabase managed PITR/backups (dashboard — isolated restore not executed in this tranche)",

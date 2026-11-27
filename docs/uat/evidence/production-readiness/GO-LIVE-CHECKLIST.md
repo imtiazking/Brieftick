@@ -11,7 +11,7 @@ Legend: MET (evidenced), NOT MET, BLOCKED (needs external action; exact requirem
 | 5 | Atomic approval and Stage 2 hand-off | MET | RPC; `B-UI-ATOMIC-STAGE2-HANDOFF` |
 | 6 | Paid AI disabled; ledger unchanged | MET | `executionEnabled=false`; 10 SETTLED, `$0.224872` |
 | 7 | Production untouched | MET | no change to `platform`, `brieftick`, `www.forgeniq.com` |
-| 8 | Horizon scanning live on a schedule | **PARTIAL** | Connectors **39/41 current** post-MOCI; scheduler enabled on **`33d0912`**; **0** `VERCEL_CRON` rows **2026-11-27** until **04:00 UTC** unattended tick (ENG-CRON-001) |
+| 8 | Horizon scanning live on a schedule | **PARTIAL** | Connectors **39/41 current**; unattended **`VERCEL_CRON` 2026-11-27T04:00:24Z** on **`8c58e2e`** (`vercel-cron-2026-11-27/RESULT.json`); slot had **0** due sources |
 | 9 | Regulatory accuracy reviewed by an expert | **BLOCKED** | a regulatory professional must label a sample and sign off; no approval is claimed |
 | 10 | Approved classification policy for each in-scope regulator | **BLOCKED** | approval needed (material classification-policy change); only REG-FCA has one |
 | 11 | Hosted cross-tenant isolation | **BLOCKED** | second organisation and test users (new access: needs approval); offline RLS proof exists |

@@ -1,6 +1,6 @@
 # FCA-EVAL-002 — readiness for second live AI evaluation
 
-Generated: 2026-11-26T13:18:48.573Z. **No paid AI was used to produce this package.**
+Generated: 2026-11-27T03:39:20.163Z. **No paid AI was used to produce this package.**
 
 ## Proposed run controls
 

@@ -1,49 +1,53 @@
 {
-  "generatedAt": "2026-11-27T02:15:05.178Z",
+  "generatedAt": "2026-11-27T03:50:27.580Z",
   "origin": "https://staging-app.forgeniq.com",
   "results": [
     {
-      "name": "publications API lists catalogue (MOCI when present)",
+      "name": "publications API lists MOCI catalogue row",
       "ok": true,
       "detail": {
         "status": 200,
-        "total": 321,
-        "mociPublicationId": "0a88c11f-f0fe-4f15-bce0-9ff3a06b2486",
-        "mociTitle": ".Companies Law (ea0fc797)"
+        "mociPublicationId": "0a88c11f-f0fe-4f15-bce0-9ff3a06b2486"
       }
     },
     {
-      "name": "MOCI-SA ingestion represented in catalogue",
+      "name": "MOCI regulatoryTrace: ingestion run from provenance",
       "ok": true,
       "detail": {
-        "publicationId": "0a88c11f-f0fe-4f15-bce0-9ff3a06b2486"
+        "status": 200,
+        "ingestionRunId": "4cac5a4c-7a76-46ab-89c1-27ff08523825",
+        "sourceExternalKey": "SRC-MOCI-SA-COMPANIES-LAW"
+      }
+    },
+    {
+      "name": "MOCI regulatoryTrace: no tenant change (legitimate)",
+      "ok": true,
+      "detail": {
+        "linkage": "NONE",
+        "changeIds": []
+      }
+    },
+    {
+      "name": "FCA PS26/1 regulatoryTrace: tenant change linked",
+      "ok": true,
+      "detail": {
+        "linkage": "TENANT_CHANGE",
+        "primaryChangeId": "cb1e415a-2605-4c46-a0d8-3ab17de4dab7"
+      }
+    },
+    {
+      "name": "changes API publicationId forward link (FCA)",
+      "ok": true,
+      "detail": {
+        "changeId": "cb1e415a-2605-4c46-a0d8-3ab17de4dab7",
+        "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a"
       }
     },
     {
       "name": "landscape / horizon data API",
       "ok": true,
       "detail": {
-        "status": 200,
-        "keys": [
-          "ok",
-          "catalogueScope",
-          "regulatorCount",
-          "sourceCount",
-          "publicationCount",
-          "changeCount",
-          "regulators",
-          "sources"
-        ]
-      }
-    },
-    {
-      "name": "regulatory changes includes publication-backed change",
-      "ok": true,
-      "detail": {
-        "status": 200,
-        "total": 27,
-        "linked": false,
-        "publicationId": "0a88c11f-f0fe-4f15-bce0-9ff3a06b2486"
+        "status": 200
       }
     },
     {
@@ -58,17 +62,11 @@
       "name": "regulatory feed UI (catalogue-backed)",
       "ok": true,
       "detail": {
-        "heading": "Regulatory Feed",
         "feedItems": 321
       }
     },
     {
-      "name": "horizon scanning UI",
-      "ok": true,
-      "detail": "Horizon Scanning"
-    },
-    {
-      "name": "publication detail route",
+      "name": "publication detail route (MOCI)",
       "ok": true,
       "detail": ".Companies Law (ea0fc797)"
     },

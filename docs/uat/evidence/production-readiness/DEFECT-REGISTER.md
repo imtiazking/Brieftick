@@ -47,7 +47,7 @@ DEF-007 detail (none of these was a product regression):
 | OPEN-004 | Medium | **8** OPEN obligations remain DISCONNECTED after tranche C: **7** legacy MANUAL in FORGENIQ main org + **1** partner org; **10** AI-dev pilot rows repaired to LINKED (`repair-disconnected-2026-11-27`) | owner decision for 7 legacy; partner row unchanged. Not bulk-backfilled |
 | OPEN-005 | Medium | Only REG-FCA has an approved classification policy | extending it is a material classification-policy change that needs approval |
 | OPEN-006 | Medium | External notification delivery off; **in-app** tenant notifications verified on staging (`notifications-in-app-2026-11-27`) | enable external fan-out only when product authorises |
-| OPEN-007 | Medium | Reviewer invoking the approval RPC directly can author DRAFT impact content (audited) | restrict Stage 2 content parameters to the maker role |
+| OPEN-007 | Medium — **RESOLVED staging** | Reviewer RPC Stage 2 content smuggling | Migration `20261127083000_reviewer_stage2_approval_pin`; promote gate `RI-OBLIGATION-OPEN-ATOMIC` |
 | OPEN-008 | Medium (process) | Acceptance suites rewrite committed `docs/eval/*` evidence when run (restored after each sweep) | write suite output to an untracked directory |
 | OPEN-009 | Medium | DEF-011 below | investigate |
 | OPEN-010 | Low | Reports: exports, scheduled reports and board packs not verified | verify |

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-27T02:22:00Z",
-  "gitHead": "33d0912",
-  "stagingDeployment": "dpl_9z7z4Q5aNA4UVBwyxxN2GjgvKHHK @ staging-app.forgeniq.com (official Tranche C)",
+  "generatedAt": "2026-11-27T04:15:00Z",
+  "gitHead": "8c58e2e",
+  "stagingDeployment": "dpl_644WDsZPXcMXKPB9Q2WzS3GuuGsg @ staging-app.forgeniq.com (Tranche D closure)",
   "statusVocabulary": ["NOT_IMPLEMENTED", "PARTIAL", "IMPLEMENTED_LOCAL_TESTED", "STAGING_VERIFIED", "BLOCKED", "PRODUCTION_READY"],
   "rule": "PRODUCTION_READY is not assigned to any capability. STAGING_VERIFIED requires hosted evidence from this programme. Nothing is marked complete on API calls alone where a browser result is required.",
   "summary": {
@@ -36,7 +36,7 @@
       "name": "Workflow reliability and recovery",
       "status": "PARTIAL",
       "evidence": ["atomic RPC approve_obligation_with_stage2 (hosted-verified)", "idempotent closure S5-IDEMPOTENT-CLOSE (hosted)", "RI-AI-RUN-FINALISATION (ci, repaired)"],
-      "gaps": ["2026-11-27 VERCEL_CRON window not yet evidenced (ENG-CRON-001)", "no automated stuck-run sweeper proven on staging"]
+      "gaps": ["VERCEL_CRON evidenced 2026-11-27T04:00Z (dueCount 0 at slot)", "no automated stuck-run sweeper proven on staging"]
     },
     {
       "phase": 4,
@@ -44,7 +44,7 @@
       "name": "Horizon scanning and regulator connectors",
       "status": "PARTIAL",
       "evidence": ["REGULATOR-CONNECTOR-STATUS.json"],
-      "gaps": ["VERCEL_CRON on 2026-11-27 pending 04:00 UTC slot (ENG-CRON-001)", "CBUAE no connector; OFAC-SDN disabled by policy"]
+      "gaps": ["CBUAE no connector; OFAC-SDN disabled by policy", "ingest-without-tenant-change is explicit via regulatoryTrace"]
     },
     {
       "phase": 5,
@@ -60,7 +60,7 @@
       "name": "Traceability from horizon scan to audit trail",
       "status": "PARTIAL",
       "evidence": ["WORKFLOW-TRACEABILITY-REPORT.md", "hosted lifecycle 38/38 and browser 34/34"],
-      "gaps": ["unattended VERCEL_CRON on 2026-11-27 not yet evidenced; MOCI lineage verified via manual tick", "8 DISCONNECTED preserved (7 legacy + 1 partner); 10 AI-dev pilots repaired"]
+      "gaps": ["8 DISCONNECTED preserved (7 legacy + 1 partner); full obligation→assurance chain evidenced on FCA paths; MOCI ingest-without-change explicit"]
     },
     {
       "phase": 7,

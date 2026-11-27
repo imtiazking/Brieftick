@@ -1,0 +1,359 @@
+{
+  "run": "UAT-BROWSER-20261127-mwy8e9fi",
+  "deployment": "dpl_71M4sVFpmG4WtXiJ7uBBkUS3wnqx",
+  "origin": "https://staging-app.forgeniq.com",
+  "ids": {
+    "run": "UAT-BROWSER-20261127-mwy8e9fi",
+    "lifecycleObligation": "313e86bd-d705-420b-bbf6-78b477baa5fa",
+    "obligationId": "5d31769b-8878-4aed-bf15-9f88a0f6f7ae"
+  },
+  "results": [
+    {
+      "id": "A-IDENTITY",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "role": "COMPLIANCE_MANAGER",
+        "organisation": "FORGENIQ AI Development"
+      }
+    },
+    {
+      "id": "A-PUBLICATIONS-THEME",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "rows": 321,
+        "bg": "rgb(12, 15, 18)",
+        "head": "rgb(52, 211, 153)",
+        "font": "\"JetBrains Mono\", ui-monospace, \"SF Mono\", Menlo, Consolas, monospace"
+      }
+    },
+    {
+      "id": "A-PUBLICATIONS-MODAL",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "centred": true,
+        "blur": "blur(10px) saturate(1.1)",
+        "trueModal": true,
+        "focusInside": true,
+        "title": "Sunshine Act Meetings",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        }
+      }
+    },
+    {
+      "id": "A-PUBLICATIONS-MODAL-CLOSE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "escapeReturnsFocus": true
+      }
+    },
+    {
+      "id": "A-OBLIGATIONS-THEME",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "rows": 37,
+        "bg": "rgb(12, 15, 18)",
+        "head": "rgb(52, 211, 153)",
+        "font": "\"JetBrains Mono\", ui-monospace, \"SF Mono\", Menlo, Consolas, monospace"
+      }
+    },
+    {
+      "id": "A-OBLIGATIONS-MODAL",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "centred": true,
+        "blur": "blur(10px) saturate(1.1)",
+        "trueModal": true,
+        "focusInside": true,
+        "title": "UAT-BROWSER-20261126-mwy4su8h synthetic UAT obligation. Firms must retain labell",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        }
+      }
+    },
+    {
+      "id": "A-OBLIGATIONS-MODAL-CLOSE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "escapeReturnsFocus": true
+      }
+    },
+    {
+      "id": "A-UI-CREATE-OBLIGATION",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Obligation created",
+        "obligationId": "5d31769b-8878-4aed-bf15-9f88a0f6f7ae"
+      }
+    },
+    {
+      "id": "A-UI-SUBMIT-FOR-REVIEW",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Obligation saved",
+        "persistedStatusAfterReload": "IN_REVIEW"
+      }
+    },
+    {
+      "id": "A-UI-SELF-APPROVAL-REFUSED",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Segregation of duties check — this item requires approval by a different authorised reviewer.",
+        "persistedStatusAfterReload": "IN_REVIEW"
+      }
+    },
+    {
+      "id": "B-IDENTITY",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "role": "REVIEWER"
+      }
+    },
+    {
+      "id": "B-UI-APPROVE-OBLIGATION",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Obligation approved into register"
+      }
+    },
+    {
+      "id": "B-UI-ATOMIC-STAGE2-HANDOFF",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "stage2": "AI impact assessment (Stage 2)\n\nDraft generated from this approved obligation. Human review and approval are required; AI cannot approve its own assessment.\n\nOPEN IMPACT ASSESSMENT · DRAFT"
+      }
+    },
+    {
+      "id": "B-UI-NAVIGATE-TO-IMPACT",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "url": "/assessment/d00f385b-250b-483f-9df0-e4a828b9f9f9"
+      }
+    },
+    {
+      "id": "C-IDENTITY",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "role": "COMPLIANCE_MANAGER"
+      }
+    },
+    {
+      "id": "C-LIFECYCLE-PANEL",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "stages": [
+          "Obligation · OPEN",
+          "Impact · APPROVED",
+          "Risk · APPROVED",
+          "Control · ACTIVE",
+          "Assurance · PASS / CLOSED"
+        ],
+        "linkableStages": 5
+      }
+    },
+    {
+      "id": "C-NAV-OBLIGATION",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "label": "Obligation · OPEN",
+        "hash": "#/obligation/313e86bd-d705-420b-bbf6-78b477baa5fa",
+        "hasStatus": true,
+        "hasOwner": true,
+        "hasHistory": true,
+        "chars": 3553
+      }
+    },
+    {
+      "id": "C-NAV-IMPACT",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "label": "Impact · APPROVED",
+        "hash": "#/assessment/cff8e9f5-b895-43c3-b79d-ea165a9fd7a4",
+        "hasStatus": true,
+        "hasOwner": true,
+        "hasHistory": true,
+        "chars": 2683
+      }
+    },
+    {
+      "id": "C-NAV-RISK",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "label": "Risk · APPROVED",
+        "hash": "#/risk/aa262151-13bb-45e2-a816-0502940217c8",
+        "hasStatus": true,
+        "hasOwner": true,
+        "hasHistory": true,
+        "chars": 2979
+      }
+    },
+    {
+      "id": "C-NAV-CONTROL",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "label": "Control · ACTIVE",
+        "hash": "#/control/4388760d-b74a-4bf2-8d8d-90dff08a28ce",
+        "hasStatus": true,
+        "hasOwner": true,
+        "hasHistory": true,
+        "chars": 2762
+      }
+    },
+    {
+      "id": "C-NAV-ASSURANCE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "label": "Assurance · PASS / CLOSED",
+        "hash": "#/assurance/93e159e9-24c4-43f2-b6f2-4953f832705a",
+        "hasStatus": false,
+        "hasOwner": true,
+        "hasHistory": true,
+        "chars": 3390
+      }
+    },
+    {
+      "id": "C-CONTROL-SHOWS-ASSURANCE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "mentionsAssurance": true
+      }
+    },
+    {
+      "id": "C-ASSURANCE-SHOWS-CONTROL",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "mentionsControl": true
+      }
+    },
+    {
+      "id": "C-ASSURANCE-WORKFLOW-STATE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "shown": "CLOSED",
+        "expected": "CLOSED"
+      }
+    },
+    {
+      "id": "C-ASSURANCE-AUDIT-HISTORY",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "rows": 8,
+        "expectedAtLeast": 5
+      }
+    },
+    {
+      "id": "C-ASSURANCE-LINKS-TO-CONTROL",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "controlLinks": 1
+      }
+    },
+    {
+      "id": "C-CONTROL-LINKS-TO-ASSURANCE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "assuranceLinks": 1
+      }
+    },
+    {
+      "id": "C-OBLIGATION-APPROVAL-HISTORY",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "chars": 3553
+      }
+    },
+    {
+      "id": "C-REGISTER-RISKS",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "chars": 3225
+      }
+    },
+    {
+      "id": "C-REGISTER-CONTROLS",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "chars": 3072
+      }
+    },
+    {
+      "id": "C-REGISTER-ASSURANCE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "chars": 4830
+      }
+    },
+    {
+      "id": "C-CALENDAR-RENDERS-FROM-TENANT-API",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "status": "1 event(s) between 27 Nov 2026 and 25 Feb 2027. 73 authorised-UAT item(s) are excluded from the operational calendar.",
+        "rows": 1
+      }
+    },
+    {
+      "id": "C-CALENDAR-WINDOW",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "apiTotal365": 1,
+        "rows365": 1,
+        "unsupportedWindowFellBackTo": 90,
+        "uatItemsHiddenFromOperational": true
+      }
+    },
+    {
+      "id": "C-CALENDAR-API-SCOPE-ALL",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "tenantEventsAll": 9,
+        "operationalTotal": 1,
+        "byProvenance": {
+          "uat_authorised": 9
+        },
+        "placeholderTitles": 0
+      }
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "failedApiResponses": [
+    "A: 403 /api/ri-lab/obligations/5d31769b-8878-4aed-bf15-9f88a0f6f7ae"
+  ],
+  "failed": 0
+}
