@@ -25,4 +25,5 @@ const res = await fetch(url, {
 });
 const body = await res.json().catch(() => ({}));
 console.log(JSON.stringify({ ok: res.ok && body.ok !== false, status: res.status, base: new URL(base).hostname, ...body }, null, 2));
+await new Promise((r) => setTimeout(r, 100));
 if (!res.ok || body.ok === false) process.exit(1);

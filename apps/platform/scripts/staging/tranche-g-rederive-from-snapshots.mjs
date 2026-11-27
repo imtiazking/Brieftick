@@ -10,7 +10,7 @@ import { join } from 'node:path';
 import { loadPlatformEnv, resolvePlatformRoot } from './load-platform-env.mjs';
 import { stagingPgClientOptions } from '../../lib/ri/ingestion/snapshot/staging-database-config.mjs';
 import { createExtractionRevision } from '../../lib/ri/ingestion/snapshot/create-extraction-revision.mjs';
-import { downloadPrivateStorageObject } from '../../lib/ri/ingestion/snapshot/readonly-storage-download.mjs';
+import { downloadSnapshotRawBody } from '../../lib/ri/ingestion/snapshot/download-snapshot-raw.mjs';
 import { REPO_ROOT } from '../../lib/ri/eval/eval-paths.mjs';
 
 const platformRoot = resolvePlatformRoot(import.meta.url);
@@ -31,7 +31,7 @@ const client = new pg.Client(stagingPgClientOptions({ connectionString: url }));
 await client.connect();
 
 const { rows } = await client.query(
-  `select s.id as snapshot_id, s.publication_id, s.raw_content_storage_path, s.canonical_url
+  `select s.id as snapshot_id, s.publication_id, s.raw_storage_path, s.canonical_url
    from regulatory_source_snapshots s
    where not exists (
      select 1 from regulatory_source_extraction_revisions r
@@ -46,7 +46,7 @@ const report = { generatedAt: new Date().toISOString(), limit, attempted: rows.l
 
 for (const row of rows) {
   try {
-    const raw = await downloadPrivateStorageObject(row.raw_content_storage_path);
+    const raw = await downloadSnapshotRawBody(client, row.snapshot_id);
     const revision = await createExtractionRevision(client, {
       sourceSnapshotId: row.snapshot_id,
       rawBody: raw,

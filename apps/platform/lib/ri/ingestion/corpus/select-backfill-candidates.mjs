@@ -62,7 +62,7 @@ export async function selectCorpusBackfillCandidates(client, limit = 3) {
  */
 export async function selectSnapshotsNeedingHtmlExtraction(client, limit = 5) {
   const { rows } = await client.query(
-    `select s.id as snapshot_id, s.publication_id, s.raw_content_storage_path, s.canonical_url
+    `select s.id as snapshot_id, s.publication_id, s.raw_storage_path, s.canonical_url
      from regulatory_source_snapshots s
      where not exists (
        select 1 from regulatory_source_extraction_revisions r
