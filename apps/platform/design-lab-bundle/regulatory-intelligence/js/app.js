@@ -220,6 +220,14 @@ import {
 } from './platform/lab-connectivity.js';
 import { renderSidebarNav, bindSidebarNav } from './shell-navigation.js';
 import {
+  applyNavMode,
+  readNavMode,
+  toggleSidebarVisibility,
+  toggleSidebarWidth,
+  readCollapsedSectionSet,
+} from './shell-nav-preferences.js';
+import { renderCalendarRailShell } from './platform/connected-calendar.js';
+import {
   applyPersistedConnectedRestore,
   canRestorePersistedConnectedSession,
   connectivityDiagSnapshot,
@@ -496,7 +504,7 @@ function renderShell() {
   restorePreservedInputs(main, routeKey, preserved);
   const sideNav = document.querySelector('.ri-sidebar__nav');
   if (sideNav) {
-    sideNav.innerHTML = renderSidebarNav(routeKey);
+    sideNav.innerHTML = renderSidebarNav(routeKey, readCollapsedSectionSet());
   }
   syncNavActive(routeKey);
   bindSidebarNav();
@@ -544,10 +552,14 @@ function renderChromeUserSlot() {
 function renderChrome() {
   const app = document.getElementById('ri-app');
   document.documentElement.dataset.riMounted = '1';
+  applyNavMode(readNavMode());
   app.innerHTML = `
     <header class="ri-shell-header">
       <div class="ri-chrome">
         <div class="ri-chrome__left">
+          <button type="button" class="ri-nav-menu-toggle" id="ri-nav-menu-toggle" aria-controls="ri-sidebar" aria-expanded="true" aria-label="Hide navigation">
+            <svg class="ri-nav-menu-toggle__icon" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M3 5h14v1.8H3V5Zm0 4.6h14v1.8H3V9.6ZM3 14.2h14V16H3v-1.8Z"/></svg>
+          </button>
           <a class="ri-brand" href="${MARKET_INTEL_URL}">FORGENIQ</a>
           <div class="ri-product-switch">
             <button type="button" class="ri-product-switch__btn" id="product-menu-btn" aria-haspopup="true" aria-expanded="false" aria-label="Current product: ${PRODUCT_RI_LABEL}">
@@ -563,17 +575,25 @@ function renderChrome() {
         <div class="ri-chrome__right">
           ${renderChromeScenarioControls()}
           ${renderChromeUserSlot()}
-          <a class="ri-chrome__link" href="#/ask-ri" id="chrome-ask-ri">Ask RI</a>
+          <a class="ri-chrome__ask-ri" href="#/ask-ri" id="chrome-ask-ri">Ask RI</a>
           <a class="ri-chrome__link" href="#/notifications" id="chrome-notifications">Alerts</a>
           <a class="ri-chrome__link" href="/">Platform home</a>
         </div>
       </div>
     </header>
-    <div class="ri-layout">
+    <div class="ri-layout" id="ri-layout">
       <aside class="ri-sidebar" id="ri-sidebar" aria-label="Regulatory Intelligence navigation">
-        <nav class="ri-sidebar__nav" data-route-key="">${renderSidebarNav('dashboard')}</nav>
+        <div class="ri-sidebar__toolbar">
+          <button type="button" class="ri-sidebar__width-toggle" id="ri-sidebar-width-toggle" aria-pressed="false" aria-label="Collapse sidebar to icons">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M7 4 13 10 7 16V4Z"/></svg>
+          </button>
+        </div>
+        <nav class="ri-sidebar__nav" data-route-key="">${renderSidebarNav('dashboard', readCollapsedSectionSet())}</nav>
       </aside>
-      <main class="ri-main" id="ri-main"></main>
+      <div class="ri-layout__workspace">
+        <main class="ri-main" id="ri-main"></main>
+        ${renderCalendarRailShell()}
+      </div>
     </div>
     <div class="ri-toast" id="ri-toast" hidden role="status"></div>
     ${confirmDialog('reset-dialog', 'Reset presentation environment', 'Restore all Regulatory Intelligence presentation data to the baseline? Your in-session changes will be cleared.')}
@@ -649,6 +669,17 @@ function bindChromeHandlers() {
   });
   bindAccountChromeHandlers();
   bindSidebarNav();
+  applyNavMode(readNavMode());
+  document.getElementById('ri-nav-menu-toggle')?.addEventListener('click', () => {
+    toggleSidebarVisibility();
+  });
+  document.getElementById('ri-sidebar-width-toggle')?.addEventListener('click', () => {
+    toggleSidebarWidth();
+  });
+  document.getElementById('chrome-ask-ri')?.addEventListener('click', () => {
+    closeTopNavMenus();
+    closeAccountChromeMenu();
+  });
 }
 
 function askRiSubmitToast(res) {

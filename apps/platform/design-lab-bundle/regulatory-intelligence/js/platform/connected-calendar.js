@@ -98,13 +98,37 @@ async function loadCalendar(screen, windowDays) {
   }
 }
 
+export function renderCalendarRailShell() {
+  return `<aside class="ri-calendar-rail" id="ri-calendar-rail" aria-label="Regulatory Calendar">
+    <header class="ri-calendar-rail__head">
+      <h2 class="ri-calendar-rail__title">Regulatory Calendar</h2>
+      <a class="ri-calendar-rail__link" href="#/calendar">Full view</a>
+    </header>
+    <section class="ri-calendar-rail__body" data-connected-calendar data-connected-calendar-window="${DEFAULT_WINDOW}" data-calendar-rail="1">
+      <label class="ri-calendar-rail__window">Window
+        <select class="ri-select ri-select--sm" data-connected-calendar-window-select aria-label="Calendar window">
+          ${WINDOWS.map((w) => `<option value="${w}"${w === DEFAULT_WINDOW ? ' selected' : ''}>${w === 365 ? '12 mo' : w === 180 ? '6 mo' : `${w}d`}</option>`).join('')}
+        </select>
+      </label>
+      <p class="ri-muted ri-calendar-rail__status" data-connected-calendar-status role="status">Loading…</p>
+      <ul class="ri-cal-list ri-cal-list--rail" data-connected-calendar-list></ul>
+    </section>
+  </aside>`;
+}
+
 export function hydrateConnectedCalendar(doc = document) {
-  if (!isConnectedBackendActive(getState())) return;
-  const screen = doc.querySelector('[data-connected-calendar]');
-  if (!screen || screen.dataset.connectedCalendarBound === '1') return;
-  screen.dataset.connectedCalendarBound = '1';
-  screen.querySelector('[data-connected-calendar-window-select]')?.addEventListener('change', (ev) => {
-    loadCalendar(screen, normaliseCalendarWindow(ev.target.value));
+  const connected = isConnectedBackendActive(getState());
+  doc.querySelectorAll('[data-connected-calendar]').forEach((screen) => {
+    if (screen.dataset.connectedCalendarBound === '1') return;
+    if (!connected) {
+      const status = screen.querySelector('[data-connected-calendar-status]');
+      if (status) status.textContent = 'Sign in to load tenant calendar.';
+      return;
+    }
+    screen.dataset.connectedCalendarBound = '1';
+    screen.querySelector('[data-connected-calendar-window-select]')?.addEventListener('change', (ev) => {
+      loadCalendar(screen, normaliseCalendarWindow(ev.target.value));
+    });
+    loadCalendar(screen, normaliseCalendarWindow(screen.dataset.connectedCalendarWindow || DEFAULT_WINDOW));
   });
-  loadCalendar(screen, DEFAULT_WINDOW);
 }
