@@ -26,6 +26,168 @@
   --ri-sidebar-w-expanded: 250px;
   --ri-sidebar-w-collapsed: 64px;
   --ri-calendar-rail-w: 272px;
+  --ri-scroll-size: 4px;
+  --ri-scroll-thumb: rgba(58, 64, 76, 0);
+  --ri-scroll-thumb-hover: rgba(58, 64, 76, 0.92);
+  --ri-scroll-thumb-active: rgba(72, 78, 90, 0.98);
+  --ri-scroll-track: transparent;
+}
+
+/**
+ * Dark scroll surfaces: hidden thumb until hover/focus-within; 4px gutter (no layout shift).
+ * Firefox: scrollbar-width/color; WebKit: ::-webkit-scrollbar* (Chrome, Edge, Safari).
+ */
+.ri-scroll-surface,
+.ri-sidebar,
+.ri-calendar-rail,
+.ri-table-wrap,
+.ri-pre,
+.ri-dialog,
+dialog.ri-modal,
+.ri-topnav__menu--landscape,
+.ri-picker-list,
+.ri-main,
+.ri-terminal-modal__body {
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ri-scroll-thumb) var(--ri-scroll-track);
+}
+
+.ri-scroll-surface:hover,
+.ri-scroll-surface:focus-within,
+.ri-sidebar:hover,
+.ri-sidebar:focus-within,
+.ri-calendar-rail:hover,
+.ri-calendar-rail:focus-within,
+.ri-table-wrap:hover,
+.ri-table-wrap:focus-within,
+.ri-pre:hover,
+.ri-pre:focus-within,
+.ri-dialog:hover,
+.ri-dialog:focus-within,
+dialog.ri-modal:hover,
+dialog.ri-modal:focus-within,
+.ri-topnav__menu--landscape:hover,
+.ri-topnav__menu--landscape:focus-within,
+.ri-picker-list:hover,
+.ri-picker-list:focus-within,
+.ri-main:hover,
+.ri-main:focus-within,
+.ri-terminal-modal__body:hover,
+.ri-terminal-modal__body:focus-within {
+  scrollbar-color: var(--ri-scroll-thumb-hover) var(--ri-scroll-track);
+}
+
+.ri-scroll-surface::-webkit-scrollbar,
+.ri-sidebar::-webkit-scrollbar,
+.ri-calendar-rail::-webkit-scrollbar,
+.ri-table-wrap::-webkit-scrollbar,
+.ri-pre::-webkit-scrollbar,
+.ri-dialog::-webkit-scrollbar,
+dialog.ri-modal::-webkit-scrollbar,
+.ri-topnav__menu--landscape::-webkit-scrollbar,
+.ri-picker-list::-webkit-scrollbar,
+.ri-main::-webkit-scrollbar,
+.ri-terminal-modal__body::-webkit-scrollbar {
+  width: var(--ri-scroll-size);
+  height: var(--ri-scroll-size);
+}
+
+.ri-scroll-surface::-webkit-scrollbar-track,
+.ri-sidebar::-webkit-scrollbar-track,
+.ri-calendar-rail::-webkit-scrollbar-track,
+.ri-table-wrap::-webkit-scrollbar-track,
+.ri-pre::-webkit-scrollbar-track,
+.ri-dialog::-webkit-scrollbar-track,
+dialog.ri-modal::-webkit-scrollbar-track,
+.ri-topnav__menu--landscape::-webkit-scrollbar-track,
+.ri-picker-list::-webkit-scrollbar-track,
+.ri-main::-webkit-scrollbar-track,
+.ri-terminal-modal__body::-webkit-scrollbar-track {
+  background: var(--ri-scroll-track);
+}
+
+.ri-scroll-surface::-webkit-scrollbar-thumb,
+.ri-sidebar::-webkit-scrollbar-thumb,
+.ri-calendar-rail::-webkit-scrollbar-thumb,
+.ri-table-wrap::-webkit-scrollbar-thumb,
+.ri-pre::-webkit-scrollbar-thumb,
+.ri-dialog::-webkit-scrollbar-thumb,
+dialog.ri-modal::-webkit-scrollbar-thumb,
+.ri-topnav__menu--landscape::-webkit-scrollbar-thumb,
+.ri-picker-list::-webkit-scrollbar-thumb,
+.ri-main::-webkit-scrollbar-thumb,
+.ri-terminal-modal__body::-webkit-scrollbar-thumb {
+  background-color: var(--ri-scroll-thumb);
+  border-radius: var(--ri-scroll-size);
+  border: none;
+}
+
+.ri-scroll-surface:hover::-webkit-scrollbar-thumb,
+.ri-scroll-surface:focus-within::-webkit-scrollbar-thumb,
+.ri-sidebar:hover::-webkit-scrollbar-thumb,
+.ri-sidebar:focus-within::-webkit-scrollbar-thumb,
+.ri-calendar-rail:hover::-webkit-scrollbar-thumb,
+.ri-calendar-rail:focus-within::-webkit-scrollbar-thumb,
+.ri-table-wrap:hover::-webkit-scrollbar-thumb,
+.ri-table-wrap:focus-within::-webkit-scrollbar-thumb,
+.ri-pre:hover::-webkit-scrollbar-thumb,
+.ri-pre:focus-within::-webkit-scrollbar-thumb,
+.ri-dialog:hover::-webkit-scrollbar-thumb,
+.ri-dialog:focus-within::-webkit-scrollbar-thumb,
+dialog.ri-modal:hover::-webkit-scrollbar-thumb,
+dialog.ri-modal:focus-within::-webkit-scrollbar-thumb,
+.ri-topnav__menu--landscape:hover::-webkit-scrollbar-thumb,
+.ri-topnav__menu--landscape:focus-within::-webkit-scrollbar-thumb,
+.ri-picker-list:hover::-webkit-scrollbar-thumb,
+.ri-picker-list:focus-within::-webkit-scrollbar-thumb,
+.ri-main:hover::-webkit-scrollbar-thumb,
+.ri-main:focus-within::-webkit-scrollbar-thumb,
+.ri-terminal-modal__body:hover::-webkit-scrollbar-thumb,
+.ri-terminal-modal__body:focus-within::-webkit-scrollbar-thumb {
+  background-color: var(--ri-scroll-thumb-hover);
+}
+
+.ri-scroll-surface::-webkit-scrollbar-thumb:hover,
+.ri-sidebar::-webkit-scrollbar-thumb:hover,
+.ri-calendar-rail::-webkit-scrollbar-thumb:hover,
+.ri-table-wrap::-webkit-scrollbar-thumb:hover,
+.ri-pre::-webkit-scrollbar-thumb:hover,
+.ri-dialog::-webkit-scrollbar-thumb:hover,
+dialog.ri-modal::-webkit-scrollbar-thumb:hover,
+.ri-topnav__menu--landscape::-webkit-scrollbar-thumb:hover,
+.ri-picker-list::-webkit-scrollbar-thumb:hover,
+.ri-main::-webkit-scrollbar-thumb:hover,
+.ri-terminal-modal__body::-webkit-scrollbar-thumb:hover {
+  background-color: var(--ri-scroll-thumb-active);
+}
+
+.ri-scroll-surface::-webkit-scrollbar-button,
+.ri-sidebar::-webkit-scrollbar-button,
+.ri-calendar-rail::-webkit-scrollbar-button,
+.ri-table-wrap::-webkit-scrollbar-button,
+.ri-pre::-webkit-scrollbar-button,
+.ri-dialog::-webkit-scrollbar-button,
+dialog.ri-modal::-webkit-scrollbar-button,
+.ri-topnav__menu--landscape::-webkit-scrollbar-button,
+.ri-picker-list::-webkit-scrollbar-button,
+.ri-main::-webkit-scrollbar-button,
+.ri-terminal-modal__body::-webkit-scrollbar-button,
+.ri-scroll-surface::-webkit-scrollbar-corner,
+.ri-sidebar::-webkit-scrollbar-corner,
+.ri-calendar-rail::-webkit-scrollbar-corner,
+.ri-table-wrap::-webkit-scrollbar-corner,
+.ri-main::-webkit-scrollbar-corner {
+  display: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+dialog.ri-modal {
+  max-height: min(88vh, 680px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 html[data-theme="split"] body.ri-body {

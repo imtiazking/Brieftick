@@ -104,6 +104,23 @@ await runAs('A', async ({ page }) => {
     return ws ? Math.max(0, ws.scrollWidth - ws.clientWidth) : 999;
   });
   record('workspace-no-horizontal-overflow', overflow <= 4, { overflow });
+
+  await page.locator('.ri-sidebar').hover();
+  const scrollSurface = await page.evaluate(async () => {
+    const el = document.querySelector('.ri-sidebar');
+    if (!el) return { ok: false };
+    const cs = getComputedStyle(el);
+    const href = [...document.querySelectorAll('link[rel="stylesheet"]')].map((l) => l.href).find((h) => /ri\.css/.test(h));
+    const cssText = href ? await (await fetch(href)).text() : '';
+    return {
+      ok:
+        cs.overflowY === 'auto' &&
+        (cs.scrollbarGutter === 'stable' || cs.scrollbarGutter === 'stable both-edges') &&
+        /--ri-scroll-size:\s*4px/.test(cssText),
+      gutter: cs.scrollbarGutter,
+    };
+  });
+  record('sidebar-dark-scroll-surface', scrollSurface.ok, scrollSurface);
 });
 
 writeFileSync(join(OUT, 'RESULT.json'), JSON.stringify({ generatedAt: new Date().toISOString(), staging: STAGING_ORIGIN, failed: results.filter((r) => !r.ok).length, results }, null, 2));

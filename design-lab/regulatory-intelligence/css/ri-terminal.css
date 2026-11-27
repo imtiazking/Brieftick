@@ -325,6 +325,7 @@
   padding: 14px 22px;
   overflow-y: auto;
   overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 .ri-terminal-modal__summary {
   margin: 0 0 14px;

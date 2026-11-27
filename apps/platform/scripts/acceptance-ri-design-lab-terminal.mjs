@@ -117,6 +117,16 @@ for (const [name, hex] of Object.entries(pairs)) {
 check('contrast AA: primary button label on emerald', ratio('#04120c', '#34d399') >= 4.5, ratio('#04120c', '#34d399').toFixed(2));
 check('css documents the tokens it uses', css.includes('#dde3e9') && css.includes('#93a0ac'));
 
+const riCss = read('css/ri.css');
+check(
+  'ri.css dark scroll: 4px sidebar rail + hover thumb',
+  /--ri-scroll-size:\s*4px/.test(riCss) &&
+    /\.ri-sidebar::-webkit-scrollbar-thumb/.test(riCss) &&
+    /\.ri-sidebar:hover::-webkit-scrollbar-thumb/.test(riCss) &&
+    /\.ri-calendar-rail::-webkit-scrollbar/.test(riCss) &&
+    /scrollbar-gutter:\s*stable/.test(riCss),
+);
+
 // ---------------------------------------------------------------- wiring
 const html = read('index.html');
 const views = read('js/views.js');
