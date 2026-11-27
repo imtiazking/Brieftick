@@ -4,10 +4,13 @@ import { labApiErrorResponse } from '@/lib/ri/lab-api/errors';
 import { assertCanRi } from '@/lib/ri/permissions';
 import { listWatchlists, upsertWatchlist, type WatchlistFilters } from '@/lib/ri/services/watchlists';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const ctx = await requireRiContext('ri:read');
-    const rows = await listWatchlists(ctx.supabase, ctx.organisationId, ctx.userId);
+    const includeDisabled = new URL(request.url).searchParams.get('includeDisabled') === '1';
+    const rows = await listWatchlists(ctx.supabase, ctx.organisationId, ctx.userId, {
+      includeDisabled,
+    });
     return NextResponse.json({ ok: true, watchlists: rows });
   } catch (err) {
     return labApiErrorResponse(err);
@@ -29,7 +32,7 @@ export async function POST(request: Request) {
       scope,
       name,
       description: body.description ? String(body.description) : null,
-      enabled: body.enabled !== false,
+      enabled: body.enabled === undefined ? true : Boolean(body.enabled),
       filters: (body.filters || {}) as WatchlistFilters,
     });
     return NextResponse.json({ ok: true, watchlist: row });

@@ -10,6 +10,7 @@ import {
 } from '@/lib/ri/services/consultations';
 import { listPublicationsForOrganisation } from '@/lib/ri/services/publications';
 import { listChanges } from '@/lib/ri/services/changes';
+import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 
 export async function GET() {
   try {
@@ -64,6 +65,19 @@ export async function POST(request: Request) {
       submissionStatus: body.submissionStatus ? String(body.submissionStatus) : null,
       organisationalRelevance: body.organisationalRelevance ? String(body.organisationalRelevance) : null,
       notes: body.notes ? String(body.notes) : null,
+    });
+    await recordWorkflowEvent(ctx.supabase, {
+      organisationId: ctx.organisationId,
+      entityType: 'consultation_tracking',
+      entityId: row.id,
+      eventType: 'CONSULTATION_TRACKING_UPDATED',
+      actorUserId: ctx.userId,
+      payload: {
+        publicationId,
+        status: row.status,
+        ownerUserId: row.owner_user_id,
+        internalResponseDeadline: row.internal_response_deadline,
+      },
     });
     return NextResponse.json({ ok: true, tracking: row });
   } catch (err) {

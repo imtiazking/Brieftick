@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-11-27T12:00:00.000Z",
+  "source": "staging forgeniq-ri-staging (read-only SQL via authorised query)",
+  "denominators": {
+    "totalRegulatoryPublications": 322,
+    "publicationsWithPrimaryPdfRevision": 6
+  },
+  "coverage": {
+    "indexedPublicationsPrimaryPdfComplete": 6,
+    "indexedShareOfPrimaryPdf": 1,
+    "awaitingIndexing": 0
+  },
+  "askRiImplication": "Ask RI can answer from pdf_primary_v1 text for the six indexed publications; the broader catalogue (322 publications) is largely metadata-only unless additional PDF indexing completes.",
+  "limitations": [
+    "Does not claim full regulatory document coverage.",
+    "Accessible PDF / failed indexing breakdown requires separate storage audit."
+  ]
+}

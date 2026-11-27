@@ -13,6 +13,8 @@ export type WatchlistFilters = {
   publicationTypes?: string[];
   publicationIds?: string[];
   keywords?: string[];
+  regulatoryChangeIds?: string[];
+  obligationIds?: string[];
 };
 
 export type WatchlistRow = {
@@ -39,6 +41,8 @@ function parseFilters(raw: unknown): WatchlistFilters {
     publicationTypes: arr('publicationTypes'),
     publicationIds: arr('publicationIds'),
     keywords: arr('keywords'),
+    regulatoryChangeIds: arr('regulatoryChangeIds'),
+    obligationIds: arr('obligationIds'),
   };
 }
 
@@ -46,14 +50,41 @@ export async function listWatchlists(
   supabase: SupabaseClient,
   organisationId: string,
   userId: string,
+  opts?: { includeDisabled?: boolean },
 ): Promise<WatchlistRow[]> {
-  const { data, error } = await supabase
-    .from('ri_watchlists')
-    .select('*')
-    .eq('organisation_id', organisationId)
-    .eq('enabled', true);
+  let q = supabase.from('ri_watchlists').select('*').eq('organisation_id', organisationId);
+  if (!opts?.includeDisabled) q = q.eq('enabled', true);
+  const { data, error } = await q.order('updated_at', { ascending: false });
   if (error) throw new Error(error.message);
   return (data || []).map((row) => ({ ...row, filters: parseFilters(row.filters) })) as WatchlistRow[];
+}
+
+export type WatchlistMatchRow = {
+  id: string;
+  watchlist_id: string;
+  publication_id: string | null;
+  regulatory_change_id: string | null;
+  obligation_id: string | null;
+  matched_at: string;
+  match_reason: string;
+  notification_id: string | null;
+};
+
+export async function listWatchlistMatches(
+  supabase: SupabaseClient,
+  organisationId: string,
+  opts?: { watchlistId?: string; limit?: number },
+): Promise<WatchlistMatchRow[]> {
+  let q = supabase
+    .from('ri_watchlist_matches')
+    .select('id, watchlist_id, publication_id, regulatory_change_id, obligation_id, matched_at, match_reason, notification_id')
+    .eq('organisation_id', organisationId)
+    .order('matched_at', { ascending: false })
+    .limit(opts?.limit ?? 50);
+  if (opts?.watchlistId) q = q.eq('watchlist_id', opts.watchlistId);
+  const { data, error } = await q;
+  if (error) throw new Error(error.message);
+  return (data || []) as WatchlistMatchRow[];
 }
 
 export async function upsertWatchlist(
@@ -122,9 +153,19 @@ export async function recordWatchlistMatch(params: {
   matchReason: string;
   recipientUserId?: string | null;
   createdByUserId?: string;
-}): Promise<{ notificationId: string | null; matchId: string | null }> {
+}): Promise<{ notificationId: string | null; matchId: string | null; duplicate?: boolean }> {
   const admin = createSupabaseAdminClient();
   if (!admin) return { notificationId: null, matchId: null };
+
+  const { data: existing } = await admin
+    .from('ri_watchlist_matches')
+    .select('id')
+    .eq('watchlist_id', params.watchlistId)
+    .eq('publication_id', params.publicationId)
+    .maybeSingle();
+  if (existing?.id) {
+    return { notificationId: null, matchId: null, duplicate: true };
+  }
 
   const notification = await createTenantNotification(admin, {
     organisationId: params.organisationId,
@@ -153,10 +194,41 @@ export async function recordWatchlistMatch(params: {
     .select('id')
     .single();
   if (error) {
+    if (error.code === '23505') {
+      return { notificationId: null, matchId: null, duplicate: true };
+    }
     console.error('[watchlist] match_persist_failed', error.message);
     return { notificationId: notification.id, matchId: null };
   }
-  return { notificationId: notification.id, matchId: data.id as string };
+  return { notificationId: notification.id, matchId: data.id as string, duplicate: false };
+}
+
+/** Evaluate a catalogue publication against enabled watchlists (staging UAT / ingest path). */
+export async function evaluatePublicationAgainstWatchlists(
+  supabase: SupabaseClient,
+  organisationId: string,
+  publication: PublicationMatchInput,
+): Promise<{ matches: number; duplicates: number }> {
+  const watchlists = await listWatchlists(supabase, organisationId, 'system');
+  let matches = 0;
+  let duplicates = 0;
+  for (const wl of watchlists) {
+    if (!wl.enabled) continue;
+    const reason = publicationMatchesWatchlist(publication, wl.filters);
+    if (!reason) continue;
+    const r = await recordWatchlistMatch({
+      organisationId,
+      watchlistId: wl.id,
+      watchlistName: wl.name,
+      publicationId: publication.id,
+      publicationTitle: publication.title,
+      matchReason: reason,
+      recipientUserId: wl.scope === 'personal' ? wl.owner_user_id : null,
+    });
+    if (r.duplicate) duplicates += 1;
+    else if (r.matchId || r.notificationId) matches += 1;
+  }
+  return { matches, duplicates };
 }
 
 export async function matchIngestedPublicationsToWatchlists(
@@ -172,7 +244,7 @@ export async function matchIngestedPublicationsToWatchlists(
       if (!wl.enabled) continue;
       const reason = publicationMatchesWatchlist(pub, wl.filters);
       if (!reason) continue;
-      await recordWatchlistMatch({
+      const r = await recordWatchlistMatch({
         organisationId,
         watchlistId: wl.id,
         watchlistName: wl.name,
@@ -181,7 +253,7 @@ export async function matchIngestedPublicationsToWatchlists(
         matchReason: reason,
         recipientUserId: wl.scope === 'personal' ? wl.owner_user_id : null,
       });
-      matches += 1;
+      if (!r.duplicate) matches += 1;
     }
   }
   return { matches };
