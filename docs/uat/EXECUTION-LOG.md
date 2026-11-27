@@ -2,6 +2,12 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-27 — Tranche G: regulatory knowledge foundation + staging deploy
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 17:03 | Ship inventory pipeline, watchlist entity evaluate, retrieval eval evidence; promote gate 56/56; candidate-first deploy | User Tranche G; no paid AI; Fable handover | Commits **`a359552`**, **`6c73bf4`**, **`314af19`**; official **`dpl_8ndiSkW1EumnZvGGvA4YA1Z6iZnG`** on `staging-app.forgeniq.com`. Staging SQL: **322** pubs, **15** searchable, **8** provision-grade, **~307** metadata-only. Offline retrieval eval **0/45** vs ideal ANSWERED ( **4** correct `INSUFFICIENT_EVIDENCE` ); corpus gap documented. Watchlists: `obligationId` / `regulatoryChangeId` evaluate. **OPEN-001** still open. Bulk snapshot/extract backfill deferred (rate limits + **295** rows without snapshots). Evidence: `regulatory-knowledge-foundation-2026-11-27/`, `tranche-g-retrieval-eval-2026-11-27/`, `ASK-RI-DEVELOPMENT-HANDOVER.md`. |
+
 ## 2026-11-27 — Design Lab navigation (Ask RI, sidebar modes, calendar rail)
 
 | Time (UTC) | Decision | Reason | Outcome |

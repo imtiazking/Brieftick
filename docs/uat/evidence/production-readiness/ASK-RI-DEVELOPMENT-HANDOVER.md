@@ -1,8 +1,8 @@
 # Ask RI development programme — engineering handover
 
 **Date:** 2026-11-27  
-**Official staging (navigation + Tranche F):** `staging-app.forgeniq.com` · **`dpl_3BpCCT8nB4bUeqQPjxVFjtxR3Vsp`** · git **`bf2511f`**  
-**Tranche G (in progress):** Regulatory knowledge foundation — inventory, pipeline audit, watchlist entity evaluate, deterministic retrieval eval (see below).
+**Official staging (Tranche G):** `staging-app.forgeniq.com` · **`dpl_8ndiSkW1EumnZvGGvA4YA1Z6iZnG`** · git **`314af19`**  
+**Previous:** `dpl_3BpCCT8nB4bUeqQPjxVFjtxR3Vsp` · **`bf2511f`**
 
 ## Tranche G — regulatory knowledge foundation (Fable)
 

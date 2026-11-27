@@ -1,7 +1,8 @@
 {
   "generatedAt": "2026-11-27T14:30:00.000Z",
   "stagingProjectRef": "lhgzdicffkhaaykzthep",
-  "officialStagingGitBaseline": "bf2511f",
+  "officialStagingGitBaseline": "314af19",
+  "officialStagingDeploymentId": "dpl_8ndiSkW1EumnZvGGvA4YA1Z6iZnG",
   "method": "read-only SQL via approved staging Supabase (Tranche G inventory)",
   "beforeTrancheF": {
     "totalPublications": 322,
