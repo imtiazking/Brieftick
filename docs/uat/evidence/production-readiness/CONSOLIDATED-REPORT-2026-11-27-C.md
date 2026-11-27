@@ -8,8 +8,8 @@ Staging only. Production untouched. Paid AI disabled.
 |---|---|
 | Official host | `https://staging-app.forgeniq.com` |
 | Candidate | `https://candidate-staging.forgeniq.com` |
-| **Deployment ID** | `dpl_ESgsqUkZBdEexaqDE664DK9CSrgN` |
-| **Git HEAD (promoted)** | `4a4a44a7f388f7b490d6176a919ae74908edbdf2` |
+| **Deployment ID** | `dpl_9z7z4Q5aNA4UVBwyxxN2GjgvKHHK` |
+| **Git HEAD (promoted)** | `33d09123b0a1ac91cf5ac208a1f204fc88fa33fd` |
 | Mechanism | Candidate-first auth smoke → alias promote |
 | Auth smoke | **19/19** pre- and post-promotion (User A AI Findings buttons **50** on official) |
 | Promote gate | **52/52** (`qa:promote` on `a4dd45f` before final cert commit) |
@@ -33,7 +33,7 @@ Evidence: `docs/eval/STAGING-P3-PROVISION-ENGINE-DEPLOY-2026-11-22.json`
 | Item | Status |
 |---|---|
 | Trust chain | Copied to `apps/platform/certs/mc-gov-sa-trust-chain.pem`; connector fallback to `platform/certs/`; Vercel `includeFiles` path corrected |
-| Post–cert-copy deploy | **Pending** this commit (`platform cert fallback`) — prior hosted run still **FAILED** `ENOENT` at `01:47 UTC` |
+| Hosted ingestion | Run `4cac5a4c-…` **COMPLETED** `2026-11-27T02:05:03Z` on `33d0912` (no ENOENT; `records_new: 0`) |
 | Manual scheduler ticks | **8** `MANUAL_HOSTED` invocations since 2026-11-27 (incl. MOCI due tick `processed: 1`) |
 | **VERCEL_CRON** | **0** unattended rows as of `01:50 UTC`; crons `0/4/12/20` UTC — evidence capture after **04:00 UTC** slot |
 
