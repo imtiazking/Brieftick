@@ -1061,3 +1061,16 @@ pm run qa (ci) **29/29 PASS** including RI-SONNET-55-COMPAT, RI-SHARED-SPEND, RI
 | CI | GitHub `forgeniq-qa` success on `cbd5bfe`, `33d0912`, `4a4a44a`, `a4dd45f`. |
 | VERCEL_CRON (2026-11-27) | **0** since `00:00 UTC` as of `02:17 UTC`; `PRE-04UTC-SNAPSHOT.json`; unattended proof pending **04:00 UTC** slot (ENG-CRON-001). |
 | Deliverables | `CONSOLIDATED-REPORT-2026-11-27-D.md`, `REMAINING-ENGINEERING-DEFECTS.md`, `DISCONNECTED-OBLIGATION-RECONCILIATION.md`. |
+
+## 2026-11-27 — Tranche D closure (engineering handoff → Ask RI)
+
+| Item | Outcome |
+|---|---|
+| Official staging | `dpl_644WDsZPXcMXKPB9Q2WzS3GuuGsg` @ git **`8c58e2e`** (rollback `dpl_95TSoASLLpqQSwpkb1r8sJZy97xk`) |
+| ENG-LINEAGE-001 | `regulatoryTrace` on publication API; MOCI `NONE` + FCA `TENANT_CHANGE`; hosted lineage **PASS** |
+| ENG-CRON-001 | Unattended **`VERCEL_CRON`** `2026-11-27T04:00:24Z` (`vercel-cron-2026-11-27/RESULT.json`) |
+| ENG-A11Y-001 | Static acceptance + ops suite **PASS** |
+| ENG-OPS-002 | Parallel API load baseline **PASS** |
+| OPEN-007 | Reviewer Stage 2 pin on staging RPC |
+| Gates | Promote **52/52**; auth smoke **19/19**; ops readiness **PASS**; GitHub Actions **success** on `8c58e2e` |
+| Handover | `ASK-RI-DEVELOPMENT-HANDOVER.md`; evidence commit **`2c46b7c`** |
