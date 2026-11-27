@@ -273,7 +273,7 @@ export function renderView(route) {
     case 'my-tasks':
       return viewWorkQueue();
     case 'notifications':
-      return viewNotifications();
+      return viewNotifications(id);
     case 'feed':
       return viewFeed();
     case 'horizon':

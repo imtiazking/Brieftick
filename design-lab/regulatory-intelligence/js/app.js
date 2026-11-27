@@ -440,7 +440,8 @@ function closeTopNavMenus() {
 }
 
 function getRoute() {
-  const hash = location.hash.replace(/^#/, '') || '/dashboard';
+  let hash = location.hash.replace(/^#/, '') || '/dashboard';
+  hash = hash.replace(/^(horizon|notifications)#([^/]+)/, '$1/$2');
   return hash.startsWith('/') ? hash : `/${hash}`;
 }
 

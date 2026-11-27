@@ -68,8 +68,11 @@ export const SIDE_NAV = [
 ];
 
 export function sideNavHref(item) {
-  const base = item.hash ? `#/${item.path}${item.hash}` : `#/${item.path}`;
-  return base;
+  if (item.hash && item.hash.startsWith('#')) {
+    const segment = item.hash.slice(1);
+    return `#/${item.path}/${segment}`;
+  }
+  return `#/${item.path}`;
 }
 
 export function renderSidebarNav(routeKey, collapsedGroups) {
@@ -86,7 +89,12 @@ export function renderSidebarNav(routeKey, collapsedGroups) {
     const links = section.items
       .map((it) => {
         const href = sideNavHref(it);
-        const active = routeKey === it.path || routeKey.startsWith(`${it.path}/`);
+        const hashSeg = it.hash?.startsWith('#') ? it.hash.slice(1) : null;
+        const subPath = hashSeg ? `${it.path}/${hashSeg}` : it.path;
+        const active =
+          routeKey === subPath ||
+          routeKey.startsWith(`${subPath}/`) ||
+          (hashSeg == null && (routeKey === it.path || routeKey.startsWith(`${it.path}/`)));
         const key = it.hash ? `${it.path}${it.hash}` : it.path;
         return `<a class="ri-sidebar__sublink${active ? ' is-active' : ''}" href="${href}" data-nav-link="${key}">${it.label}</a>`;
       })

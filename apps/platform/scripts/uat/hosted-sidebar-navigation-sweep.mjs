@@ -47,8 +47,15 @@ async function checkRoute(page, route) {
     bootFallback: document.querySelector('#ri-boot-fallback:not([hidden])') ? 1 : 0,
   }));
   const signIn = /sign in required|backend unavailable|log in to vercel/i.test(snap.heading);
-  const ok = snap.mounted && snap.nav > 0 && !signIn && snap.appLen > 40 && snap.bootFallback === 0;
-  return { ...route, ok, ...snap, signIn };
+  const notFound = /page not found/i.test(snap.heading);
+  const ok =
+    snap.mounted &&
+    snap.nav > 0 &&
+    !signIn &&
+    !notFound &&
+    snap.appLen > 40 &&
+    snap.bootFallback === 0;
+  return { ...route, ok, ...snap, signIn, notFound };
 }
 
 try {

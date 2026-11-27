@@ -73,11 +73,24 @@ async function openRoute(page, route) {
   await page.waitForFunction(() => document.documentElement.dataset.riMounted === '1', null, { timeout: 20_000 }).catch(() => {});
   if (route.hash.startsWith('#/triage/')) {
     await page.waitForSelector('[data-triage-rows]', { timeout: 90_000 }).catch(() => {});
-    for (let i = 0; i < 30; i += 1) {
-      const loading = await page.evaluate(() => (document.querySelector('[data-triage-status]')?.textContent || '').includes('Loading')).catch(() => false);
-      if (!loading) break;
-      await page.waitForTimeout(1000);
-    }
+    await page
+      .waitForFunction(
+        () => {
+          const status = document.querySelector('[data-triage-status]')?.textContent || '';
+          if (status.includes('Loading')) return false;
+          const rowCount = document.querySelectorAll(
+            '[data-triage-rows] tbody tr, [data-triage-screen] tbody tr',
+          ).length;
+          if (rowCount === 0) return true;
+          if (location.hash.includes('ai-findings')) {
+            return document.querySelectorAll('[data-triage-five-decisions]').length > 0;
+          }
+          return true;
+        },
+        null,
+        { timeout: 120_000 },
+      )
+      .catch(() => {});
   }
   let heading = '';
   for (let i = 0; i < 15; i += 1) {
