@@ -1111,3 +1111,12 @@ pm run qa (ci) **29/29 PASS** including RI-SONNET-55-COMPAT, RI-SHARED-SPEND, RI
 | Staging deploy | **Official** `dpl_HjTUAygvRMvgYJ5yQUB6QCNnidSW` @ **`c0e92966db55bb1e2bb523476cdca91c3883e982`** → `https://staging-app.forgeniq.com`; rollback prior official `dpl_45mJuxtufAUYHxnCu3ybmuHMJZEu` (`37d03fd`). Candidate-first auth smoke **19/19** + post-promote **19/19**. |
 | Hosted UAT | Nav modes **PASS** (screenshots `design-lab-nav-modes-2026-11-27/`); nav capability **32/32**; Ask RI baseline **16/16**; watchlist/consultation **7/7**; auth smoke **19/19**. |
 | Constraints | No paid AI; no production deploy; 7 legacy + 1 partner **DISCONNECTED** obligations preserved. |
+
+## 2026-11-27 — Design Lab dark scrollbars (official `bf2511f`)
+
+| Item | Outcome |
+|---|---|
+| UX | 4px charcoal thumb on hover/focus-within; transparent track; `scrollbar-gutter: stable` on sidebar, calendar rail, tables, modals, terminal modal body. |
+| Browsers | Hosted probe **PASS** Chromium (Chrome/Edge engine), Firefox, WebKit (`design-lab-scrollbar-browsers.mjs`). |
+| Gates | Promote **56/56**; staging promote **19/19** ×2. |
+| Official | **`bf2511f`** / **`dpl_3BpCCT8nB4bUeqQPjxVFjtxR3Vsp`** @ `staging-app.forgeniq.com`. |

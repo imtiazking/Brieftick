@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T11:55:57.083Z",
+  "generatedAt": "2026-11-27T12:28:52.874Z",
   "staging": "https://staging-app.forgeniq.com",
   "failed": 0,
   "results": [
@@ -101,6 +101,14 @@
       "ok": true,
       "detail": {
         "overflow": 0
+      }
+    },
+    {
+      "id": "sidebar-dark-scroll-surface",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "gutter": "stable"
       }
     }
   ]
