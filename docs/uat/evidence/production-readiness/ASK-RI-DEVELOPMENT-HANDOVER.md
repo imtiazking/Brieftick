@@ -1,8 +1,22 @@
 # Ask RI development programme — engineering handover
 
 **Date:** 2026-11-27  
-**Official staging (Tranche G):** `staging-app.forgeniq.com` · **`dpl_8ndiSkW1EumnZvGGvA4YA1Z6iZnG`** · git **`314af19`**  
-**Previous:** `dpl_3BpCCT8nB4bUeqQPjxVFjtxR3Vsp` · **`bf2511f`**
+**Official staging (Tranche G2):** `staging-app.forgeniq.com` · **`dpl_HcTt3tGRUYVcpmmhZo5Kt39KPUaZ`** · git **`cf18e08`**  
+**Corpus backfill start (G2 deploy):** 278 missing snapshots · 44 `html_article_v2` pubs · 200-tick loop in progress.
+
+## Tranche G2 — corpus population (in progress)
+
+| Layer | Mechanism |
+|--------|-----------|
+| Execution | Hosted `POST /api/internal/ri-ingestion/corpus-snapshot-tick` (no local `STAGING_DATABASE_URL`) |
+| HTML backlog | Fetch canonical URL → snapshot → `html_article_v2` |
+| PDF-primary | Attachments from HTML revision + PDF-canonical URLs |
+| Failure policy | `provenance.corpusBackfill` terminal after restricted access or 3 transient failures |
+| Post-ingest | `queueCorpusBackfillIfNeeded` marks new catalogue rows for hosted priority |
+| Batch | `tranche-g-corpus-backfill-loop.mjs` · evidence `CORPUS-BACKFILL-LOOP.json` |
+| APIs/MCP | `REGULATORY-API-MCP-STATUS.md` (commercial MCPs research-only) |
+
+**Not complete:** retrieval re-eval and provision-grade inventory refresh run after backfill loop finishes.
 
 ## Tranche G — regulatory knowledge foundation (Fable)
 

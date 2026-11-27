@@ -2,6 +2,12 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-27 — Tranche G2: hosted corpus population (deploy + batch loop)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 18:50 | G2: failure tracking, PDF-primary pass, ingest queue; promote 56/56; deploy **`cf18e08`** | User Tranche G2; hosted path only | Official **`dpl_HcTt3tGRUYVcpmmhZo5Kt39KPUaZ`**. Baseline at deploy: **278** missing snapshots, **44** html_v2. **200-tick** hosted loop started (`tranche-g-corpus-backfill-loop.mjs`). OPEN-001 dry-run **due=0**. MCP status doc (research-only stubs). |
+
 ## 2026-11-27 — Tranche G: regulatory knowledge foundation + staging deploy
 
 | Time (UTC) | Decision | Reason | Outcome |
