@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-26T23:00:00Z",
-  "gitHead": "ee7ee42",
-  "stagingDeployment": "dpl_71M4sVFpmG4WtXiJ7uBBkUS3wnqx (built from 782d55c; hosted UAT run against it)",
+  "generatedAt": "2026-11-27T01:55:00Z",
+  "gitHead": "4a4a44a",
+  "stagingDeployment": "dpl_ESgsqUkZBdEexaqDE664DK9CSrgN @ staging-app.forgeniq.com (promoted 2026-11-27)",
   "statusVocabulary": ["NOT_IMPLEMENTED", "PARTIAL", "IMPLEMENTED_LOCAL_TESTED", "STAGING_VERIFIED", "BLOCKED", "PRODUCTION_READY"],
   "rule": "PRODUCTION_READY is not assigned to any capability. STAGING_VERIFIED requires hosted evidence from this programme. Nothing is marked complete on API calls alone where a browser result is required.",
   "summary": {
@@ -44,7 +44,7 @@
       "name": "Horizon scanning and regulator connectors",
       "status": "PARTIAL",
       "evidence": ["REGULATOR-CONNECTOR-STATUS.json"],
-      "gaps": ["36 regulators / 41 sources / 40 connectors, but 0 current, 38 stale (>72h), 1 failing, 1 disabled, 1 with no connector", "no scheduled ingestion: vercelCronConfigured=false, 0 polling-enabled sources", "no live regulator fetch performed in this programme (no authorisation for external fetch volume)"]
+      "gaps": ["38/39 ops fresh in 72h after manual ticks; MOCI-SA cert bundling deployed — successful MOCI run pending verification", "VERCEL_CRON unattended evidence pending first 04:00 UTC slot (manual MANUAL_HOSTED counted separately)", "CBUAE no connector; OFAC-SDN not on allowlist"]
     },
     {
       "phase": 5,
@@ -60,7 +60,7 @@
       "name": "Traceability from horizon scan to audit trail",
       "status": "PARTIAL",
       "evidence": ["WORKFLOW-TRACEABILITY-REPORT.md", "hosted lifecycle 38/38 and browser 34/34"],
-      "gaps": ["the segment from scheduled horizon scan to publication is not live (Phase 4)", "18 OPEN obligations on staging are DISCONNECTED from a lifecycle (11 synthetic UAT, 7 legacy manual)"]
+      "gaps": ["the segment from unattended VERCEL_CRON to publication not yet evidenced", "8 DISCONNECTED OPEN obligations remain (7 legacy FORGENIQ org + 1 partner); 10 AI-dev pilot rows repaired 2026-11-27"]
     },
     {
       "phase": 7,

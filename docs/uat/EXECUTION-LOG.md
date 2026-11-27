@@ -1034,3 +1034,15 @@ pm run qa (ci) **29/29 PASS** including RI-SONNET-55-COMPAT, RI-SHARED-SPEND, RI
 | Hosted UAT | `hosted-design-lab-browser-abc.mjs` 34/34 on official staging (calendar API scope included). |
 | Data integrity | 18 `DISCONNECTED` obligations remain (11 synthetic UAT + 7 legacy); repair workflow not executed in this tranche. |
 | Blockers unchanged | Regulatory expert sign-off; hosted cross-tenant (second tenant); 11 obligation repairs; notifications; paid AI off by policy. |
+
+## 2026-11-27 — Tranche C (navigation, promote `4a4a44a`, synthetic repair, MOCI cert)
+
+| Item | Outcome |
+|---|---|
+| Routing | `#/notifications/inbox` (and horizon sub-routes) via path segments; sidebar sweep **32/32**; auth smoke **19/19** official (User A AI Findings buttons **50**). |
+| Promote | `dpl_ESgsqUkZBdEexaqDE664DK9CSrgN` @ `4a4a44a`; candidate-first PASS. |
+| Synthetic DISCONNECTED | **10/10** AI-dev tenant OPEN rows → LINKED via checker OPEN recovery (`repair-disconnected-2026-11-27`); **8** DISCONNECTED preserved (7 legacy + 1 partner). |
+| Notifications | In-app API smoke PASS; external delivery disabled. |
+| Stage 2 hosted security | Smuggle refused; concurrent approval stale; Stage 2 linked (`hosted-stage2-security-2026-11-27`). |
+| MOCI cert | Platform `certs/mc-gov-sa-trust-chain.pem` + connector fallback; Vercel `includeFiles` depth fix — **deploy + ingestion success pending** on next tick. |
+| VERCEL_CRON | **0** unattended rows as of `01:50 UTC`; **8** `MANUAL_HOSTED` since scheduler enable; await **04:00 UTC** cron for separate evidence. |

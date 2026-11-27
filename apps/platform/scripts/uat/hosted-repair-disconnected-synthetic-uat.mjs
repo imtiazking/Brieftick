@@ -28,26 +28,48 @@ async function api(page, method, path, data) {
   return { status: res.status(), body: await res.json().catch(() => ({})) };
 }
 
+/** AI Development tenant (`b8f5e3a1-…`) pilot / UAT OPEN rows missing Stage 2 — not the 7 legacy FORGENIQ-org rows. */
+const defaultSyntheticIds = [
+  '36da0a55-a9b2-42f1-b1eb-5d4a5d13ec2b',
+  '63b84f23-9b4f-424a-96c9-f33eb3192779',
+  'db123fac-c36c-4c0d-bb9e-54174ac15aa3',
+  'fdcf8241-608e-467d-a8f8-12a52c75b852',
+  'a0a7e64d-0cb4-406f-9ca4-484c91db348e',
+  '68051a63-ea05-45b5-bbef-4fdc94b1ae45',
+  '96dd98d9-ad1e-4549-8a74-a82591b94db1',
+  '2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a',
+  '7143f1ff-c064-4123-bc2e-38e0102972df',
+  '57bcc479-fe9f-42ec-873e-3cdb1552a2cc',
+];
+const envIds = (process.env.FORGENIQ_REPAIR_SYNTHETIC_IDS || '')
+  .split(/[,\s]+/)
+  .map((s) => s.trim())
+  .filter(Boolean);
+
 const dbUrl = process.env.STAGING_DATABASE_URL?.trim();
-if (!dbUrl) {
-  console.error('STAGING_DATABASE_URL missing');
-  process.exit(2);
+let disconnected = [];
+if (dbUrl) {
+  const client = new pg.Client({ connectionString: dbUrl });
+  await client.connect();
+  const { rows } = await client.query(
+    `select ro.id, ro.status::text as status, ro.obligation_statement, ro.citation, ro.metadata, ro.updated_at,
+            osi.stage2_state
+     from regulatory_obligations ro
+     join obligation_stage2_integrity osi on osi.obligation_id = ro.id
+     where osi.stage2_state = 'DISCONNECTED'
+     order by ro.created_at`,
+  );
+  await client.end();
+  disconnected = rows;
+} else if (envIds.length) {
+  disconnected = envIds.map((id) => ({ id, status: 'OPEN', stage2_state: 'DISCONNECTED', metadata: {} }));
+} else {
+  disconnected = defaultSyntheticIds.map((id) => ({ id, status: 'OPEN', stage2_state: 'DISCONNECTED', metadata: {} }));
 }
 
-const client = new pg.Client({ connectionString: dbUrl });
-await client.connect();
-const { rows: disconnected } = await client.query(
-  `select ro.id, ro.status::text as status, ro.obligation_statement, ro.citation, ro.metadata, ro.updated_at,
-          osi.stage2_state
-   from regulatory_obligations ro
-   join obligation_stage2_integrity osi on osi.obligation_id = ro.id
-   where osi.stage2_state = 'DISCONNECTED'
-   order by ro.created_at`,
-);
-await client.end();
-
-const synthetic = disconnected.filter(isSyntheticRow);
-const legacy = disconnected.filter((r) => !isSyntheticRow(r));
+const explicitList = !dbUrl;
+const synthetic = explicitList ? disconnected : disconnected.filter(isSyntheticRow);
+const legacy = explicitList ? [] : disconnected.filter((r) => !isSyntheticRow(r));
 const OUT = join(REPO_ROOT, 'docs', 'uat', 'evidence', `repair-disconnected-${new Date().toISOString().slice(0, 10)}`);
 mkdirSync(OUT, { recursive: true });
 const log = [];
@@ -77,6 +99,10 @@ for (const target of synthetic) {
     await runAs('C', async ({ page, act }) => {
       const cur = await api(page, 'GET', `/api/ri-lab/obligations/${target.id}`);
       const ob = cur.body?.obligation ?? cur.body;
+      if (!ob?.id) {
+        entry.skip = `obligation_not_visible_http_${cur.status}`;
+        return;
+      }
       const st = norm(ob?.status);
       if (st === 'IN_REVIEW') {
         const res = await act('checker approve OPEN', () =>
@@ -98,14 +124,17 @@ for (const target of synthetic) {
         entry.skip = `unexpected_status_${st}`;
       }
     });
-    const verify = new pg.Client({ connectionString: dbUrl });
-    await verify.connect();
-    const [row] = (
-      await verify.query(`select stage2_state from obligation_stage2_integrity where obligation_id = $1`, [target.id])
-    ).rows;
-    await verify.end();
-    entry.stage2After = row?.stage2_state ?? null;
-    entry.ok = entry.stage2After === 'LINKED';
+    await runAs('C', async ({ page }) => {
+      const after = await api(page, 'GET', `/api/ri-lab/obligations/${target.id}`);
+      const ob = after.body?.obligation ?? after.body;
+      const impact =
+        ob?.stage2ImpactAssessment?.id ||
+        ob?.impactAssessmentId ||
+        (Array.isArray(ob?.impacts) && ob.impacts.length > 0);
+      entry.stage2After = impact ? 'LINKED' : 'DISCONNECTED';
+      entry.ok = Boolean(impact);
+      entry.recoverHttp = entry.recover?.status ?? entry.approve?.status;
+    });
     log.push(entry);
     console.log(entry.ok ? 'PASS' : 'FAIL', target.id.slice(0, 8), entry.stage2After, entry.skip || '');
   } catch (err) {

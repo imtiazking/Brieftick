@@ -54,6 +54,7 @@ const nextConfig: NextConfig = {
     ],
     '/api/internal/ri-ingestion/scheduler-tick': [
       './certs/supabase-root-2021-ca.pem',
+      './certs/mc-gov-sa-trust-chain.pem',
       '../../integrations/regulatory-sources/certs/**',
       '../../integrations/regulatory-sources/core/**',
       '../../integrations/regulatory-sources/connectors/**',

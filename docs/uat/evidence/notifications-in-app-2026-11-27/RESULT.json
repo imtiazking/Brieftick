@@ -1,0 +1,33 @@
+{
+  "generatedAt": "2026-11-27T01:37:32.258Z",
+  "results": [
+    {
+      "name": "GET notifications",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "count": 25,
+        "externalDeliveryDisabled": true
+      }
+    },
+    {
+      "name": "PATCH mark_read tenant notification",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "PATCH ai-event mark_read no-op",
+      "ok": true,
+      "detail": {
+        "note": "AI notification_events are read-only history; mark read applies to tenant_notifications only."
+      }
+    },
+    {
+      "name": "notifications/inbox route",
+      "ok": true,
+      "detail": "Exceptions, escalations and deadlines"
+    }
+  ]
+}

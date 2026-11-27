@@ -1,0 +1,128 @@
+{
+  "generatedAt": "2026-11-27T01:53:27.802Z",
+  "syntheticAttempted": 10,
+  "legacySkipped": [],
+  "failed": 0,
+  "results": [
+    {
+      "id": "36da0a55-a9b2-42f1-b1eb-5d4a5d13ec2b",
+      "statusBefore": "OPEN",
+      "stage2Before": "DISCONNECTED",
+      "recover": {
+        "status": 200,
+        "obligationStatus": "OPEN"
+      },
+      "stage2After": "LINKED",
+      "ok": true,
+      "recoverHttp": 200
+    },
+    {
+      "id": "63b84f23-9b4f-424a-96c9-f33eb3192779",
+      "statusBefore": "OPEN",
+      "stage2Before": "DISCONNECTED",
+      "recover": {
+        "status": 200,
+        "obligationStatus": "OPEN"
+      },
+      "stage2After": "LINKED",
+      "ok": true,
+      "recoverHttp": 200
+    },
+    {
+      "id": "db123fac-c36c-4c0d-bb9e-54174ac15aa3",
+      "statusBefore": "OPEN",
+      "stage2Before": "DISCONNECTED",
+      "recover": {
+        "status": 200,
+        "obligationStatus": "OPEN"
+      },
+      "stage2After": "LINKED",
+      "ok": true,
+      "recoverHttp": 200
+    },
+    {
+      "id": "fdcf8241-608e-467d-a8f8-12a52c75b852",
+      "statusBefore": "OPEN",
+      "stage2Before": "DISCONNECTED",
+      "recover": {
+        "status": 200,
+        "obligationStatus": "OPEN"
+      },
+      "stage2After": "LINKED",
+      "ok": true,
+      "recoverHttp": 200
+    },
+    {
+      "id": "a0a7e64d-0cb4-406f-9ca4-484c91db348e",
+      "statusBefore": "OPEN",
+      "stage2Before": "DISCONNECTED",
+      "recover": {
+        "status": 200,
+        "obligationStatus": "OPEN"
+      },
+      "stage2After": "LINKED",
+      "ok": true,
+      "recoverHttp": 200
+    },
+    {
+      "id": "68051a63-ea05-45b5-bbef-4fdc94b1ae45",
+      "statusBefore": "OPEN",
+      "stage2Before": "DISCONNECTED",
+      "recover": {
+        "status": 200,
+        "obligationStatus": "OPEN"
+      },
+      "stage2After": "LINKED",
+      "ok": true,
+      "recoverHttp": 200
+    },
+    {
+      "id": "96dd98d9-ad1e-4549-8a74-a82591b94db1",
+      "statusBefore": "OPEN",
+      "stage2Before": "DISCONNECTED",
+      "recover": {
+        "status": 200,
+        "obligationStatus": "OPEN"
+      },
+      "stage2After": "LINKED",
+      "ok": true,
+      "recoverHttp": 200
+    },
+    {
+      "id": "2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a",
+      "statusBefore": "OPEN",
+      "stage2Before": "DISCONNECTED",
+      "recover": {
+        "status": 200,
+        "obligationStatus": "OPEN"
+      },
+      "stage2After": "LINKED",
+      "ok": true,
+      "recoverHttp": 200
+    },
+    {
+      "id": "7143f1ff-c064-4123-bc2e-38e0102972df",
+      "statusBefore": "OPEN",
+      "stage2Before": "DISCONNECTED",
+      "recover": {
+        "status": 200,
+        "obligationStatus": "OPEN"
+      },
+      "stage2After": "LINKED",
+      "ok": true,
+      "recoverHttp": 200
+    },
+    {
+      "id": "57bcc479-fe9f-42ec-873e-3cdb1552a2cc",
+      "statusBefore": "OPEN",
+      "stage2Before": "DISCONNECTED",
+      "recover": {
+        "status": 200,
+        "obligationStatus": "OPEN"
+      },
+      "stage2After": "LINKED",
+      "ok": true,
+      "recoverHttp": 200
+    }
+  ]
+}

@@ -56,7 +56,10 @@ await runAs('A', async ({ page }) => {
     },
   });
   obligationId = created.body?.obligation?.id ?? created.body?.id;
-  record('create obligation', created.status === 200 && obligationId, { status: created.status, obligationId });
+  record('create obligation', (created.status === 200 || created.status === 201) && obligationId, {
+    status: created.status,
+    obligationId,
+  });
   const cur = await api(page, 'GET', `/api/ri-lab/obligations/${obligationId}`);
   const ob = cur.body?.obligation;
   const sub = await api(page, 'PATCH', `/api/ri-lab/obligations/${obligationId}`, {

@@ -1,0 +1,51 @@
+{
+  "generatedAt": "2026-11-27T01:48:58.847Z",
+  "obligationId": "07b0dac2-0bb1-45de-8734-f621c42b60fb",
+  "results": [
+    {
+      "name": "create obligation",
+      "ok": "07b0dac2-0bb1-45de-8734-f621c42b60fb",
+      "detail": {
+        "status": 201,
+        "obligationId": "07b0dac2-0bb1-45de-8734-f621c42b60fb"
+      }
+    },
+    {
+      "name": "A submit IN_REVIEW",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "B smuggle fields on approve refused",
+      "ok": true,
+      "detail": {
+        "status": 403,
+        "msg": "{\"ok\":false,\"error\":\"forbidden\"}"
+      }
+    },
+    {
+      "name": "concurrent C approvals: one wins or stale",
+      "ok": true,
+      "detail": {
+        "statuses": [
+          200,
+          409
+        ],
+        "bodies": [
+          200,
+          409
+        ]
+      }
+    },
+    {
+      "name": "obligation has Stage 2 after approval",
+      "ok": "1f18dfeb-d27a-4fff-887c-fbe15e92829f",
+      "detail": {
+        "status": "OPEN",
+        "impact": true
+      }
+    }
+  ]
+}

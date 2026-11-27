@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T00:34:37.624Z",
+  "generatedAt": "2026-11-27T01:35:08.490Z",
   "origin": "https://staging-app.forgeniq.com",
   "routes": 32,
   "failed": 0,
@@ -11,9 +11,10 @@
       "mounted": true,
       "heading": "322 publications in staging catalogue",
       "nav": 37,
-      "appLen": 6803,
+      "appLen": 6796,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Horizon Scanning — Horizon Overview",
@@ -24,7 +25,8 @@
       "nav": 37,
       "appLen": 1426,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Horizon Scanning — Regulatory Feed",
@@ -35,7 +37,8 @@
       "nav": 37,
       "appLen": 97573,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Horizon Scanning — Regulatory Calendar",
@@ -46,29 +49,32 @@
       "nav": 37,
       "appLen": 1187,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Horizon Scanning — Consultation Tracker",
-      "href": "#/horizon#consultations",
+      "href": "#/horizon/consultations",
       "ok": true,
       "mounted": true,
-      "heading": "Page not found",
+      "heading": "Horizon Scanning",
       "nav": 37,
-      "appLen": 903,
+      "appLen": 1426,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Horizon Scanning — Watchlists",
-      "href": "#/horizon#watchlists",
+      "href": "#/horizon/watchlists",
       "ok": true,
       "mounted": true,
-      "heading": "Page not found",
+      "heading": "Horizon Scanning",
       "nav": 37,
-      "appLen": 900,
+      "appLen": 1426,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Horizon Scanning — Regulatory Landscape",
@@ -79,7 +85,8 @@
       "nav": 37,
       "appLen": 6174,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Regulatory Intelligence — Publications",
@@ -90,7 +97,8 @@
       "nav": 37,
       "appLen": 74740,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Regulatory Intelligence — Regulatory Changes",
@@ -101,7 +109,8 @@
       "nav": 37,
       "appLen": 7858,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Regulatory Intelligence — Findings & Triage",
@@ -112,7 +121,8 @@
       "nav": 37,
       "appLen": 871,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Regulatory Intelligence — Obligations",
@@ -121,9 +131,10 @@
       "mounted": true,
       "heading": "Obligations",
       "nav": 37,
-      "appLen": 1252,
+      "appLen": 6310,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Regulatory Intelligence — Impact Assessments",
@@ -132,9 +143,10 @@
       "mounted": true,
       "heading": "Impact Assessments",
       "nav": 37,
-      "appLen": 1301,
+      "appLen": 4478,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Risk & Controls — Risks",
@@ -143,9 +155,10 @@
       "mounted": true,
       "heading": "Risks",
       "nav": 37,
-      "appLen": 1481,
+      "appLen": 3108,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Risk & Controls — Controls",
@@ -154,9 +167,10 @@
       "mounted": true,
       "heading": "Controls",
       "nav": 37,
-      "appLen": 1499,
+      "appLen": 2955,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Risk & Controls — Policies",
@@ -165,9 +179,10 @@
       "mounted": true,
       "heading": "Policies",
       "nav": 37,
-      "appLen": 1151,
+      "appLen": 1456,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Risk & Controls — Assurance",
@@ -176,9 +191,10 @@
       "mounted": true,
       "heading": "Assurance",
       "nav": 37,
-      "appLen": 2483,
+      "appLen": 4721,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Risk & Controls — Issues & Remediation",
@@ -187,9 +203,10 @@
       "mounted": true,
       "heading": "Issues & Actions",
       "nav": 37,
-      "appLen": 1748,
+      "appLen": 2944,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Risk & Controls — Evidence",
@@ -198,9 +215,10 @@
       "mounted": true,
       "heading": "Evidence",
       "nav": 37,
-      "appLen": 1762,
+      "appLen": 4305,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Work — My Tasks",
@@ -209,9 +227,10 @@
       "mounted": true,
       "heading": "My Tasks",
       "nav": 37,
-      "appLen": 1650,
+      "appLen": 1955,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Work — Reviews & Approvals",
@@ -222,7 +241,8 @@
       "nav": 37,
       "appLen": 929,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Work — Attention Centre",
@@ -231,20 +251,22 @@
       "mounted": true,
       "heading": "Exceptions, escalations and deadlines",
       "nav": 37,
-      "appLen": 6871,
+      "appLen": 8691,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Work — Notifications",
-      "href": "#/notifications#inbox",
+      "href": "#/notifications/inbox",
       "ok": true,
       "mounted": true,
-      "heading": "Page not found",
+      "heading": "Exceptions, escalations and deadlines",
       "nav": 37,
-      "appLen": 901,
+      "appLen": 8691,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Reports",
@@ -253,9 +275,10 @@
       "mounted": true,
       "heading": "Reports & Audit",
       "nav": 37,
-      "appLen": 1641,
+      "appLen": 1946,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Administration — Administration",
@@ -264,9 +287,10 @@
       "mounted": true,
       "heading": "Administration",
       "nav": 37,
-      "appLen": 1809,
+      "appLen": 2114,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Administration — Organisation",
@@ -275,9 +299,10 @@
       "mounted": true,
       "heading": "Organisation profile",
       "nav": 37,
-      "appLen": 988,
+      "appLen": 1293,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Administration — Regulatory Sources",
@@ -286,9 +311,10 @@
       "mounted": true,
       "heading": "Regulatory sources & connectors",
       "nav": 37,
-      "appLen": 1342,
+      "appLen": 9802,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Administration — Classification Policy",
@@ -299,7 +325,8 @@
       "nav": 37,
       "appLen": 924,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Administration — Health",
@@ -308,9 +335,10 @@
       "mounted": true,
       "heading": "Platform health",
       "nav": 37,
-      "appLen": 1526,
+      "appLen": 2514,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Administration — Quality Assurance",
@@ -321,7 +349,8 @@
       "nav": 37,
       "appLen": 893,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Administration — Readiness",
@@ -330,9 +359,10 @@
       "mounted": true,
       "heading": "Readiness dashboard",
       "nav": 37,
-      "appLen": 1954,
+      "appLen": 2779,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Ask RI (header)",
@@ -341,9 +371,10 @@
       "mounted": true,
       "heading": "Ask RI",
       "nav": 37,
-      "appLen": 1481,
+      "appLen": 1786,
       "bootFallback": 0,
-      "signIn": false
+      "signIn": false,
+      "notFound": false
     },
     {
       "name": "Ask RI control present",

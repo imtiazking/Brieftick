@@ -26,7 +26,14 @@ const REG_SOURCES_ROOT = path.join(dirnameFromImportMeta(), '..');
 function resolveCaBundlePem(config) {
   if (config.caBundlePem) return config.caBundlePem;
   if (!config.caBundlePath) return null;
-  return readFileSync(path.join(REG_SOURCES_ROOT, config.caBundlePath), 'utf8');
+  const primary = path.join(REG_SOURCES_ROOT, config.caBundlePath);
+  try {
+    return readFileSync(primary, 'utf8');
+  } catch {
+    const platformRoot = process.env.FORGENIQ_PLATFORM_ROOT?.trim() || process.cwd();
+    const fallback = path.join(platformRoot, 'certs', path.basename(config.caBundlePath));
+    return readFileSync(fallback, 'utf8');
+  }
 }
 
 /**
