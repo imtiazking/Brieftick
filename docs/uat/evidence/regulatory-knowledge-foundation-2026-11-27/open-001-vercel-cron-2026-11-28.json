@@ -1,0 +1,7 @@
+{
+  "capturedAt": "2026-11-28T03:55:00.214Z",
+  "targetCronUtc": "2026-11-28T04:00:00Z",
+  "stagingGit": "fe027e8",
+  "deploymentId": "dpl_7q6UCoGHTmncvgUw7TgL96Yh6kG5",
+  "note": "STAGING_DATABASE_URL not set; skipped DB evidence"
+}

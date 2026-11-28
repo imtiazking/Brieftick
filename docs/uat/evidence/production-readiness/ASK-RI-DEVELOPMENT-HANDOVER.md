@@ -1,8 +1,10 @@
 # Ask RI development programme — engineering handover
 
+**Programme status (2026-11-28):** **ON HOLD** — Tranche G2 is the RI baseline; Ask RI deferred to final RI stage. Active engineering priority: **standalone Risk & Controls** (`RISK-CONTROLS-STANDALONE-READINESS-ASSESSMENT.md`). Do not start new RI remediation or corpus loops.
+
 **Date:** 2026-11-27 (Fable handover refresh)  
-**Official staging:** `staging-app.forgeniq.com` · connector tranche **`fe027e8`** / **`dpl_7q6UCoGHTmncvgUw7TgL96Yh6kG5`** · G2 corpus tranche **`4dfe3d5`** (deploy in flight)  
-**Corpus backfill (G2):** **119** eligible without snapshot (after tick 85) · **203** with snapshots · **203/322** · resume loop **`CORPUS-BACKFILL-LOOP-RESUME.json`** (single session, no duplicate).  
+**Official staging:** `staging-app.forgeniq.com` · **`b3c328e`** / **`dpl_AeGwhGCEfGiyCLfNtnQKNStFvnDQ`** (G2 loop fix + telemetry; includes connector **`fe027e8`**)  
+**Corpus backfill (G2):** **62** missing snapshots · **260/322** with snapshots · **232** html_v2 · **6** pdf_v1 · resume plateau exit **2** (evidence `CORPUS-BACKFILL-LOOP-RESUME-2.json`); **277** terminal_excluded — no resume-3 without queue RCA.  
 **Loop RCA:** `TRANCHE-G2-LOOP-EXIT-RCA.md` (bogus `remaining <= terminal_excluded` stop — fixed).
 
 ## Tranche G2 — corpus population (in progress)
@@ -18,7 +20,7 @@
 | APIs/MCP | `REGULATORY-API-MCP-STATUS.md` + `EXTERNAL-REGULATORY-KNOWLEDGE-INTEGRATION-MATRIX.json`; `~/.cursor/mcp.json` for four commercial URLs (OAuth for RegAlert/Ansvar); **`CONNECTOR-OPERATIONAL-VERIFICATION-MATRIX.json`** |
 
 **Reports:** `TRANCHE-G2-COMPLETION-REPORT.md`, `CONNECTOR-ACTIVATION-COMPLETION-REPORT.md`, **`TRANCHE-G2-POST-ACCEPTANCE-COMPLETION-REPORT.md`**  
-**Not complete:** corpus resume until `remainingWithoutSnapshot=0` or terminal; live eval-pack re-export needs `SUPABASE_SERVICE_ROLE_KEY` in platform `.env.local` (agent shell missing); OPEN-001 awaits **2026-11-28 04:00 UTC** cron capture (`capture-open-001-vercel-cron.mjs` running); eCFR first ingest pending scheduler.
+**Not complete (on hold):** corpus backfill (plateau **62**; no resume-3); live eval-pack re-export needs service role in agent env. **OPEN-001 capture script:** completed **2026-11-28T03:55Z** → `open-001-vercel-cron-2026-11-28.json` — **DB rows skipped** (no `STAGING_DATABASE_URL` in that shell); re-run locally with DB URL to close OPEN-001 fully if needed. eCFR first ingest pending scheduler proof.
 
 ## Tranche G — regulatory knowledge foundation (Fable)
 

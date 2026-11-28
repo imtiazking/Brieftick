@@ -2,10 +2,20 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-28 — Programme hold: RI / Ask RI deferred; R&C assessment
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 03:55+ | Accept Tranche G2 as RI baseline; **hold** RI & Ask RI; no new corpus/connector tranches | User directive | **`RISK-CONTROLS-STANDALONE-READINESS-ASSESSMENT.md`**, **`COMMERCIAL-PLATFORM-READINESS-SKETCH.md`**. |
+| 03:55 | OPEN-001 `capture-open-001-vercel-cron.mjs` **exit 0** | Scheduled wait to 04:00Z cron window | **`open-001-vercel-cron-2026-11-28.json`** — timer artefact only; **DB evidence skipped** (no `STAGING_DATABASE_URL`). OPEN-001 register line still partial until DB re-capture. |
+
 ## 2026-11-27 — G2 post-acceptance (corpus resume + loop RCA)
 
 | Time (UTC) | Decision | Reason | Outcome |
 |---|---|---|---|
+| 23:27 | Corpus resume-2 **80/80** exit **2**: **remaining=62** flat; coverage **260** snapshots, **232** html_v2, **277** terminal_excluded | Plateau — no further eligible progress in tick queue without per-pub investigation | Do not start resume-3 without candidate-queue analysis. |
+| 22:50 | Corpus resume-1 **130/130** exit **2** (stall): **117→62** remaining; resume-2 started (**80** ticks, `CORPUS-BACKFILL-LOOP-RESUME-2.json`) | Stall = 5+ ticks flat `remainingWithoutSnapshot`, not loop bug | Hosted ticks still ok; remainder likely transient/retry queue mix. |
+| 21:45 | Promote **56/56**; deploy **`b3c328e`** → **`dpl_AeGwhGCEfGiyCLfNtnQKNStFvnDQ`**; auth smoke 19/19×2 | Gates before hosted G2 telemetry | Official `staging-app.forgeniq.com` on G2 loop fix + corpus telemetry. Corpus resume **~29/130** at **remaining=98**. |
 | 21:30 | RCA loop exit 85/200; fix break; commit `4dfe3d5`; resume single backfill loop; deploy; OPEN-001 wait script | User post-acceptance checklist | Defect: `remaining <= terminal_excluded` stop. Resume **`CORPUS-BACKFILL-LOOP-RESUME.json`** (130 ticks). Eval re-run frozen: 0/41/4. Export blocked: no local service role. Cron capture scheduled 28 Nov 04:00Z. |
 
 ## 2026-11-27 — Connector activation + operational verification tranche
