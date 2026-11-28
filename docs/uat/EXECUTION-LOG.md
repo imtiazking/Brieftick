@@ -6,7 +6,8 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 
 | Time (UTC) | Decision | Reason | Outcome |
 |---|---|---|---|
-| 04:20 | Standalone R&C product shell, entitlements, lifecycle E2E, reporting | User implementation directive | Commit pending; local **RC-STANDALONE-LIFECYCLE-E2E** + **PLATFORM-PRODUCT-ENTITLEMENTS** PASS; `RISK-CONTROLS-TRANCHE-COMPLETION-REPORT.md`. RI on hold. |
+| 04:41 | Staging deploy `28bce41` — candidate OK, alias promote blocked | phase85h | Candidate **`dpl_4jW3Rsq8SWJYt1YjLcrNZVgp3K8C`**; design-lab smoke PASS on candidate; **official promote blocked** `AUTH_BLOCKED` (UAT A/B/C HTTP 500). Official still **`dpl_AeGwhGCEfGiyCLfNtnQKNStFvnDQ`**. |
+| 04:20 | Standalone R&C product shell, entitlements, lifecycle E2E, reporting | User implementation directive | **`28bce41`**; promote **58/58**; `RISK-CONTROLS-TRANCHE-COMPLETION-REPORT.md`. RI on hold. |
 
 ## 2026-11-28 — Programme hold: RI / Ask RI deferred; R&C assessment
 
