@@ -91,8 +91,13 @@ Stripe billing, self-serve onboarding, subscription SKUs, second hosted org (OPE
 
 | Field | Value |
 |-------|--------|
-| Status | **Pending** — commit + promote gate + candidate deploy after this report |
-| Prior RI baseline | `b3c328e` / `dpl_AeGwhGCEfGiyCLfNtnQKNStFvnDQ` (unchanged corpus) |
+| Git | **`28bce41`** (`feat(rc): standalone Risk & Controls product shell and entitlements`) |
+| Promote gate | **58/58 PASS** (includes `RC-STANDALONE-LIFECYCLE-E2E`, `PLATFORM-PRODUCT-ENTITLEMENTS`) |
+| Candidate build | **`dpl_4jW3Rsq8SWJYt1YjLcrNZVgp3K8C`** @ `candidate-staging.forgeniq.com` |
+| Official alias promote | **BLOCKED** — `AUTH_BLOCKED uat_personas_not_ready` (staging sessions HTTP 500); official remains **`dpl_AeGwhGCEfGiyCLfNtnQKNStFvnDQ`** until sessions refreshed |
+| Migration | Apply `20261128120000_organisation_product_entitlements.sql` on staging before entitlements API |
+| Hosted R&C UAT | `hosted-standalone-rc-lifecycle-uat.mjs` — run after promote + migration |
+| Prior RI baseline | `b3c328e` corpus/RI on hold unchanged |
 
 ---
 
