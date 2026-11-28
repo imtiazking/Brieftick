@@ -82,11 +82,75 @@ export async function ensureAssurancePlanFromApprovedControl(
         'Recommend test procedures and evidence only. Do not record a test result, accept an exception, or close the lifecycle.',
     },
   });
+  const mapped = analysis.ok
+    ? mapAssurancePlanToDraftFields({ structured: analysis.structured, claims: analysis.evidence?.accepted })
+  : {
+    review_type: 'Operational control assurance',
+    notes:
+      'Deterministic assurance plan for approved operational control (no regulatory evidence pack). AI stage 5 skipped.',
+    stage5Metadata: { executionMode: 'SKIPPED', reason: analysis.ok ? null : analysis.code },
+  };
+
   if (!analysis.ok) {
-    return { ok: true, skipped: true, reason: analysis.code };
+    const ctrlMeta = (control.metadata || {}) as Record<string, unknown>;
+    const metadata = buildLockedChildMetadataFromParentRecord({
+      parentMetadata: ctrlMeta,
+      actorUserId: params.actorUserId,
+      extras: {
+        sourceApprovedControlId: params.controlId,
+        sourceApprovedRiskId: ctrlMeta.sourceApprovedRiskId ?? null,
+        stage5PrimaryPlan: true,
+        stage5Workflow: 'control_approved_operational_assurance_fallback',
+        assuranceStatus: 'DRAFT',
+        assuranceWorkflow: true,
+        stage5Ai: mapped.stage5Metadata,
+      },
+    });
+    const { data: review, error: insertErr } = await supabase
+      .from('assurance_reviews')
+      .insert({
+        organisation_id: params.organisationId,
+        review_type: mapped.review_type,
+        result: 'NOT_TESTED',
+        reviewer_user_id: control.owner_user_id || params.actorUserId,
+        review_date: new Date().toISOString().slice(0, 10),
+        notes: mapped.notes,
+        metadata,
+      })
+      .select('id')
+      .single();
+    if (insertErr) {
+      if (insertErr.code === '23505') {
+        const again = await findPrimaryAssurancePlanForControl(supabase, params.organisationId, params.controlId);
+        if (again?.id) {
+          return { ok: true, skipped: false, assuranceReviewId: again.id, reused: true };
+        }
+      }
+      throw new Error(insertErr.message);
+    }
+    await attemptMandatoryLifecycleLink(supabase, {
+      organisationId: params.organisationId,
+      actorUserId: params.actorUserId,
+      linkType: 'assurance_control',
+      sourceEntityType: 'assurance_review',
+      sourceEntityId: review.id,
+      targetEntityType: 'control',
+      targetEntityId: params.controlId,
+      link: () =>
+        linkAssuranceControl(supabase, params.organisationId, review.id, params.controlId, params.actorUserId),
+    });
+    await recordWorkflowEvent(supabase, {
+      organisationId: params.organisationId,
+      entityType: 'control',
+      entityId: params.controlId,
+      eventType: 'ASSURANCE_PLAN_INITIATED_FROM_CONTROL',
+      actorUserId: params.actorUserId,
+      toStatus: 'ACTIVE',
+      metadata: { assuranceReviewId: review.id, executionMode: 'SKIPPED' },
+    });
+    return { ok: true, skipped: false, assuranceReviewId: review.id, reused: false };
   }
 
-  const mapped = mapAssurancePlanToDraftFields({ structured: analysis.structured, claims: analysis.evidence?.accepted });
   const ctrlMeta = (control.metadata || {}) as Record<string, unknown>;
   const metadata = buildLockedChildMetadataFromParentRecord({
     parentMetadata: ctrlMeta,

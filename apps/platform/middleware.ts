@@ -7,6 +7,8 @@ const isPublicRoute = createRouteMatcher([
   '/sign-up(.*)',
   '/sign-out(.*)',
   '/design-lab/regulatory-intelligence(.*)',
+  '/design-lab/risk-controls(.*)',
+  '/risk-controls',
 ]);
 
 /** RI Lab JSON APIs — return 401 instead of Clerk page protect rewrite (404 HTML). */

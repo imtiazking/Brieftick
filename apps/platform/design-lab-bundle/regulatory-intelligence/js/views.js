@@ -133,6 +133,7 @@ import {
   viewWorkQueue,
   viewNotifications,
   viewReportsExecutive,
+  viewReportsRiskControls,
   viewReportsExtended,
   viewAdminOrganisation,
 } from './operational-views.js';
@@ -322,6 +323,7 @@ export function renderView(route) {
     case 'calendar':
       return viewCalendar();
     case 'reports':
+      if (id === 'risk-controls') return viewReportsRiskControls();
       if (id === 'executive') return viewReportsExecutive();
       if (id === 'ai-oversight') return viewAiOversightReport();
       if (id === 'board') return viewBoardReport();

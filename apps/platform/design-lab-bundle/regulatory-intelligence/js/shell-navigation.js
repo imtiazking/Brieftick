@@ -75,6 +75,50 @@ export const SIDE_NAV = [
   },
 ];
 
+/** Standalone Risk & Controls product — reuses the same connected routes and APIs. */
+export const SIDE_NAV_STANDALONE_RC = [
+  { id: 'dashboard', label: 'Dashboard', path: 'dashboard', icon: 'dashboard' },
+  { id: 'risks-reg', label: 'Risk Register', path: 'risks', icon: 'risk' },
+  { id: 'assessments', label: 'Risk Assessments', path: 'assessments', icon: 'work' },
+  { id: 'appetite', label: 'Risk Appetite & Tolerance', path: 'reports', hash: '#risk-controls', icon: 'reports' },
+  { id: 'controls-reg', label: 'Control Register', path: 'controls', icon: 'risk' },
+  { id: 'policies', label: 'Policies', path: 'policies', icon: 'link' },
+  { id: 'assurance', label: 'Assurance', path: 'assurance', icon: 'work' },
+  { id: 'issues', label: 'Issues & Remediation', path: 'issues', icon: 'work' },
+  { id: 'evidence', label: 'Evidence', path: 'evidence', icon: 'link' },
+  { id: 'indicators', label: 'Risk & Control Indicators', path: 'reports', hash: '#risk-controls', icon: 'reports' },
+  { id: 'reports', label: 'Reports', path: 'reports/risk-controls', icon: 'reports' },
+  {
+    id: 'work',
+    label: 'Work',
+    icon: 'work',
+    items: [
+      { path: 'my-tasks', label: 'My Tasks', icon: 'link' },
+      { path: 'approval', label: 'Reviews & Approvals', icon: 'link' },
+    ],
+  },
+  {
+    id: 'admin',
+    label: 'Administration',
+    icon: 'admin',
+    items: [
+      { path: 'admin/organisation', label: 'Organisation', icon: 'link' },
+      { path: 'admin/health', label: 'Health', icon: 'link' },
+      { path: 'admin/qa', label: 'Quality Assurance', icon: 'link' },
+    ],
+  },
+];
+
+export function readProductShellMode() {
+  const meta = document.querySelector('meta[name="forgeniq-product"]');
+  const value = meta?.getAttribute('content')?.trim();
+  return value === 'risk_controls' ? 'risk_controls' : 'regulatory_intelligence';
+}
+
+export function sideNavForProduct(productMode) {
+  return productMode === 'risk_controls' ? SIDE_NAV_STANDALONE_RC : SIDE_NAV;
+}
+
 export function sideNavHref(item) {
   if (item.hash && item.hash.startsWith('#')) {
     const segment = item.hash.slice(1);
@@ -91,11 +135,11 @@ function linkLabel(label, iconName) {
   return `${iconSpan(iconName || 'link', label)}<span class="ri-sidebar__label">${label}</span>`;
 }
 
-export function renderSidebarNav(routeKey, collapsedGroups) {
+export function renderSidebarNav(routeKey, collapsedGroups, productMode = readProductShellMode()) {
   const collapsed = collapsedGroups || readCollapsedSectionSet();
   let html = '';
   let groupIndex = 0;
-  for (const section of SIDE_NAV) {
+  for (const section of sideNavForProduct(productMode)) {
     if (section.path && !section.items) {
       const active = routeKey === section.path || routeKey.startsWith(`${section.path}/`);
       html += `<a class="ri-sidebar__link${active ? ' is-active' : ''}" href="#/${section.path}" data-nav-link="${section.path}" title="${section.label}">${linkLabel(section.label, section.icon)}</a>`;

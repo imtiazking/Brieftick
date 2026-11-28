@@ -2,6 +2,12 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-28 — Risk & Controls tranche (implementation)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 04:20 | Standalone R&C product shell, entitlements, lifecycle E2E, reporting | User implementation directive | Commit pending; local **RC-STANDALONE-LIFECYCLE-E2E** + **PLATFORM-PRODUCT-ENTITLEMENTS** PASS; `RISK-CONTROLS-TRANCHE-COMPLETION-REPORT.md`. RI on hold. |
+
 ## 2026-11-28 — Programme hold: RI / Ask RI deferred; R&C assessment
 
 | Time (UTC) | Decision | Reason | Outcome |

@@ -5,10 +5,17 @@ import { OrganisationAccessError } from '@/lib/auth/require-organisation';
 import { PlatformOperatorError } from '@/lib/auth/platform-operator';
 import { NextResponse } from 'next/server';
 import { RiConflictError, RiNotFoundError, RiValidationError } from '@/lib/ri/errors';
+import { ProductAccessError } from '@/lib/platform/product-entitlements';
 
 export function labApiErrorResponse(err: unknown): NextResponse {
   if (err instanceof AuthRequiredError) {
     return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  }
+  if (err instanceof ProductAccessError) {
+    return NextResponse.json(
+      { ok: false, error: 'product_not_entitled', product: err.product },
+      { status: 403 },
+    );
   }
   if (err instanceof PlatformOperatorError) {
     return NextResponse.json(

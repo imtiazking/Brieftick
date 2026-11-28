@@ -68,6 +68,62 @@ export function boardPdfExportUrl(state = getState()) {
   return `${base}/reports/board/export?${q}`;
 }
 
+export async function fetchConnectedRiskControlsReport(state = getState()) {
+  const base = apiBase(state);
+  const res = await fetch(`${base}/reports/risk-controls`, {
+    credentials: 'same-origin',
+    headers: { Accept: 'application/json' },
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) {
+    const err = new Error(body.error || 'risk_controls_report_unavailable');
+    err.status = res.status;
+    throw err;
+  }
+  return body.report;
+}
+
+export function renderConnectedRiskControlsReport(report) {
+  const r = report?.risks || {};
+  const c = report?.controls || {};
+  const a = report?.assurance || {};
+  const rem = report?.remediation || {};
+  const ev = report?.evidence || {};
+  const own = report?.ownershipGaps || {};
+  return `<section class="ri-panel" data-connected-risk-controls-report="true">
+    <h2>Risk &amp; Controls operational report</h2>
+    <p class="ri-muted">Generated ${report?.generatedAt || '—'}. Population: operational tenant records only (no synthetic/UAT fixtures).</p>
+    <h3 class="ri-panel__subtitle">Risk exposure</h3>
+    <ul class="ri-stats-inline">
+      <li>Risks <strong>${r.total ?? 0}</strong></li>
+      <li>High inherent <strong>${r.inherentHigh ?? 0}</strong></li>
+      <li>High residual <strong>${r.residualHigh ?? 0}</strong></li>
+      <li>Overdue review <strong>${r.overdueReview ?? 0}</strong></li>
+      <li>Without owner <strong>${own.risksWithoutOwner ?? 0}</strong></li>
+    </ul>
+    <h3>Control effectiveness</h3>
+    <ul class="ri-stats-inline">
+      <li>Controls <strong>${c.total ?? 0}</strong></li>
+      <li>Effective <strong>${c.effectiveCount ?? 0}</strong></li>
+      <li>Weak / ineffective <strong>${c.ineffectiveCount ?? 0}</strong></li>
+      <li>Without owner <strong>${own.controlsWithoutOwner ?? 0}</strong></li>
+    </ul>
+    <h3>Assurance &amp; remediation</h3>
+    <ul class="ri-stats-inline">
+      <li>Assurance plans <strong>${a.total ?? 0}</strong></li>
+      <li>Not tested <strong>${a.notTested ?? 0}</strong></li>
+      <li>Pass <strong>${a.pass ?? 0}</strong></li>
+      <li>Fail <strong>${a.fail ?? 0}</strong></li>
+      <li>Open actions <strong>${rem.openActions ?? 0}</strong></li>
+      <li>Overdue actions <strong>${rem.overdueActions ?? 0}</strong></li>
+      <li>Open findings <strong>${rem.openFindings ?? 0}</strong></li>
+    </ul>
+    <h3>Evidence completeness</h3>
+    <p>Evidence items: <strong>${ev.items ?? 0}</strong> · Linked to controls: <strong>${ev.linkedToControl ?? 0}</strong></p>
+    <pre class="ri-code">${typeof report === 'object' ? JSON.stringify(report, null, 2) : '{}'}</pre>
+  </section>`;
+}
+
 export function renderConnectedExecutiveReport(body) {
   const s = body.summary || {};
   const act = body.activityInPeriod || {};

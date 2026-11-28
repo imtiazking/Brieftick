@@ -242,7 +242,20 @@ export async function updateRiskWithGovernance(
     } catch {
       throw new RiConflictError('risk_invalid_transition');
     }
-    assertImpactApproverSoD({ ownerUserId: existing.owner_user_id, approverUserId: params.userId });
+    const { data: lastSubmit } = await supabase
+      .from('workflow_events')
+      .select('actor_user_id')
+      .eq('organisation_id', params.organisationId)
+      .eq('entity_type', 'risk')
+      .eq('entity_id', params.riskId)
+      .eq('event_type', 'RISK_SUBMITTED')
+      .order('occurred_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    assertImpactApproverSoD({
+      ownerUserId: lastSubmit?.actor_user_id ?? existing.owner_user_id,
+      approverUserId: params.userId,
+    });
     requiredCurrentStatus = requiredStatusForGovernanceAction('approve', existing.status);
     update.status = 'APPROVED';
     pendingEvent = { eventType: 'RISK_VALIDATED', fromStatus: existing.status, toStatus: 'APPROVED' };

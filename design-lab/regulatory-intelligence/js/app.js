@@ -170,6 +170,8 @@ import { collectConnectedActionPatchFields } from './platform/connected-action-p
 import {
   fetchConnectedBoardReport,
   fetchConnectedExecutiveReport,
+  fetchConnectedRiskControlsReport,
+  renderConnectedRiskControlsReport,
   renderConnectedExecutiveReport,
 } from './platform/connected-reporting.js';
 import { renderConnectedGovernancePendingPanel } from './platform/connected-governance-pending-panels.js';
@@ -1252,8 +1254,17 @@ function bindViewHandlers() {
       if (!id || !action || btn.disabled) return;
       btn.disabled = true;
       try {
-        await patchConnectedRisk(getState(), id, { action }, btn.dataset.expectedUpdatedAt || null);
-        showToast(action === 'approve' ? 'Risk approved' : 'Risk submitted');
+        const risk = await patchConnectedRisk(getState(), id, { action }, btn.dataset.expectedUpdatedAt || null);
+        if (action === 'approve') {
+          const approved = /approved/i.test(risk?.status || '');
+          showToast(
+            approved
+              ? 'Risk approved'
+              : 'Approval was not applied — a different authorised reviewer is required (segregation of duties).',
+          );
+        } else {
+          showToast(/in review/i.test(risk?.status || '') ? 'Risk submitted for review' : 'Risk submitted');
+        }
         renderShell();
       } catch (e) {
         showToast(e?.message || 'Risk action failed');
@@ -1271,8 +1282,17 @@ function bindViewHandlers() {
       if (!id || !action || btn.disabled) return;
       btn.disabled = true;
       try {
-        await patchConnectedControl(getState(), id, { action }, btn.dataset.expectedUpdatedAt || null);
-        showToast(action === 'approve' ? 'Control approved' : 'Control submitted');
+        const control = await patchConnectedControl(getState(), id, { action }, btn.dataset.expectedUpdatedAt || null);
+        if (action === 'approve') {
+          const approved = /approved/i.test(control?.status || '');
+          showToast(
+            approved
+              ? 'Control approved'
+              : 'Approval was not applied — a different authorised reviewer is required (segregation of duties).',
+          );
+        } else {
+          showToast(/in review/i.test(control?.status || '') ? 'Control submitted for review' : 'Control submitted');
+        }
         renderShell();
       } catch (e) {
         showToast(e?.message || 'Control action failed');
@@ -1549,6 +1569,18 @@ function bindViewHandlers() {
       })
       .catch((e) => {
         execLoad.textContent = e?.message || 'Executive report unavailable';
+      });
+  }
+
+  const rcReportLoad = document.querySelector('[data-connected-risk-controls-report-load]');
+  if (rcReportLoad && !rcReportLoad.dataset.loading) {
+    rcReportLoad.dataset.loading = '1';
+    fetchConnectedRiskControlsReport(getState())
+      .then((report) => {
+        rcReportLoad.outerHTML = renderConnectedRiskControlsReport(report);
+      })
+      .catch((e) => {
+        rcReportLoad.textContent = e?.message || 'Risk & Controls report unavailable';
       });
   }
 

@@ -409,6 +409,18 @@ export function viewNotifications() {
     ${dataTable(['Severity', 'Type', 'Entity', 'Date', 'Message', 'Link', 'State'], rows, demoEmpty)}`;
 }
 
+export function viewReportsRiskControls() {
+  const s = getState();
+  if (isConnectedBackendActive(s)) {
+    return `${pageHeader('Risk & Controls report', 'Operational exposure, assurance and remediation')}
+      ${connectedCatalogueBanner(s)}
+      <div data-connected-risk-controls-report-load class="ri-muted">Loading tenant risk &amp; controls metrics…</div>
+      <p><a href="#/reports">← All reports</a></p>`;
+  }
+  return `${pageHeader('Risk & Controls report', 'Connect to staging to load tenant operational metrics')}
+    <p class="ri-muted">Standalone Risk &amp; Controls reporting uses live organisation data only.</p>`;
+}
+
 export function viewReportsExecutive() {
   const s = getState();
   if (isConnectedBackendActive(s)) {

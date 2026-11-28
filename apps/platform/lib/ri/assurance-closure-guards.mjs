@@ -12,8 +12,21 @@ export const ASSURANCE_WF = {
   CLOSED: 'CLOSED',
 };
 
+function normaliseAssuranceMetadata(metadata) {
+  if (metadata && typeof metadata === 'object') return metadata;
+  if (typeof metadata === 'string') {
+    try {
+      const parsed = JSON.parse(metadata);
+      return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch {
+      return {};
+    }
+  }
+  return {};
+}
+
 export function assuranceWorkflowStatus(metadata) {
-  const m = metadata && typeof metadata === 'object' ? metadata : {};
+  const m = normaliseAssuranceMetadata(metadata);
   return String(m.assuranceStatus || (m.stage5PrimaryPlan ? ASSURANCE_WF.DRAFT : 'OPEN'));
 }
 

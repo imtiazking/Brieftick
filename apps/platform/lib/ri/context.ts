@@ -7,6 +7,11 @@ import { requireUser } from '@/lib/auth/session';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { assertCanRi, type RiAction } from '@/lib/ri/permissions';
 import { RiConfigurationError } from '@/lib/ri/errors';
+import {
+  assertOrganisationHasAnyProduct,
+  loadOrganisationProductEntitlements,
+  productsRequiredForRiAction,
+} from '@/lib/platform/product-entitlements';
 
 export type RiContext = {
   organisationId: string;
@@ -26,6 +31,9 @@ export async function requireRiContext(action: RiAction = 'ri:read'): Promise<Ri
   if (!supabase) throw new RiConfigurationError();
 
   const { userId } = await requireUser();
+
+  const entitled = await loadOrganisationProductEntitlements(supabase, org.organisationId);
+  assertOrganisationHasAnyProduct(entitled, productsRequiredForRiAction(action));
 
   return {
     organisationId: org.organisationId,

@@ -40,13 +40,41 @@ export function resolveDesignLabRelativePath(segments: string[] | undefined): st
 const PUBLISHABLE_KEY_PATTERN = /^pk_(live|test)_[A-Za-z0-9+/=_-]+$/;
 
 /** Exposes the (public) Clerk publishable key so the bundle can load the Clerk browser SDK. */
+export type DesignLabProductShell = 'regulatory_intelligence' | 'risk_controls';
+
+export function readDesignLabProductMode(): DesignLabProductShell {
+  return 'regulatory_intelligence';
+}
+
+export function injectProductShellMeta(html: string, product: DesignLabProductShell): string {
+  if (!html.includes('</head>')) return html;
+  let out = html.replace(
+    '</head>',
+    `  <meta name="forgeniq-product" content="${product}">\n</head>`,
+  );
+  if (product === 'risk_controls') {
+    out = out.replace(
+      /<title>[^<]*<\/title>/,
+      '<title>FORGENIQ — Risk &amp; Controls</title>',
+    );
+    out = out.replace(
+      /id="ri-environment-banner"[^>]*>[^<]+</,
+      'id="ri-environment-banner" class="ri-demo-banner ri-environment-banner--demo">RISK &amp; CONTROLS — Operational GRC (connected staging). Regulatory Intelligence corpus features are on hold.<',
+    );
+  }
+  return out;
+}
+
 export function injectClerkPublishableKey(html: string, publishableKey: string | undefined): string {
   const key = publishableKey?.trim();
   if (!key || !PUBLISHABLE_KEY_PATTERN.test(key) || !html.includes('</head>')) return html;
   return html.replace('</head>', `  <meta name="forgeniq-clerk-publishable-key" content="${key}">\n</head>`);
 }
 
-export async function designLabFileResponse(filePath: string | null): Promise<NextResponse> {
+export async function designLabFileResponse(
+  filePath: string | null,
+  options?: { productShell?: DesignLabProductShell },
+): Promise<NextResponse> {
   if (!filePath) {
     return NextResponse.json({ error: 'not_found' }, { status: 404 });
   }
@@ -54,7 +82,10 @@ export async function designLabFileResponse(filePath: string | null): Promise<Ne
   const type = MIME[ext] || 'application/octet-stream';
   if (ext === '.html' || ext === '.css' || ext === '.js' || ext === '.mjs' || ext === '.json') {
     const raw = await readFile(filePath, 'utf8');
-    const withVersion = ext === '.html' ? stampDesignLabAssetVersion(raw) : raw;
+    let withVersion = ext === '.html' ? stampDesignLabAssetVersion(raw) : raw;
+    if (ext === '.html' && options?.productShell) {
+      withVersion = injectProductShellMeta(withVersion, options.productShell);
+    }
     const body =
       ext === '.html' ? injectClerkPublishableKey(withVersion, process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) : withVersion;
     return new NextResponse(body, {
@@ -89,4 +120,8 @@ export function stampDesignLabAssetVersion(html: string): string {
 
 export async function serveDesignLabSegments(segments: string[] | undefined): Promise<NextResponse> {
   return designLabFileResponse(resolveDesignLabRelativePath(segments));
+}
+
+export async function serveRiskControlsDesignLabSegments(segments: string[] | undefined): Promise<NextResponse> {
+  return designLabFileResponse(resolveDesignLabRelativePath(segments), { productShell: 'risk_controls' });
 }
